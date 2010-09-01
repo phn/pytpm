@@ -378,6 +378,22 @@ def ut2gmst(ut):
 # Note that the fields of data structures are 'pointers' and hence
 # modifying the data structures inside functions also modifies them in
 # the calling scope.
+def byear2j(x):
+    """Macro BYEAR2JD in src/tpm/times.h"""
+    return tpm.B1950 + (x - 1950.0) * (tpm.CB/100.0)
+
+def j2byear(x):
+    """Macro JD2BYEAR in src/tpm/times.h"""
+    return 1950.0 + (x - tpm.B1950) * (100.0/tpm.CB)
+
+def jyear2j(x):
+    """Macro JYEAR2JD in src/tpm/times.h"""
+    return tpm.J2000 + (x - 2000.0) * (tpm.CJ/100.0)
+
+def j2jyear(x):
+    """Macro JD2JYEAR in src/tpm/times.h"""
+    return 2000.0 + (x - tpm.J2000) * (100.0/tpm.CJ)
+
 def dmsDecDegrees(s, x):
     s.dd -= x
 
