@@ -30,8 +30,9 @@
 #define MISC_H
 
 #endif
-
+/*
 extern double trapzd(double (*func)(double), double a, double b, int n);
 extern double polint(double *xa, double *ya, int n, double x, double *dy);
 extern double qromb(double (*func)(double), double a, double b, double
 		    eps, int imax);
+*/

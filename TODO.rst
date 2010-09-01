@@ -20,5 +20,8 @@ TODO:
  write python interface to: argv2dms, argv2hms and argv2ymd in times.h
 
 TODO:
+ write interface to functions in misc.h.
+
+TODO:
  Missing function declarations? Commented out in SWIG headers for now.
 
