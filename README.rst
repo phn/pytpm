@@ -31,6 +31,8 @@ function of the same name provided in the file *convert.c*.
 Source files
 ------------
 
+The source for *pytpm* can be found at http://github.com/phn/pytpm.
+
 The TPM source code is present in the directory *src/tpm*, and was
 obtained from the source distribution of the coords_ package, which is
 part of the astrolib_ library. The convenience function, *convert*, is
