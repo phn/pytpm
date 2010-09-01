@@ -1,0 +1,8 @@
+swig -python -o src/tpm_wrap.c -outdir lib/ swig_interface/tpm.i
+
+gcc -c src/tpm/*.c src/tpm_wrap.c src/convert.c -I PATH-TO/include/python2.6
+ld -shared *.o -o _tpm.so 
+rm -f *.o
+
+Must be saved as _tpm.so. Otherwise, python gives a message to 
+the effect that it can find module initialization method.
