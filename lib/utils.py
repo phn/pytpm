@@ -1,4 +1,8 @@
-"""Utility functions for the python interface to TPM library."""
+"""Utility functions for the python interface to TPM library.
+
+:Author: Prasanth Nair
+:Contact: prasanthhn@gmail.com
+"""
 import tpm
 import math
 
@@ -6,10 +10,69 @@ def convert(x=0.0, y=0.0, s1=6, s2=19, epoch=tpm.J2000,
             equinox=tpm.J2000, timetag=None, lon = -111.598333,
             lat = 31.956389, alt = 2093.093, T = 273.15, 
             P = 1013.25, H=0.0, W=0.55000):
-    """Calls tpm.convert(), which performs TPM state conversion.
+    """Returns coordinates converted into target system.
 
-    x and y are in degrees. Returns angles in degrees.
-    Site parameter are for KPNO from TPM.
+    :param x: input ra or longitude in degrees
+    :type x: float
+    :param y: input dec or latitude in degrees
+    :type y: float
+    :param s1: starting TPM state
+    :type s1: integer
+    :param s2: ending TPM state
+    :type s2: integer
+    :param epoch: epoch of the input coordinates in JD (UTC)
+    :type epoch: float
+    :param equinox: equinox of the input coordinates in JD (UTC)
+    :type equinox: float
+    :param timetag: time of the target state as JD (UTC)
+    :type timetag: float
+    :param lon: longitude (east +, west -) of observer in degrees
+    :type lon: float
+    :param lat: latitude (north +, south -) of the observer in degrees
+    :type lat: float
+    :param alt: altitude of the observer in meter
+    :type alt: float
+    :param T: temperature at the observer's location in kelvin
+    :type T: float
+    :param P: atmospheric pressure at the observer's location in
+        millibars
+    :type P: float
+    :param H: ambient humidity at the observer's location (0-1)
+    :type H: float
+    :param W: wavelength of observation in microns
+    :type W: float
+
+    This function calls the function tpm.convert() and returns
+    coordinates in the final TPM state. 
+    
+    The input coordinates are specified using the paramters ``x`` and
+    ``y``, both in degrees. The former is for the "longitudinal" angle,
+    such as ra and the latter is for "latitudinal" angle, such as 
+    declination. 
+
+    ``s1`` and ``s2`` are the starting and ending TPM states. These are
+    specified as integers but can also be specified using constants
+    defined in the module ``tpm``. See the source code or the
+    documentation for possible values. Default for starting state is the
+    *Heliocentric FK5 mean equinox of J2000*, also accessible as 
+    ``tpm.TPM_S06``, and that for the ending state is the *Topocentric
+    Observed azimuth and elevation* for the given UTC time ``timetag``,
+    also accessible as ``tpm.TPM_S19`` or ``tpm.TARGET_OBS_AZEL``.
+
+    ``epoch`` and ``equinox`` are for the input coordinates and
+    specified as UTC Julian Day numbers.
+
+    ``timetag`` is the time at which the result should be calculated, or
+    in other words the time of "observation". This is given as UTC
+    Julian day number.
+
+    The remaining parameters set the properties of the observer's site.
+    These are of-course used only when the observer's location
+    information is needed. The default values are for KPNO and are taken
+    from the source code of the TPM C library.
+   
+    :Author: Prasanth Nair
+    :Contact: prasanthhn@gmail.com
     """
     # tpm.convert takes radians.
     x = math.radians(x)
