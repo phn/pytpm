@@ -3,7 +3,7 @@
 :Author: Prasanth Nair
 :Contact: prasanthhn@gmail.com
 """
-import tpm
+from pytpm import tpm
 import math
 
 def convert(x=0.0, y=0.0, s1=6, s2=19, epoch=tpm.J2000, 
