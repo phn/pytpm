@@ -280,9 +280,9 @@ extern double utc_now(void);
 extern double ymd2dd(YMD ymd);
 extern double ymd2rdb(YMD ymd);
 extern double ymd2y(YMD ymd);
-extern int argv2dms(DMS *dms, char *argv[], int argnum, int cooked);
+/*extern int argv2dms(DMS *dms, char *argv[], int argnum, int cooked);
 extern int argv2hms(HMS *hms, char *argv[], int argnum, int cooked);
-extern int argv2ymd(YMD *ymd, char *argv[], int argnum, int cooked);
+extern int argv2ymd(YMD *ymd, char *argv[], int argnum, int cooked);*/
 extern int j2dow(double j);
 extern int y2doy(int y);
 /* extern void j2gcal(int *y, int *m, int *d, double j);*/

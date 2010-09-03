@@ -20,10 +20,10 @@
 
 #ifndef M6_INCLUDE
 #define M6_INCLUDE
-
+/* Don't need this directly from within python
 typedef struct s_m6 {
 	M3 m[2][2];
-} M6;
+} M6;*/
 
 #define m6GetPP(m6)	(m6.m[0][0])
 #define m6GetPV(m6)	(m6.m[0][1])

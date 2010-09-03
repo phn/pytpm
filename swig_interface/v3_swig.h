@@ -20,11 +20,11 @@
 
 #ifndef V3_INCLUDE
 #define V3_INCLUDE
-
-typedef struct s_v3 {
-	int type;	/* vector type, cartesian or spherical */
-	double v[3];
-} V3;
+/* Don't need this directly from within python*/
+//typedef struct s_v3 {
+//	int type;	/* vector type, cartesian or spherical */
+//	double v[3];
+//} V3;
 
 #define v3DecX(v3,x)		(v3.v[0] -= (x))
 #define v3DecY(v3,x)		(v3.v[1] -= (x))

@@ -20,10 +20,10 @@
 
 #ifndef V6_INCLUDE
 #define V6_INCLUDE
-
+/* Don't need this directly from within python
 typedef struct s_v6 {
 	V3 v[2];
-} V6;
+} V6;*/
 
 /* index into the 6-vector */
 #define POS	(0)

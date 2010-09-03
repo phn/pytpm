@@ -68,17 +68,17 @@
 #define N_TPM_TRANS	(16)
 
 /* this describes a target */
-typedef struct s_target {
-	char name[BUFSIZ];
-	int state;	/* pointing machine state (fk4, galactic, etc) */
-	double epoch;		/* JD */
-	double equinox;		/* JD */
-	double position[2];	/* radians */
-	double offset[2];	/* radians */
-	double motion[2];	/* radians/day */
-	double parallax;	/* in arcsec */
-	double speed;		/* in AU/day */
-} TPM_TARGET;
+//typedef struct s_target {
+//	char name[BUFSIZ];
+//	int state;	/* pointing machine state (fk4, galactic, etc) */
+//	double epoch;		/* JD */
+//	double equinox;		/* JD */
+//	double position[2];	/* radians */
+//	double offset[2];	/* radians */
+//	double motion[2];	/* radians/day */
+//	double parallax;	/* in arcsec */
+//	double speed;		/* in AU/day */
+//} TPM_TARGET;
 
 /* define some target states */
 #define TARGET_FK4		(TPM_S01)
@@ -96,70 +96,70 @@ typedef struct s_target {
 #define TARGET_TOP_AZEL	(TPM_S18)
 
 /* this describes the boresight */
-typedef struct s_boresight {
-	double epoch;		/* JD */
-	double position[2];	/* radians */
-	double offset[2];	/* radians */
-	double motion[2];	/* radians/day */
-} TPM_BORESIGHT;
+//typedef struct s_boresight {
+//	double epoch;		/* JD */
+//	double position[2];	/* radians */
+//	double offset[2];	/* radians */
+//	double motion[2];	/* radians/day */
+//} TPM_BORESIGHT;
 
 /* telescope state */
-typedef struct s_tstate {
-	/*************************/
-	/* independent variables */
-	/*************************/
-	double utc;		/* coordinated universal time, in JD */
-	int delta_at;		/* utc + delta_at = tai */
-	double delta_ut;	/* utc + delta_ut = ut1 */
-	double lon;		/* east longitude in radians */
-	double lat;		/* latitude in radians */
-	double alt;		/* altitude above geoid in meters */
-	double xpole;		/* polar motion in radians */
-	double ypole;		/* polar motion in radians */
-	double T;		/* ambient temperature in Kelvins */
-	double P;		/* ambient pressure in millibars */
-	double H;		/* ambient humidity (0-1) */
-	double wavelength;	/* observing wavelength in microns */
+//typedef struct s_tstate {
+//	/*************************/
+//	/* independent variables */
+//	/*************************/
+//	double utc;		/* coordinated universal time, in JD */
+//	int delta_at;		/* utc + delta_at = tai */
+//	double delta_ut;	/* utc + delta_ut = ut1 */
+//	double lon;		/* east longitude in radians */
+//	double lat;		/* latitude in radians */
+//	double alt;		/* altitude above geoid in meters */
+//	double xpole;		/* polar motion in radians */
+//	double ypole;		/* polar motion in radians */
+//	double T;		/* ambient temperature in Kelvins */
+//	double P;		/* ambient pressure in millibars */
+//	double H;		/* ambient humidity (0-1) */
+//	double wavelength;	/* observing wavelength in microns */
 
 	/*****************************/
 	/* dependent dynamical times */
 	/*****************************/
-	double tai;		/* international atomic time */
-	double tdt;		/* terrestrial dynamical time */
-	double tdb;		/* barycentric dynamical time */
+//	double tai;		/* international atomic time */
+//	double tdt;		/* terrestrial dynamical time */
+//	double tdb;		/* barycentric dynamical time */
 
 	/************************************/
 	/* dependent geometrical quantities */
 	/************************************/
-	double obliquity;	/* the obliquity of the ecliptic */
-	double nut_lon;		/* the nutation in longitude */
-	double nut_obl;		/* the nutation in the obliquity */
-	struct s_m3 nm;		/* the nutation matrix for now */
-	struct s_m6 pm;		/* the precession matrix from J2000 to now */
+//	double obliquity;	/* the obliquity of the ecliptic */
+//	double nut_lon;		/* the nutation in longitude */
+//	double nut_obl;		/* the nutation in the obliquity */
+//	struct s_m3 nm;		/* the nutation matrix for now */
+//	struct s_m6 pm;		/* the precession matrix from J2000 to now */
 
 	/******************************/
 	/* dependent rotational times */
 	/******************************/
-	double ut1;		/* universal time */
-	double gmst;		/* greenwich mean sidereal time */
-	double gast;		/* greenwich apparent sidereal time */
-	double last;		/* local apparent sidereal time */
+//	double ut1;		/* universal time */
+//	double gmst;		/* greenwich mean sidereal time */
+//	double gast;		/* greenwich apparent sidereal time */
+//	double last;		/* local apparent sidereal time */
 
 	/************************/
 	/* observer ephemerides */
 	/************************/
-	struct s_v6 eb;		/* barycentric earth state vector */
-	struct s_v6 eh;		/* heliocentric earth state vector */
-	struct s_v6 obs_m;	/* geocentric earth-fixed state vector */
-	struct s_v6 obs_t;	/* geocentric earth-fixed state vector */
-	struct s_v6 obs_s;	/* geocentric space-fixed state vector */
+//	struct s_v6 eb;		/* barycentric earth state vector */
+//	struct s_v6 eh;		/* heliocentric earth state vector */
+//	struct s_v6 obs_m;	/* geocentric earth-fixed state vector */
+//	struct s_v6 obs_t;	/* geocentric earth-fixed state vector */
+//	struct s_v6 obs_s;	/* geocentric space-fixed state vector */
 
 	/*********************************/
 	/* dependent physical quantities */
 	/*********************************/
-	double refa;		/* refraction coefficient */
-	double refb;		/* refraction coefficient */
-} TPM_TSTATE;
+//	double refa;		/* refraction coefficient */
+//	double refb;		/* refraction coefficient */
+//} TPM_TSTATE;
 
 /* define the pm_data flags */
 #define TPM_INIT	(0x01)
@@ -170,10 +170,10 @@ typedef struct s_tstate {
 #define TPM_ALL		(TPM_FAST|TPM_MEDIUM|TPM_SLOW|TPM_REFRACTION)
 
 /* a pointing machine cell */
-typedef struct s_pmcell {
-	int ptrans;	/* the next transition */
-	int pstate;	/* the resulting state */
-} TPM_PMCELL;
+//typedef struct s_pmcell {
+//	int ptrans;	/* the next transition */
+//	int pstate;	/* the resulting state */
+//} TPM_PMCELL;
 
 /* EXTERN_START */
 /* EXTERN_STOP */

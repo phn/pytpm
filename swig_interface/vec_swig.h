@@ -49,18 +49,19 @@
 #endif
 
 /* define 3-vectors */
-#include "v3.h"
+/* #include "v3.h" */
 
 /* define 6-vectors */
-#include "v6.h"
+/*#include "v6.h"*/
 
 /* define 3-matrices */
-#include "m3.h"
+/* #include "m3.h"*/
 
 /* define 6-matrices */
-#include "m6.h"
+/*#include "m6.h"*/
 
 /* EXTERN_START */
+/* Don't need any of these from within python
 extern M3 m3I(double x);
 extern M3 m3O(void);
 extern M3 m3Rx(double x);
@@ -117,7 +118,7 @@ extern double v3mod(V3 v);
 extern double v6alpha(V6 v);
 extern double v6delta(V6 v);
 extern double v6dot(V6 v1, V6 v2);
-extern double v6mod(V6 v);
+extern double v6mod(V6 v);*/
 /* EXTERN_STOP */
 
 #endif
