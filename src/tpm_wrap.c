@@ -2707,6 +2707,12 @@ static swig_module_info swig_module = {swig_types, 7, 0, 0, 0, 0};
   #include "tpm/times.h"
   #include "tpm/astro.h"
   #include "tpm/tpm.h"
+  extern void convert(double x0, double y0, int s1, int s2,
+                    double epoch, double equinox, double timetag,
+                    double lon, double lat, double alt,
+                    double T, double P, double H, 
+                    double W,
+                    double *x1, double *x2);
 
 
   #define SWIG_From_long   PyInt_FromLong 
