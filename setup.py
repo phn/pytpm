@@ -23,7 +23,7 @@ setup(
         version = '0.1',
         description = 'Python interface to the TPM astrometry library.',
         long_description = long_desc,
-        license = 'MIT',
+        license = 'BSD',
         author = 'Prasanth H. Nair',
         author_email = 'oneaufs@gmail.com',
         url = 'http://github.com/phn/pytpm',
