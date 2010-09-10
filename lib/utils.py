@@ -292,22 +292,6 @@ def j2j(j):
     """
     return j
 
-def jd2rdb(jd):
-    """Convert time in JD structure into RDB time.
-
-    >>> import tpm
-    >>> jd2rdb(tpm.j2jd(2451545.0))
-    101.12
-    """
-    return tpm.ymd2rdb(tpm.jd2ymd(jd))
-
-def j2rdb(j):
-    """Convert time in Julian day number into RDB time.
-
-    >>> j2rdb(2451545.0)
-    101.12
-    """
-    return jd2rdb(tpm.j2jd(j))
 
 def jd2y(jd):
     """Converts time in a JD structure into a Gregorian year. 
@@ -355,43 +339,11 @@ def r2hms(r):
     """
     return tpm.h2hms(r2h(r))
 
-def rdb2jd(rdb):
-    """Converts RDB time into a JD structure.
-
-    >>> import tpm
-    >>> jd = rdb2jd(tpm.ymd2rdb(tpm.jd2ymd(tpm.j2jd(2451545.0))))
-    >>> fmt_jd(jd)
-     2451545.0  00H 00M 00.000S
-    """
-    return tpm.ymd2jd(tpm.rdb2ymd(rdb))
-
-def rdb2j(rdb):
-    """Converts RDB time into Julian day number.
-
-    >>> rdb2j(101.12)
-    2451545.0
-    """
-    return tpm.jd2j(rdb2jd(rdb))
-
-def rdb2rdb(rdb):
-    """
-    """
-    return tpm.ymd2rdb(tpm.rdb2ymd(rdb))
-
-def rdb2y(rdb):
-    return tpm.ymd2y(tpm.rdb2ymd(rdb))
-
-def rdb_diff(rdb1, rdb2):
-    return tpm.jd_diff(rdb2jd(rdb1),rdb2jd(rdb2))
-
 def y2jd(y):
     return tpm.ymd2jd(tpm.y2ymd(y))
 
 def y2j(y):
     return tpm.jd2j(y2jd(y))
-
-def y2rdb(y):
-    return tpm.ymd2rdb(tpm.y2ymd(y))
 
 def y2y(y):
     return y

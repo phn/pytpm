@@ -4237,28 +4237,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_rdb2ymd(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  double arg1 ;
-  double val1 ;
-  int ecode1 = 0 ;
-  PyObject * obj0 = 0 ;
-  YMD result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:rdb2ymd",&obj0)) SWIG_fail;
-  ecode1 = SWIG_AsVal_double(obj0, &val1);
-  if (!SWIG_IsOK(ecode1)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "rdb2ymd" "', argument " "1"" of type '" "double""'");
-  } 
-  arg1 = (double)(val1);
-  result = rdb2ymd(arg1);
-  resultobj = SWIG_NewPointerObj((YMD *)memcpy((YMD *)malloc(sizeof(YMD)),&result,sizeof(YMD)), SWIGTYPE_p_s_ymd, SWIG_POINTER_OWN |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_y2ymd(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   double arg1 ;
@@ -4443,28 +4421,6 @@ SWIGINTERN PyObject *_wrap_fmt_j(PyObject *SWIGUNUSEDPARM(self), PyObject *args)
   } 
   arg1 = (double)(val1);
   result = (char *)fmt_j(arg1);
-  resultobj = SWIG_FromCharPtr((const char *)result);
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_fmt_rdb(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  double arg1 ;
-  double val1 ;
-  int ecode1 = 0 ;
-  PyObject * obj0 = 0 ;
-  char *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:fmt_rdb",&obj0)) SWIG_fail;
-  ecode1 = SWIG_AsVal_double(obj0, &val1);
-  if (!SWIG_IsOK(ecode1)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "fmt_rdb" "', argument " "1"" of type '" "double""'");
-  } 
-  arg1 = (double)(val1);
-  result = (char *)fmt_rdb(arg1);
   resultobj = SWIG_FromCharPtr((const char *)result);
   return resultobj;
 fail:
@@ -4792,34 +4748,6 @@ SWIGINTERN PyObject *_wrap_ymd2dd(PyObject *SWIGUNUSEDPARM(self), PyObject *args
     }
   }
   result = (double)ymd2dd(arg1);
-  resultobj = SWIG_From_double((double)(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_ymd2rdb(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  YMD arg1 ;
-  void *argp1 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  double result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:ymd2rdb",&obj0)) SWIG_fail;
-  {
-    res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_s_ymd,  0 );
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ymd2rdb" "', argument " "1"" of type '" "YMD""'"); 
-    }  
-    if (!argp1) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ymd2rdb" "', argument " "1"" of type '" "YMD""'");
-    } else {
-      arg1 = *((YMD *)(argp1));
-    }
-  }
-  result = (double)ymd2rdb(arg1);
   resultobj = SWIG_From_double((double)(result));
   return resultobj;
 fail:
@@ -5302,7 +5230,6 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"jd_sum", _wrap_jd_sum, METH_VARARGS, NULL},
 	 { (char *)"ymd2jd", _wrap_ymd2jd, METH_VARARGS, NULL},
 	 { (char *)"jd2ymd", _wrap_jd2ymd, METH_VARARGS, NULL},
-	 { (char *)"rdb2ymd", _wrap_rdb2ymd, METH_VARARGS, NULL},
 	 { (char *)"y2ymd", _wrap_y2ymd, METH_VARARGS, NULL},
 	 { (char *)"ydd2ymd", _wrap_ydd2ymd, METH_VARARGS, NULL},
 	 { (char *)"ymd2ymd", _wrap_ymd2ymd, METH_VARARGS, NULL},
@@ -5311,7 +5238,6 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"fmt_delta", _wrap_fmt_delta, METH_VARARGS, NULL},
 	 { (char *)"fmt_h", _wrap_fmt_h, METH_VARARGS, NULL},
 	 { (char *)"fmt_j", _wrap_fmt_j, METH_VARARGS, NULL},
-	 { (char *)"fmt_rdb", _wrap_fmt_rdb, METH_VARARGS, NULL},
 	 { (char *)"fmt_ymd", _wrap_fmt_ymd, METH_VARARGS, NULL},
 	 { (char *)"fmt_ymd_raw", _wrap_fmt_ymd_raw, METH_VARARGS, NULL},
 	 { (char *)"d2d", _wrap_d2d, METH_VARARGS, NULL},
@@ -5324,7 +5250,6 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"r2r", _wrap_r2r, METH_VARARGS, NULL},
 	 { (char *)"utc_now", _wrap_utc_now, METH_VARARGS, NULL},
 	 { (char *)"ymd2dd", _wrap_ymd2dd, METH_VARARGS, NULL},
-	 { (char *)"ymd2rdb", _wrap_ymd2rdb, METH_VARARGS, NULL},
 	 { (char *)"ymd2y", _wrap_ymd2y, METH_VARARGS, NULL},
 	 { (char *)"j2dow", _wrap_j2dow, METH_VARARGS, NULL},
 	 { (char *)"y2doy", _wrap_y2doy, METH_VARARGS, NULL},

@@ -252,10 +252,6 @@ def jd2ymd(*args):
   return _tpm.jd2ymd(*args)
 jd2ymd = _tpm.jd2ymd
 
-def rdb2ymd(*args):
-  return _tpm.rdb2ymd(*args)
-rdb2ymd = _tpm.rdb2ymd
-
 def y2ymd(*args):
   return _tpm.y2ymd(*args)
 y2ymd = _tpm.y2ymd
@@ -287,10 +283,6 @@ fmt_h = _tpm.fmt_h
 def fmt_j(*args):
   return _tpm.fmt_j(*args)
 fmt_j = _tpm.fmt_j
-
-def fmt_rdb(*args):
-  return _tpm.fmt_rdb(*args)
-fmt_rdb = _tpm.fmt_rdb
 
 def fmt_ymd(*args):
   return _tpm.fmt_ymd(*args)
@@ -339,10 +331,6 @@ utc_now = _tpm.utc_now
 def ymd2dd(*args):
   return _tpm.ymd2dd(*args)
 ymd2dd = _tpm.ymd2dd
-
-def ymd2rdb(*args):
-  return _tpm.ymd2rdb(*args)
-ymd2rdb = _tpm.ymd2rdb
 
 def ymd2y(*args):
   return _tpm.ymd2y(*args)

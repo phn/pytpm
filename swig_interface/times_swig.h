@@ -256,7 +256,7 @@ extern JD jd_now(void);
 extern JD jd_sum(JD jd1, JD jd2);
 extern JD ymd2jd(YMD ymd);
 extern YMD jd2ymd(JD jd);
-extern YMD rdb2ymd(double rdb);
+/*extern YMD rdb2ymd(double rdb);*/
 extern YMD y2ymd(double y);
 extern YMD ydd2ymd(int y, double dd);
 extern YMD ymd2ymd(YMD ymd);
@@ -265,7 +265,7 @@ extern char *fmt_d(double d);
 extern char *fmt_delta(double delta);
 extern char *fmt_h(double h);
 extern char *fmt_j(double j);
-extern char *fmt_rdb(double rdb);
+/*extern char *fmt_rdb(double rdb);*/
 extern char *fmt_ymd(YMD ymd);
 extern char *fmt_ymd_raw(YMD ymd);
 extern double d2d(double d);
@@ -278,7 +278,7 @@ extern double jd2j(JD jd);
 extern double r2r(double r);
 extern double utc_now(void);
 extern double ymd2dd(YMD ymd);
-extern double ymd2rdb(YMD ymd);
+/*extern double ymd2rdb(YMD ymd);*/
 extern double ymd2y(YMD ymd);
 /*extern int argv2dms(DMS *dms, char *argv[], int argnum, int cooked);
 extern int argv2hms(HMS *hms, char *argv[], int argnum, int cooked);
