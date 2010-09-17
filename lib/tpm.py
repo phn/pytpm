@@ -478,13 +478,193 @@ def v3DecZf(*args):
   return _tpm.v3DecZf(*args)
 v3DecZf = _tpm.v3DecZf
 
+def v3DecRf(*args):
+  return _tpm.v3DecRf(*args)
+v3DecRf = _tpm.v3DecRf
+
+def v3DecAlphaf(*args):
+  return _tpm.v3DecAlphaf(*args)
+v3DecAlphaf = _tpm.v3DecAlphaf
+
+def v3DecDeltaf(*args):
+  return _tpm.v3DecDeltaf(*args)
+v3DecDeltaf = _tpm.v3DecDeltaf
+
+def v3DivXf(*args):
+  return _tpm.v3DivXf(*args)
+v3DivXf = _tpm.v3DivXf
+
+def v3DivYf(*args):
+  return _tpm.v3DivYf(*args)
+v3DivYf = _tpm.v3DivYf
+
+def v3DivZf(*args):
+  return _tpm.v3DivZf(*args)
+v3DivZf = _tpm.v3DivZf
+
+def v3DivRf(*args):
+  return _tpm.v3DivRf(*args)
+v3DivRf = _tpm.v3DivRf
+
+def v3DivAlphaf(*args):
+  return _tpm.v3DivAlphaf(*args)
+v3DivAlphaf = _tpm.v3DivAlphaf
+
+def v3DivDeltaf(*args):
+  return _tpm.v3DivDeltaf(*args)
+v3DivDeltaf = _tpm.v3DivDeltaf
+
+def v3GetTypef(*args):
+  return _tpm.v3GetTypef(*args)
+v3GetTypef = _tpm.v3GetTypef
+
 def v3GetXf(*args):
   return _tpm.v3GetXf(*args)
 v3GetXf = _tpm.v3GetXf
 
+def v3GetYf(*args):
+  return _tpm.v3GetYf(*args)
+v3GetYf = _tpm.v3GetYf
+
+def v3GetZf(*args):
+  return _tpm.v3GetZf(*args)
+v3GetZf = _tpm.v3GetZf
+
+def v3GetRf(*args):
+  return _tpm.v3GetRf(*args)
+v3GetRf = _tpm.v3GetRf
+
+def v3GetAlphaf(*args):
+  return _tpm.v3GetAlphaf(*args)
+v3GetAlphaf = _tpm.v3GetAlphaf
+
+def v3GetDeltaf(*args):
+  return _tpm.v3GetDeltaf(*args)
+v3GetDeltaf = _tpm.v3GetDeltaf
+
+def v3IncXf(*args):
+  return _tpm.v3IncXf(*args)
+v3IncXf = _tpm.v3IncXf
+
+def v3IncYf(*args):
+  return _tpm.v3IncYf(*args)
+v3IncYf = _tpm.v3IncYf
+
+def v3IncZf(*args):
+  return _tpm.v3IncZf(*args)
+v3IncZf = _tpm.v3IncZf
+
+def v3IncRf(*args):
+  return _tpm.v3IncRf(*args)
+v3IncRf = _tpm.v3IncRf
+
+def v3IncAlphaf(*args):
+  return _tpm.v3IncAlphaf(*args)
+v3IncAlphaf = _tpm.v3IncAlphaf
+
+def v3IncDeltaf(*args):
+  return _tpm.v3IncDeltaf(*args)
+v3IncDeltaf = _tpm.v3IncDeltaf
+
+def v3MulXf(*args):
+  return _tpm.v3MulXf(*args)
+v3MulXf = _tpm.v3MulXf
+
+def v3MulYf(*args):
+  return _tpm.v3MulYf(*args)
+v3MulYf = _tpm.v3MulYf
+
+def v3MulZf(*args):
+  return _tpm.v3MulZf(*args)
+v3MulZf = _tpm.v3MulZf
+
+def v3MulRf(*args):
+  return _tpm.v3MulRf(*args)
+v3MulRf = _tpm.v3MulRf
+
+def v3MulAlphaf(*args):
+  return _tpm.v3MulAlphaf(*args)
+v3MulAlphaf = _tpm.v3MulAlphaf
+
+def v3MulDeltaf(*args):
+  return _tpm.v3MulDeltaf(*args)
+v3MulDeltaf = _tpm.v3MulDeltaf
+
+def v3SetTypef(*args):
+  return _tpm.v3SetTypef(*args)
+v3SetTypef = _tpm.v3SetTypef
+
 def v3SetXf(*args):
   return _tpm.v3SetXf(*args)
 v3SetXf = _tpm.v3SetXf
+
+def v3SetYf(*args):
+  return _tpm.v3SetYf(*args)
+v3SetYf = _tpm.v3SetYf
+
+def v3SetZf(*args):
+  return _tpm.v3SetZf(*args)
+v3SetZf = _tpm.v3SetZf
+
+def v3SetRf(*args):
+  return _tpm.v3SetRf(*args)
+v3SetRf = _tpm.v3SetRf
+
+def v3SetAlphaf(*args):
+  return _tpm.v3SetAlphaf(*args)
+v3SetAlphaf = _tpm.v3SetAlphaf
+
+def v3SetDeltaf(*args):
+  return _tpm.v3SetDeltaf(*args)
+v3SetDeltaf = _tpm.v3SetDeltaf
+
+def v3DecRAf(*args):
+  return _tpm.v3DecRAf(*args)
+v3DecRAf = _tpm.v3DecRAf
+
+def v3DecDecf(*args):
+  return _tpm.v3DecDecf(*args)
+v3DecDecf = _tpm.v3DecDecf
+
+def v3DivRAf(*args):
+  return _tpm.v3DivRAf(*args)
+v3DivRAf = _tpm.v3DivRAf
+
+def v3DivDecf(*args):
+  return _tpm.v3DivDecf(*args)
+v3DivDecf = _tpm.v3DivDecf
+
+def v3GetRAf(*args):
+  return _tpm.v3GetRAf(*args)
+v3GetRAf = _tpm.v3GetRAf
+
+def v3GetDecf(*args):
+  return _tpm.v3GetDecf(*args)
+v3GetDecf = _tpm.v3GetDecf
+
+def v3IncRAf(*args):
+  return _tpm.v3IncRAf(*args)
+v3IncRAf = _tpm.v3IncRAf
+
+def v3IncDecf(*args):
+  return _tpm.v3IncDecf(*args)
+v3IncDecf = _tpm.v3IncDecf
+
+def v3MulRAf(*args):
+  return _tpm.v3MulRAf(*args)
+v3MulRAf = _tpm.v3MulRAf
+
+def v3MulDecf(*args):
+  return _tpm.v3MulDecf(*args)
+v3MulDecf = _tpm.v3MulDecf
+
+def v3SetRAf(*args):
+  return _tpm.v3SetRAf(*args)
+v3SetRAf = _tpm.v3SetRAf
+
+def v3SetDecf(*args):
+  return _tpm.v3SetDecf(*args)
+v3SetDecf = _tpm.v3SetDecf
 
 def convert(*args):
   return _tpm.convert(*args)
