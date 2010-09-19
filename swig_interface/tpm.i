@@ -10,6 +10,7 @@
   #include "tpm/astro.h"
   #include "tpm/tpm.h"
   #include "v3Functions.h"
+  #include "v6Functions.h"
   extern void convert(double x0, double y0, int s1, int s2,
                     double epoch, double equinox, double timetag,
                     double lon, double lat, double alt,
@@ -29,6 +30,7 @@
 %include "astro_swig.h"
 %include "tpm_swig.h"
 %include "../src/v3Functions.h"
+%include "../src/v6Functions.h"
 
 %include "typemaps.i"
 

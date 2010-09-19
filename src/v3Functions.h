@@ -1,4 +1,4 @@
-/* Declaration for dunctions to access V3 vectors, defined in v3Functions.h
+/* Declaration for functions to access V3 vectors, defined in v3Functions.c
    
    In TPM these are defined as macros, which SWIG doesn't wrap. To
    get the same functionality from within python, we define the

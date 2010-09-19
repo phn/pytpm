@@ -87,6 +87,24 @@ class V3(_object):
 V3_swigregister = _tpm.V3_swigregister
 V3_swigregister(V3)
 
+class V6(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, V6, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, V6, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["v"] = _tpm.V6_v_set
+    __swig_getmethods__["v"] = _tpm.V6_v_get
+    if _newclass:v = _swig_property(_tpm.V6_v_get, _tpm.V6_v_set)
+    def __init__(self): 
+        this = _tpm.new_V6()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _tpm.delete_V6
+    __del__ = lambda self : None;
+V6_swigregister = _tpm.V6_swigregister
+V6_swigregister(V6)
+
 POS = _tpm.POS
 VEL = _tpm.VEL
 M_PI = _tpm.M_PI
@@ -665,6 +683,414 @@ v3SetRAf = _tpm.v3SetRAf
 def v3SetDecf(*args):
   return _tpm.v3SetDecf(*args)
 v3SetDecf = _tpm.v3SetDecf
+
+def v6GetPosf(*args):
+  return _tpm.v6GetPosf(*args)
+v6GetPosf = _tpm.v6GetPosf
+
+def v6GetVelf(*args):
+  return _tpm.v6GetVelf(*args)
+v6GetVelf = _tpm.v6GetVelf
+
+def v6SetPosf(*args):
+  return _tpm.v6SetPosf(*args)
+v6SetPosf = _tpm.v6SetPosf
+
+def v6SetVelf(*args):
+  return _tpm.v6SetVelf(*args)
+v6SetVelf = _tpm.v6SetVelf
+
+def v6DecXf(*args):
+  return _tpm.v6DecXf(*args)
+v6DecXf = _tpm.v6DecXf
+
+def v6DecYf(*args):
+  return _tpm.v6DecYf(*args)
+v6DecYf = _tpm.v6DecYf
+
+def v6DecZf(*args):
+  return _tpm.v6DecZf(*args)
+v6DecZf = _tpm.v6DecZf
+
+def v6DecXDotf(*args):
+  return _tpm.v6DecXDotf(*args)
+v6DecXDotf = _tpm.v6DecXDotf
+
+def v6DecYDotf(*args):
+  return _tpm.v6DecYDotf(*args)
+v6DecYDotf = _tpm.v6DecYDotf
+
+def v6DecZDotf(*args):
+  return _tpm.v6DecZDotf(*args)
+v6DecZDotf = _tpm.v6DecZDotf
+
+def v6DecRf(*args):
+  return _tpm.v6DecRf(*args)
+v6DecRf = _tpm.v6DecRf
+
+def v6DecAlphaf(*args):
+  return _tpm.v6DecAlphaf(*args)
+v6DecAlphaf = _tpm.v6DecAlphaf
+
+def v6DecDeltaf(*args):
+  return _tpm.v6DecDeltaf(*args)
+v6DecDeltaf = _tpm.v6DecDeltaf
+
+def v6DecRDotf(*args):
+  return _tpm.v6DecRDotf(*args)
+v6DecRDotf = _tpm.v6DecRDotf
+
+def v6DecAlphaDotf(*args):
+  return _tpm.v6DecAlphaDotf(*args)
+v6DecAlphaDotf = _tpm.v6DecAlphaDotf
+
+def v6DecDeltaDotf(*args):
+  return _tpm.v6DecDeltaDotf(*args)
+v6DecDeltaDotf = _tpm.v6DecDeltaDotf
+
+def v6DivXf(*args):
+  return _tpm.v6DivXf(*args)
+v6DivXf = _tpm.v6DivXf
+
+def v6DivYf(*args):
+  return _tpm.v6DivYf(*args)
+v6DivYf = _tpm.v6DivYf
+
+def v6DivZf(*args):
+  return _tpm.v6DivZf(*args)
+v6DivZf = _tpm.v6DivZf
+
+def v6DivXDotf(*args):
+  return _tpm.v6DivXDotf(*args)
+v6DivXDotf = _tpm.v6DivXDotf
+
+def v6DivYDotf(*args):
+  return _tpm.v6DivYDotf(*args)
+v6DivYDotf = _tpm.v6DivYDotf
+
+def v6DivZDotf(*args):
+  return _tpm.v6DivZDotf(*args)
+v6DivZDotf = _tpm.v6DivZDotf
+
+def v6DivRf(*args):
+  return _tpm.v6DivRf(*args)
+v6DivRf = _tpm.v6DivRf
+
+def v6DivAlphaf(*args):
+  return _tpm.v6DivAlphaf(*args)
+v6DivAlphaf = _tpm.v6DivAlphaf
+
+def v6DivDeltaf(*args):
+  return _tpm.v6DivDeltaf(*args)
+v6DivDeltaf = _tpm.v6DivDeltaf
+
+def v6DivRDotf(*args):
+  return _tpm.v6DivRDotf(*args)
+v6DivRDotf = _tpm.v6DivRDotf
+
+def v6DivAlphaDotf(*args):
+  return _tpm.v6DivAlphaDotf(*args)
+v6DivAlphaDotf = _tpm.v6DivAlphaDotf
+
+def v6DivDeltaDotf(*args):
+  return _tpm.v6DivDeltaDotf(*args)
+v6DivDeltaDotf = _tpm.v6DivDeltaDotf
+
+def v6GetTypef(*args):
+  return _tpm.v6GetTypef(*args)
+v6GetTypef = _tpm.v6GetTypef
+
+def v6GetXf(*args):
+  return _tpm.v6GetXf(*args)
+v6GetXf = _tpm.v6GetXf
+
+def v6GetYf(*args):
+  return _tpm.v6GetYf(*args)
+v6GetYf = _tpm.v6GetYf
+
+def v6GetZf(*args):
+  return _tpm.v6GetZf(*args)
+v6GetZf = _tpm.v6GetZf
+
+def v6GetXDotf(*args):
+  return _tpm.v6GetXDotf(*args)
+v6GetXDotf = _tpm.v6GetXDotf
+
+def v6GetYDotf(*args):
+  return _tpm.v6GetYDotf(*args)
+v6GetYDotf = _tpm.v6GetYDotf
+
+def v6GetZDotf(*args):
+  return _tpm.v6GetZDotf(*args)
+v6GetZDotf = _tpm.v6GetZDotf
+
+def v6GetRf(*args):
+  return _tpm.v6GetRf(*args)
+v6GetRf = _tpm.v6GetRf
+
+def v6GetAlphaf(*args):
+  return _tpm.v6GetAlphaf(*args)
+v6GetAlphaf = _tpm.v6GetAlphaf
+
+def v6GetDeltaf(*args):
+  return _tpm.v6GetDeltaf(*args)
+v6GetDeltaf = _tpm.v6GetDeltaf
+
+def v6GetRDotf(*args):
+  return _tpm.v6GetRDotf(*args)
+v6GetRDotf = _tpm.v6GetRDotf
+
+def v6GetAlphaDotf(*args):
+  return _tpm.v6GetAlphaDotf(*args)
+v6GetAlphaDotf = _tpm.v6GetAlphaDotf
+
+def v6GetDeltaDotf(*args):
+  return _tpm.v6GetDeltaDotf(*args)
+v6GetDeltaDotf = _tpm.v6GetDeltaDotf
+
+def v6IncXf(*args):
+  return _tpm.v6IncXf(*args)
+v6IncXf = _tpm.v6IncXf
+
+def v6IncYf(*args):
+  return _tpm.v6IncYf(*args)
+v6IncYf = _tpm.v6IncYf
+
+def v6IncZf(*args):
+  return _tpm.v6IncZf(*args)
+v6IncZf = _tpm.v6IncZf
+
+def v6IncXDotf(*args):
+  return _tpm.v6IncXDotf(*args)
+v6IncXDotf = _tpm.v6IncXDotf
+
+def v6IncYDotf(*args):
+  return _tpm.v6IncYDotf(*args)
+v6IncYDotf = _tpm.v6IncYDotf
+
+def v6IncZDotf(*args):
+  return _tpm.v6IncZDotf(*args)
+v6IncZDotf = _tpm.v6IncZDotf
+
+def v6IncRf(*args):
+  return _tpm.v6IncRf(*args)
+v6IncRf = _tpm.v6IncRf
+
+def v6IncAlphaf(*args):
+  return _tpm.v6IncAlphaf(*args)
+v6IncAlphaf = _tpm.v6IncAlphaf
+
+def v6IncDeltaf(*args):
+  return _tpm.v6IncDeltaf(*args)
+v6IncDeltaf = _tpm.v6IncDeltaf
+
+def v6IncRDotf(*args):
+  return _tpm.v6IncRDotf(*args)
+v6IncRDotf = _tpm.v6IncRDotf
+
+def v6IncAlphaDotf(*args):
+  return _tpm.v6IncAlphaDotf(*args)
+v6IncAlphaDotf = _tpm.v6IncAlphaDotf
+
+def v6IncDeltaDotf(*args):
+  return _tpm.v6IncDeltaDotf(*args)
+v6IncDeltaDotf = _tpm.v6IncDeltaDotf
+
+def v6MulXf(*args):
+  return _tpm.v6MulXf(*args)
+v6MulXf = _tpm.v6MulXf
+
+def v6MulYf(*args):
+  return _tpm.v6MulYf(*args)
+v6MulYf = _tpm.v6MulYf
+
+def v6MulZf(*args):
+  return _tpm.v6MulZf(*args)
+v6MulZf = _tpm.v6MulZf
+
+def v6MulXDotf(*args):
+  return _tpm.v6MulXDotf(*args)
+v6MulXDotf = _tpm.v6MulXDotf
+
+def v6MulYDotf(*args):
+  return _tpm.v6MulYDotf(*args)
+v6MulYDotf = _tpm.v6MulYDotf
+
+def v6MulZDotf(*args):
+  return _tpm.v6MulZDotf(*args)
+v6MulZDotf = _tpm.v6MulZDotf
+
+def v6MulRf(*args):
+  return _tpm.v6MulRf(*args)
+v6MulRf = _tpm.v6MulRf
+
+def v6MulAlphaf(*args):
+  return _tpm.v6MulAlphaf(*args)
+v6MulAlphaf = _tpm.v6MulAlphaf
+
+def v6MulDeltaf(*args):
+  return _tpm.v6MulDeltaf(*args)
+v6MulDeltaf = _tpm.v6MulDeltaf
+
+def v6MulRDotf(*args):
+  return _tpm.v6MulRDotf(*args)
+v6MulRDotf = _tpm.v6MulRDotf
+
+def v6MulAlphaDotf(*args):
+  return _tpm.v6MulAlphaDotf(*args)
+v6MulAlphaDotf = _tpm.v6MulAlphaDotf
+
+def v6MulDeltaDotf(*args):
+  return _tpm.v6MulDeltaDotf(*args)
+v6MulDeltaDotf = _tpm.v6MulDeltaDotf
+
+def v6SetTypef(*args):
+  return _tpm.v6SetTypef(*args)
+v6SetTypef = _tpm.v6SetTypef
+
+def v6SetXf(*args):
+  return _tpm.v6SetXf(*args)
+v6SetXf = _tpm.v6SetXf
+
+def v6SetYf(*args):
+  return _tpm.v6SetYf(*args)
+v6SetYf = _tpm.v6SetYf
+
+def v6SetZf(*args):
+  return _tpm.v6SetZf(*args)
+v6SetZf = _tpm.v6SetZf
+
+def v6SetXDotf(*args):
+  return _tpm.v6SetXDotf(*args)
+v6SetXDotf = _tpm.v6SetXDotf
+
+def v6SetYDotf(*args):
+  return _tpm.v6SetYDotf(*args)
+v6SetYDotf = _tpm.v6SetYDotf
+
+def v6SetZDotf(*args):
+  return _tpm.v6SetZDotf(*args)
+v6SetZDotf = _tpm.v6SetZDotf
+
+def v6SetRf(*args):
+  return _tpm.v6SetRf(*args)
+v6SetRf = _tpm.v6SetRf
+
+def v6SetAlphaf(*args):
+  return _tpm.v6SetAlphaf(*args)
+v6SetAlphaf = _tpm.v6SetAlphaf
+
+def v6SetDeltaf(*args):
+  return _tpm.v6SetDeltaf(*args)
+v6SetDeltaf = _tpm.v6SetDeltaf
+
+def v6SetRDotf(*args):
+  return _tpm.v6SetRDotf(*args)
+v6SetRDotf = _tpm.v6SetRDotf
+
+def v6SetAlphaDotf(*args):
+  return _tpm.v6SetAlphaDotf(*args)
+v6SetAlphaDotf = _tpm.v6SetAlphaDotf
+
+def v6SetDeltaDotf(*args):
+  return _tpm.v6SetDeltaDotf(*args)
+v6SetDeltaDotf = _tpm.v6SetDeltaDotf
+
+def v6DecRAf(*args):
+  return _tpm.v6DecRAf(*args)
+v6DecRAf = _tpm.v6DecRAf
+
+def v6DecPMRAf(*args):
+  return _tpm.v6DecPMRAf(*args)
+v6DecPMRAf = _tpm.v6DecPMRAf
+
+def v6DecDecf(*args):
+  return _tpm.v6DecDecf(*args)
+v6DecDecf = _tpm.v6DecDecf
+
+def v6DecPMDecf(*args):
+  return _tpm.v6DecPMDecf(*args)
+v6DecPMDecf = _tpm.v6DecPMDecf
+
+def v6DivRAf(*args):
+  return _tpm.v6DivRAf(*args)
+v6DivRAf = _tpm.v6DivRAf
+
+def v6DivPMRAf(*args):
+  return _tpm.v6DivPMRAf(*args)
+v6DivPMRAf = _tpm.v6DivPMRAf
+
+def v6DivDecf(*args):
+  return _tpm.v6DivDecf(*args)
+v6DivDecf = _tpm.v6DivDecf
+
+def v6DivPMDecf(*args):
+  return _tpm.v6DivPMDecf(*args)
+v6DivPMDecf = _tpm.v6DivPMDecf
+
+def v6GetRAf(*args):
+  return _tpm.v6GetRAf(*args)
+v6GetRAf = _tpm.v6GetRAf
+
+def v6GetPMRAf(*args):
+  return _tpm.v6GetPMRAf(*args)
+v6GetPMRAf = _tpm.v6GetPMRAf
+
+def v6GetDecf(*args):
+  return _tpm.v6GetDecf(*args)
+v6GetDecf = _tpm.v6GetDecf
+
+def v6GetPMDecf(*args):
+  return _tpm.v6GetPMDecf(*args)
+v6GetPMDecf = _tpm.v6GetPMDecf
+
+def v6IncRAf(*args):
+  return _tpm.v6IncRAf(*args)
+v6IncRAf = _tpm.v6IncRAf
+
+def v6IncPMRAf(*args):
+  return _tpm.v6IncPMRAf(*args)
+v6IncPMRAf = _tpm.v6IncPMRAf
+
+def v6IncDecf(*args):
+  return _tpm.v6IncDecf(*args)
+v6IncDecf = _tpm.v6IncDecf
+
+def v6IncPMDecf(*args):
+  return _tpm.v6IncPMDecf(*args)
+v6IncPMDecf = _tpm.v6IncPMDecf
+
+def v6MulRAf(*args):
+  return _tpm.v6MulRAf(*args)
+v6MulRAf = _tpm.v6MulRAf
+
+def v6MulPMRAf(*args):
+  return _tpm.v6MulPMRAf(*args)
+v6MulPMRAf = _tpm.v6MulPMRAf
+
+def v6MulDecf(*args):
+  return _tpm.v6MulDecf(*args)
+v6MulDecf = _tpm.v6MulDecf
+
+def v6MulPMDecf(*args):
+  return _tpm.v6MulPMDecf(*args)
+v6MulPMDecf = _tpm.v6MulPMDecf
+
+def v6SetRAf(*args):
+  return _tpm.v6SetRAf(*args)
+v6SetRAf = _tpm.v6SetRAf
+
+def v6SetPMRAf(*args):
+  return _tpm.v6SetPMRAf(*args)
+v6SetPMRAf = _tpm.v6SetPMRAf
+
+def v6SetDecf(*args):
+  return _tpm.v6SetDecf(*args)
+v6SetDecf = _tpm.v6SetDecf
+
+def v6SetPMDecf(*args):
+  return _tpm.v6SetPMDecf(*args)
+v6SetPMDecf = _tpm.v6SetPMDecf
 
 def convert(*args):
   return _tpm.convert(*args)
