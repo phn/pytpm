@@ -125,6 +125,24 @@ class M3(_object):
 M3_swigregister = _tpm.M3_swigregister
 M3_swigregister(M3)
 
+class M6(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, M6, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, M6, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["m"] = _tpm.M6_m_set
+    __swig_getmethods__["m"] = _tpm.M6_m_get
+    if _newclass:m = _swig_property(_tpm.M6_m_get, _tpm.M6_m_set)
+    def __init__(self): 
+        this = _tpm.new_M6()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _tpm.delete_M6
+    __del__ = lambda self : None;
+M6_swigregister = _tpm.M6_swigregister
+M6_swigregister(M6)
+
 M_PI = _tpm.M_PI
 CARTESIAN = _tpm.CARTESIAN
 SPHERICAL = _tpm.SPHERICAL
@@ -1325,6 +1343,38 @@ m3SetZYf = _tpm.m3SetZYf
 def m3SetZZf(*args):
   return _tpm.m3SetZZf(*args)
 m3SetZZf = _tpm.m3SetZZf
+
+def m6GetPPf(*args):
+  return _tpm.m6GetPPf(*args)
+m6GetPPf = _tpm.m6GetPPf
+
+def m6GetPVf(*args):
+  return _tpm.m6GetPVf(*args)
+m6GetPVf = _tpm.m6GetPVf
+
+def m6GetVPf(*args):
+  return _tpm.m6GetVPf(*args)
+m6GetVPf = _tpm.m6GetVPf
+
+def m6GetVVf(*args):
+  return _tpm.m6GetVVf(*args)
+m6GetVVf = _tpm.m6GetVVf
+
+def m6SetPPf(*args):
+  return _tpm.m6SetPPf(*args)
+m6SetPPf = _tpm.m6SetPPf
+
+def m6SetPVf(*args):
+  return _tpm.m6SetPVf(*args)
+m6SetPVf = _tpm.m6SetPVf
+
+def m6SetVPf(*args):
+  return _tpm.m6SetVPf(*args)
+m6SetVPf = _tpm.m6SetVPf
+
+def m6SetVVf(*args):
+  return _tpm.m6SetVVf(*args)
+m6SetVVf = _tpm.m6SetVVf
 
 def convert(*args):
   return _tpm.convert(*args)

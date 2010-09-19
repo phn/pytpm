@@ -2655,19 +2655,21 @@ SWIG_Python_MustGetPtr(PyObject *obj, swig_type_info *ty, int argnum, int flags)
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
-#define SWIGTYPE_p_a_3__double swig_types[0]
-#define SWIGTYPE_p_char swig_types[1]
-#define SWIGTYPE_p_double swig_types[2]
-#define SWIGTYPE_p_int swig_types[3]
-#define SWIGTYPE_p_s_dms swig_types[4]
-#define SWIGTYPE_p_s_hms swig_types[5]
-#define SWIGTYPE_p_s_jd swig_types[6]
-#define SWIGTYPE_p_s_m3 swig_types[7]
-#define SWIGTYPE_p_s_v3 swig_types[8]
-#define SWIGTYPE_p_s_v6 swig_types[9]
-#define SWIGTYPE_p_s_ymd swig_types[10]
-static swig_type_info *swig_types[12];
-static swig_module_info swig_module = {swig_types, 11, 0, 0, 0, 0};
+#define SWIGTYPE_p_a_2__s_m3 swig_types[0]
+#define SWIGTYPE_p_a_3__double swig_types[1]
+#define SWIGTYPE_p_char swig_types[2]
+#define SWIGTYPE_p_double swig_types[3]
+#define SWIGTYPE_p_int swig_types[4]
+#define SWIGTYPE_p_s_dms swig_types[5]
+#define SWIGTYPE_p_s_hms swig_types[6]
+#define SWIGTYPE_p_s_jd swig_types[7]
+#define SWIGTYPE_p_s_m3 swig_types[8]
+#define SWIGTYPE_p_s_m6 swig_types[9]
+#define SWIGTYPE_p_s_v3 swig_types[10]
+#define SWIGTYPE_p_s_v6 swig_types[11]
+#define SWIGTYPE_p_s_ymd swig_types[12]
+static swig_type_info *swig_types[14];
+static swig_module_info swig_module = {swig_types, 13, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -2711,6 +2713,7 @@ static swig_module_info swig_module = {swig_types, 11, 0, 0, 0, 0};
   #include "v3Functions.h"
   #include "v6Functions.h"
   #include "m3Functions.h"
+  #include "m6Functions.h"
   extern void convert(double x0, double y0, int s1, int s2,
                     double epoch, double equinox, double timetag,
                     double lon, double lat, double alt,
@@ -3276,6 +3279,113 @@ SWIGINTERN PyObject *M3_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *a
   PyObject *obj;
   if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
   SWIG_TypeNewClientData(SWIGTYPE_p_s_m3, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_M6_m_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  M6 *arg1 = (M6 *) 0 ;
+  M3 (*arg2)[2] ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:M6_m_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_m6, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "M6_m_set" "', argument " "1"" of type '" "M6 *""'"); 
+  }
+  arg1 = (M6 *)(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_a_2__s_m3, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "M6_m_set" "', argument " "2"" of type '" "M3 [2][2]""'"); 
+  } 
+  arg2 = (M3 (*)[2])(argp2);
+  {
+    if (arg2) {
+      size_t ii = 0;
+      for (; ii < (size_t)2; ++ii) {
+        if (arg2[ii]) {
+          size_t jj = 0;
+          for (; jj < (size_t)2; ++jj) arg1->m[ii][jj] = arg2[ii][jj];
+        } else {
+          SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in variable '""m""' of type '""M3 [2][2]""'");
+        }
+      }
+    } else {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in variable '""m""' of type '""M3 [2][2]""'");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_M6_m_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  M6 *arg1 = (M6 *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  M3 (*result)[2] = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:M6_m_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_m6, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "M6_m_get" "', argument " "1"" of type '" "M6 *""'"); 
+  }
+  arg1 = (M6 *)(argp1);
+  result = (M3 (*)[2])(M3 (*)[2]) ((arg1)->m);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_a_2__s_m3, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_M6(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  M6 *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_M6")) SWIG_fail;
+  result = (M6 *)calloc(1, sizeof(M6));
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_s_m6, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_M6(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  M6 *arg1 = (M6 *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_M6",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_m6, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_M6" "', argument " "1"" of type '" "M6 *""'"); 
+  }
+  arg1 = (M6 *)(argp1);
+  free((char *) arg1);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *M6_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_s_m6, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
 
@@ -11432,6 +11542,238 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_m6GetPPf(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  M6 *arg1 = (M6 *) (M6 *)0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  M3 result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:m6GetPPf",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_m6, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "m6GetPPf" "', argument " "1"" of type '" "M6 const *const""'"); 
+  }
+  arg1 = (M6 *)(argp1);
+  result = m6GetPPf((struct s_m6 const *)arg1);
+  resultobj = SWIG_NewPointerObj((M3 *)memcpy((M3 *)malloc(sizeof(M3)),&result,sizeof(M3)), SWIGTYPE_p_s_m3, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_m6GetPVf(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  M6 *arg1 = (M6 *) (M6 *)0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  M3 result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:m6GetPVf",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_m6, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "m6GetPVf" "', argument " "1"" of type '" "M6 const *const""'"); 
+  }
+  arg1 = (M6 *)(argp1);
+  result = m6GetPVf((struct s_m6 const *)arg1);
+  resultobj = SWIG_NewPointerObj((M3 *)memcpy((M3 *)malloc(sizeof(M3)),&result,sizeof(M3)), SWIGTYPE_p_s_m3, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_m6GetVPf(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  M6 *arg1 = (M6 *) (M6 *)0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  M3 result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:m6GetVPf",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_m6, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "m6GetVPf" "', argument " "1"" of type '" "M6 const *const""'"); 
+  }
+  arg1 = (M6 *)(argp1);
+  result = m6GetVPf((struct s_m6 const *)arg1);
+  resultobj = SWIG_NewPointerObj((M3 *)memcpy((M3 *)malloc(sizeof(M3)),&result,sizeof(M3)), SWIGTYPE_p_s_m3, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_m6GetVVf(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  M6 *arg1 = (M6 *) (M6 *)0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  M3 result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:m6GetVVf",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_m6, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "m6GetVVf" "', argument " "1"" of type '" "M6 const *const""'"); 
+  }
+  arg1 = (M6 *)(argp1);
+  result = m6GetVVf((struct s_m6 const *)arg1);
+  resultobj = SWIG_NewPointerObj((M3 *)memcpy((M3 *)malloc(sizeof(M3)),&result,sizeof(M3)), SWIGTYPE_p_s_m3, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_m6SetPPf(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  M6 *arg1 = (M6 *) (M6 *)0 ;
+  M3 arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:m6SetPPf",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_m6, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "m6SetPPf" "', argument " "1"" of type '" "M6 *const""'"); 
+  }
+  arg1 = (M6 *)(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_s_m3,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "m6SetPPf" "', argument " "2"" of type '" "M3""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "m6SetPPf" "', argument " "2"" of type '" "M3""'");
+    } else {
+      arg2 = *((M3 *)(argp2));
+    }
+  }
+  m6SetPPf(arg1,arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_m6SetPVf(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  M6 *arg1 = (M6 *) (M6 *)0 ;
+  M3 arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:m6SetPVf",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_m6, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "m6SetPVf" "', argument " "1"" of type '" "M6 *const""'"); 
+  }
+  arg1 = (M6 *)(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_s_m3,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "m6SetPVf" "', argument " "2"" of type '" "M3""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "m6SetPVf" "', argument " "2"" of type '" "M3""'");
+    } else {
+      arg2 = *((M3 *)(argp2));
+    }
+  }
+  m6SetPVf(arg1,arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_m6SetVPf(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  M6 *arg1 = (M6 *) (M6 *)0 ;
+  M3 arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:m6SetVPf",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_m6, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "m6SetVPf" "', argument " "1"" of type '" "M6 *const""'"); 
+  }
+  arg1 = (M6 *)(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_s_m3,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "m6SetVPf" "', argument " "2"" of type '" "M3""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "m6SetVPf" "', argument " "2"" of type '" "M3""'");
+    } else {
+      arg2 = *((M3 *)(argp2));
+    }
+  }
+  m6SetVPf(arg1,arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_m6SetVVf(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  M6 *arg1 = (M6 *) (M6 *)0 ;
+  M3 arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:m6SetVVf",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_m6, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "m6SetVVf" "', argument " "1"" of type '" "M6 *const""'"); 
+  }
+  arg1 = (M6 *)(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_s_m3,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "m6SetVVf" "', argument " "2"" of type '" "M3""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "m6SetVVf" "', argument " "2"" of type '" "M3""'");
+    } else {
+      arg2 = *((M3 *)(argp2));
+    }
+  }
+  m6SetVVf(arg1,arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_convert(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   double arg1 ;
@@ -11609,6 +11951,11 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"new_M3", _wrap_new_M3, METH_VARARGS, NULL},
 	 { (char *)"delete_M3", _wrap_delete_M3, METH_VARARGS, NULL},
 	 { (char *)"M3_swigregister", M3_swigregister, METH_VARARGS, NULL},
+	 { (char *)"M6_m_set", _wrap_M6_m_set, METH_VARARGS, NULL},
+	 { (char *)"M6_m_get", _wrap_M6_m_get, METH_VARARGS, NULL},
+	 { (char *)"new_M6", _wrap_new_M6, METH_VARARGS, NULL},
+	 { (char *)"delete_M6", _wrap_delete_M6, METH_VARARGS, NULL},
+	 { (char *)"M6_swigregister", M6_swigregister, METH_VARARGS, NULL},
 	 { (char *)"DMS_dd_set", _wrap_DMS_dd_set, METH_VARARGS, NULL},
 	 { (char *)"DMS_dd_get", _wrap_DMS_dd_get, METH_VARARGS, NULL},
 	 { (char *)"DMS_mm_set", _wrap_DMS_mm_set, METH_VARARGS, NULL},
@@ -11897,6 +12244,14 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"m3SetZXf", _wrap_m3SetZXf, METH_VARARGS, NULL},
 	 { (char *)"m3SetZYf", _wrap_m3SetZYf, METH_VARARGS, NULL},
 	 { (char *)"m3SetZZf", _wrap_m3SetZZf, METH_VARARGS, NULL},
+	 { (char *)"m6GetPPf", _wrap_m6GetPPf, METH_VARARGS, NULL},
+	 { (char *)"m6GetPVf", _wrap_m6GetPVf, METH_VARARGS, NULL},
+	 { (char *)"m6GetVPf", _wrap_m6GetVPf, METH_VARARGS, NULL},
+	 { (char *)"m6GetVVf", _wrap_m6GetVVf, METH_VARARGS, NULL},
+	 { (char *)"m6SetPPf", _wrap_m6SetPPf, METH_VARARGS, NULL},
+	 { (char *)"m6SetPVf", _wrap_m6SetPVf, METH_VARARGS, NULL},
+	 { (char *)"m6SetVPf", _wrap_m6SetVPf, METH_VARARGS, NULL},
+	 { (char *)"m6SetVVf", _wrap_m6SetVVf, METH_VARARGS, NULL},
 	 { (char *)"convert", _wrap_convert, METH_VARARGS, NULL},
 	 { NULL, NULL, 0, NULL }
 };
@@ -11904,6 +12259,7 @@ static PyMethodDef SwigMethods[] = {
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
+static swig_type_info _swigt__p_a_2__s_m3 = {"_p_a_2__s_m3", "struct s_m3 (*)[2]|M3 (*)[2]", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_a_3__double = {"_p_a_3__double", "double (*)[3]", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_double = {"_p_double", "double *", 0, 0, (void*)0, 0};
@@ -11912,11 +12268,13 @@ static swig_type_info _swigt__p_s_dms = {"_p_s_dms", "struct s_dms *|DMS *", 0, 
 static swig_type_info _swigt__p_s_hms = {"_p_s_hms", "HMS *|struct s_hms *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_s_jd = {"_p_s_jd", "JD *|struct s_jd *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_s_m3 = {"_p_s_m3", "struct s_m3 *|M3 *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_s_m6 = {"_p_s_m6", "struct s_m6 *|M6 *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_s_v3 = {"_p_s_v3", "V3 *|struct s_v3 *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_s_v6 = {"_p_s_v6", "V6 *|struct s_v6 *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_s_ymd = {"_p_s_ymd", "struct s_ymd *|YMD *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
+  &_swigt__p_a_2__s_m3,
   &_swigt__p_a_3__double,
   &_swigt__p_char,
   &_swigt__p_double,
@@ -11925,11 +12283,13 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_s_hms,
   &_swigt__p_s_jd,
   &_swigt__p_s_m3,
+  &_swigt__p_s_m6,
   &_swigt__p_s_v3,
   &_swigt__p_s_v6,
   &_swigt__p_s_ymd,
 };
 
+static swig_cast_info _swigc__p_a_2__s_m3[] = {  {&_swigt__p_a_2__s_m3, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_a_3__double[] = {  {&_swigt__p_a_3__double, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_double[] = {  {&_swigt__p_double, 0, 0, 0},{0, 0, 0, 0}};
@@ -11938,11 +12298,13 @@ static swig_cast_info _swigc__p_s_dms[] = {  {&_swigt__p_s_dms, 0, 0, 0},{0, 0, 
 static swig_cast_info _swigc__p_s_hms[] = {  {&_swigt__p_s_hms, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_s_jd[] = {  {&_swigt__p_s_jd, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_s_m3[] = {  {&_swigt__p_s_m3, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_s_m6[] = {  {&_swigt__p_s_m6, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_s_v3[] = {  {&_swigt__p_s_v3, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_s_v6[] = {  {&_swigt__p_s_v6, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_s_ymd[] = {  {&_swigt__p_s_ymd, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
+  _swigc__p_a_2__s_m3,
   _swigc__p_a_3__double,
   _swigc__p_char,
   _swigc__p_double,
@@ -11951,6 +12313,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_s_hms,
   _swigc__p_s_jd,
   _swigc__p_s_m3,
+  _swigc__p_s_m6,
   _swigc__p_s_v3,
   _swigc__p_s_v6,
   _swigc__p_s_ymd,
