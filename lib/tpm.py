@@ -107,6 +107,24 @@ V6_swigregister(V6)
 
 POS = _tpm.POS
 VEL = _tpm.VEL
+class M3(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, M3, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, M3, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["m"] = _tpm.M3_m_set
+    __swig_getmethods__["m"] = _tpm.M3_m_get
+    if _newclass:m = _swig_property(_tpm.M3_m_get, _tpm.M3_m_set)
+    def __init__(self): 
+        this = _tpm.new_M3()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _tpm.delete_M3
+    __del__ = lambda self : None;
+M3_swigregister = _tpm.M3_swigregister
+M3_swigregister(M3)
+
 M_PI = _tpm.M_PI
 CARTESIAN = _tpm.CARTESIAN
 SPHERICAL = _tpm.SPHERICAL
@@ -1091,6 +1109,222 @@ v6SetDecf = _tpm.v6SetDecf
 def v6SetPMDecf(*args):
   return _tpm.v6SetPMDecf(*args)
 v6SetPMDecf = _tpm.v6SetPMDecf
+
+def m3DecXXf(*args):
+  return _tpm.m3DecXXf(*args)
+m3DecXXf = _tpm.m3DecXXf
+
+def m3DecXYf(*args):
+  return _tpm.m3DecXYf(*args)
+m3DecXYf = _tpm.m3DecXYf
+
+def m3DecXZf(*args):
+  return _tpm.m3DecXZf(*args)
+m3DecXZf = _tpm.m3DecXZf
+
+def m3DecYXf(*args):
+  return _tpm.m3DecYXf(*args)
+m3DecYXf = _tpm.m3DecYXf
+
+def m3DecYYf(*args):
+  return _tpm.m3DecYYf(*args)
+m3DecYYf = _tpm.m3DecYYf
+
+def m3DecYZf(*args):
+  return _tpm.m3DecYZf(*args)
+m3DecYZf = _tpm.m3DecYZf
+
+def m3DecZXf(*args):
+  return _tpm.m3DecZXf(*args)
+m3DecZXf = _tpm.m3DecZXf
+
+def m3DecZYf(*args):
+  return _tpm.m3DecZYf(*args)
+m3DecZYf = _tpm.m3DecZYf
+
+def m3DecZZf(*args):
+  return _tpm.m3DecZZf(*args)
+m3DecZZf = _tpm.m3DecZZf
+
+def m3DivXXf(*args):
+  return _tpm.m3DivXXf(*args)
+m3DivXXf = _tpm.m3DivXXf
+
+def m3DivXYf(*args):
+  return _tpm.m3DivXYf(*args)
+m3DivXYf = _tpm.m3DivXYf
+
+def m3DivXZf(*args):
+  return _tpm.m3DivXZf(*args)
+m3DivXZf = _tpm.m3DivXZf
+
+def m3DivYXf(*args):
+  return _tpm.m3DivYXf(*args)
+m3DivYXf = _tpm.m3DivYXf
+
+def m3DivYYf(*args):
+  return _tpm.m3DivYYf(*args)
+m3DivYYf = _tpm.m3DivYYf
+
+def m3DivYZf(*args):
+  return _tpm.m3DivYZf(*args)
+m3DivYZf = _tpm.m3DivYZf
+
+def m3DivZXf(*args):
+  return _tpm.m3DivZXf(*args)
+m3DivZXf = _tpm.m3DivZXf
+
+def m3DivZYf(*args):
+  return _tpm.m3DivZYf(*args)
+m3DivZYf = _tpm.m3DivZYf
+
+def m3DivZZf(*args):
+  return _tpm.m3DivZZf(*args)
+m3DivZZf = _tpm.m3DivZZf
+
+def m3GetXXf(*args):
+  return _tpm.m3GetXXf(*args)
+m3GetXXf = _tpm.m3GetXXf
+
+def m3GetXYf(*args):
+  return _tpm.m3GetXYf(*args)
+m3GetXYf = _tpm.m3GetXYf
+
+def m3GetXZf(*args):
+  return _tpm.m3GetXZf(*args)
+m3GetXZf = _tpm.m3GetXZf
+
+def m3GetYXf(*args):
+  return _tpm.m3GetYXf(*args)
+m3GetYXf = _tpm.m3GetYXf
+
+def m3GetYYf(*args):
+  return _tpm.m3GetYYf(*args)
+m3GetYYf = _tpm.m3GetYYf
+
+def m3GetYZf(*args):
+  return _tpm.m3GetYZf(*args)
+m3GetYZf = _tpm.m3GetYZf
+
+def m3GetZXf(*args):
+  return _tpm.m3GetZXf(*args)
+m3GetZXf = _tpm.m3GetZXf
+
+def m3GetZYf(*args):
+  return _tpm.m3GetZYf(*args)
+m3GetZYf = _tpm.m3GetZYf
+
+def m3GetZZf(*args):
+  return _tpm.m3GetZZf(*args)
+m3GetZZf = _tpm.m3GetZZf
+
+def m3IncXXf(*args):
+  return _tpm.m3IncXXf(*args)
+m3IncXXf = _tpm.m3IncXXf
+
+def m3IncXYf(*args):
+  return _tpm.m3IncXYf(*args)
+m3IncXYf = _tpm.m3IncXYf
+
+def m3IncXZf(*args):
+  return _tpm.m3IncXZf(*args)
+m3IncXZf = _tpm.m3IncXZf
+
+def m3IncYXf(*args):
+  return _tpm.m3IncYXf(*args)
+m3IncYXf = _tpm.m3IncYXf
+
+def m3IncYYf(*args):
+  return _tpm.m3IncYYf(*args)
+m3IncYYf = _tpm.m3IncYYf
+
+def m3IncYZf(*args):
+  return _tpm.m3IncYZf(*args)
+m3IncYZf = _tpm.m3IncYZf
+
+def m3IncZXf(*args):
+  return _tpm.m3IncZXf(*args)
+m3IncZXf = _tpm.m3IncZXf
+
+def m3IncZYf(*args):
+  return _tpm.m3IncZYf(*args)
+m3IncZYf = _tpm.m3IncZYf
+
+def m3IncZZf(*args):
+  return _tpm.m3IncZZf(*args)
+m3IncZZf = _tpm.m3IncZZf
+
+def m3MulXXf(*args):
+  return _tpm.m3MulXXf(*args)
+m3MulXXf = _tpm.m3MulXXf
+
+def m3MulXYf(*args):
+  return _tpm.m3MulXYf(*args)
+m3MulXYf = _tpm.m3MulXYf
+
+def m3MulXZf(*args):
+  return _tpm.m3MulXZf(*args)
+m3MulXZf = _tpm.m3MulXZf
+
+def m3MulYXf(*args):
+  return _tpm.m3MulYXf(*args)
+m3MulYXf = _tpm.m3MulYXf
+
+def m3MulYYf(*args):
+  return _tpm.m3MulYYf(*args)
+m3MulYYf = _tpm.m3MulYYf
+
+def m3MulYZf(*args):
+  return _tpm.m3MulYZf(*args)
+m3MulYZf = _tpm.m3MulYZf
+
+def m3MulZXf(*args):
+  return _tpm.m3MulZXf(*args)
+m3MulZXf = _tpm.m3MulZXf
+
+def m3MulZYf(*args):
+  return _tpm.m3MulZYf(*args)
+m3MulZYf = _tpm.m3MulZYf
+
+def m3MulZZf(*args):
+  return _tpm.m3MulZZf(*args)
+m3MulZZf = _tpm.m3MulZZf
+
+def m3SetXXf(*args):
+  return _tpm.m3SetXXf(*args)
+m3SetXXf = _tpm.m3SetXXf
+
+def m3SetXYf(*args):
+  return _tpm.m3SetXYf(*args)
+m3SetXYf = _tpm.m3SetXYf
+
+def m3SetXZf(*args):
+  return _tpm.m3SetXZf(*args)
+m3SetXZf = _tpm.m3SetXZf
+
+def m3SetYXf(*args):
+  return _tpm.m3SetYXf(*args)
+m3SetYXf = _tpm.m3SetYXf
+
+def m3SetYYf(*args):
+  return _tpm.m3SetYYf(*args)
+m3SetYYf = _tpm.m3SetYYf
+
+def m3SetYZf(*args):
+  return _tpm.m3SetYZf(*args)
+m3SetYZf = _tpm.m3SetYZf
+
+def m3SetZXf(*args):
+  return _tpm.m3SetZXf(*args)
+m3SetZXf = _tpm.m3SetZXf
+
+def m3SetZYf(*args):
+  return _tpm.m3SetZYf(*args)
+m3SetZYf = _tpm.m3SetZYf
+
+def m3SetZZf(*args):
+  return _tpm.m3SetZZf(*args)
+m3SetZZf = _tpm.m3SetZZf
 
 def convert(*args):
   return _tpm.convert(*args)

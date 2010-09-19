@@ -4,7 +4,7 @@ import glob
 srcfiles = glob.glob('src/tpm/*.c')
 srcfiles.remove('src/tpm/tpm_main.c')
 srcfiles.extend(['src/convert.c','src/tpm_wrap.c','src/v3Functions.c',
-    'src/v6Functions.c'])
+    'src/v6Functions.c','src/m3Functions.c'])
 
 long_desc = """\
 *pytpm* is a python interface to the Telescope Pointing Machine C

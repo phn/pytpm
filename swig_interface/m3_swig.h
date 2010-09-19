@@ -20,11 +20,12 @@
 
 #ifndef M3_INCLUDE
 #define M3_INCLUDE
-/* Don't need this directly from within python
+
 typedef struct s_m3 {
 	double m[3][3];
-} M3;*/
+} M3;
 
+/*
 #define m3DecXX(m3,x)	(m3.m[0][0] -= (x))
 #define m3DecXY(m3,x)	(m3.m[0][1] -= (x))
 #define m3DecXZ(m3,x)	(m3.m[0][2] -= (x))
@@ -84,7 +85,7 @@ typedef struct s_m3 {
 #define m3SetZX(m3,x)	(m3.m[2][0] = (x))
 #define m3SetZY(m3,x)	(m3.m[2][1] = (x))
 #define m3SetZZ(m3,x)	(m3.m[2][2] = (x))
-
+*/
 /* EXTERN_START */
 /* EXTERN_STOP */
 
