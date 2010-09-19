@@ -480,6 +480,124 @@ def test_v6SetDeltaDotf():
     tpm.v6SetDeltaDotf(v6rad, deltadot)
     assert tpm.v6GetDeltaDotf(v6rad) == deltadot
 
+def test_v6DecRAf():
+    setup_v6rad()
+    tpm.v6DecRAf(v6rad, f)
+    assert tpm.v6GetAlphaf(v6rad) == ra - f
+
+def test_v6DecPMRAf():
+    setup_v6rad()
+    tpm.v6DecPMRAf(v6rad, fdot)
+    assert tpm.v6GetAlphaDotf(v6rad) == radot - fdot
+
+def test_v6DecDecf():
+    setup_v6rad()
+    tpm.v6DecDecf(v6rad, f)
+    assert tpm.v6GetDeltaf(v6rad) == dec - f
+
+def test_v6DecPMDecf():
+    setup_v6rad()
+    tpm.v6DecPMDecf(v6rad, fdot)
+    assert tpm.v6GetDeltaDotf(v6rad) == decdot - fdot
+
+def test_v6DivRAf():
+    setup_v6rad()
+    tpm.v6DivRAf(v6rad, f)
+    assert tpm.v6GetAlphaf(v6rad) == ra / f
+
+def test_v6DivPMRAf():
+    setup_v6rad()
+    tpm.v6DivPMRAf(v6rad, fdot)
+    assert tpm.v6GetAlphaDotf(v6rad) == radot / fdot
+
+def test_v6DivDecf():
+    setup_v6rad()
+    tpm.v6DivDecf(v6rad, f)
+    assert tpm.v6GetDeltaf(v6rad) == dec / f
+
+def test_v6DivPMDecf():
+    setup_v6rad()
+    tpm.v6DivPMDecf(v6rad, fdot)
+    assert tpm.v6GetDeltaDotf(v6rad) == decdot / fdot
+
+def test_v6GetRAf():
+    setup_v6rad()
+    assert tpm.v6GetRAf(v6rad) == tpm.v6GetAlphaf(v6rad)
+
+def test_v6GetPMRAf():
+    setup_v6rad()
+    assert tpm.v6GetPMRAf(v6rad) == tpm.v6GetAlphaDotf(v6rad)
+
+def test_v6GetDecf():
+    setup_v6rad()
+    assert tpm.v6GetDecf(v6rad) == tpm.v6GetDeltaf(v6rad)
+
+def test_v6GetPMDecf():
+    setup_v6rad()
+    assert tpm.v6GetPMDecf(v6rad) == tpm.v6GetDeltaDotf(v6rad)
+
+def test_v6IncRAf():
+    setup_v6rad()
+    tpm.v6IncRAf(v6rad, f)
+    assert tpm.v6GetRAf(v6rad) == ra + f
+
+def test_v6IncPMRAf():
+    setup_v6rad()
+    tpm.v6IncPMRAf(v6rad, fdot)
+    assert tpm.v6GetPMRAf(v6rad) == radot + fdot
+
+def test_v6IncDecf():
+    setup_v6rad()
+    tpm.v6IncDecf(v6rad, f)
+    assert tpm.v6GetDecf(v6rad) == dec + f
+
+def test_v6IncPMDecf():
+    setup_v6rad()
+    tpm.v6IncPMDecf(v6rad, fdot)
+    assert tpm.v6GetPMDecf(v6rad) == decdot + fdot
+
+def test_v6MulRAf():
+    setup_v6rad()
+    tpm.v6MulRAf(v6rad, f)
+    assert tpm.v6GetRAf(v6rad) == ra * f
+
+def test_v6MulPMRAf():
+    setup_v6rad()
+    tpm.v6MulPMRAf(v6rad, fdot)
+    assert tpm.v6GetPMRAf(v6rad) == radot * fdot
+
+def test_v6MulDecf():
+    setup_v6rad()
+    tpm.v6MulDecf(v6rad, f)
+    assert tpm.v6GetDecf(v6rad) == dec * f
+
+def test_v6MulPMDecf():
+    setup_v6rad()
+    tpm.v6MulPMDecf(v6rad, fdot)
+    assert tpm.v6GetPMDecf(v6rad) == decdot * fdot
+
+def test_v6SetRAf():
+    setup_v6rad()
+    tpm.v6SetRAf(v6rad, ra)
+    assert tpm.v6GetRAf(v6rad) == ra
+
+def test_v6SetPMRAf():
+    setup_v6rad()
+    tpm.v6SetPMRAf(v6rad, radot)
+    assert tpm.v6GetPMRAf(v6rad) == radot
+
+def test_v6SetDecf():
+    setup_v6rad()
+    tpm.v6SetDecf(v6rad, dec)
+    assert tpm.v6GetDecf(v6rad) == dec
+
+def test_v6SetPMDecf():
+    setup_v6rad()
+    tpm.v6SetPMDecf(v6rad, decdot)
+    assert tpm.v6GetPMDecf(v6rad) == decdot
+
+    
+    
 def run():
     test_v6SetPosf()
     test_v6DecXf()
@@ -552,7 +670,32 @@ def run():
     test_v6SetRDotf()
     test_v6SetAlphaf()
     test_v6SetDeltaDotf()
-
+    test_v6DecRAf()
+    test_v6DecPMRAf()
+    test_v6DecDecf()
+    test_v6DecPMDecf()
+    test_v6DivRAf()
+    test_v6DivPMRAf()
+    test_v6DivDecf()
+    test_v6DivPMDecf()
+    test_v6GetRAf()
+    test_v6GetPMRAf()
+    test_v6GetDecf()
+    test_v6GetPMDecf()
+    test_v6IncRAf()
+    test_v6IncPMRAf()
+    test_v6IncDecf()
+    test_v6IncPMDecf()
+    test_v6MulRAf()
+    test_v6MulPMRAf()
+    test_v6MulDecf()
+    test_v6MulPMDecf()
+    test_v6SetRAf()
+    test_v6SetPMRAf()
+    test_v6SetDecf()
+    test_v6SetPMDecf()
+    
+    
 if __name__ == '__main__':
     print "Running tests on functions for V6 vectors..."
     run()
