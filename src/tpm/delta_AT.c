@@ -81,7 +81,7 @@ delta_AT(double utc)
 
     if (utc >= 53736.0) dt = 33.0;	/* 2006 Jan 1 */
 
-    if (utc >= 54832.0) dt = 33.0;	/* 2009 Jan 1 */
+    if (utc >= 54832.0) dt = 34.0;	/* 2009 Jan 1 */
 
     return(dt);
 }

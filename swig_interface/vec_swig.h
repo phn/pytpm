@@ -33,7 +33,7 @@
 /* define some short-cut macros */
 
 /* these are repeated in times.h */
-#ifndef TIMES_H
+/*#ifndef TIMES_H
 #define d2h(d)			((d)/15.0)
 #define h2d(h)			((h)*15.0)
 #define d2r(d)			((d)*(M_PI/180.0))
@@ -46,7 +46,7 @@
 #define h2as(h)			(d2as(h2d(h)))
 #define r2as(r)			(d2as(r2d(r)))
 #define as2r(x)			(d2r(as2d(x)))
-#endif
+#endif*/
 
 /* define 3-vectors */
 /* #include "v3.h" */
@@ -61,7 +61,7 @@
 /*#include "m6.h"*/
 
 /* EXTERN_START */
-/* Don't need any of these from within python
+
 extern M3 m3I(double x);
 extern M3 m3O(void);
 extern M3 m3Rx(double x);
@@ -118,7 +118,8 @@ extern double v3mod(V3 v);
 extern double v6alpha(V6 v);
 extern double v6delta(V6 v);
 extern double v6dot(V6 v1, V6 v2);
-extern double v6mod(V6 v);*/
+extern double v6mod(V6 v);
+
 /* EXTERN_STOP */
 
 #endif

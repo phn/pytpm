@@ -147,6 +147,234 @@ M_PI = _tpm.M_PI
 CARTESIAN = _tpm.CARTESIAN
 SPHERICAL = _tpm.SPHERICAL
 POLAR = _tpm.POLAR
+
+def m3I(*args):
+  return _tpm.m3I(*args)
+m3I = _tpm.m3I
+
+def m3O():
+  return _tpm.m3O()
+m3O = _tpm.m3O
+
+def m3Rx(*args):
+  return _tpm.m3Rx(*args)
+m3Rx = _tpm.m3Rx
+
+def m3RxDot(*args):
+  return _tpm.m3RxDot(*args)
+m3RxDot = _tpm.m3RxDot
+
+def m3Ry(*args):
+  return _tpm.m3Ry(*args)
+m3Ry = _tpm.m3Ry
+
+def m3RyDot(*args):
+  return _tpm.m3RyDot(*args)
+m3RyDot = _tpm.m3RyDot
+
+def m3Rz(*args):
+  return _tpm.m3Rz(*args)
+m3Rz = _tpm.m3Rz
+
+def m3RzDot(*args):
+  return _tpm.m3RzDot(*args)
+m3RzDot = _tpm.m3RzDot
+
+def m3diff(*args):
+  return _tpm.m3diff(*args)
+m3diff = _tpm.m3diff
+
+def m3inv(*args):
+  return _tpm.m3inv(*args)
+m3inv = _tpm.m3inv
+
+def m3m3(*args):
+  return _tpm.m3m3(*args)
+m3m3 = _tpm.m3m3
+
+def m3scale(*args):
+  return _tpm.m3scale(*args)
+m3scale = _tpm.m3scale
+
+def m3sum(*args):
+  return _tpm.m3sum(*args)
+m3sum = _tpm.m3sum
+
+def m6I(*args):
+  return _tpm.m6I(*args)
+m6I = _tpm.m6I
+
+def m6O():
+  return _tpm.m6O()
+m6O = _tpm.m6O
+
+def m6Qx(*args):
+  return _tpm.m6Qx(*args)
+m6Qx = _tpm.m6Qx
+
+def m6Qy(*args):
+  return _tpm.m6Qy(*args)
+m6Qy = _tpm.m6Qy
+
+def m6Qz(*args):
+  return _tpm.m6Qz(*args)
+m6Qz = _tpm.m6Qz
+
+def m6diff(*args):
+  return _tpm.m6diff(*args)
+m6diff = _tpm.m6diff
+
+def m6inv(*args):
+  return _tpm.m6inv(*args)
+m6inv = _tpm.m6inv
+
+def m6m6(*args):
+  return _tpm.m6m6(*args)
+m6m6 = _tpm.m6m6
+
+def m6scale(*args):
+  return _tpm.m6scale(*args)
+m6scale = _tpm.m6scale
+
+def m6sum(*args):
+  return _tpm.m6sum(*args)
+m6sum = _tpm.m6sum
+
+def m3v3(*args):
+  return _tpm.m3v3(*args)
+m3v3 = _tpm.m3v3
+
+def m6v3(*args):
+  return _tpm.m6v3(*args)
+m6v3 = _tpm.m6v3
+
+def v3c2s(*args):
+  return _tpm.v3c2s(*args)
+v3c2s = _tpm.v3c2s
+
+def v3cross(*args):
+  return _tpm.v3cross(*args)
+v3cross = _tpm.v3cross
+
+def v3diff(*args):
+  return _tpm.v3diff(*args)
+v3diff = _tpm.v3diff
+
+def v3init(*args):
+  return _tpm.v3init(*args)
+v3init = _tpm.v3init
+
+def v3s2c(*args):
+  return _tpm.v3s2c(*args)
+v3s2c = _tpm.v3s2c
+
+def v3scale(*args):
+  return _tpm.v3scale(*args)
+v3scale = _tpm.v3scale
+
+def v3sum(*args):
+  return _tpm.v3sum(*args)
+v3sum = _tpm.v3sum
+
+def v3unit(*args):
+  return _tpm.v3unit(*args)
+v3unit = _tpm.v3unit
+
+def v62v3(*args):
+  return _tpm.v62v3(*args)
+v62v3 = _tpm.v62v3
+
+def m3v6(*args):
+  return _tpm.m3v6(*args)
+m3v6 = _tpm.m3v6
+
+def m6v6(*args):
+  return _tpm.m6v6(*args)
+m6v6 = _tpm.m6v6
+
+def v32v6(*args):
+  return _tpm.v32v6(*args)
+v32v6 = _tpm.v32v6
+
+def v6c2s(*args):
+  return _tpm.v6c2s(*args)
+v6c2s = _tpm.v6c2s
+
+def v6cross(*args):
+  return _tpm.v6cross(*args)
+v6cross = _tpm.v6cross
+
+def v6diff(*args):
+  return _tpm.v6diff(*args)
+v6diff = _tpm.v6diff
+
+def v6init(*args):
+  return _tpm.v6init(*args)
+v6init = _tpm.v6init
+
+def v6s2c(*args):
+  return _tpm.v6s2c(*args)
+v6s2c = _tpm.v6s2c
+
+def v6scale(*args):
+  return _tpm.v6scale(*args)
+v6scale = _tpm.v6scale
+
+def v6sum(*args):
+  return _tpm.v6sum(*args)
+v6sum = _tpm.v6sum
+
+def v6unit(*args):
+  return _tpm.v6unit(*args)
+v6unit = _tpm.v6unit
+
+def m3fmt(*args):
+  return _tpm.m3fmt(*args)
+m3fmt = _tpm.m3fmt
+
+def m6fmt(*args):
+  return _tpm.m6fmt(*args)
+m6fmt = _tpm.m6fmt
+
+def v3fmt(*args):
+  return _tpm.v3fmt(*args)
+v3fmt = _tpm.v3fmt
+
+def v6fmt(*args):
+  return _tpm.v6fmt(*args)
+v6fmt = _tpm.v6fmt
+
+def v3alpha(*args):
+  return _tpm.v3alpha(*args)
+v3alpha = _tpm.v3alpha
+
+def v3delta(*args):
+  return _tpm.v3delta(*args)
+v3delta = _tpm.v3delta
+
+def v3dot(*args):
+  return _tpm.v3dot(*args)
+v3dot = _tpm.v3dot
+
+def v3mod(*args):
+  return _tpm.v3mod(*args)
+v3mod = _tpm.v3mod
+
+def v6alpha(*args):
+  return _tpm.v6alpha(*args)
+v6alpha = _tpm.v6alpha
+
+def v6delta(*args):
+  return _tpm.v6delta(*args)
+v6delta = _tpm.v6delta
+
+def v6dot(*args):
+  return _tpm.v6dot(*args)
+v6dot = _tpm.v6dot
+
+def v6mod(*args):
+  return _tpm.v6mod(*args)
+v6mod = _tpm.v6mod
 REAL = _tpm.REAL
 IMAG = _tpm.IMAG
 MJD_0 = _tpm.MJD_0
