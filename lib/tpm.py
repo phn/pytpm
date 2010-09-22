@@ -674,6 +674,121 @@ PRECESS_FK4 = _tpm.PRECESS_FK4
 PRECESS_FK5 = _tpm.PRECESS_FK5
 PRECESS_INERTIAL = _tpm.PRECESS_INERTIAL
 PRECESS_ROTATING = _tpm.PRECESS_ROTATING
+class STAR(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, STAR, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, STAR, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["a"] = _tpm.STAR_a_set
+    __swig_getmethods__["a"] = _tpm.STAR_a_get
+    if _newclass:a = _swig_property(_tpm.STAR_a_get, _tpm.STAR_a_set)
+    __swig_setmethods__["d"] = _tpm.STAR_d_set
+    __swig_getmethods__["d"] = _tpm.STAR_d_get
+    if _newclass:d = _swig_property(_tpm.STAR_d_get, _tpm.STAR_d_set)
+    __swig_setmethods__["m"] = _tpm.STAR_m_set
+    __swig_getmethods__["m"] = _tpm.STAR_m_get
+    if _newclass:m = _swig_property(_tpm.STAR_m_get, _tpm.STAR_m_set)
+    def __init__(self): 
+        this = _tpm.new_STAR()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _tpm.delete_STAR
+    __del__ = lambda self : None;
+STAR_swigregister = _tpm.STAR_swigregister
+STAR_swigregister(STAR)
+
+class CONS(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, CONS, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, CONS, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["a1"] = _tpm.CONS_a1_set
+    __swig_getmethods__["a1"] = _tpm.CONS_a1_get
+    if _newclass:a1 = _swig_property(_tpm.CONS_a1_get, _tpm.CONS_a1_set)
+    __swig_setmethods__["d1"] = _tpm.CONS_d1_set
+    __swig_getmethods__["d1"] = _tpm.CONS_d1_get
+    if _newclass:d1 = _swig_property(_tpm.CONS_d1_get, _tpm.CONS_d1_set)
+    __swig_setmethods__["a2"] = _tpm.CONS_a2_set
+    __swig_getmethods__["a2"] = _tpm.CONS_a2_get
+    if _newclass:a2 = _swig_property(_tpm.CONS_a2_get, _tpm.CONS_a2_set)
+    __swig_setmethods__["d2"] = _tpm.CONS_d2_set
+    __swig_getmethods__["d2"] = _tpm.CONS_d2_get
+    if _newclass:d2 = _swig_property(_tpm.CONS_d2_get, _tpm.CONS_d2_set)
+    def __init__(self): 
+        this = _tpm.new_CONS()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _tpm.delete_CONS
+    __del__ = lambda self : None;
+CONS_swigregister = _tpm.CONS_swigregister
+CONS_swigregister(CONS)
+
+
+def precess_m(*args):
+  return _tpm.precess_m(*args)
+precess_m = _tpm.precess_m
+
+def aberrate(*args):
+  return _tpm.aberrate(*args)
+aberrate = _tpm.aberrate
+
+def azel2hadec(*args):
+  return _tpm.azel2hadec(*args)
+azel2hadec = _tpm.azel2hadec
+
+def ecl2equ(*args):
+  return _tpm.ecl2equ(*args)
+ecl2equ = _tpm.ecl2equ
+
+def ellab(*args):
+  return _tpm.ellab(*args)
+ellab = _tpm.ellab
+
+def equ2ecl(*args):
+  return _tpm.equ2ecl(*args)
+equ2ecl = _tpm.equ2ecl
+
+def equ2gal(*args):
+  return _tpm.equ2gal(*args)
+equ2gal = _tpm.equ2gal
+
+def eterms(*args):
+  return _tpm.eterms(*args)
+eterms = _tpm.eterms
+
+def fk425(*args):
+  return _tpm.fk425(*args)
+fk425 = _tpm.fk425
+
+def fk524(*args):
+  return _tpm.fk524(*args)
+fk524 = _tpm.fk524
+
+def gal2equ(*args):
+  return _tpm.gal2equ(*args)
+gal2equ = _tpm.gal2equ
+
+def geod2geoc(*args):
+  return _tpm.geod2geoc(*args)
+geod2geoc = _tpm.geod2geoc
+
+def hadec2azel(*args):
+  return _tpm.hadec2azel(*args)
+hadec2azel = _tpm.hadec2azel
+
+def ldeflect(*args):
+  return _tpm.ldeflect(*args)
+ldeflect = _tpm.ldeflect
+
+def precess(*args):
+  return _tpm.precess(*args)
+precess = _tpm.precess
+
+def proper_motion(*args):
+  return _tpm.proper_motion(*args)
+proper_motion = _tpm.proper_motion
 
 def tpm_state(*args):
   return _tpm.tpm_state(*args)
@@ -683,13 +798,85 @@ def delta_AT(*args):
   return _tpm.delta_AT(*args)
 delta_AT = _tpm.delta_AT
 
+def eccentricity(*args):
+  return _tpm.eccentricity(*args)
+eccentricity = _tpm.eccentricity
+
+def eccentricity_dot(*args):
+  return _tpm.eccentricity_dot(*args)
+eccentricity_dot = _tpm.eccentricity_dot
+
+def obliquity(*args):
+  return _tpm.obliquity(*args)
+obliquity = _tpm.obliquity
+
+def obliquity_dot(*args):
+  return _tpm.obliquity_dot(*args)
+obliquity_dot = _tpm.obliquity_dot
+
+def refract(*args):
+  return _tpm.refract(*args)
+refract = _tpm.refract
+
+def refraction(*args):
+  return _tpm.refraction(*args)
+refraction = _tpm.refraction
+
+def solar_perigee(*args):
+  return _tpm.solar_perigee(*args)
+solar_perigee = _tpm.solar_perigee
+
+def solar_perigee_dot(*args):
+  return _tpm.solar_perigee_dot(*args)
+solar_perigee_dot = _tpm.solar_perigee_dot
+
 def tdt2tdb(*args):
   return _tpm.tdt2tdb(*args)
 tdt2tdb = _tpm.tdt2tdb
 
+def theta(*args):
+  return _tpm.theta(*args)
+theta = _tpm.theta
+
+def thetadot(*args):
+  return _tpm.thetadot(*args)
+thetadot = _tpm.thetadot
+
 def ut12gmst(*args):
   return _tpm.ut12gmst(*args)
 ut12gmst = _tpm.ut12gmst
+
+def zee(*args):
+  return _tpm.zee(*args)
+zee = _tpm.zee
+
+def zeedot(*args):
+  return _tpm.zeedot(*args)
+zeedot = _tpm.zeedot
+
+def tpm(*args):
+  return _tpm.tpm(*args)
+tpm = _tpm.tpm
+
+def atm(*args):
+  return _tpm.atm(*args)
+atm = _tpm.atm
+
+def evp(*args):
+  return _tpm.evp(*args)
+evp = _tpm.evp
+
+def nutations(*args):
+  return _tpm.nutations(*args)
+nutations = _tpm.nutations
+
+def refco(*args):
+  return _tpm.refco(*args)
+refco = _tpm.refco
+
+def tpm_data(*args):
+  return _tpm.tpm_data(*args)
+tpm_data = _tpm.tpm_data
 TPM_S00 = _tpm.TPM_S00
 TPM_S01 = _tpm.TPM_S01
 TPM_S02 = _tpm.TPM_S02
