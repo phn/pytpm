@@ -2655,24 +2655,27 @@ SWIG_Python_MustGetPtr(PyObject *obj, swig_type_info *ty, int argnum, int flags)
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
-#define SWIGTYPE_p_TPM_TSTATE swig_types[0]
-#define SWIGTYPE_p_a_2__s_m3 swig_types[1]
-#define SWIGTYPE_p_a_3__double swig_types[2]
-#define SWIGTYPE_p_char swig_types[3]
-#define SWIGTYPE_p_double swig_types[4]
-#define SWIGTYPE_p_int swig_types[5]
+#define SWIGTYPE_p_a_2__s_m3 swig_types[0]
+#define SWIGTYPE_p_a_3__double swig_types[1]
+#define SWIGTYPE_p_char swig_types[2]
+#define SWIGTYPE_p_double swig_types[3]
+#define SWIGTYPE_p_int swig_types[4]
+#define SWIGTYPE_p_s_boresight swig_types[5]
 #define SWIGTYPE_p_s_cons swig_types[6]
 #define SWIGTYPE_p_s_dms swig_types[7]
 #define SWIGTYPE_p_s_hms swig_types[8]
 #define SWIGTYPE_p_s_jd swig_types[9]
 #define SWIGTYPE_p_s_m3 swig_types[10]
 #define SWIGTYPE_p_s_m6 swig_types[11]
-#define SWIGTYPE_p_s_star swig_types[12]
-#define SWIGTYPE_p_s_v3 swig_types[13]
-#define SWIGTYPE_p_s_v6 swig_types[14]
-#define SWIGTYPE_p_s_ymd swig_types[15]
-static swig_type_info *swig_types[17];
-static swig_module_info swig_module = {swig_types, 16, 0, 0, 0, 0};
+#define SWIGTYPE_p_s_pmcell swig_types[12]
+#define SWIGTYPE_p_s_star swig_types[13]
+#define SWIGTYPE_p_s_target swig_types[14]
+#define SWIGTYPE_p_s_tstate swig_types[15]
+#define SWIGTYPE_p_s_v3 swig_types[16]
+#define SWIGTYPE_p_s_v6 swig_types[17]
+#define SWIGTYPE_p_s_ymd swig_types[18]
+static swig_type_info *swig_types[20];
+static swig_module_info swig_module = {swig_types, 19, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -2921,6 +2924,106 @@ SWIGINTERNINLINE PyObject *
 SWIG_FromCharPtr(const char *cptr)
 { 
   return SWIG_FromCharPtrAndSize(cptr, (cptr ? strlen(cptr) : 0));
+}
+
+
+SWIGINTERN int
+SWIG_AsCharPtrAndSize(PyObject *obj, char** cptr, size_t* psize, int *alloc)
+{
+#if PY_VERSION_HEX>=0x03000000
+  if (PyUnicode_Check(obj))
+#else  
+  if (PyString_Check(obj))
+#endif
+  {
+    char *cstr; Py_ssize_t len;
+#if PY_VERSION_HEX>=0x03000000
+    if (!alloc && cptr) {
+        /* We can't allow converting without allocation, since the internal
+           representation of string in Python 3 is UCS-2/UCS-4 but we require
+           a UTF-8 representation.
+           TODO(bhy) More detailed explanation */
+        return SWIG_RuntimeError;
+    }
+    obj = PyUnicode_AsUTF8String(obj);
+    PyBytes_AsStringAndSize(obj, &cstr, &len);
+    if(alloc) *alloc = SWIG_NEWOBJ;
+#else
+    PyString_AsStringAndSize(obj, &cstr, &len);
+#endif
+    if (cptr) {
+      if (alloc) {
+	/* 
+	   In python the user should not be able to modify the inner
+	   string representation. To warranty that, if you define
+	   SWIG_PYTHON_SAFE_CSTRINGS, a new/copy of the python string
+	   buffer is always returned.
+
+	   The default behavior is just to return the pointer value,
+	   so, be careful.
+	*/ 
+#if defined(SWIG_PYTHON_SAFE_CSTRINGS)
+	if (*alloc != SWIG_OLDOBJ) 
+#else
+	if (*alloc == SWIG_NEWOBJ) 
+#endif
+	  {
+	    *cptr = (char *)memcpy((char *)malloc((len + 1)*sizeof(char)), cstr, sizeof(char)*(len + 1));
+	    *alloc = SWIG_NEWOBJ;
+	  }
+	else {
+	  *cptr = cstr;
+	  *alloc = SWIG_OLDOBJ;
+	}
+      } else {
+        #if PY_VERSION_HEX>=0x03000000
+        assert(0); /* Should never reach here in Python 3 */
+        #endif
+	*cptr = SWIG_Python_str_AsChar(obj);
+      }
+    }
+    if (psize) *psize = len + 1;
+#if PY_VERSION_HEX>=0x03000000
+    Py_XDECREF(obj);
+#endif
+    return SWIG_OK;
+  } else {
+    swig_type_info* pchar_descriptor = SWIG_pchar_descriptor();
+    if (pchar_descriptor) {
+      void* vptr = 0;
+      if (SWIG_ConvertPtr(obj, &vptr, pchar_descriptor, 0) == SWIG_OK) {
+	if (cptr) *cptr = (char *) vptr;
+	if (psize) *psize = vptr ? (strlen((char *)vptr) + 1) : 0;
+	if (alloc) *alloc = SWIG_OLDOBJ;
+	return SWIG_OK;
+      }
+    }
+  }
+  return SWIG_TypeError;
+}
+
+
+SWIGINTERN int
+SWIG_AsCharArray(PyObject * obj, char *val, size_t size)
+{ 
+  char* cptr = 0; size_t csize = 0; int alloc = SWIG_OLDOBJ;
+  int res = SWIG_AsCharPtrAndSize(obj, &cptr, &csize, &alloc);
+  if (SWIG_IsOK(res)) {
+    if ((csize == size + 1) && cptr && !(cptr[csize-1])) --csize;
+    if (csize <= size) {
+      if (val) {
+	if (csize) memcpy(val, cptr, csize*sizeof(char));
+	if (csize < size) memset(val + csize, 0, (size - csize)*sizeof(char));
+      }
+      if (alloc == SWIG_NEWOBJ) {
+	free((char*)cptr);
+	res = SWIG_DelNewMask(res);
+      }      
+      return res;
+    }
+    if (alloc == SWIG_NEWOBJ) free((char*)cptr);
+  }
+  return SWIG_TypeError;
 }
 
 #ifdef __cplusplus
@@ -8898,7 +9001,7 @@ SWIGINTERN PyObject *_wrap_tpm(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "tpm" "', argument " "5"" of type '" "double""'");
   } 
   arg5 = (double)(val5);
-  res6 = SWIG_ConvertPtr(obj5, &argp6,SWIGTYPE_p_TPM_TSTATE, 0 |  0 );
+  res6 = SWIG_ConvertPtr(obj5, &argp6,SWIGTYPE_p_s_tstate, 0 |  0 );
   if (!SWIG_IsOK(res6)) {
     SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "tpm" "', argument " "6"" of type '" "TPM_TSTATE *""'"); 
   }
@@ -9133,7 +9236,7 @@ SWIGINTERN PyObject *_wrap_tpm_data(PyObject *SWIGUNUSEDPARM(self), PyObject *ar
   PyObject * obj1 = 0 ;
   
   if (!PyArg_ParseTuple(args,(char *)"OO:tpm_data",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_TPM_TSTATE, 0 |  0 );
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "tpm_data" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
   }
@@ -9150,6 +9253,2611 @@ fail:
   return NULL;
 }
 
+
+SWIGINTERN PyObject *_wrap_TPM_TARGET_name_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TARGET *arg1 = (TPM_TARGET *) 0 ;
+  char *arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  char temp2[BUFSIZ] ;
+  int res2 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TARGET_name_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_target, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TARGET_name_set" "', argument " "1"" of type '" "TPM_TARGET *""'"); 
+  }
+  arg1 = (TPM_TARGET *)(argp1);
+  res2 = SWIG_AsCharArray(obj1, temp2, BUFSIZ);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "TPM_TARGET_name_set" "', argument " "2"" of type '" "char [BUFSIZ]""'");
+  }
+  arg2 = (char *)(temp2);
+  if (arg2) memcpy(arg1->name,arg2,BUFSIZ*sizeof(char));
+  else memset(arg1->name,0,BUFSIZ*sizeof(char));
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TARGET_name_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TARGET *arg1 = (TPM_TARGET *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  char *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TARGET_name_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_target, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TARGET_name_get" "', argument " "1"" of type '" "TPM_TARGET *""'"); 
+  }
+  arg1 = (TPM_TARGET *)(argp1);
+  result = (char *)(char *) ((arg1)->name);
+  {
+    size_t size = BUFSIZ;
+    
+    while (size && (result[size - 1] == '\0')) --size;
+    
+    resultobj = SWIG_FromCharPtrAndSize(result, size);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TARGET_state_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TARGET *arg1 = (TPM_TARGET *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TARGET_state_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_target, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TARGET_state_set" "', argument " "1"" of type '" "TPM_TARGET *""'"); 
+  }
+  arg1 = (TPM_TARGET *)(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TARGET_state_set" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = (int)(val2);
+  if (arg1) (arg1)->state = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TARGET_state_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TARGET *arg1 = (TPM_TARGET *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  int result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TARGET_state_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_target, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TARGET_state_get" "', argument " "1"" of type '" "TPM_TARGET *""'"); 
+  }
+  arg1 = (TPM_TARGET *)(argp1);
+  result = (int) ((arg1)->state);
+  resultobj = SWIG_From_int((int)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TARGET_epoch_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TARGET *arg1 = (TPM_TARGET *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TARGET_epoch_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_target, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TARGET_epoch_set" "', argument " "1"" of type '" "TPM_TARGET *""'"); 
+  }
+  arg1 = (TPM_TARGET *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TARGET_epoch_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->epoch = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TARGET_epoch_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TARGET *arg1 = (TPM_TARGET *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TARGET_epoch_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_target, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TARGET_epoch_get" "', argument " "1"" of type '" "TPM_TARGET *""'"); 
+  }
+  arg1 = (TPM_TARGET *)(argp1);
+  result = (double) ((arg1)->epoch);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TARGET_equinox_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TARGET *arg1 = (TPM_TARGET *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TARGET_equinox_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_target, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TARGET_equinox_set" "', argument " "1"" of type '" "TPM_TARGET *""'"); 
+  }
+  arg1 = (TPM_TARGET *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TARGET_equinox_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->equinox = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TARGET_equinox_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TARGET *arg1 = (TPM_TARGET *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TARGET_equinox_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_target, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TARGET_equinox_get" "', argument " "1"" of type '" "TPM_TARGET *""'"); 
+  }
+  arg1 = (TPM_TARGET *)(argp1);
+  result = (double) ((arg1)->equinox);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TARGET_position_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TARGET *arg1 = (TPM_TARGET *) 0 ;
+  double *arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TARGET_position_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_target, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TARGET_position_set" "', argument " "1"" of type '" "TPM_TARGET *""'"); 
+  }
+  arg1 = (TPM_TARGET *)(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "TPM_TARGET_position_set" "', argument " "2"" of type '" "double [2]""'"); 
+  } 
+  arg2 = (double *)(argp2);
+  {
+    if (arg2) {
+      size_t ii = 0;
+      for (; ii < (size_t)2; ++ii) arg1->position[ii] = arg2[ii];
+    } else {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in variable '""position""' of type '""double [2]""'");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TARGET_position_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TARGET *arg1 = (TPM_TARGET *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TARGET_position_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_target, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TARGET_position_get" "', argument " "1"" of type '" "TPM_TARGET *""'"); 
+  }
+  arg1 = (TPM_TARGET *)(argp1);
+  result = (double *)(double *) ((arg1)->position);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_double, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TARGET_offset_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TARGET *arg1 = (TPM_TARGET *) 0 ;
+  double *arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TARGET_offset_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_target, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TARGET_offset_set" "', argument " "1"" of type '" "TPM_TARGET *""'"); 
+  }
+  arg1 = (TPM_TARGET *)(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "TPM_TARGET_offset_set" "', argument " "2"" of type '" "double [2]""'"); 
+  } 
+  arg2 = (double *)(argp2);
+  {
+    if (arg2) {
+      size_t ii = 0;
+      for (; ii < (size_t)2; ++ii) arg1->offset[ii] = arg2[ii];
+    } else {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in variable '""offset""' of type '""double [2]""'");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TARGET_offset_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TARGET *arg1 = (TPM_TARGET *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TARGET_offset_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_target, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TARGET_offset_get" "', argument " "1"" of type '" "TPM_TARGET *""'"); 
+  }
+  arg1 = (TPM_TARGET *)(argp1);
+  result = (double *)(double *) ((arg1)->offset);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_double, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TARGET_motion_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TARGET *arg1 = (TPM_TARGET *) 0 ;
+  double *arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TARGET_motion_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_target, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TARGET_motion_set" "', argument " "1"" of type '" "TPM_TARGET *""'"); 
+  }
+  arg1 = (TPM_TARGET *)(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "TPM_TARGET_motion_set" "', argument " "2"" of type '" "double [2]""'"); 
+  } 
+  arg2 = (double *)(argp2);
+  {
+    if (arg2) {
+      size_t ii = 0;
+      for (; ii < (size_t)2; ++ii) arg1->motion[ii] = arg2[ii];
+    } else {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in variable '""motion""' of type '""double [2]""'");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TARGET_motion_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TARGET *arg1 = (TPM_TARGET *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TARGET_motion_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_target, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TARGET_motion_get" "', argument " "1"" of type '" "TPM_TARGET *""'"); 
+  }
+  arg1 = (TPM_TARGET *)(argp1);
+  result = (double *)(double *) ((arg1)->motion);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_double, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TARGET_parallax_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TARGET *arg1 = (TPM_TARGET *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TARGET_parallax_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_target, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TARGET_parallax_set" "', argument " "1"" of type '" "TPM_TARGET *""'"); 
+  }
+  arg1 = (TPM_TARGET *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TARGET_parallax_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->parallax = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TARGET_parallax_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TARGET *arg1 = (TPM_TARGET *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TARGET_parallax_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_target, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TARGET_parallax_get" "', argument " "1"" of type '" "TPM_TARGET *""'"); 
+  }
+  arg1 = (TPM_TARGET *)(argp1);
+  result = (double) ((arg1)->parallax);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TARGET_speed_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TARGET *arg1 = (TPM_TARGET *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TARGET_speed_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_target, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TARGET_speed_set" "', argument " "1"" of type '" "TPM_TARGET *""'"); 
+  }
+  arg1 = (TPM_TARGET *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TARGET_speed_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->speed = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TARGET_speed_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TARGET *arg1 = (TPM_TARGET *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TARGET_speed_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_target, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TARGET_speed_get" "', argument " "1"" of type '" "TPM_TARGET *""'"); 
+  }
+  arg1 = (TPM_TARGET *)(argp1);
+  result = (double) ((arg1)->speed);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_TPM_TARGET(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TARGET *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_TPM_TARGET")) SWIG_fail;
+  result = (TPM_TARGET *)calloc(1, sizeof(TPM_TARGET));
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_s_target, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_TPM_TARGET(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TARGET *arg1 = (TPM_TARGET *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_TPM_TARGET",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_target, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_TPM_TARGET" "', argument " "1"" of type '" "TPM_TARGET *""'"); 
+  }
+  arg1 = (TPM_TARGET *)(argp1);
+  free((char *) arg1);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *TPM_TARGET_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_s_target, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_TPM_BORESIGHT_epoch_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_BORESIGHT *arg1 = (TPM_BORESIGHT *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_BORESIGHT_epoch_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_boresight, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_BORESIGHT_epoch_set" "', argument " "1"" of type '" "TPM_BORESIGHT *""'"); 
+  }
+  arg1 = (TPM_BORESIGHT *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_BORESIGHT_epoch_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->epoch = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_BORESIGHT_epoch_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_BORESIGHT *arg1 = (TPM_BORESIGHT *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_BORESIGHT_epoch_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_boresight, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_BORESIGHT_epoch_get" "', argument " "1"" of type '" "TPM_BORESIGHT *""'"); 
+  }
+  arg1 = (TPM_BORESIGHT *)(argp1);
+  result = (double) ((arg1)->epoch);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_BORESIGHT_position_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_BORESIGHT *arg1 = (TPM_BORESIGHT *) 0 ;
+  double *arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_BORESIGHT_position_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_boresight, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_BORESIGHT_position_set" "', argument " "1"" of type '" "TPM_BORESIGHT *""'"); 
+  }
+  arg1 = (TPM_BORESIGHT *)(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "TPM_BORESIGHT_position_set" "', argument " "2"" of type '" "double [2]""'"); 
+  } 
+  arg2 = (double *)(argp2);
+  {
+    if (arg2) {
+      size_t ii = 0;
+      for (; ii < (size_t)2; ++ii) arg1->position[ii] = arg2[ii];
+    } else {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in variable '""position""' of type '""double [2]""'");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_BORESIGHT_position_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_BORESIGHT *arg1 = (TPM_BORESIGHT *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_BORESIGHT_position_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_boresight, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_BORESIGHT_position_get" "', argument " "1"" of type '" "TPM_BORESIGHT *""'"); 
+  }
+  arg1 = (TPM_BORESIGHT *)(argp1);
+  result = (double *)(double *) ((arg1)->position);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_double, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_BORESIGHT_offset_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_BORESIGHT *arg1 = (TPM_BORESIGHT *) 0 ;
+  double *arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_BORESIGHT_offset_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_boresight, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_BORESIGHT_offset_set" "', argument " "1"" of type '" "TPM_BORESIGHT *""'"); 
+  }
+  arg1 = (TPM_BORESIGHT *)(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "TPM_BORESIGHT_offset_set" "', argument " "2"" of type '" "double [2]""'"); 
+  } 
+  arg2 = (double *)(argp2);
+  {
+    if (arg2) {
+      size_t ii = 0;
+      for (; ii < (size_t)2; ++ii) arg1->offset[ii] = arg2[ii];
+    } else {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in variable '""offset""' of type '""double [2]""'");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_BORESIGHT_offset_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_BORESIGHT *arg1 = (TPM_BORESIGHT *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_BORESIGHT_offset_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_boresight, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_BORESIGHT_offset_get" "', argument " "1"" of type '" "TPM_BORESIGHT *""'"); 
+  }
+  arg1 = (TPM_BORESIGHT *)(argp1);
+  result = (double *)(double *) ((arg1)->offset);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_double, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_BORESIGHT_motion_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_BORESIGHT *arg1 = (TPM_BORESIGHT *) 0 ;
+  double *arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_BORESIGHT_motion_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_boresight, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_BORESIGHT_motion_set" "', argument " "1"" of type '" "TPM_BORESIGHT *""'"); 
+  }
+  arg1 = (TPM_BORESIGHT *)(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "TPM_BORESIGHT_motion_set" "', argument " "2"" of type '" "double [2]""'"); 
+  } 
+  arg2 = (double *)(argp2);
+  {
+    if (arg2) {
+      size_t ii = 0;
+      for (; ii < (size_t)2; ++ii) arg1->motion[ii] = arg2[ii];
+    } else {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in variable '""motion""' of type '""double [2]""'");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_BORESIGHT_motion_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_BORESIGHT *arg1 = (TPM_BORESIGHT *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_BORESIGHT_motion_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_boresight, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_BORESIGHT_motion_get" "', argument " "1"" of type '" "TPM_BORESIGHT *""'"); 
+  }
+  arg1 = (TPM_BORESIGHT *)(argp1);
+  result = (double *)(double *) ((arg1)->motion);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_double, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_TPM_BORESIGHT(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_BORESIGHT *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_TPM_BORESIGHT")) SWIG_fail;
+  result = (TPM_BORESIGHT *)calloc(1, sizeof(TPM_BORESIGHT));
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_s_boresight, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_TPM_BORESIGHT(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_BORESIGHT *arg1 = (TPM_BORESIGHT *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_TPM_BORESIGHT",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_boresight, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_TPM_BORESIGHT" "', argument " "1"" of type '" "TPM_BORESIGHT *""'"); 
+  }
+  arg1 = (TPM_BORESIGHT *)(argp1);
+  free((char *) arg1);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *TPM_BORESIGHT_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_s_boresight, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_utc_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_utc_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_utc_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_utc_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->utc = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_utc_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_utc_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_utc_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->utc);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_delta_at_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_delta_at_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_delta_at_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_delta_at_set" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = (int)(val2);
+  if (arg1) (arg1)->delta_at = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_delta_at_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  int result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_delta_at_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_delta_at_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (int) ((arg1)->delta_at);
+  resultobj = SWIG_From_int((int)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_delta_ut_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_delta_ut_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_delta_ut_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_delta_ut_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->delta_ut = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_delta_ut_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_delta_ut_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_delta_ut_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->delta_ut);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_lon_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_lon_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_lon_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_lon_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->lon = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_lon_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_lon_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_lon_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->lon);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_lat_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_lat_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_lat_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_lat_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->lat = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_lat_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_lat_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_lat_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->lat);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_alt_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_alt_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_alt_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_alt_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->alt = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_alt_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_alt_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_alt_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->alt);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_xpole_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_xpole_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_xpole_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_xpole_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->xpole = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_xpole_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_xpole_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_xpole_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->xpole);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_ypole_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_ypole_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_ypole_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_ypole_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->ypole = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_ypole_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_ypole_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_ypole_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->ypole);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_T_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_T_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_T_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_T_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->T = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_T_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_T_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_T_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->T);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_P_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_P_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_P_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_P_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->P = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_P_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_P_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_P_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->P);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_H_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_H_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_H_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_H_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->H = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_H_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_H_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_H_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->H);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_wavelength_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_wavelength_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_wavelength_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_wavelength_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->wavelength = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_wavelength_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_wavelength_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_wavelength_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->wavelength);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_tai_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_tai_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_tai_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_tai_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->tai = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_tai_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_tai_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_tai_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->tai);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_tdt_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_tdt_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_tdt_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_tdt_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->tdt = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_tdt_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_tdt_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_tdt_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->tdt);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_tdb_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_tdb_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_tdb_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_tdb_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->tdb = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_tdb_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_tdb_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_tdb_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->tdb);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_obliquity_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_obliquity_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_obliquity_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_obliquity_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->obliquity = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_obliquity_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_obliquity_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_obliquity_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->obliquity);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_nut_lon_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_nut_lon_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_nut_lon_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_nut_lon_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->nut_lon = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_nut_lon_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_nut_lon_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_nut_lon_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->nut_lon);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_nut_obl_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_nut_obl_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_nut_obl_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_nut_obl_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->nut_obl = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_nut_obl_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_nut_obl_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_nut_obl_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->nut_obl);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_nm_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  struct s_m3 *arg2 = (struct s_m3 *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_nm_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_nm_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_s_m3, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "TPM_TSTATE_nm_set" "', argument " "2"" of type '" "struct s_m3 *""'"); 
+  }
+  arg2 = (struct s_m3 *)(argp2);
+  if (arg1) (arg1)->nm = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_nm_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  struct s_m3 *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_nm_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_nm_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (struct s_m3 *)& ((arg1)->nm);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_s_m3, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_pm_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  struct s_m6 *arg2 = (struct s_m6 *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_pm_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_pm_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_s_m6, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "TPM_TSTATE_pm_set" "', argument " "2"" of type '" "struct s_m6 *""'"); 
+  }
+  arg2 = (struct s_m6 *)(argp2);
+  if (arg1) (arg1)->pm = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_pm_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  struct s_m6 *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_pm_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_pm_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (struct s_m6 *)& ((arg1)->pm);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_s_m6, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_ut1_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_ut1_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_ut1_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_ut1_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->ut1 = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_ut1_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_ut1_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_ut1_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->ut1);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_gmst_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_gmst_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_gmst_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_gmst_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->gmst = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_gmst_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_gmst_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_gmst_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->gmst);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_gast_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_gast_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_gast_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_gast_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->gast = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_gast_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_gast_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_gast_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->gast);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_last_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_last_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_last_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_last_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->last = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_last_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_last_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_last_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->last);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_eb_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  struct s_v6 *arg2 = (struct s_v6 *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_eb_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_eb_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_s_v6, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "TPM_TSTATE_eb_set" "', argument " "2"" of type '" "struct s_v6 *""'"); 
+  }
+  arg2 = (struct s_v6 *)(argp2);
+  if (arg1) (arg1)->eb = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_eb_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  struct s_v6 *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_eb_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_eb_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (struct s_v6 *)& ((arg1)->eb);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_s_v6, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_eh_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  struct s_v6 *arg2 = (struct s_v6 *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_eh_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_eh_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_s_v6, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "TPM_TSTATE_eh_set" "', argument " "2"" of type '" "struct s_v6 *""'"); 
+  }
+  arg2 = (struct s_v6 *)(argp2);
+  if (arg1) (arg1)->eh = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_eh_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  struct s_v6 *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_eh_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_eh_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (struct s_v6 *)& ((arg1)->eh);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_s_v6, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_obs_m_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  struct s_v6 *arg2 = (struct s_v6 *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_obs_m_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_obs_m_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_s_v6, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "TPM_TSTATE_obs_m_set" "', argument " "2"" of type '" "struct s_v6 *""'"); 
+  }
+  arg2 = (struct s_v6 *)(argp2);
+  if (arg1) (arg1)->obs_m = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_obs_m_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  struct s_v6 *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_obs_m_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_obs_m_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (struct s_v6 *)& ((arg1)->obs_m);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_s_v6, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_obs_t_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  struct s_v6 *arg2 = (struct s_v6 *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_obs_t_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_obs_t_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_s_v6, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "TPM_TSTATE_obs_t_set" "', argument " "2"" of type '" "struct s_v6 *""'"); 
+  }
+  arg2 = (struct s_v6 *)(argp2);
+  if (arg1) (arg1)->obs_t = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_obs_t_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  struct s_v6 *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_obs_t_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_obs_t_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (struct s_v6 *)& ((arg1)->obs_t);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_s_v6, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_obs_s_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  struct s_v6 *arg2 = (struct s_v6 *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_obs_s_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_obs_s_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_s_v6, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "TPM_TSTATE_obs_s_set" "', argument " "2"" of type '" "struct s_v6 *""'"); 
+  }
+  arg2 = (struct s_v6 *)(argp2);
+  if (arg1) (arg1)->obs_s = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_obs_s_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  struct s_v6 *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_obs_s_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_obs_s_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (struct s_v6 *)& ((arg1)->obs_s);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_s_v6, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_refa_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_refa_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_refa_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_refa_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->refa = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_refa_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_refa_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_refa_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->refa);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_refb_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_TSTATE_refb_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_refb_set" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_TSTATE_refb_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  if (arg1) (arg1)->refb = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_TSTATE_refb_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_TSTATE_refb_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_TSTATE_refb_get" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  result = (double) ((arg1)->refb);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_TPM_TSTATE(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_TPM_TSTATE")) SWIG_fail;
+  result = (TPM_TSTATE *)calloc(1, sizeof(TPM_TSTATE));
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_s_tstate, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_TPM_TSTATE(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_TSTATE *arg1 = (TPM_TSTATE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_TPM_TSTATE",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_tstate, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_TPM_TSTATE" "', argument " "1"" of type '" "TPM_TSTATE *""'"); 
+  }
+  arg1 = (TPM_TSTATE *)(argp1);
+  free((char *) arg1);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *TPM_TSTATE_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_s_tstate, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_TPM_PMCELL_ptrans_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_PMCELL *arg1 = (TPM_PMCELL *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_PMCELL_ptrans_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_pmcell, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_PMCELL_ptrans_set" "', argument " "1"" of type '" "TPM_PMCELL *""'"); 
+  }
+  arg1 = (TPM_PMCELL *)(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_PMCELL_ptrans_set" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = (int)(val2);
+  if (arg1) (arg1)->ptrans = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_PMCELL_ptrans_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_PMCELL *arg1 = (TPM_PMCELL *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  int result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_PMCELL_ptrans_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_pmcell, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_PMCELL_ptrans_get" "', argument " "1"" of type '" "TPM_PMCELL *""'"); 
+  }
+  arg1 = (TPM_PMCELL *)(argp1);
+  result = (int) ((arg1)->ptrans);
+  resultobj = SWIG_From_int((int)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_PMCELL_pstate_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_PMCELL *arg1 = (TPM_PMCELL *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:TPM_PMCELL_pstate_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_pmcell, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_PMCELL_pstate_set" "', argument " "1"" of type '" "TPM_PMCELL *""'"); 
+  }
+  arg1 = (TPM_PMCELL *)(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "TPM_PMCELL_pstate_set" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = (int)(val2);
+  if (arg1) (arg1)->pstate = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_TPM_PMCELL_pstate_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_PMCELL *arg1 = (TPM_PMCELL *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  int result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:TPM_PMCELL_pstate_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_pmcell, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TPM_PMCELL_pstate_get" "', argument " "1"" of type '" "TPM_PMCELL *""'"); 
+  }
+  arg1 = (TPM_PMCELL *)(argp1);
+  result = (int) ((arg1)->pstate);
+  resultobj = SWIG_From_int((int)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_TPM_PMCELL(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_PMCELL *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_TPM_PMCELL")) SWIG_fail;
+  result = (TPM_PMCELL *)calloc(1, sizeof(TPM_PMCELL));
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_s_pmcell, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_TPM_PMCELL(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  TPM_PMCELL *arg1 = (TPM_PMCELL *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_TPM_PMCELL",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_s_pmcell, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_TPM_PMCELL" "', argument " "1"" of type '" "TPM_PMCELL *""'"); 
+  }
+  arg1 = (TPM_PMCELL *)(argp1);
+  free((char *) arg1);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *TPM_PMCELL_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_s_pmcell, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
 
 SWIGINTERN PyObject *_wrap_v3DecXf(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
@@ -15810,6 +18518,110 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"nutations", _wrap_nutations, METH_VARARGS, NULL},
 	 { (char *)"refco", _wrap_refco, METH_VARARGS, NULL},
 	 { (char *)"tpm_data", _wrap_tpm_data, METH_VARARGS, NULL},
+	 { (char *)"TPM_TARGET_name_set", _wrap_TPM_TARGET_name_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TARGET_name_get", _wrap_TPM_TARGET_name_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TARGET_state_set", _wrap_TPM_TARGET_state_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TARGET_state_get", _wrap_TPM_TARGET_state_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TARGET_epoch_set", _wrap_TPM_TARGET_epoch_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TARGET_epoch_get", _wrap_TPM_TARGET_epoch_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TARGET_equinox_set", _wrap_TPM_TARGET_equinox_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TARGET_equinox_get", _wrap_TPM_TARGET_equinox_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TARGET_position_set", _wrap_TPM_TARGET_position_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TARGET_position_get", _wrap_TPM_TARGET_position_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TARGET_offset_set", _wrap_TPM_TARGET_offset_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TARGET_offset_get", _wrap_TPM_TARGET_offset_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TARGET_motion_set", _wrap_TPM_TARGET_motion_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TARGET_motion_get", _wrap_TPM_TARGET_motion_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TARGET_parallax_set", _wrap_TPM_TARGET_parallax_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TARGET_parallax_get", _wrap_TPM_TARGET_parallax_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TARGET_speed_set", _wrap_TPM_TARGET_speed_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TARGET_speed_get", _wrap_TPM_TARGET_speed_get, METH_VARARGS, NULL},
+	 { (char *)"new_TPM_TARGET", _wrap_new_TPM_TARGET, METH_VARARGS, NULL},
+	 { (char *)"delete_TPM_TARGET", _wrap_delete_TPM_TARGET, METH_VARARGS, NULL},
+	 { (char *)"TPM_TARGET_swigregister", TPM_TARGET_swigregister, METH_VARARGS, NULL},
+	 { (char *)"TPM_BORESIGHT_epoch_set", _wrap_TPM_BORESIGHT_epoch_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_BORESIGHT_epoch_get", _wrap_TPM_BORESIGHT_epoch_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_BORESIGHT_position_set", _wrap_TPM_BORESIGHT_position_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_BORESIGHT_position_get", _wrap_TPM_BORESIGHT_position_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_BORESIGHT_offset_set", _wrap_TPM_BORESIGHT_offset_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_BORESIGHT_offset_get", _wrap_TPM_BORESIGHT_offset_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_BORESIGHT_motion_set", _wrap_TPM_BORESIGHT_motion_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_BORESIGHT_motion_get", _wrap_TPM_BORESIGHT_motion_get, METH_VARARGS, NULL},
+	 { (char *)"new_TPM_BORESIGHT", _wrap_new_TPM_BORESIGHT, METH_VARARGS, NULL},
+	 { (char *)"delete_TPM_BORESIGHT", _wrap_delete_TPM_BORESIGHT, METH_VARARGS, NULL},
+	 { (char *)"TPM_BORESIGHT_swigregister", TPM_BORESIGHT_swigregister, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_utc_set", _wrap_TPM_TSTATE_utc_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_utc_get", _wrap_TPM_TSTATE_utc_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_delta_at_set", _wrap_TPM_TSTATE_delta_at_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_delta_at_get", _wrap_TPM_TSTATE_delta_at_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_delta_ut_set", _wrap_TPM_TSTATE_delta_ut_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_delta_ut_get", _wrap_TPM_TSTATE_delta_ut_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_lon_set", _wrap_TPM_TSTATE_lon_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_lon_get", _wrap_TPM_TSTATE_lon_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_lat_set", _wrap_TPM_TSTATE_lat_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_lat_get", _wrap_TPM_TSTATE_lat_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_alt_set", _wrap_TPM_TSTATE_alt_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_alt_get", _wrap_TPM_TSTATE_alt_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_xpole_set", _wrap_TPM_TSTATE_xpole_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_xpole_get", _wrap_TPM_TSTATE_xpole_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_ypole_set", _wrap_TPM_TSTATE_ypole_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_ypole_get", _wrap_TPM_TSTATE_ypole_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_T_set", _wrap_TPM_TSTATE_T_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_T_get", _wrap_TPM_TSTATE_T_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_P_set", _wrap_TPM_TSTATE_P_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_P_get", _wrap_TPM_TSTATE_P_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_H_set", _wrap_TPM_TSTATE_H_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_H_get", _wrap_TPM_TSTATE_H_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_wavelength_set", _wrap_TPM_TSTATE_wavelength_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_wavelength_get", _wrap_TPM_TSTATE_wavelength_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_tai_set", _wrap_TPM_TSTATE_tai_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_tai_get", _wrap_TPM_TSTATE_tai_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_tdt_set", _wrap_TPM_TSTATE_tdt_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_tdt_get", _wrap_TPM_TSTATE_tdt_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_tdb_set", _wrap_TPM_TSTATE_tdb_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_tdb_get", _wrap_TPM_TSTATE_tdb_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_obliquity_set", _wrap_TPM_TSTATE_obliquity_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_obliquity_get", _wrap_TPM_TSTATE_obliquity_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_nut_lon_set", _wrap_TPM_TSTATE_nut_lon_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_nut_lon_get", _wrap_TPM_TSTATE_nut_lon_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_nut_obl_set", _wrap_TPM_TSTATE_nut_obl_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_nut_obl_get", _wrap_TPM_TSTATE_nut_obl_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_nm_set", _wrap_TPM_TSTATE_nm_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_nm_get", _wrap_TPM_TSTATE_nm_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_pm_set", _wrap_TPM_TSTATE_pm_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_pm_get", _wrap_TPM_TSTATE_pm_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_ut1_set", _wrap_TPM_TSTATE_ut1_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_ut1_get", _wrap_TPM_TSTATE_ut1_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_gmst_set", _wrap_TPM_TSTATE_gmst_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_gmst_get", _wrap_TPM_TSTATE_gmst_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_gast_set", _wrap_TPM_TSTATE_gast_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_gast_get", _wrap_TPM_TSTATE_gast_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_last_set", _wrap_TPM_TSTATE_last_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_last_get", _wrap_TPM_TSTATE_last_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_eb_set", _wrap_TPM_TSTATE_eb_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_eb_get", _wrap_TPM_TSTATE_eb_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_eh_set", _wrap_TPM_TSTATE_eh_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_eh_get", _wrap_TPM_TSTATE_eh_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_obs_m_set", _wrap_TPM_TSTATE_obs_m_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_obs_m_get", _wrap_TPM_TSTATE_obs_m_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_obs_t_set", _wrap_TPM_TSTATE_obs_t_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_obs_t_get", _wrap_TPM_TSTATE_obs_t_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_obs_s_set", _wrap_TPM_TSTATE_obs_s_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_obs_s_get", _wrap_TPM_TSTATE_obs_s_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_refa_set", _wrap_TPM_TSTATE_refa_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_refa_get", _wrap_TPM_TSTATE_refa_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_refb_set", _wrap_TPM_TSTATE_refb_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_refb_get", _wrap_TPM_TSTATE_refb_get, METH_VARARGS, NULL},
+	 { (char *)"new_TPM_TSTATE", _wrap_new_TPM_TSTATE, METH_VARARGS, NULL},
+	 { (char *)"delete_TPM_TSTATE", _wrap_delete_TPM_TSTATE, METH_VARARGS, NULL},
+	 { (char *)"TPM_TSTATE_swigregister", TPM_TSTATE_swigregister, METH_VARARGS, NULL},
+	 { (char *)"TPM_PMCELL_ptrans_set", _wrap_TPM_PMCELL_ptrans_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_PMCELL_ptrans_get", _wrap_TPM_PMCELL_ptrans_get, METH_VARARGS, NULL},
+	 { (char *)"TPM_PMCELL_pstate_set", _wrap_TPM_PMCELL_pstate_set, METH_VARARGS, NULL},
+	 { (char *)"TPM_PMCELL_pstate_get", _wrap_TPM_PMCELL_pstate_get, METH_VARARGS, NULL},
+	 { (char *)"new_TPM_PMCELL", _wrap_new_TPM_PMCELL, METH_VARARGS, NULL},
+	 { (char *)"delete_TPM_PMCELL", _wrap_delete_TPM_PMCELL, METH_VARARGS, NULL},
+	 { (char *)"TPM_PMCELL_swigregister", TPM_PMCELL_swigregister, METH_VARARGS, NULL},
 	 { (char *)"v3DecXf", _wrap_v3DecXf, METH_VARARGS, NULL},
 	 { (char *)"v3DecYf", _wrap_v3DecYf, METH_VARARGS, NULL},
 	 { (char *)"v3DecZf", _wrap_v3DecZf, METH_VARARGS, NULL},
@@ -16031,73 +18843,85 @@ static PyMethodDef SwigMethods[] = {
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
-static swig_type_info _swigt__p_TPM_TSTATE = {"_p_TPM_TSTATE", "TPM_TSTATE *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_a_2__s_m3 = {"_p_a_2__s_m3", "struct s_m3 (*)[2]|M3 (*)[2]", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_a_3__double = {"_p_a_3__double", "double (*)[3]", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_double = {"_p_double", "double *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_int = {"_p_int", "int *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_s_boresight = {"_p_s_boresight", "struct s_boresight *|TPM_BORESIGHT *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_s_cons = {"_p_s_cons", "struct s_cons *|CONS *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_s_dms = {"_p_s_dms", "struct s_dms *|DMS *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_s_hms = {"_p_s_hms", "HMS *|struct s_hms *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_s_jd = {"_p_s_jd", "JD *|struct s_jd *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_s_m3 = {"_p_s_m3", "struct s_m3 *|M3 *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_s_m6 = {"_p_s_m6", "struct s_m6 *|M6 *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_s_pmcell = {"_p_s_pmcell", "struct s_pmcell *|TPM_PMCELL *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_s_star = {"_p_s_star", "struct s_star *|STAR *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_s_target = {"_p_s_target", "TPM_TARGET *|struct s_target *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_s_tstate = {"_p_s_tstate", "TPM_TSTATE *|struct s_tstate *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_s_v3 = {"_p_s_v3", "V3 *|struct s_v3 *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_s_v6 = {"_p_s_v6", "V6 *|struct s_v6 *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_s_ymd = {"_p_s_ymd", "struct s_ymd *|YMD *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
-  &_swigt__p_TPM_TSTATE,
   &_swigt__p_a_2__s_m3,
   &_swigt__p_a_3__double,
   &_swigt__p_char,
   &_swigt__p_double,
   &_swigt__p_int,
+  &_swigt__p_s_boresight,
   &_swigt__p_s_cons,
   &_swigt__p_s_dms,
   &_swigt__p_s_hms,
   &_swigt__p_s_jd,
   &_swigt__p_s_m3,
   &_swigt__p_s_m6,
+  &_swigt__p_s_pmcell,
   &_swigt__p_s_star,
+  &_swigt__p_s_target,
+  &_swigt__p_s_tstate,
   &_swigt__p_s_v3,
   &_swigt__p_s_v6,
   &_swigt__p_s_ymd,
 };
 
-static swig_cast_info _swigc__p_TPM_TSTATE[] = {  {&_swigt__p_TPM_TSTATE, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_a_2__s_m3[] = {  {&_swigt__p_a_2__s_m3, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_a_3__double[] = {  {&_swigt__p_a_3__double, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_double[] = {  {&_swigt__p_double, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_s_boresight[] = {  {&_swigt__p_s_boresight, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_s_cons[] = {  {&_swigt__p_s_cons, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_s_dms[] = {  {&_swigt__p_s_dms, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_s_hms[] = {  {&_swigt__p_s_hms, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_s_jd[] = {  {&_swigt__p_s_jd, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_s_m3[] = {  {&_swigt__p_s_m3, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_s_m6[] = {  {&_swigt__p_s_m6, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_s_pmcell[] = {  {&_swigt__p_s_pmcell, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_s_star[] = {  {&_swigt__p_s_star, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_s_target[] = {  {&_swigt__p_s_target, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_s_tstate[] = {  {&_swigt__p_s_tstate, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_s_v3[] = {  {&_swigt__p_s_v3, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_s_v6[] = {  {&_swigt__p_s_v6, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_s_ymd[] = {  {&_swigt__p_s_ymd, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
-  _swigc__p_TPM_TSTATE,
   _swigc__p_a_2__s_m3,
   _swigc__p_a_3__double,
   _swigc__p_char,
   _swigc__p_double,
   _swigc__p_int,
+  _swigc__p_s_boresight,
   _swigc__p_s_cons,
   _swigc__p_s_dms,
   _swigc__p_s_hms,
   _swigc__p_s_jd,
   _swigc__p_s_m3,
   _swigc__p_s_m6,
+  _swigc__p_s_pmcell,
   _swigc__p_s_star,
+  _swigc__p_s_target,
+  _swigc__p_s_tstate,
   _swigc__p_s_v3,
   _swigc__p_s_v6,
   _swigc__p_s_ymd,

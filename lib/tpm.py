@@ -917,6 +917,48 @@ TPM_T13 = _tpm.TPM_T13
 TPM_T14 = _tpm.TPM_T14
 TPM_T15 = _tpm.TPM_T15
 N_TPM_TRANS = _tpm.N_TPM_TRANS
+class TPM_TARGET(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, TPM_TARGET, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, TPM_TARGET, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["name"] = _tpm.TPM_TARGET_name_set
+    __swig_getmethods__["name"] = _tpm.TPM_TARGET_name_get
+    if _newclass:name = _swig_property(_tpm.TPM_TARGET_name_get, _tpm.TPM_TARGET_name_set)
+    __swig_setmethods__["state"] = _tpm.TPM_TARGET_state_set
+    __swig_getmethods__["state"] = _tpm.TPM_TARGET_state_get
+    if _newclass:state = _swig_property(_tpm.TPM_TARGET_state_get, _tpm.TPM_TARGET_state_set)
+    __swig_setmethods__["epoch"] = _tpm.TPM_TARGET_epoch_set
+    __swig_getmethods__["epoch"] = _tpm.TPM_TARGET_epoch_get
+    if _newclass:epoch = _swig_property(_tpm.TPM_TARGET_epoch_get, _tpm.TPM_TARGET_epoch_set)
+    __swig_setmethods__["equinox"] = _tpm.TPM_TARGET_equinox_set
+    __swig_getmethods__["equinox"] = _tpm.TPM_TARGET_equinox_get
+    if _newclass:equinox = _swig_property(_tpm.TPM_TARGET_equinox_get, _tpm.TPM_TARGET_equinox_set)
+    __swig_setmethods__["position"] = _tpm.TPM_TARGET_position_set
+    __swig_getmethods__["position"] = _tpm.TPM_TARGET_position_get
+    if _newclass:position = _swig_property(_tpm.TPM_TARGET_position_get, _tpm.TPM_TARGET_position_set)
+    __swig_setmethods__["offset"] = _tpm.TPM_TARGET_offset_set
+    __swig_getmethods__["offset"] = _tpm.TPM_TARGET_offset_get
+    if _newclass:offset = _swig_property(_tpm.TPM_TARGET_offset_get, _tpm.TPM_TARGET_offset_set)
+    __swig_setmethods__["motion"] = _tpm.TPM_TARGET_motion_set
+    __swig_getmethods__["motion"] = _tpm.TPM_TARGET_motion_get
+    if _newclass:motion = _swig_property(_tpm.TPM_TARGET_motion_get, _tpm.TPM_TARGET_motion_set)
+    __swig_setmethods__["parallax"] = _tpm.TPM_TARGET_parallax_set
+    __swig_getmethods__["parallax"] = _tpm.TPM_TARGET_parallax_get
+    if _newclass:parallax = _swig_property(_tpm.TPM_TARGET_parallax_get, _tpm.TPM_TARGET_parallax_set)
+    __swig_setmethods__["speed"] = _tpm.TPM_TARGET_speed_set
+    __swig_getmethods__["speed"] = _tpm.TPM_TARGET_speed_get
+    if _newclass:speed = _swig_property(_tpm.TPM_TARGET_speed_get, _tpm.TPM_TARGET_speed_set)
+    def __init__(self): 
+        this = _tpm.new_TPM_TARGET()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _tpm.delete_TPM_TARGET
+    __del__ = lambda self : None;
+TPM_TARGET_swigregister = _tpm.TPM_TARGET_swigregister
+TPM_TARGET_swigregister(TPM_TARGET)
+
 TARGET_FK4 = _tpm.TARGET_FK4
 TARGET_FK5 = _tpm.TARGET_FK5
 TARGET_ECL = _tpm.TARGET_ECL
@@ -928,12 +970,168 @@ TARGET_OBS_AZEL = _tpm.TARGET_OBS_AZEL
 TARGET_OBS_WHAM = _tpm.TARGET_OBS_WHAM
 TARGET_HADEC = _tpm.TARGET_HADEC
 TARGET_TOP_AZEL = _tpm.TARGET_TOP_AZEL
+class TPM_BORESIGHT(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, TPM_BORESIGHT, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, TPM_BORESIGHT, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["epoch"] = _tpm.TPM_BORESIGHT_epoch_set
+    __swig_getmethods__["epoch"] = _tpm.TPM_BORESIGHT_epoch_get
+    if _newclass:epoch = _swig_property(_tpm.TPM_BORESIGHT_epoch_get, _tpm.TPM_BORESIGHT_epoch_set)
+    __swig_setmethods__["position"] = _tpm.TPM_BORESIGHT_position_set
+    __swig_getmethods__["position"] = _tpm.TPM_BORESIGHT_position_get
+    if _newclass:position = _swig_property(_tpm.TPM_BORESIGHT_position_get, _tpm.TPM_BORESIGHT_position_set)
+    __swig_setmethods__["offset"] = _tpm.TPM_BORESIGHT_offset_set
+    __swig_getmethods__["offset"] = _tpm.TPM_BORESIGHT_offset_get
+    if _newclass:offset = _swig_property(_tpm.TPM_BORESIGHT_offset_get, _tpm.TPM_BORESIGHT_offset_set)
+    __swig_setmethods__["motion"] = _tpm.TPM_BORESIGHT_motion_set
+    __swig_getmethods__["motion"] = _tpm.TPM_BORESIGHT_motion_get
+    if _newclass:motion = _swig_property(_tpm.TPM_BORESIGHT_motion_get, _tpm.TPM_BORESIGHT_motion_set)
+    def __init__(self): 
+        this = _tpm.new_TPM_BORESIGHT()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _tpm.delete_TPM_BORESIGHT
+    __del__ = lambda self : None;
+TPM_BORESIGHT_swigregister = _tpm.TPM_BORESIGHT_swigregister
+TPM_BORESIGHT_swigregister(TPM_BORESIGHT)
+
+class TPM_TSTATE(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, TPM_TSTATE, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, TPM_TSTATE, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["utc"] = _tpm.TPM_TSTATE_utc_set
+    __swig_getmethods__["utc"] = _tpm.TPM_TSTATE_utc_get
+    if _newclass:utc = _swig_property(_tpm.TPM_TSTATE_utc_get, _tpm.TPM_TSTATE_utc_set)
+    __swig_setmethods__["delta_at"] = _tpm.TPM_TSTATE_delta_at_set
+    __swig_getmethods__["delta_at"] = _tpm.TPM_TSTATE_delta_at_get
+    if _newclass:delta_at = _swig_property(_tpm.TPM_TSTATE_delta_at_get, _tpm.TPM_TSTATE_delta_at_set)
+    __swig_setmethods__["delta_ut"] = _tpm.TPM_TSTATE_delta_ut_set
+    __swig_getmethods__["delta_ut"] = _tpm.TPM_TSTATE_delta_ut_get
+    if _newclass:delta_ut = _swig_property(_tpm.TPM_TSTATE_delta_ut_get, _tpm.TPM_TSTATE_delta_ut_set)
+    __swig_setmethods__["lon"] = _tpm.TPM_TSTATE_lon_set
+    __swig_getmethods__["lon"] = _tpm.TPM_TSTATE_lon_get
+    if _newclass:lon = _swig_property(_tpm.TPM_TSTATE_lon_get, _tpm.TPM_TSTATE_lon_set)
+    __swig_setmethods__["lat"] = _tpm.TPM_TSTATE_lat_set
+    __swig_getmethods__["lat"] = _tpm.TPM_TSTATE_lat_get
+    if _newclass:lat = _swig_property(_tpm.TPM_TSTATE_lat_get, _tpm.TPM_TSTATE_lat_set)
+    __swig_setmethods__["alt"] = _tpm.TPM_TSTATE_alt_set
+    __swig_getmethods__["alt"] = _tpm.TPM_TSTATE_alt_get
+    if _newclass:alt = _swig_property(_tpm.TPM_TSTATE_alt_get, _tpm.TPM_TSTATE_alt_set)
+    __swig_setmethods__["xpole"] = _tpm.TPM_TSTATE_xpole_set
+    __swig_getmethods__["xpole"] = _tpm.TPM_TSTATE_xpole_get
+    if _newclass:xpole = _swig_property(_tpm.TPM_TSTATE_xpole_get, _tpm.TPM_TSTATE_xpole_set)
+    __swig_setmethods__["ypole"] = _tpm.TPM_TSTATE_ypole_set
+    __swig_getmethods__["ypole"] = _tpm.TPM_TSTATE_ypole_get
+    if _newclass:ypole = _swig_property(_tpm.TPM_TSTATE_ypole_get, _tpm.TPM_TSTATE_ypole_set)
+    __swig_setmethods__["T"] = _tpm.TPM_TSTATE_T_set
+    __swig_getmethods__["T"] = _tpm.TPM_TSTATE_T_get
+    if _newclass:T = _swig_property(_tpm.TPM_TSTATE_T_get, _tpm.TPM_TSTATE_T_set)
+    __swig_setmethods__["P"] = _tpm.TPM_TSTATE_P_set
+    __swig_getmethods__["P"] = _tpm.TPM_TSTATE_P_get
+    if _newclass:P = _swig_property(_tpm.TPM_TSTATE_P_get, _tpm.TPM_TSTATE_P_set)
+    __swig_setmethods__["H"] = _tpm.TPM_TSTATE_H_set
+    __swig_getmethods__["H"] = _tpm.TPM_TSTATE_H_get
+    if _newclass:H = _swig_property(_tpm.TPM_TSTATE_H_get, _tpm.TPM_TSTATE_H_set)
+    __swig_setmethods__["wavelength"] = _tpm.TPM_TSTATE_wavelength_set
+    __swig_getmethods__["wavelength"] = _tpm.TPM_TSTATE_wavelength_get
+    if _newclass:wavelength = _swig_property(_tpm.TPM_TSTATE_wavelength_get, _tpm.TPM_TSTATE_wavelength_set)
+    __swig_setmethods__["tai"] = _tpm.TPM_TSTATE_tai_set
+    __swig_getmethods__["tai"] = _tpm.TPM_TSTATE_tai_get
+    if _newclass:tai = _swig_property(_tpm.TPM_TSTATE_tai_get, _tpm.TPM_TSTATE_tai_set)
+    __swig_setmethods__["tdt"] = _tpm.TPM_TSTATE_tdt_set
+    __swig_getmethods__["tdt"] = _tpm.TPM_TSTATE_tdt_get
+    if _newclass:tdt = _swig_property(_tpm.TPM_TSTATE_tdt_get, _tpm.TPM_TSTATE_tdt_set)
+    __swig_setmethods__["tdb"] = _tpm.TPM_TSTATE_tdb_set
+    __swig_getmethods__["tdb"] = _tpm.TPM_TSTATE_tdb_get
+    if _newclass:tdb = _swig_property(_tpm.TPM_TSTATE_tdb_get, _tpm.TPM_TSTATE_tdb_set)
+    __swig_setmethods__["obliquity"] = _tpm.TPM_TSTATE_obliquity_set
+    __swig_getmethods__["obliquity"] = _tpm.TPM_TSTATE_obliquity_get
+    if _newclass:obliquity = _swig_property(_tpm.TPM_TSTATE_obliquity_get, _tpm.TPM_TSTATE_obliquity_set)
+    __swig_setmethods__["nut_lon"] = _tpm.TPM_TSTATE_nut_lon_set
+    __swig_getmethods__["nut_lon"] = _tpm.TPM_TSTATE_nut_lon_get
+    if _newclass:nut_lon = _swig_property(_tpm.TPM_TSTATE_nut_lon_get, _tpm.TPM_TSTATE_nut_lon_set)
+    __swig_setmethods__["nut_obl"] = _tpm.TPM_TSTATE_nut_obl_set
+    __swig_getmethods__["nut_obl"] = _tpm.TPM_TSTATE_nut_obl_get
+    if _newclass:nut_obl = _swig_property(_tpm.TPM_TSTATE_nut_obl_get, _tpm.TPM_TSTATE_nut_obl_set)
+    __swig_setmethods__["nm"] = _tpm.TPM_TSTATE_nm_set
+    __swig_getmethods__["nm"] = _tpm.TPM_TSTATE_nm_get
+    if _newclass:nm = _swig_property(_tpm.TPM_TSTATE_nm_get, _tpm.TPM_TSTATE_nm_set)
+    __swig_setmethods__["pm"] = _tpm.TPM_TSTATE_pm_set
+    __swig_getmethods__["pm"] = _tpm.TPM_TSTATE_pm_get
+    if _newclass:pm = _swig_property(_tpm.TPM_TSTATE_pm_get, _tpm.TPM_TSTATE_pm_set)
+    __swig_setmethods__["ut1"] = _tpm.TPM_TSTATE_ut1_set
+    __swig_getmethods__["ut1"] = _tpm.TPM_TSTATE_ut1_get
+    if _newclass:ut1 = _swig_property(_tpm.TPM_TSTATE_ut1_get, _tpm.TPM_TSTATE_ut1_set)
+    __swig_setmethods__["gmst"] = _tpm.TPM_TSTATE_gmst_set
+    __swig_getmethods__["gmst"] = _tpm.TPM_TSTATE_gmst_get
+    if _newclass:gmst = _swig_property(_tpm.TPM_TSTATE_gmst_get, _tpm.TPM_TSTATE_gmst_set)
+    __swig_setmethods__["gast"] = _tpm.TPM_TSTATE_gast_set
+    __swig_getmethods__["gast"] = _tpm.TPM_TSTATE_gast_get
+    if _newclass:gast = _swig_property(_tpm.TPM_TSTATE_gast_get, _tpm.TPM_TSTATE_gast_set)
+    __swig_setmethods__["last"] = _tpm.TPM_TSTATE_last_set
+    __swig_getmethods__["last"] = _tpm.TPM_TSTATE_last_get
+    if _newclass:last = _swig_property(_tpm.TPM_TSTATE_last_get, _tpm.TPM_TSTATE_last_set)
+    __swig_setmethods__["eb"] = _tpm.TPM_TSTATE_eb_set
+    __swig_getmethods__["eb"] = _tpm.TPM_TSTATE_eb_get
+    if _newclass:eb = _swig_property(_tpm.TPM_TSTATE_eb_get, _tpm.TPM_TSTATE_eb_set)
+    __swig_setmethods__["eh"] = _tpm.TPM_TSTATE_eh_set
+    __swig_getmethods__["eh"] = _tpm.TPM_TSTATE_eh_get
+    if _newclass:eh = _swig_property(_tpm.TPM_TSTATE_eh_get, _tpm.TPM_TSTATE_eh_set)
+    __swig_setmethods__["obs_m"] = _tpm.TPM_TSTATE_obs_m_set
+    __swig_getmethods__["obs_m"] = _tpm.TPM_TSTATE_obs_m_get
+    if _newclass:obs_m = _swig_property(_tpm.TPM_TSTATE_obs_m_get, _tpm.TPM_TSTATE_obs_m_set)
+    __swig_setmethods__["obs_t"] = _tpm.TPM_TSTATE_obs_t_set
+    __swig_getmethods__["obs_t"] = _tpm.TPM_TSTATE_obs_t_get
+    if _newclass:obs_t = _swig_property(_tpm.TPM_TSTATE_obs_t_get, _tpm.TPM_TSTATE_obs_t_set)
+    __swig_setmethods__["obs_s"] = _tpm.TPM_TSTATE_obs_s_set
+    __swig_getmethods__["obs_s"] = _tpm.TPM_TSTATE_obs_s_get
+    if _newclass:obs_s = _swig_property(_tpm.TPM_TSTATE_obs_s_get, _tpm.TPM_TSTATE_obs_s_set)
+    __swig_setmethods__["refa"] = _tpm.TPM_TSTATE_refa_set
+    __swig_getmethods__["refa"] = _tpm.TPM_TSTATE_refa_get
+    if _newclass:refa = _swig_property(_tpm.TPM_TSTATE_refa_get, _tpm.TPM_TSTATE_refa_set)
+    __swig_setmethods__["refb"] = _tpm.TPM_TSTATE_refb_set
+    __swig_getmethods__["refb"] = _tpm.TPM_TSTATE_refb_get
+    if _newclass:refb = _swig_property(_tpm.TPM_TSTATE_refb_get, _tpm.TPM_TSTATE_refb_set)
+    def __init__(self): 
+        this = _tpm.new_TPM_TSTATE()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _tpm.delete_TPM_TSTATE
+    __del__ = lambda self : None;
+TPM_TSTATE_swigregister = _tpm.TPM_TSTATE_swigregister
+TPM_TSTATE_swigregister(TPM_TSTATE)
+
 TPM_INIT = _tpm.TPM_INIT
 TPM_FAST = _tpm.TPM_FAST
 TPM_MEDIUM = _tpm.TPM_MEDIUM
 TPM_SLOW = _tpm.TPM_SLOW
 TPM_REFRACTION = _tpm.TPM_REFRACTION
 TPM_ALL = _tpm.TPM_ALL
+class TPM_PMCELL(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, TPM_PMCELL, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, TPM_PMCELL, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["ptrans"] = _tpm.TPM_PMCELL_ptrans_set
+    __swig_getmethods__["ptrans"] = _tpm.TPM_PMCELL_ptrans_get
+    if _newclass:ptrans = _swig_property(_tpm.TPM_PMCELL_ptrans_get, _tpm.TPM_PMCELL_ptrans_set)
+    __swig_setmethods__["pstate"] = _tpm.TPM_PMCELL_pstate_set
+    __swig_getmethods__["pstate"] = _tpm.TPM_PMCELL_pstate_get
+    if _newclass:pstate = _swig_property(_tpm.TPM_PMCELL_pstate_get, _tpm.TPM_PMCELL_pstate_set)
+    def __init__(self): 
+        this = _tpm.new_TPM_PMCELL()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _tpm.delete_TPM_PMCELL
+    __del__ = lambda self : None;
+TPM_PMCELL_swigregister = _tpm.TPM_PMCELL_swigregister
+TPM_PMCELL_swigregister(TPM_PMCELL)
+
 
 def v3DecXf(*args):
   return _tpm.v3DecXf(*args)
