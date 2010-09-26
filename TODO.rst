@@ -1,27 +1,17 @@
-wrap all functions or provide call to perform coordinate conversion
+#. Add interface to all **defined** function :DONE:
 
-DONE:
-  convert, tpm and tpm.convert()
+#. Write tests
 
-DONE:
-    ADD T,P,H etc in convert.c::convert. The functions take these parameters
-    but they are not used inside the function.
+    #. v3_Functions.h, corresponds to v3.h :DONE:
+    #. v6_Functions.h, corresponds to v6.h :DONE:
+    #. m3_Functions.h, corresponds to m3.h :DONE:
+    #. m6_Functions.h corresponds to m6.h :DONE:
+    #. vec.h :ONGOING:
+    #. astro.h :TODO:
+    #. times.h :TODO:
+    #. tpm.h :TODO:
+    
+#. Missing
 
-
-DONE:
-  Wrap other functions; especially utility functions such as d2r etc., .
-
-
-TODO:
- Add v3,v6,m3, m6 utility functions. How to map m3.m[0][0] or
- v6.v[POS].v[0]?
-
-TODO:
- write python interface to: argv2dms, argv2hms and argv2ymd in times.h
-
-TODO:
- write interface to functions in misc.h.
-
-TODO:
- Missing function declarations? Commented out in SWIG headers for now.
-
+    #. Many function declarations do not have implementations in TPM.
+    #. Routines in misc.h, integration routines, not added to python.
