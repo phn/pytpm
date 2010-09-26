@@ -5,6 +5,9 @@ These functions are used for accessing and manipulating M6 vectors.
 :author: Prasanth Nair
 :contact: prasanthhn@gmail.com
 """
+import setup_path
+setup_path.run()
+
 from pytpm import tpm
 
 m3_00 = tpm.M3()

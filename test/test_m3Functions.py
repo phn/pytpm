@@ -5,6 +5,9 @@ These functions are used for accessing and manipulating M3 vectors.
 :author: Prasanth Nair
 :contact: prasanthhn@gmail.com
 """
+import setup_path
+setup_path.run()
+
 from pytpm import tpm
 
 m3 = tpm.M3()

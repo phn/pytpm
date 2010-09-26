@@ -5,6 +5,9 @@ These functions are used for accessing and manipulating V6 vectors.
 :author: Prasanth Nair
 :contact: prasanthhn@gmail.com
 """
+import setup_path
+setup_path.run()
+
 from pytpm import tpm
 
 # Some values for testing, values themselves do not have any special
@@ -473,7 +476,7 @@ def test_v6SetRDotf():
 def test_v6SetAlphaDotf():
     setup_v6rad()
     tpm.v6SetAlphaDotf(v6rad, alphadot)
-    assert tpm.v6GetalphaDotf(v6rad) == alphadot
+    assert tpm.v6GetAlphaDotf(v6rad) == alphadot
 
 def test_v6SetDeltaDotf():
     setup_v6rad()

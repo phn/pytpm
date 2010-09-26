@@ -5,6 +5,9 @@ These functions are used for accessing and manipulating V3 vectors.
 :author: Prasanth Nair
 :contact: prasanthhn@gmail.com
 """
+import setup_path
+setup_path.run()
+
 from pytpm import tpm
 
 v3 = tpm.V3()

@@ -6,6 +6,9 @@ matrices.
 :author: Prasanth Nair
 :contact: prasanthhn@gmail.com
 """
+import setup_path
+setup_path.run()
+
 from pytpm import tpm
 
 def test_m3I():
