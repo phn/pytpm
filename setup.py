@@ -25,7 +25,7 @@ setup(
         long_description = long_desc,
         license = 'BSD',
         author = 'Prasanth H. Nair',
-        author_email = 'oneaufs@gmail.com',
+        author_email = 'prasanthhn@gmail.com',
         url = 'http://github.com/phn/pytpm',
         classifiers = [
           'Development Status :: 6 - Mature',
