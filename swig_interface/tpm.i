@@ -1,4 +1,18 @@
-%module tpm
+%define DOCSTRING
+"The module :mod:`pytpm.tpm` contains classes (c structures) and 
+functions defined in the TPM c library.
+
+The macros defined in the TPM c library are in the module 
+:mod:`pytpm.utils`.
+
+:Author: Prasanth Nair
+:Contact: prasanthhn@gmail.com
+"
+%enddef 
+
+%module(docstring=DOCSTRING) tpm
+
+
 %{
   #include "tpm/v3.h"
   #include "tpm/v6.h"
@@ -21,7 +35,7 @@
                     double *x1, double *x2);
 %}
 
-
+%feature("autodoc","1");
 %include "v3_swig.h"
 %include "v6_swig.h"
 %include "m3_swig.h"
