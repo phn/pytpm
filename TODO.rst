@@ -12,16 +12,25 @@ DONE:
   Wrap other functions; especially utility functions such as d2r etc., .
 
 
-TODO:
- Add v3,v6,m3, m6 utility functions. How to map m3.m[0][0] or
- v6.v[POS].v[0]?
+DONE:
+ Add v3,v6,m3, m6 utility functions. 
+ 
+ How to map m3.m[0][0] or v6.v[POS].v[0]? 
+ Use matrix and vector functions. Do not access them directly using indices.
 
-TODO:
+CANCELLED:
  write python interface to: argv2dms, argv2hms and argv2ymd in times.h
+ No need for these functions.
 
-TODO:
- write interface to functions in misc.h.
+CANCELLED:
+ write interface to functions in misc.h. These are the integration functions.
+
+ These need, as input, pointers to C functions, even if SWIG wrapping is used.
+ Direct access to these are not required for regular users.
 
 TODO:
  Missing function declarations? Commented out in SWIG headers for now.
+ There are many functions with declaration, but no definitions. Ask Jeff
+ Percival about these. Library functions; which means that these are not
+ implemented probably because they are not needed.
 
