@@ -3,10 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to pytpm's documentation!
-=================================
-
-Contents:
+Python interface to the Telescope Pointing Machine library
+==========================================================
 
 .. toctree::
    :maxdepth: 0
