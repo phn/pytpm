@@ -12,6 +12,7 @@ Contents:
    :maxdepth: 0
     
    main.rst
+   reference.rst
 
 Indices and tables
 ==================
