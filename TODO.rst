@@ -7,10 +7,10 @@
     #. m3_Functions.h, corresponds to m3.h :DONE:
     #. m6_Functions.h corresponds to m6.h :DONE:
     #. vec.h :ONGOING:
-    #. astro.h :TODO:
-    #. times.h :ONGOING:
+    #. astro.h :ONGOING:
+    #. times.h :DONE:
     #. tpm.h :TODO:
-    #. convert function :TODO:
+    #. convert function :ONGOING:
     
 #. Missing
 
