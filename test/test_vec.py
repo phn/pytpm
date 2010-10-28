@@ -386,6 +386,97 @@ def test_m6diff():
         "{0:8.5f}".format(0.734819)
     
 # extern M6 m6inv(M6 m);
+def test_m6inv():
+    m6 = tpm.m6Qx(1.23456789, 0.34567)
+    m6_inv = tpm.m6inv(m6)
+    m3_00 = tpm.m6GetPPf(m6_inv)
+    m3_01 = tpm.m6GetPVf(m6_inv)
+    m3_10 = tpm.m6GetVPf(m6_inv)
+    m3_11 = tpm.m6GetVVf(m6_inv)
+
+    
+    assert "{0:8.5f}".format(tpm.m3GetXXf(m3_00)) == \
+        "{0:8.5f}".format(1.0)
+    assert "{0:8.5f}".format(tpm.m3GetXXf(m3_01)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.m3GetXXf(m3_10)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.m3GetXXf(m3_11)) == \
+        "{0:8.5f}".format(1.0)
+
+    assert "{0:8.5f}".format(tpm.m3GetXYf(m3_00)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.m3GetXYf(m3_01)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.m3GetXYf(m3_10)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.m3GetXYf(m3_11)) == \
+        "{0:8.5f}".format(0.0)
+
+    assert "{0:8.5f}".format(tpm.m3GetXZf(m3_00)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.m3GetXZf(m3_01)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.m3GetXZf(m3_10)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.m3GetXZf(m3_11)) == \
+        "{0:8.5f}".format(0.0)
+
+    assert "{0:8.5f}".format(tpm.m3GetYXf(m3_00)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.m3GetYXf(m3_01)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.m3GetYXf(m3_10)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.m3GetYXf(m3_11)) == \
+        "{0:8.5f}".format(0.0)
+
+    assert "{0:8.5f}".format(tpm.m3GetYYf(m3_00)) == \
+        "{0:8.5f}".format(0.329929)
+    assert "{0:8.5f}".format(tpm.m3GetYYf(m3_01)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.m3GetYYf(m3_10)) == \
+        "{0:8.5f}".format(-0.326314)
+    assert "{0:8.5f}".format(tpm.m3GetYYf(m3_11)) == \
+        "{0:8.5f}".format(0.329929)
+    
+    
+    assert "{0:8.5f}".format(tpm.m3GetYZf(m3_00)) == \
+        "{0:8.5f}".format(-0.944006)
+    assert "{0:8.5f}".format(tpm.m3GetYZf(m3_01)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.m3GetYZf(m3_10)) == \
+        "{0:8.5f}".format(-0.114047)
+    assert "{0:8.5f}".format(tpm.m3GetYZf(m3_11)) == \
+        "{0:8.5f}".format(-0.944006)
+
+    assert "{0:8.5f}".format(tpm.m3GetZXf(m3_00)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.m3GetZXf(m3_01)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.m3GetZXf(m3_10)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.m3GetZXf(m3_11)) == \
+        "{0:8.5f}".format(0.0)
+
+    assert "{0:8.5f}".format(tpm.m3GetZYf(m3_00)) == \
+        "{0:8.5f}".format(0.944006)
+    assert "{0:8.5f}".format(tpm.m3GetZYf(m3_01)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.m3GetZYf(m3_10)) == \
+        "{0:8.5f}".format(0.114047)
+    assert "{0:8.5f}".format(tpm.m3GetZYf(m3_11)) == \
+        "{0:8.5f}".format(0.944006)
+
+    assert "{0:8.5f}".format(tpm.m3GetZZf(m3_00)) == \
+        "{0:8.5f}".format(0.329929)
+    assert "{0:8.5f}".format(tpm.m3GetZZf(m3_01)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.m3GetZZf(m3_10)) == \
+        "{0:8.5f}".format(-0.326314)
+    assert "{0:8.5f}".format(tpm.m3GetZZf(m3_11)) == \
+        "{0:8.5f}".format(0.329929)
+    
 # extern M6 m6m6(M6 m1, M6 m2);
 # extern M6 m6scale(M6 m, double s);
 # extern M6 m6sum(M6 m1, M6 m2);
