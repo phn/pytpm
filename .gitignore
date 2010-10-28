@@ -6,3 +6,4 @@
 *.pyc
 build/
 doc/_build/
+*_exe
