@@ -31,3 +31,11 @@ m6diff: test_m6diff.c
 	$(CC) test_m6diff.c libtpm.a -lm -o test_m6diff_exe
 m6inv: test_m6inv.c
 	$(CC) test_m6inv.c libtpm.a -lm -o test_m6inv_exe
+m6m6: test_m6m6.c
+	$(CC) test_m6m6.c libtpm.a -lm -o test_m6m6_exe
+m6scale: test_m6scale.c
+	$(CC) test_m6scale.c libtpm.a -lm -o test_m6scale_exe
+m6sum: test_m6sum.c
+	$(CC) test_m6sum.c libtpm.a -lm -o test_m6sum_exe
+m3v3: test_m3v3.c
+	$(CC) test_m3v3.c libtpm.a -lm -o test_m3v3_exe
