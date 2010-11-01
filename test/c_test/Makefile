@@ -43,3 +43,5 @@ m6v3: test_m6v3.c
 	$(CC) test_m6v3.c libtpm.a -lm -o test_m6v3_exe
 v3c2s: test_v3c2s.c
 	$(CC) test_v3c2s.c libtpm.a -lm -o test_v3c2s_exe
+v3cross: test_v3cross.c
+	$(CC) test_v3cross.c libtpm.a -lm -o test_v3cross_exe

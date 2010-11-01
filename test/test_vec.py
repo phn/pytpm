@@ -816,19 +816,144 @@ def test_v3c2s():
     v3 = tpm.v3c2s(v3)
     
     assert "{0}".format(tpm.v3GetTypef(v3)) == \
-        "{0}".format(1)
+        "{0}".format(tpm.SPHERICAL)
     assert "{0:8.5f}".format(tpm.v3GetRf(v3)) == \
         "{0:8.5f}".format(10934.266796)
     assert "{0:8.5f}".format(tpm.v3GetAlphaf(v3)) == \
         "{0:8.5f}".format(1.329037)
-    assert "{0:8.5f}".format(tpm.v3GetZf(v3)) == \
+    assert "{0:8.5f}".format(tpm.v3GetDeltaf(v3)) == \
         "{0:8.5f}".format(1.127231)
 
 # extern V3 v3cross(V3 v1, V3 v2);
+def test_v3cross():
+  v3_1 = tpm.V3()
+  v3_2 = tpm.V3()
+  
+  tpm.v3SetTypef(v3_1, tpm.CARTESIAN);
+  tpm.v3SetXf(v3_1, 1123.4556);
+  tpm.v3SetYf(v3_1, 4556.1123);
+  tpm.v3SetZf(v3_1, 9876.1267);
+
+  tpm.v3SetTypef(v3_2, tpm.CARTESIAN);
+  tpm.v3SetXf(v3_2, 2.3456);
+  tpm.v3SetYf(v3_2, 6.7891);
+  tpm.v3SetZf(v3_2, 7.8912);
+
+  v3 = tpm.v3cross(v3_1, v3_2);
+
+  assert "{0}".format(tpm.v3GetTypef(v3)) == \
+      "{0}".format(tpm.CARTESIAN)
+  assert "{0:8.5f}".format(tpm.v3GetRf(v3)) == \
+      "{0:8.5f}".format(-31096.818397)
+  assert "{0:8.5f}".format(tpm.v3GetAlphaf(v3)) == \
+      "{0:8.5f}".format(14300.029957)
+  assert "{0:8.5f}".format(tpm.v3GetZf(v3)) == \
+      "{0:8.5f}".format(-3059.564597)
+  
 # extern V3 v3diff(V3 v1, V3 v2);
+def test_v3diff():
+  v3_1 = tpm.V3()
+  v3_2 = tpm.V3()
+  
+  tpm.v3SetTypef(v3_1, tpm.CARTESIAN);
+  tpm.v3SetXf(v3_1, 1123.4556);
+  tpm.v3SetYf(v3_1, 4556.1123);
+  tpm.v3SetZf(v3_1, 9876.1267);
+
+  tpm.v3SetTypef(v3_2, tpm.CARTESIAN);
+  tpm.v3SetXf(v3_2, 2.3456);
+  tpm.v3SetYf(v3_2, 6.7891);
+  tpm.v3SetZf(v3_2, 7.8912);
+
+  v3 = tpm.v3diff(v3_1, v3_2);
+
+  assert "{0}".format(tpm.v3GetTypef(v3)) == \
+      "{0}".format(tpm.CARTESIAN)
+  assert "{0:8.5f}".format(tpm.v3GetRf(v3)) == \
+      "{0:8.5f}".format(1123.4556 - 2.3456)
+  assert "{0:8.5f}".format(tpm.v3GetAlphaf(v3)) == \
+      "{0:8.5f}".format(4556.1123 - 6.7891)
+  assert "{0:8.5f}".format(tpm.v3GetZf(v3)) == \
+      "{0:8.5f}".format(9876.1267 - 7.8912)
+
 # extern V3 v3init(int type);
+def test_v3init():
+
+    v3 = tpm.v3init(tpm.CARTESIAN)
+    
+    assert "{0}".format(tpm.v3GetTypef(v3)) == \
+        "{0}".format(tpm.CARTESIAN)
+    assert "{0:8.5f}".format(tpm.v3GetXf(v3)) == \
+        "{0:8.5f}".format(0)
+    assert "{0:8.5f}".format(tpm.v3GetYf(v3)) == \
+        "{0:8.5f}".format(0)
+    assert "{0:8.5f}".format(tpm.v3GetZf(v3)) == \
+        "{0:8.5f}".format(0)
+
+    v3 = tpm.v3init(tpm.SPHERICAL)
+    
+    assert "{0}".format(tpm.v3GetTypef(v3)) == \
+        "{0}".format(tpm.SPHERICAL)
+    assert "{0:8.5f}".format(tpm.v3GetRf(v3)) == \
+        "{0:8.5f}".format(0)
+    assert "{0:8.5f}".format(tpm.v3GetAlphaf(v3)) == \
+        "{0:8.5f}".format(0)
+    assert "{0:8.5f}".format(tpm.v3GetDeltaf(v3)) == \
+        "{0:8.5f}".format(0)
+    
+    
 # extern V3 v3s2c(V3 vs);
+def test_v3s2c():
+    v3 = tpm.V3()
+    tpm.v3SetTypef(v3, tpm.SPHERICAL)
+    tpm.v3SetRf(v3, 10934.266796);
+    tpm.v3SetAlphaf(v3, 1.329037);
+    tpm.v3SetDeltaf(v3, 1.127231);
+
+    v3 = tpm.v3s2c(v3)
+    # THIS IS REVERSE OF test_v3c2s BUT CAN ONLY GET ACCURACY OF
+    # 8.2! WHY?
+    #print tpm.v3GetXf(v3), tpm.v3GetYf(v3), tpm.v3GetZf(v3)
+    assert "{0}".format(tpm.v3GetTypef(v3)) == \
+        "{0}".format(tpm.CARTESIAN)
+    assert "{0:8.2f}".format(tpm.v3GetXf(v3)) == \
+        "{0:8.2f}".format(1123.4556)
+    assert "{0:8.2f}".format(tpm.v3GetYf(v3)) == \
+        "{0:8.2f}".format(4556.1123)
+    assert "{0:8.2f}".format(tpm.v3GetZf(v3)) == \
+        "{0:8.2f}".format(9876.1267)
+
 # extern V3 v3scale(V3 v, double s);
+def test_v3scale():
+    v3 = tpm.V3()
+    tpm.v3SetTypef(v3, tpm.SPHERICAL)
+    tpm.v3SetRf(v3, 10934.266796);
+    tpm.v3SetAlphaf(v3, 1.329037);
+    tpm.v3SetDeltaf(v3, 1.127231);
+
+    x = 12.345
+    v3 = tpm.v3scale(v3, x)
+    
+    assert "{0}".format(tpm.v3GetTypef(v3)) == \
+        "{0}".format(tpm.SPHERICAL)
+    assert "{0:13.5f}".format(tpm.v3GetRf(v3)) == \
+        "{0:13.5f}".format(10934.266796*x)
+
+    v3 = tpm.v3init(tpm.CARTESIAN)
+    tpm.v3SetXf(v3, 1.2345)
+    tpm.v3SetYf(v3, 2.3456)
+    tpm.v3SetZf(v3, 3.4567)
+
+    v3 = tpm.v3scale(v3, x)
+    assert "{0}".format(tpm.v3GetTypef(v3)) == \
+        "{0}".format(tpm.CARTESIAN)
+    assert "{0:8.5f}".format(tpm.v3GetXf(v3)) == \
+        "{0:8.5f}".format(1.2345*x)
+    assert "{0:8.5f}".format(tpm.v3GetYf(v3)) == \
+        "{0:8.5f}".format(2.3456*x)
+    assert "{0:8.5f}".format(tpm.v3GetZf(v3)) == \
+        "{0:8.5f}".format(3.4567*x)
+    
 # extern V3 v3sum(V3 v1, V3 v2);
 # extern V3 v3unit(V3 v);
 # extern V3 v62v3(V6 v6, double dt);
