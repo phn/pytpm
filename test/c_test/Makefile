@@ -39,3 +39,7 @@ m6sum: test_m6sum.c
 	$(CC) test_m6sum.c libtpm.a -lm -o test_m6sum_exe
 m3v3: test_m3v3.c
 	$(CC) test_m3v3.c libtpm.a -lm -o test_m3v3_exe
+m6v3: test_m6v3.c
+	$(CC) test_m6v3.c libtpm.a -lm -o test_m6v3_exe
+v3c2s: test_v3c2s.c
+	$(CC) test_v3c2s.c libtpm.a -lm -o test_v3c2s_exe

@@ -789,7 +789,41 @@ def test_m3v3():
         "{0:8.5f}".format(1.049651)
 
 # extern V3 m6v3(M6 m, V3 v);
+def test_m6v3():
+    v3 = tpm.V3()
+    tpm.v3SetXf(v3, 1.2345)
+    tpm.v3SetYf(v3, 2.3456)
+    tpm.v3SetZf(v3, 3.4567)
+    m6 = tpm.m6Qy(1.98765432, 0.76543)
+
+    v3 = tpm.m6v3(m6, v3)
+    
+    assert "{0:8.5f}".format(tpm.v3GetXf(v3)) == \
+        "{0:8.5f}".format(-3.660524)
+    assert "{0:8.5f}".format(tpm.v3GetYf(v3)) == \
+        "{0:8.5f}".format(2.345600)
+    assert "{0:8.5f}".format(tpm.v3GetZf(v3)) == \
+        "{0:8.5f}".format(-0.270797)
+
 # extern V3 v3c2s(V3 vc);
+def test_v3c2s():
+    v3 = tpm.V3()
+    tpm.v3SetTypef(v3, tpm.CARTESIAN);
+    tpm.v3SetXf(v3, 1123.4556);
+    tpm.v3SetYf(v3, 4556.1123);
+    tpm.v3SetZf(v3, 9876.1267);
+
+    v3 = tpm.v3c2s(v3)
+    
+    assert "{0}".format(tpm.v3GetTypef(v3)) == \
+        "{0}".format(1)
+    assert "{0:8.5f}".format(tpm.v3GetRf(v3)) == \
+        "{0:8.5f}".format(10934.266796)
+    assert "{0:8.5f}".format(tpm.v3GetAlphaf(v3)) == \
+        "{0:8.5f}".format(1.329037)
+    assert "{0:8.5f}".format(tpm.v3GetZf(v3)) == \
+        "{0:8.5f}".format(1.127231)
+
 # extern V3 v3cross(V3 v1, V3 v2);
 # extern V3 v3diff(V3 v1, V3 v2);
 # extern V3 v3init(int type);
