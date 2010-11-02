@@ -993,9 +993,87 @@ def test_v3unit():
     assert "{0:8.5f}".format(tpm.v3GetZf(v3)) == \
         "{0:8.5f}".format(0.839507)
     
-
 # extern V3 v62v3(V6 v6, double dt);
+def test_v62v3():
+  v3_1 = tpm.V3()
+  v3_2 = tpm.V3()
+  v6 = tpm.V6()
+
+  
+  tpm.v3SetTypef(v3_1, tpm.CARTESIAN);
+  tpm.v3SetXf(v3_1, 1123.4556);
+  tpm.v3SetYf(v3_1, 4556.1123);
+  tpm.v3SetZf(v3_1, 9876.1267);
+
+  tpm.v3SetTypef(v3_2, tpm.CARTESIAN);
+  tpm.v3SetXf(v3_2, 2.3456);
+  tpm.v3SetYf(v3_2, 6.7891);
+  tpm.v3SetZf(v3_2, 7.8912);
+
+  tpm.v6SetPosf(v6, v3_1);
+  tpm.v6SetVelf(v6, v3_2);
+
+  tpm.v6SetTypef(v6, tpm.CARTESIAN);
+
+  v3_1 = tpm.v62v3(v6, 1.234);
+
+
+  assert "{0:8.6f}".format(tpm.v3GetXf(v3_1)) == \
+      "{0:8.6f}".format(1126.350070)
+  assert "{0:8.6f}".format(tpm.v3GetYf(v3_1)) == \
+      "{0:8.6f}".format(4564.490049)
+  assert "{0:8.6f}".format(tpm.v3GetZf(v3_1)) == \
+      "{0:8.6f}".format(9885.864441)
+  
 # extern V6 m3v6(M3 m, V6 v1);
+def test_m3v6():
+
+  v3_1 = tpm.v3init(tpm.CARTESIAN)
+  v3_2 = tpm.v3init(tpm.CARTESIAN)
+  v6 = tpm.v6init(tpm.CARTESIAN)
+  
+  tpm.v3SetTypef(v3_1, tpm.CARTESIAN)
+  tpm.v3SetXf(v3_1, 1123.4556)
+  tpm.v3SetYf(v3_1, 4556.1123)
+  tpm.v3SetZf(v3_1, 9876.1267)
+
+  tpm.v3SetTypef(v3_2, tpm.CARTESIAN)
+  tpm.v3SetXf(v3_2, 2.3456)
+  tpm.v3SetYf(v3_2, 6.7891)
+  tpm.v3SetZf(v3_2, 7.8912)
+
+  tpm.v6SetPosf(v6, v3_1)
+  tpm.v6SetVelf(v6, v3_2)
+
+  tpm.v6SetTypef(v6, tpm.CARTESIAN)
+  
+  m3_1 = tpm.m3I(1.0)
+
+  tpm.m3SetXXf(m3_1,0.2345) 
+  tpm.m3SetXYf(m3_1,0.5432)	
+  tpm.m3SetXZf(m3_1,0.1234)  
+  tpm.m3SetYXf(m3_1,0.5467)  
+  tpm.m3SetYYf(m3_1,0.4190)  
+  tpm.m3SetYZf(m3_1,0.9874)  
+  tpm.m3SetZXf(m3_1,0.1225)  
+  tpm.m3SetZYf(m3_1,0.4331)  
+  tpm.m3SetZZf(m3_1,0.2309)  
+
+  v6 = tpm.m3v6(m3_1, v6)
+
+  assert "{0:8.5f}".format(tpm.v6GetXf(v6)) == \
+      "{0:8.5f}".format(3957.044574)
+  assert "{0:11.5f}".format(tpm.v6GetYf(v6)) == \
+      "{0:11.5f}".format(12274.891734)
+  assert "{0:8.5f}".format(tpm.v6GetZf(v6)) == \
+      "{0:8.5f}".format(4391.273203)
+  assert "{0:8.5f}".format(tpm.v6GetXDotf(v6)) == \
+      "{0:8.5f}".format(5.211656)
+  assert "{0:8.5f}".format(tpm.v6GetYDotf(v6)) == \
+      "{0:8.5f}".format(11.918743)
+  assert "{0:8.5f}".format(tpm.v6GetZDotf(v6)) == \
+      "{0:8.5f}".format(5.049773)
+
 # extern V6 m6v6(M6 m, V6 v1);
 # extern V6 v32v6(V3 v3);
 # extern V6 v6c2s(V6 vc);
