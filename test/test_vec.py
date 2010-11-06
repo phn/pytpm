@@ -3,11 +3,117 @@
 These functions are used for accessing and manipulating vectors and
 matrices.
 
+The values that appear in assert statements are, in most cases,
+obtained by running the appropriate C program, which can be found in
+the ``c_test`` directory.
+
 :author: Prasanth Nair
 :contact: prasanthhn@gmail.com
 """
 from pytpm import tpm
 import math
+
+def setup_cartesian_v3():
+    v3 = tpm.V3()
+    tpm.v3SetTypef(v3, tpm.CARTESIAN);
+    tpm.v3SetXf(v3, 1123.4556);
+    tpm.v3SetYf(v3, 4556.1123);
+    tpm.v3SetZf(v3, 9876.1267);
+
+    return v3
+
+def setup_m3():
+    m3 = tpm.m3I(1.0)
+   
+    tpm.m3SetXXf(m3, 0.2345) 
+    tpm.m3SetXYf(m3, 0.5432)	
+    tpm.m3SetXZf(m3, 0.1234)  
+    tpm.m3SetYXf(m3, 0.5467)  
+    tpm.m3SetYYf(m3, 0.4190)  
+    tpm.m3SetYZf(m3, 0.9874)  
+    tpm.m3SetZXf(m3, 0.1225)  
+    tpm.m3SetZYf(m3, 0.4331)  
+    tpm.m3SetZZf(m3, 0.2309)  
+   
+    return m3
+
+def setup_cartesian_v6_with_2_v3():
+    # Create a V6 vector, using 2 V3 vectors.
+    v3_1 = tpm.v3init(tpm.CARTESIAN)
+    v3_2 = tpm.v3init(tpm.CARTESIAN)
+    v6 = tpm.v6init(tpm.CARTESIAN)
+  
+    tpm.v3SetTypef(v3_1, tpm.CARTESIAN)
+    tpm.v3SetXf(v3_1, 1123.4556)
+    tpm.v3SetYf(v3_1, 4556.1123)
+    tpm.v3SetZf(v3_1, 9876.1267)
+    
+    tpm.v3SetTypef(v3_2, tpm.CARTESIAN)
+    tpm.v3SetXf(v3_2, 2.3456)
+    tpm.v3SetYf(v3_2, 6.7891)
+    tpm.v3SetZf(v3_2, 7.8912)
+    
+    tpm.v6SetPosf(v6, v3_1)
+    tpm.v6SetVelf(v6, v3_2)
+    
+    tpm.v6SetTypef(v6, tpm.CARTESIAN)
+
+    return v6
+
+def setup_m6_with_4_m3():
+    # Create a M6 matrix, by using 4 M3 matrices.
+    m3_1 = tpm.m3I(1.0)
+    m6 = tpm.M6()
+
+    tpm.m3SetXXf(m3_1, 0.2345) 
+    tpm.m3SetXYf(m3_1, 0.5432)	
+    tpm.m3SetXZf(m3_1, 0.1234)  
+    tpm.m3SetYXf(m3_1, 0.5467)  
+    tpm.m3SetYYf(m3_1, 0.4190)  
+    tpm.m3SetYZf(m3_1, 0.9874)  
+    tpm.m3SetZXf(m3_1, 0.1225)  
+    tpm.m3SetZYf(m3_1, 0.4331)  
+    tpm.m3SetZZf(m3_1, 0.2309)  
+
+    tpm.m6SetPPf(m6, m3_1)
+
+    tpm.m3SetXXf(m3_1, 0.4523) 
+    tpm.m3SetXYf(m3_1, 0.3254)	
+    tpm.m3SetXZf(m3_1, 0.3412)  
+    tpm.m3SetYXf(m3_1, 0.6754)  
+    tpm.m3SetYYf(m3_1, 0.9041)  
+    tpm.m3SetYZf(m3_1, 0.7498)  
+    tpm.m3SetZXf(m3_1, 0.2512)  
+    tpm.m3SetZYf(m3_1, 0.3143)  
+    tpm.m3SetZZf(m3_1, 0.0923)
+    
+    tpm.m6SetPVf(m6, m3_1)
+
+    tpm.m3SetXXf(m3_1, 0.4253) 
+    tpm.m3SetXYf(m3_1, 0.3524)	
+    tpm.m3SetXZf(m3_1, 0.3142)  
+    tpm.m3SetYXf(m3_1, 0.6574)  
+    tpm.m3SetYYf(m3_1, 0.9401)  
+    tpm.m3SetYZf(m3_1, 0.7948)  
+    tpm.m3SetZXf(m3_1, 0.2152)  
+    tpm.m3SetZYf(m3_1, 0.4133)  
+    tpm.m3SetZZf(m3_1, 0.2903)
+    
+    tpm.m6SetVPf(m6, m3_1)
+
+    tpm.m3SetXXf(m3_1, 0.3524) 
+    tpm.m3SetXYf(m3_1, 0.4235)	
+    tpm.m3SetXZf(m3_1, 0.2413)  
+    tpm.m3SetYXf(m3_1, 0.4756)  
+    tpm.m3SetYYf(m3_1, 0.1049)  
+    tpm.m3SetYZf(m3_1, 0.8497)  
+    tpm.m3SetZXf(m3_1, 0.2512)  
+    tpm.m3SetZYf(m3_1, 0.3314)  
+    tpm.m3SetZZf(m3_1, 0.3092)
+    
+    tpm.m6SetVVf(m6, m3_1)
+
+    return m6
 
 def compare_m3(m3_1, m3_2):
     assert "{0:8.6f}".format(tpm.m3GetXXf(m3_1)) == \
@@ -995,28 +1101,8 @@ def test_v3unit():
     
 # extern V3 v62v3(V6 v6, double dt);
 def test_v62v3():
-  v3_1 = tpm.V3()
-  v3_2 = tpm.V3()
-  v6 = tpm.V6()
-
-  
-  tpm.v3SetTypef(v3_1, tpm.CARTESIAN);
-  tpm.v3SetXf(v3_1, 1123.4556);
-  tpm.v3SetYf(v3_1, 4556.1123);
-  tpm.v3SetZf(v3_1, 9876.1267);
-
-  tpm.v3SetTypef(v3_2, tpm.CARTESIAN);
-  tpm.v3SetXf(v3_2, 2.3456);
-  tpm.v3SetYf(v3_2, 6.7891);
-  tpm.v3SetZf(v3_2, 7.8912);
-
-  tpm.v6SetPosf(v6, v3_1);
-  tpm.v6SetVelf(v6, v3_2);
-
-  tpm.v6SetTypef(v6, tpm.CARTESIAN);
-
+  v6 = setup_cartesian_v6_with_2_v3()
   v3_1 = tpm.v62v3(v6, 1.234);
-
 
   assert "{0:8.6f}".format(tpm.v3GetXf(v3_1)) == \
       "{0:8.6f}".format(1126.350070)
@@ -1028,37 +1114,9 @@ def test_v62v3():
 # extern V6 m3v6(M3 m, V6 v1);
 def test_m3v6():
 
-  v3_1 = tpm.v3init(tpm.CARTESIAN)
-  v3_2 = tpm.v3init(tpm.CARTESIAN)
-  v6 = tpm.v6init(tpm.CARTESIAN)
+  v6 = setup_cartesian_v6_with_2_v3()
+  m3_1 = setup_m3()
   
-  tpm.v3SetTypef(v3_1, tpm.CARTESIAN)
-  tpm.v3SetXf(v3_1, 1123.4556)
-  tpm.v3SetYf(v3_1, 4556.1123)
-  tpm.v3SetZf(v3_1, 9876.1267)
-
-  tpm.v3SetTypef(v3_2, tpm.CARTESIAN)
-  tpm.v3SetXf(v3_2, 2.3456)
-  tpm.v3SetYf(v3_2, 6.7891)
-  tpm.v3SetZf(v3_2, 7.8912)
-
-  tpm.v6SetPosf(v6, v3_1)
-  tpm.v6SetVelf(v6, v3_2)
-
-  tpm.v6SetTypef(v6, tpm.CARTESIAN)
-  
-  m3_1 = tpm.m3I(1.0)
-
-  tpm.m3SetXXf(m3_1,0.2345) 
-  tpm.m3SetXYf(m3_1,0.5432)	
-  tpm.m3SetXZf(m3_1,0.1234)  
-  tpm.m3SetYXf(m3_1,0.5467)  
-  tpm.m3SetYYf(m3_1,0.4190)  
-  tpm.m3SetYZf(m3_1,0.9874)  
-  tpm.m3SetZXf(m3_1,0.1225)  
-  tpm.m3SetZYf(m3_1,0.4331)  
-  tpm.m3SetZZf(m3_1,0.2309)  
-
   v6 = tpm.m3v6(m3_1, v6)
 
   assert "{0:8.5f}".format(tpm.v6GetXf(v6)) == \
@@ -1074,80 +1132,12 @@ def test_m3v6():
   assert "{0:8.5f}".format(tpm.v6GetZDotf(v6)) == \
       "{0:8.5f}".format(5.049773)
 
+  
 # extern V6 m6v6(M6 m, V6 v1);
 def test_m6v6():
-    # Create a V6 vector, using 3 V3 vectors.
-    v3_1 = tpm.v3init(tpm.CARTESIAN)
-    v3_2 = tpm.v3init(tpm.CARTESIAN)
-    v6 = tpm.v6init(tpm.CARTESIAN)
-  
-    tpm.v3SetTypef(v3_1, tpm.CARTESIAN)
-    tpm.v3SetXf(v3_1, 1123.4556)
-    tpm.v3SetYf(v3_1, 4556.1123)
-    tpm.v3SetZf(v3_1, 9876.1267)
+    v6 = setup_cartesian_v6_with_2_v3()
+    m6 = setup_m6_with_4_m3()
     
-    tpm.v3SetTypef(v3_2, tpm.CARTESIAN)
-    tpm.v3SetXf(v3_2, 2.3456)
-    tpm.v3SetYf(v3_2, 6.7891)
-    tpm.v3SetZf(v3_2, 7.8912)
-    
-    tpm.v6SetPosf(v6, v3_1)
-    tpm.v6SetVelf(v6, v3_2)
-    
-    tpm.v6SetTypef(v6, tpm.CARTESIAN)
-
-    # Create a M6 matrix, by using 4 M3 matrices.
-    m3_1 = tpm.m3I(1.0)
-    m6 = tpm.M6()
-
-    tpm.m3SetXXf(m3_1, 0.2345) 
-    tpm.m3SetXYf(m3_1, 0.5432)	
-    tpm.m3SetXZf(m3_1, 0.1234)  
-    tpm.m3SetYXf(m3_1, 0.5467)  
-    tpm.m3SetYYf(m3_1, 0.4190)  
-    tpm.m3SetYZf(m3_1, 0.9874)  
-    tpm.m3SetZXf(m3_1, 0.1225)  
-    tpm.m3SetZYf(m3_1, 0.4331)  
-    tpm.m3SetZZf(m3_1, 0.2309)  
-
-    tpm.m6SetPPf(m6, m3_1)
-
-    tpm.m3SetXXf(m3_1, 0.4523) 
-    tpm.m3SetXYf(m3_1, 0.3254)	
-    tpm.m3SetXZf(m3_1, 0.3412)  
-    tpm.m3SetYXf(m3_1, 0.6754)  
-    tpm.m3SetYYf(m3_1, 0.9041)  
-    tpm.m3SetYZf(m3_1, 0.7498)  
-    tpm.m3SetZXf(m3_1, 0.2512)  
-    tpm.m3SetZYf(m3_1, 0.3143)  
-    tpm.m3SetZZf(m3_1, 0.0923)
-    
-    tpm.m6SetPVf(m6, m3_1)
-
-    tpm.m3SetXXf(m3_1, 0.4253) 
-    tpm.m3SetXYf(m3_1, 0.3524)	
-    tpm.m3SetXZf(m3_1, 0.3142)  
-    tpm.m3SetYXf(m3_1, 0.6574)  
-    tpm.m3SetYYf(m3_1, 0.9401)  
-    tpm.m3SetYZf(m3_1, 0.7948)  
-    tpm.m3SetZXf(m3_1, 0.2152)  
-    tpm.m3SetZYf(m3_1, 0.4133)  
-    tpm.m3SetZZf(m3_1, 0.2903)
-    
-    tpm.m6SetVPf(m6, m3_1)
-
-    tpm.m3SetXXf(m3_1, 0.3524) 
-    tpm.m3SetXYf(m3_1, 0.4235)	
-    tpm.m3SetXZf(m3_1, 0.2413)  
-    tpm.m3SetYXf(m3_1, 0.4756)  
-    tpm.m3SetYYf(m3_1, 0.1049)  
-    tpm.m3SetYZf(m3_1, 0.8497)  
-    tpm.m3SetZXf(m3_1, 0.2512)  
-    tpm.m3SetZYf(m3_1, 0.3314)  
-    tpm.m3SetZZf(m3_1, 0.3092)
-    
-    tpm.m6SetVVf(m6, m3_1)
-
     v6 = tpm.m6v6(m6, v6)
     
     assert "{0:8.5f}".format(tpm.v6GetXf(v6)) == \
@@ -1166,11 +1156,7 @@ def test_m6v6():
 # extern V6 v32v6(V3 v3);
 def test_v32v6():
     v6 = tpm.v6init(tpm.CARTESIAN)
-    v3 = tpm.V3()
-    tpm.v3SetTypef(v3, tpm.CARTESIAN);
-    tpm.v3SetXf(v3, 1123.4556);
-    tpm.v3SetYf(v3, 4556.1123);
-    tpm.v3SetZf(v3, 9876.1267);
+    v3 = setup_cartesian_v3()
     v6 = tpm.v32v6(v3)
     
     assert "{0:8.5f}".format(tpm.v6GetXf(v6)) == \
@@ -1186,12 +1172,137 @@ def test_v32v6():
     assert "{0:8.5f}".format(tpm.v6GetZDotf(v6)) == \
         "{0:8.5f}".format(0.0)
 
-    
-    
+
 # extern V6 v6c2s(V6 vc);
+def test_v6c2s():
+    v6 = setup_cartesian_v6_with_2_v3()
+    v6 = tpm.v6c2s(v6)
+
+    assert "{0:8.5f}".format(tpm.v6GetXf(v6)) == \
+        "{0:8.5f}".format(10934.266796)
+    assert "{0:11.5f}".format(tpm.v6GetYf(v6)) == \
+        "{0:11.5f}".format(1.329037)
+    assert "{0:8.5f}".format(tpm.v6GetZf(v6)) == \
+        "{0:8.5f}".format(1.127231)
+    assert "{0:8.5f}".format(tpm.v6GetXDotf(v6)) == \
+        "{0:8.5f}".format(10.197444)
+    assert "{0:8.5f}".format(tpm.v6GetYDotf(v6)) == \
+        "{0:8.5f}".format(-0.000139)
+    assert "{0:8.5f}".format(tpm.v6GetZDotf(v6)) == \
+        "{0:8.5f}".format(-0.000281)
+    
 # extern V6 v6cross(V6 v1, V6 v2);
+def test_v6cross():
+    v6_1 = setup_cartesian_v6_with_2_v3()
+    
+    v3_1 = tpm.v3init(tpm.CARTESIAN)
+    v3_2 = tpm.v3init(tpm.CARTESIAN)
+    v6_2 = tpm.v6init(tpm.CARTESIAN)
+ 
+    tpm.v3SetTypef(v3_1, tpm.CARTESIAN)
+    tpm.v3SetXf(v3_1, 65.234556)
+    tpm.v3SetYf(v3_1, 32.561123)
+    tpm.v3SetZf(v3_1, 76.761267)
+        
+    tpm.v3SetTypef(v3_2, tpm.CARTESIAN)
+    tpm.v3SetXf(v3_2, 0.6543)
+    tpm.v3SetYf(v3_2, 0.1987)
+    tpm.v3SetZf(v3_2, 0.2189)
+    
+    tpm.v6SetPosf(v6_2, v3_1)
+    tpm.v6SetVelf(v6_2, v3_2)
+        
+    tpm.v6SetTypef(v6_2, tpm.CARTESIAN)
+        
+    v6 = tpm.v6cross(v6_1, v6_2)
+ 
+    assert "{0:8.5f}".format(tpm.v6GetXf(v6)) == \
+        "{0:8.5f}".format(28155.176500)
+    assert "{0:11.5f}".format(tpm.v6GetYf(v6)) == \
+        "{0:11.5f}".format(558026.865000)
+    assert "{0:8.5f}".format(tpm.v6GetZf(v6)) == \
+        "{0:8.5f}".format(-260634.987000)
+    assert "{0:8.5f}".format(tpm.v6GetXDotf(v6)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.v6GetYDotf(v6)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.v6GetZDotf(v6)) == \
+        "{0:8.5f}".format(0.0)
+    
 # extern V6 v6diff(V6 v1, V6 v2);
+def test_v6diff():
+    v6_1 = setup_cartesian_v6_with_2_v3()
+    
+    v3_1 = tpm.v3init(tpm.CARTESIAN)
+    v3_2 = tpm.v3init(tpm.CARTESIAN)
+    v6_2 = tpm.v6init(tpm.CARTESIAN)
+ 
+    tpm.v3SetTypef(v3_1, tpm.CARTESIAN)
+    tpm.v3SetXf(v3_1, 65.234556)
+    tpm.v3SetYf(v3_1, 32.561123)
+    tpm.v3SetZf(v3_1, 76.761267)
+        
+    tpm.v3SetTypef(v3_2, tpm.CARTESIAN)
+    tpm.v3SetXf(v3_2, 0.6543)
+    tpm.v3SetYf(v3_2, 0.1987)
+    tpm.v3SetZf(v3_2, 0.2189)
+    
+    tpm.v6SetPosf(v6_2, v3_1)
+    tpm.v6SetVelf(v6_2, v3_2)
+        
+    tpm.v6SetTypef(v6_2, tpm.CARTESIAN)
+        
+    v6 = tpm.v6diff(v6_1, v6_2)
+ 
+    assert "{0:8.5f}".format(tpm.v6GetXf(v6)) == \
+        "{0:8.5f}".format(1123.4556 - 65.234556)
+    assert "{0:11.5f}".format(tpm.v6GetYf(v6)) == \
+        "{0:11.5f}".format(4556.1123 - 32.561123)
+    assert "{0:8.5f}".format(tpm.v6GetZf(v6)) == \
+        "{0:8.5f}".format(9876.1267 - 76.761267)
+    assert "{0:8.5f}".format(tpm.v6GetXDotf(v6)) == \
+        "{0:8.5f}".format(2.3456 - 0.6543)
+    assert "{0:8.5f}".format(tpm.v6GetYDotf(v6)) == \
+        "{0:8.5f}".format(6.7891 - 0.1987)
+    assert "{0:8.5f}".format(tpm.v6GetZDotf(v6)) == \
+        "{0:8.5f}".format(7.8912 - 0.2189)
+
 # extern V6 v6init(int type);
+def test_v6init():
+    v6 = tpm.v6init(tpm.CARTESIAN)
+
+    assert tpm.v6GetTypef(v6) == tpm.CARTESIAN
+    
+    assert "{0:8.5f}".format(tpm.v6GetXf(v6)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:11.5f}".format(tpm.v6GetYf(v6)) == \
+        "{0:11.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.v6GetZf(v6)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.v6GetXDotf(v6)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.v6GetYDotf(v6)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.v6GetZDotf(v6)) == \
+        "{0:8.5f}".format(0.0)
+
+    v6 = tpm.v6init(tpm.SPHERICAL)
+
+    assert tpm.v6GetTypef(v6) == tpm.SPHERICAL
+    
+    assert "{0:8.5f}".format(tpm.v6GetRf(v6)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:11.5f}".format(tpm.v6GetAlphaf(v6)) == \
+        "{0:11.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.v6GetDeltaf(v6)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.v6GetRDotf(v6)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.v6GetAlphaDotf(v6)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.v6GetDeltaDotf(v6)) == \
+        "{0:8.5f}".format(0.0)
+    
 # extern V6 v6s2c(V6 vs);
 # extern V6 v6scale(V6 v, double s);
 # extern V6 v6sum(V6 v1, V6 v2);
