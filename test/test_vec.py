@@ -1075,7 +1075,119 @@ def test_m3v6():
       "{0:8.5f}".format(5.049773)
 
 # extern V6 m6v6(M6 m, V6 v1);
+def test_m6v6():
+    # Create a V6 vector, using 3 V3 vectors.
+    v3_1 = tpm.v3init(tpm.CARTESIAN)
+    v3_2 = tpm.v3init(tpm.CARTESIAN)
+    v6 = tpm.v6init(tpm.CARTESIAN)
+  
+    tpm.v3SetTypef(v3_1, tpm.CARTESIAN)
+    tpm.v3SetXf(v3_1, 1123.4556)
+    tpm.v3SetYf(v3_1, 4556.1123)
+    tpm.v3SetZf(v3_1, 9876.1267)
+    
+    tpm.v3SetTypef(v3_2, tpm.CARTESIAN)
+    tpm.v3SetXf(v3_2, 2.3456)
+    tpm.v3SetYf(v3_2, 6.7891)
+    tpm.v3SetZf(v3_2, 7.8912)
+    
+    tpm.v6SetPosf(v6, v3_1)
+    tpm.v6SetVelf(v6, v3_2)
+    
+    tpm.v6SetTypef(v6, tpm.CARTESIAN)
+
+    # Create a M6 matrix, by using 4 M3 matrices.
+    m3_1 = tpm.m3I(1.0)
+    m6 = tpm.M6()
+
+    tpm.m3SetXXf(m3_1, 0.2345) 
+    tpm.m3SetXYf(m3_1, 0.5432)	
+    tpm.m3SetXZf(m3_1, 0.1234)  
+    tpm.m3SetYXf(m3_1, 0.5467)  
+    tpm.m3SetYYf(m3_1, 0.4190)  
+    tpm.m3SetYZf(m3_1, 0.9874)  
+    tpm.m3SetZXf(m3_1, 0.1225)  
+    tpm.m3SetZYf(m3_1, 0.4331)  
+    tpm.m3SetZZf(m3_1, 0.2309)  
+
+    tpm.m6SetPPf(m6, m3_1)
+
+    tpm.m3SetXXf(m3_1, 0.4523) 
+    tpm.m3SetXYf(m3_1, 0.3254)	
+    tpm.m3SetXZf(m3_1, 0.3412)  
+    tpm.m3SetYXf(m3_1, 0.6754)  
+    tpm.m3SetYYf(m3_1, 0.9041)  
+    tpm.m3SetYZf(m3_1, 0.7498)  
+    tpm.m3SetZXf(m3_1, 0.2512)  
+    tpm.m3SetZYf(m3_1, 0.3143)  
+    tpm.m3SetZZf(m3_1, 0.0923)
+    
+    tpm.m6SetPVf(m6, m3_1)
+
+    tpm.m3SetXXf(m3_1, 0.4253) 
+    tpm.m3SetXYf(m3_1, 0.3524)	
+    tpm.m3SetXZf(m3_1, 0.3142)  
+    tpm.m3SetYXf(m3_1, 0.6574)  
+    tpm.m3SetYYf(m3_1, 0.9401)  
+    tpm.m3SetYZf(m3_1, 0.7948)  
+    tpm.m3SetZXf(m3_1, 0.2152)  
+    tpm.m3SetZYf(m3_1, 0.4133)  
+    tpm.m3SetZZf(m3_1, 0.2903)
+    
+    tpm.m6SetVPf(m6, m3_1)
+
+    tpm.m3SetXXf(m3_1, 0.3524) 
+    tpm.m3SetXYf(m3_1, 0.4235)	
+    tpm.m3SetXZf(m3_1, 0.2413)  
+    tpm.m3SetYXf(m3_1, 0.4756)  
+    tpm.m3SetYYf(m3_1, 0.1049)  
+    tpm.m3SetYZf(m3_1, 0.8497)  
+    tpm.m3SetZXf(m3_1, 0.2512)  
+    tpm.m3SetZYf(m3_1, 0.3314)  
+    tpm.m3SetZZf(m3_1, 0.3092)
+    
+    tpm.m6SetVVf(m6, m3_1)
+
+    v6 = tpm.m6v6(m6, v6)
+    
+    assert "{0:8.5f}".format(tpm.v6GetXf(v6)) == \
+      "{0:8.5f}".format(3963.007140)
+    assert "{0:11.5f}".format(tpm.v6GetYf(v6)) == \
+        "{0:11.5f}".format(12288.530799)
+    assert "{0:8.5f}".format(tpm.v6GetZf(v6)) == \
+        "{0:8.5f}".format(4394.724590)
+    assert "{0:8.5f}".format(tpm.v6GetXDotf(v6)) == \
+        "{0:8.5f}".format(5192.064570)
+    assert "{0:9.5f}".format(tpm.v6GetYDotf(v6)) == \
+        "{0:9.5f}".format(12879.839282)
+    assert "{0:8.5f}".format(tpm.v6GetZDotf(v6)) == \
+        "{0:8.5f}".format(4997.127521)
+
 # extern V6 v32v6(V3 v3);
+def test_v32v6():
+    v6 = tpm.v6init(tpm.CARTESIAN)
+    v3 = tpm.V3()
+    tpm.v3SetTypef(v3, tpm.CARTESIAN);
+    tpm.v3SetXf(v3, 1123.4556);
+    tpm.v3SetYf(v3, 4556.1123);
+    tpm.v3SetZf(v3, 9876.1267);
+    v6 = tpm.v32v6(v3)
+    
+    assert "{0:8.5f}".format(tpm.v6GetXf(v6)) == \
+        "{0:8.5f}".format(1123.4556)
+    assert "{0:11.5f}".format(tpm.v6GetYf(v6)) == \
+        "{0:11.5f}".format(4556.1123)
+    assert "{0:8.5f}".format(tpm.v6GetZf(v6)) == \
+        "{0:8.5f}".format(9876.1267)
+    assert "{0:8.5f}".format(tpm.v6GetXDotf(v6)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.v6GetYDotf(v6)) == \
+        "{0:8.5f}".format(0.0)
+    assert "{0:8.5f}".format(tpm.v6GetZDotf(v6)) == \
+        "{0:8.5f}".format(0.0)
+
+    
+    
 # extern V6 v6c2s(V6 vc);
 # extern V6 v6cross(V6 v1, V6 v2);
 # extern V6 v6diff(V6 v1, V6 v2);

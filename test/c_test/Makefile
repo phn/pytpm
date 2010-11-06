@@ -51,3 +51,5 @@ v62v3: test_v62v3.c
 	$(CC) test_v62v3.c libtpm.a -lm -o test_v62v3_exe
 m3v6: test_m3v6.c
 	$(CC) test_m3v6.c libtpm.a -lm -o test_m3v6_exe
+m6v6: test_m6v6.c
+	$(CC) test_m6v6.c libtpm.a -lm -o test_m6v6_exe
