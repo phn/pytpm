@@ -1304,6 +1304,44 @@ def test_v6init():
         "{0:8.5f}".format(0.0)
     
 # extern V6 v6s2c(V6 vs);
+def test_v6s2c():
+    v3_1 = tpm.v3init(tpm.SPHERICAL)
+    v3_2 = tpm.v3init(tpm.SPHERICAL)
+    v6 = tpm.v6init(tpm.SPHERICAL)
+  
+    tpm.v3SetTypef(v3_1, tpm.SPHERICAL)
+    tpm.v3SetRf(v3_1, 10934.266796)
+    tpm.v3SetAlphaf(v3_1, 1.329037)
+    tpm.v3SetDeltaf(v3_1, 1.127231)
+    
+    tpm.v3SetTypef(v3_2, tpm.SPHERICAL)
+    tpm.v3SetXf(v3_2, 10.197444)
+    tpm.v3SetYf(v3_2, -0.000139)
+    tpm.v3SetZf(v3_2, -0.000281)
+    
+    tpm.v6SetPosf(v6, v3_1)
+    tpm.v6SetVelf(v6, v3_2)
+    
+    tpm.v6SetTypef(v6, tpm.SPHERICAL)
+
+    v6 = tpm.v6s2c(v6)
+    
+    # THIS IS REVERSE OF test_v6c2s BUT CAN ONLY GET ACCURACY OF
+    # 8.2! WHY?
+    # Also see test_v3c2s.
+    assert "{0:8.2f}".format(tpm.v6GetXf(v6)) == \
+       "{0:8.2f}".format(1123.4556)
+    assert "{0:8.2f}".format(tpm.v6GetYf(v6)) == \
+        "{0:8.2f}".format(4556.1123)
+    assert "{0:8.2f}".format(tpm.v6GetZf(v6)) == \
+        "{0:8.2f}".format(9876.1267)
+    assert "{0:8.2f}".format(tpm.v6GetXDotf(v6)) == \
+        "{0:8.2f}".format(2.3456)
+    assert "{0:8.2f}".format(tpm.v6GetYDotf(v6)) == \
+        "{0:8.2f}".format(6.7891)
+    assert "{0:8.2f}".format(tpm.v6GetZDotf(v6)) == \
+        "{0:8.2f}".format(7.8912)
+    
 # extern V6 v6scale(V6 v, double s);
 # extern V6 v6sum(V6 v1, V6 v2);
 # extern V6 v6unit(V6 v);
