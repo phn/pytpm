@@ -61,3 +61,5 @@ v6unit: test_v6unit.c
 	$(CC) test_v6unit.c libtpm.a -lm -o test_v6unit_exe
 m3fmt: test_m3fmt.c
 	$(CC) test_m3fmt.c libtpm.a -lm -o test_m3fmt_exe
+m6fmt: test_m6fmt.c
+	$(CC) test_m6fmt.c libtpm.a -lm -o test_m6fmt_exe
