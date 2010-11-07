@@ -1343,8 +1343,60 @@ def test_v6s2c():
         "{0:8.2f}".format(7.8912)
     
 # extern V6 v6scale(V6 v, double s);
+def test_v6scale():
+    v6 = setup_cartesian_v6_with_2_v3()
+    v6 = tpm.v6scale(v6, 1.2345)
+    
+    assert "{0:8.5f}".format(tpm.v6GetXf(v6)) == \
+       "{0:8.5f}".format(1123.4556*1.2345)
+    assert "{0:8.5f}".format(tpm.v6GetYf(v6)) == \
+        "{0:8.5f}".format(4556.1123*1.2345)
+    assert "{0:8.5f}".format(tpm.v6GetZf(v6)) == \
+        "{0:8.5f}".format(9876.1267*1.2345)
+    assert "{0:8.5f}".format(tpm.v6GetXDotf(v6)) == \
+        "{0:8.5f}".format(2.3456*1.2345)
+    assert "{0:8.5f}".format(tpm.v6GetYDotf(v6)) == \
+        "{0:8.5f}".format(6.7891*1.2345)
+    assert "{0:8.5f}".format(tpm.v6GetZDotf(v6)) == \
+        "{0:8.5f}".format(7.8912*1.2345)
+        
 # extern V6 v6sum(V6 v1, V6 v2);
+def test_v6sum():
+    v6_1 = setup_cartesian_v6_with_2_v3()
+    v6_2 = tpm.v6scale(v6_1, 1.2345)
+    v6 = tpm.v6sum(v6_1, v6_2)
+    
+    assert "{0:8.5f}".format(tpm.v6GetXf(v6)) == \
+       "{0:8.5f}".format(1123.4556 * 2.2345)
+    assert "{0:8.5f}".format(tpm.v6GetYf(v6)) == \
+        "{0:8.5f}".format(4556.1123*2.2345)
+    assert "{0:8.5f}".format(tpm.v6GetZf(v6)) == \
+        "{0:8.5f}".format(9876.1267*2.2345)
+    assert "{0:8.5f}".format(tpm.v6GetXDotf(v6)) == \
+        "{0:8.5f}".format(2.3456*2.2345)
+    assert "{0:8.5f}".format(tpm.v6GetYDotf(v6)) == \
+        "{0:8.5f}".format(6.7891*2.2345)
+    assert "{0:8.5f}".format(tpm.v6GetZDotf(v6)) == \
+        "{0:8.5f}".format(7.8912*2.2345)
+        
 # extern V6 v6unit(V6 v);
+def test_v6unit():
+    v6 = setup_cartesian_v6_with_2_v3()
+    v6 = tpm.v6unit(v6)
+    
+    assert "{0:8.5f}".format(tpm.v6GetXf(v6)) == \
+       "{0:8.5f}".format(0.102746)
+    assert "{0:8.5f}".format(tpm.v6GetYf(v6)) == \
+        "{0:8.5f}".format(0.416682)
+    assert "{0:8.5f}".format(tpm.v6GetZf(v6)) == \
+        "{0:8.5f}".format(0.903227)
+    assert "{0:8.5f}".format(tpm.v6GetXDotf(v6)) == \
+        "{0:8.5f}".format(0.000215)
+    assert "{0:8.5f}".format(tpm.v6GetYDotf(v6)) == \
+        "{0:8.5f}".format(0.000621)
+    assert "{0:8.5f}".format(tpm.v6GetZDotf(v6)) == \
+        "{0:8.5f}".format(0.000722)
+    
 # extern char *m3fmt(M3 m);
 # extern char *m6fmt(M6 m);
 # extern char *v3fmt(V3 v);

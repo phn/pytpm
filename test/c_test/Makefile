@@ -57,3 +57,5 @@ v6c2s: test_v6c2s.c
 	$(CC) test_v6c2s.c libtpm.a -lm -o test_v6c2s_exe
 v6cross: test_v6cross.c
 	$(CC) test_v6cross.c libtpm.a -lm -o test_v6cross_exe
+v6unit: test_v6unit.c
+	$(CC) test_v6unit.c libtpm.a -lm -o test_v6unit_exe
