@@ -59,3 +59,5 @@ v6cross: test_v6cross.c
 	$(CC) test_v6cross.c libtpm.a -lm -o test_v6cross_exe
 v6unit: test_v6unit.c
 	$(CC) test_v6unit.c libtpm.a -lm -o test_v6unit_exe
+m3fmt: test_m3fmt.c
+	$(CC) test_m3fmt.c libtpm.a -lm -o test_m3fmt_exe

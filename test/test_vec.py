@@ -1398,6 +1398,18 @@ def test_v6unit():
         "{0:8.5f}".format(0.000722)
     
 # extern char *m3fmt(M3 m);
+def test_m3fmt():
+    m3 = setup_m3()
+    s = tpm.m3fmt(m3)
+    s = s.splitlines()
+
+    assert s[0].strip() ==\
+        "2.345000000000000e-01  5.432000000000000e-01  1.234000000000000e-01"
+    assert s[1].strip() == \
+        "5.467000000000000e-01  4.190000000000000e-01  9.874000000000001e-01"
+    assert s[2].strip() == \
+        "1.225000000000000e-01  4.331000000000000e-01  2.309000000000000e-01"
+
 # extern char *m6fmt(M6 m);
 # extern char *v3fmt(V3 v);
 # extern char *v6fmt(V6 v);
