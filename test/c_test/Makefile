@@ -69,3 +69,9 @@ v6fmt: test_v6fmt.c
 	$(CC) test_v6fmt.c libtpm.a -lm -o test_v6fmt_exe
 v3dot: test_v3dot.c
 	$(CC) test_v3dot.c libtpm.a -lm -o test_v3dot_exe
+v3mod: test_v3mod.c
+	$(CC) test_v3mod.c libtpm.a -lm -o test_v3mod_exe
+v6dot: test_v6dot.c
+	$(CC) test_v6dot.c libtpm.a -lm -o test_v6dot_exe
+v6mod: test_v6mod.c
+	$(CC) test_v6mod.c libtpm.a -lm -o test_v6mod_exe

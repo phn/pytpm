@@ -1524,8 +1524,100 @@ def test_v3dot():
         "{0:11.5f}".format(111501.570486)
     
 # extern double v3mod(V3 v);
-# extern double v6alpha(V6 v);
-# extern double v6delta(V6 v);
-# extern double v6dot(V6 v1, V6 v2);
-# extern double v6mod(V6 v);
+def test_v3mod():
+    v3 = setup_cartesian_v3()
+    x = tpm.v3mod(v3)
 
+    assert "{0:11.5f}".format(x) == \
+        "{0:11.5f}".format(10934.266796)
+
+
+# extern double v6alpha(V6 v);
+def test_v6alpha():
+    # Return ra in V3 scaled to [0, 2 π]
+    # Loops over this range i.e.,  0 2π|0 2π ; 361 is 1; -1 is 359.0
+    # As opposed to wrapping i.e., 2π 0 2π 0 2π; 361 is 359, -1 is 359
+
+    v6 = tpm.v6init(tpm.SPHERICAL)
+
+    tpm.v6SetAlphaf(v6, math.radians(-180.0))
+    assert "{0:7.3f}".format(tpm.v6alpha(v6)) == \
+        "{0:7.3f}".format(math.radians(180.0))
+
+    tpm.v6SetAlphaf(v6, math.radians(-45.0))
+    assert "{0:7.3f}".format(tpm.v6alpha(v6)) == \
+        "{0:7.3f}".format(math.radians(360-45))
+    
+    tpm.v6SetAlphaf(v6, math.radians(20.0))
+    assert "{0:7.3f}".format(tpm.v6alpha(v6)) == \
+        "{0:7.3f}".format(math.radians(20.0))
+
+    tpm.v6SetAlphaf(v6, math.radians(361.0))
+    assert "{0:7.3f}".format(tpm.v6alpha(v6)) == \
+        "{0:7.3f}".format(math.radians(1.0))
+
+    tpm.v6SetAlphaf(v6, math.radians(-1))
+    assert "{0:7.3f}".format(tpm.v6alpha(v6)) == \
+        "{0:7.3f}".format(math.radians(359.0))
+
+# extern double v6delta(V6 v);
+def test_v6delta():
+    # Return ra in V6 scaled to [-π/2, π/2]
+    # Wraps over this range i.e., 90 0 -90 0 90 0 90; -91 is -89
+    # As opposed to looping i.e., 0 90|-90 0 90|-90 0 90|-90; -91 is 89
+    v6 = tpm.v6init(tpm.SPHERICAL)
+
+    tpm.v6SetDeltaf(v6, math.radians(-180.0))
+    assert "{0:7.3f}".format(tpm.v6delta(v6)) == \
+        "{0:7.3f}".format(math.radians(0.0))
+
+    tpm.v6SetDeltaf(v6, math.radians(-45.0))
+    assert "{0:7.3f}".format(tpm.v6delta(v6)) == \
+        "{0:7.3f}".format(math.radians(-45.0))
+    
+    tpm.v6SetDeltaf(v6, math.radians(200.0))
+    assert "{0:7.3f}".format(tpm.v6delta(v6)) == \
+        "{0:7.3f}".format(math.radians(-20.0))
+
+    tpm.v6SetDeltaf(v6, math.radians(-280.0))
+    assert "{0:7.3f}".format(tpm.v6delta(v6)) == \
+        "{0:7.3f}".format(math.radians(90-10.0))
+
+    tpm.v6SetDeltaf(v6, math.radians(-91))
+    assert "{0:7.3f}".format(tpm.v6delta(v6)) == \
+        "{0:7.3f}".format(math.radians(-89))    
+
+# extern double v6dot(V6 v1, V6 v2);
+def test_v6dot():
+    v6_1 = setup_cartesian_v6_with_2_v3()
+    
+    v3_1 = tpm.v3init(tpm.CARTESIAN)
+    v3_2 = tpm.v3init(tpm.CARTESIAN)
+    v6_2 = tpm.v6init(tpm.CARTESIAN)
+ 
+    tpm.v3SetTypef(v3_1, tpm.CARTESIAN)
+    tpm.v3SetXf(v3_1, 65.234556)
+    tpm.v3SetYf(v3_1, 32.561123)
+    tpm.v3SetZf(v3_1, 76.761267)
+        
+    tpm.v3SetTypef(v3_2, tpm.CARTESIAN)
+    tpm.v3SetXf(v3_2, 0.6543)
+    tpm.v3SetYf(v3_2, 0.1987)
+    tpm.v3SetZf(v3_2, 0.2189)
+    
+    tpm.v6SetPosf(v6_2, v3_1)
+    tpm.v6SetVelf(v6_2, v3_2)
+        
+    tpm.v6SetTypef(v6_2, tpm.CARTESIAN)
+        
+    x = tpm.v6dot(v6_1, v6_2)
+ 
+    assert "{0:12.5f}".format(x) == \
+        "{0:12.5f}".format(979744.258798)
+    
+# extern double v6mod(V6 v);
+def test_v6mod():
+    v6 = setup_cartesian_v6_with_2_v3()
+
+    assert "{0:12.5f}".format(tpm.v6mod(v6)) == \
+        "{0:12.5f}".format(10934.266796)
