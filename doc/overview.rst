@@ -1,5 +1,9 @@
+==========
+ Overview
+==========
+
 Telescope Pointing Machine C library
-------------------------------------
+====================================
 
 .. _Telescope Pointing Machine: http://www.sal.wisc.edu/~jwp/astro/tpm/tpm.html
 .. _Jeff Percival: http://www.sal.wisc.edu/~jwp/
@@ -30,7 +34,7 @@ to perform coordinate conversions. This function is an interface to a
 function of the same name provided in the file *convert.c*.
 
 Source files
-------------
+============
 
 The source code for *pytpm* can be found at http://github.com/phn/pytpm.
 
@@ -54,7 +58,7 @@ regenerate the SWIG output files, if needed. This file also lists
 commands for creating the file *_tpm.so*.
 
 Requirements
-------------
+============
 
 + A recent version of Python and gcc 
 + swig, if the swig output files are to be regenerated.
@@ -62,7 +66,7 @@ Requirements
 This library was tested using python 2.6 and gcc 4.4, on Fedora 13.
 
 Installation
-------------
+============
 
 The package can be installed by running the command
 
@@ -106,7 +110,7 @@ header files, e.g., */usr*, for */usr/include/python2.6*
 
 
 Examples
---------
+========
 
 Import the module. Code fragments in the following sections are from an
 ipython_ terminal session.
@@ -121,7 +125,7 @@ ipython_ terminal session.
 
   
 Get the current *UTC* time as a *Julian day* number
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------------------------------
 
 .. sourcecode:: ipython
 
@@ -143,7 +147,7 @@ The function ``tpm.utc_now()`` returns the current *UTC* time as a
 represenation of a *Julian day* number.
 
 Convert *Gregorian calendar* date into a *Julian day* number
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------------------------------------------
 
 .. sourcecode:: ipython
 
@@ -159,7 +163,7 @@ as  YYYY, MM, DD, into the corresponding *Julian day* number for
 midday, 12H 00M 00S, of that date.
 
 Convert a *Julian day* number into a date in the *Gregorian calendar*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------------------------------------------------
 
 .. sourcecode:: ipython
 
@@ -177,7 +181,7 @@ calendar*, in which the time corresponding to the given *Julian day*
 number occurs.
 
 Convert decimal degrees into *DMS* string
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------------------
 
 .. sourcecode:: ipython
 
@@ -228,7 +232,7 @@ string.
 
 
 Convert decimal hours into *HMS* string
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------------------
 
 .. sourcecode:: ipython
 
@@ -242,7 +246,7 @@ Convert decimal hours into *HMS* string
 
 
 Convert astronomical coordinates between different systems
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------------------------------------
 
 *TPM* uses the concept of *states* while performing coordinate
 transformations. A *state* is defined by various parameters such as
@@ -432,7 +436,7 @@ system into (Az, EL) for KPNO, at the Julian day number 2455363.5 .
 
 
 Credits
--------
+=======
 
 `Jeff Percival`_ wrote the TPM__ C library. See
 src/tpm/TPM_LICENSE.txt for TPM license. The version used here was
@@ -443,7 +447,7 @@ etc., for the *pytpm* library.
 __ Telescope Pointing Machine
 
 License
--------
+=======
 
 See src/tpm/TPM_LICENSE.txt for TPM license. Code for the python
 binding itself is released under the BSD license. See LICENSE.txt.
