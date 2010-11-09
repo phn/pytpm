@@ -76,6 +76,7 @@ exclude_patterns = ['_build']
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
 #add_function_parentheses = True
+add_function_parentheses = False
 
 # If true, the current module name will be prepended to all description
 # unit titles (such as .. function::).
@@ -183,7 +184,7 @@ htmlhelp_basename = 'pytpmdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('contents', 'pytpm.tex', u'PyTPM Documentation',
+  ('index', 'pytpm.tex', u'PyTPM Documentation',
    u'Prasanth Nair', 'manual'),
 ]
 

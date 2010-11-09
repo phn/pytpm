@@ -11,7 +11,7 @@ interface to the Telescope Pointing Machine C library, written by Jeff
 Percival. 
 
 .. toctree::
-   :maxdepth: 0
+   :maxdepth: 1
     
    overview.rst
    reference.rst
