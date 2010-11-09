@@ -6,7 +6,7 @@
     #. v6_Functions.h, corresponds to v6.h :DONE:
     #. m3_Functions.h, corresponds to m3.h :DONE:
     #. m6_Functions.h corresponds to m6.h :DONE:
-    #. vec.h :ONGOING:
+    #. vec.h :DONE:
     #. astro.h :ONGOING:
     #. times.h :DONE:
     #. tpm.h :TODO:
