@@ -53,6 +53,8 @@ Ubuntu 10.10.
 Installation
 ------------
 
+The source code for PyTPM can be found at http://github.com/phn/pytpm.
+
 The package can be installed by running the command
 
 .. code-block:: sh
@@ -77,8 +79,6 @@ bash.
 
 Source files and SWIG interface
 -------------------------------
-
-The source code for PyTPM can be found at http://github.com/phn/pytpm.
 
 The TPM source code is present in the directory *src/tpm*, and was
 obtained from the source distribution of the coords_ package, which is
