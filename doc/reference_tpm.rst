@@ -16,6 +16,11 @@ UTC time system*.
 ==============  =======================================================
 ``POS``          Index of position vector in a :class:`V6` instance.
 ``VEL``          Index of velocity vector in a :class:`V6` instance.
+``CARTESIAN``    Numerical value 0; indicates type of a :class:`V3` 
+                 instance.
+``SPHERICAL``    Numerical value 1; indicates type of a :class:`V3` 
+                 instance.
+``POLAR``        Same as ``SPHERICAL``.
 ``MJD_0``        JD of the modified JD system.
 ``B1950``        JD of epoch B1950.0.
 ``J2000``        JD of epoch J2000.0.
