@@ -90,7 +90,7 @@ The macros for manipulating vectors and matrices, declared in
 :file:`v3.h`, :file:`v6.h`, :file:`m3.h`, and :file:`m6.h`, have been
 re-written as C function, in :file:`src/v3Functions.c`,
 :file:`src/v6Functions.c`, :file:`src/m3Functions.c`,
-:file:`src/m6Functions.c` and corresponding headers in :dir:`src`.
+:file:`src/m6Functions.c` and corresponding headers in :file:`src/`.
 
 The python module *lib/utils.py*, contains implementation of various
 macros in TPM as python functions. It also defines the
