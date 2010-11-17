@@ -2,6 +2,10 @@
 **pytpm.tpm** 
 =============
 
+.. TODO:: 
+  Inlcude examples of macros and functions for V3 etc., and
+  provide links to reference_utils for their signatures and other
+  details.
 
 .. automodule:: pytpm.tpm
 ..    :members:
@@ -194,11 +198,44 @@ Miscellaneous constants
 ``SATURDAY``     Numerical value 6.
 ==============  =======================================================
 
+TPM data types and functions for manipulating them
+==================================================
+
+TPM defines C structures to represent entities such as vectors,
+matrices and other. These are exposed as classes in PyTPM. Several
+functions are provided for manipulating these and are described
+below. As mentioned before, several C macros are provided in TPM for
+working with data types, in addition to functions, and implementations
+of these macros as python functions are available in
+:mod:`pytpm.utils`.
+
+
 Classes for vectors and matrices
 --------------------------------
 
+There are two classes, ``V3`` and ``V6``, for representing vectors. 
+
+``V3`` is used for representing 3D coordinates and 3D velocities of an
+astronomical object. This can be either spherical or cartesion
+coordinates, indicated using the attribute ``type`` of a ``V3``
+instance; ``type == tpm.CARTESION`` for the former and ``type ==
+tpm.SPHERICAL`` for the latter.
+
+.. TODO:: Link to section on v3 macros in reference_utils.
+
 .. autoclass:: V3
     :members:
+
+The class ``V6`` is used to represent a "six-vector" as opposed to a
+"three-vector" represented using ``V3``. A ``V6`` instance uses two
+``V3`` instances to store the coordinates and velocities of an
+astronomical object. The two element array attribute ``v``, stores the
+``V3`` instance representing coordinates in ``v[tpm.POS]`` and the
+``V3`` instance representing velocities in ``v[tpm.VEL]``, where
+``tpm.POS == 0`` and ``tpm.VEL == 1``. The ``type`` attribute sets the
+type of the coordinate system; it is set equal to the ``type``
+attribute of ``v[tpm.POS]``.
+
 
 .. autoclass:: V6
     :members:

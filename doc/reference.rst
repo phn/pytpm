@@ -6,20 +6,33 @@ Reference
 TPM library defines a set a data structures for representing vectors
 and matrices, and functions and macros for manipulating these data
 structures. Declarations for all these are available in the C header
-files available in the TPM library source code: :file:`v3.h`,
-:file:`v6.h`, :file:`m3.h`, :file:`m6.h` and :file:`vec.h`. Further
-data structures, constants, functions and macros are provided for
-performing calculations related to time and date. These are declared
-in the header file :file:`times.h`. Constants, functions and macros
-related to astrometry are declared in the header file
-:file:`astro.h`. Finally, declarations for some routines for numerical
+files in the TPM library source code: :file:`v3.h`, :file:`v6.h`,
+:file:`m3.h`, :file:`m6.h` and :file:`vec.h`. Further data structures,
+constants, functions and macros are provided for performing
+calculations related to time and date. These are declared in the
+header file :file:`times.h`. Constants, functions and macros related
+to astrometry are declared in the header file :file:`astro.h`.
+Structures used in representing TPM states are declared in
+:file:`tpm.h`. Finally, declarations for some routines for numerical
 integration are provided in :file:`misc.h`.
 
 The items in the TPM library that were wrapped with *swig* are present
-in the **pytpm.tpm** module. All the macros and a few functions that
-were not wrapped with *swig* are provided in the
-:mod:`pytpm.utils`. Interface to the numerical integration routines
-are not provided in PyTPM.
+in the :mod:`pytpm.tpm` module. This includes all functions and
+constants implemented in the TPM library. The macros for manipulating
+vectors and matrices, declared in :file:`v3.h`, :file:`v6.h`,
+:file:`m3.h`, and :file:`m6.h`, have been re-written as C function, in
+:file:`v3Functions.c`, :file:`v6Functions.c`, :file:`m3Functions.c`,
+:file:`m6Functions.c` and corresponding headers. They were then
+wrapped with *swig* and are present in :mod:`pytpm.tpm`.  The names of
+these functions are constructed by adding an "f" to end of the C macro
+name.
+
+All other macros defined in TPM are provided as functions in the
+:mod:`pytpm.utils`.  Their names are the same as the corresponding C
+macro.
+
+Interface to the numerical integration routines defined in
+:file:`misc.h` are not provided in PyTPM.
 
 In addition, a function :func:`tpm.convert` is provided for performing
 coordinate conversions. This function is an interface to a C function
