@@ -2,11 +2,10 @@
 **pytpm.tpm** 
 =============
 
-.. contents::
 
 .. automodule:: pytpm.tpm
-    :members:
-    :undoc-members:
+..    :members:
+..    :undoc-members:
 
 Constants
 =========
@@ -67,8 +66,8 @@ Time and date related constants
 ``CJ``           Number of days in a Julian century.
 ==============  =======================================================
 
-IAU Sytem of Astronomical Constants
------------------------------------
+IAU System of Astronomical Constants
+------------------------------------
 
 The following table lists constants from the IAU (1976) System of
 Astronomical Constants, obtained from the Astronomical Almanac, 1984
@@ -86,8 +85,97 @@ p.K6.
 ``IAU_W``        Rotational velocity of the Earth in radians/second.
 ==============  =======================================================
 
+TPM state names
+---------------
+
+The targets or states in TPM are identified with integer constants:
+
+=================  ==================================================
+``N_TPM_STATES``    Number of TPM states.
+ ``TPM_S00``        Null                                           
+ ``TPM_S01``        Heliocentric mean FK4 system, any equinox      
+ ``TPM_S02``        Heliocentric mean FK5 system, any equinox      
+ ``TPM_S03``        IAU 1980 Ecliptic system                       
+ ``TPM_S04``        IAU 1958 Galactic system                       
+ ``TPM_S05``        Heliocentric mean FK4 system, B1950 equinox    
+ ``TPM_S06``        Heliocentric mean FK5 system, J2000 equinox    
+ ``TPM_S07``        Geocentric mean FK5 system, J2000 equinox      
+ ``TPM_S08``        TPM_S07 + light deflection                     
+ ``TPM_S09``        TPM_S08 + Aberration                           
+ ``TPM_S10``        TPM_S09 + precession                           
+ ``TPM_S11``        Geocentric apparent FK5, current equinox       
+ ``TPM_S12``        Topocentric mean FK5, J2000 equinox            
+ ``TPM_S13``        TPM_S12 + light definition                     
+ ``TPM_S14``        TPM_S13 + aberration                           
+ ``TPM_S15``        TPM_S14 + precession                           
+ ``TPM_S16``        Topocentric apparent FK5, current equinox      
+ ``TPM_S17``        Topocentric apparent FK5, current equnix       
+ ``TPM_S18``        Topocentric apparent (Hour Angle, Declination) 
+ ``TPM_S19``        Topecentric observed (Azimuth, Elevation)      
+ ``TPM_S20``        Topocentric observed (Hour Angle, Declination) 
+ ``TPM_S21``        Topocentric observed WHAM (longitude, latitude)
+=================  ==================================================
+
+Some of the targets have special names:
+
+========================   ===============
+ ``TARGET_FK4``              ``TPM_S01``      
+ ``TARGET_FK5``              ``TPM_S02``    
+ ``TARGET_ECL``              ``TPM_S03``    
+ ``TARGET_GAL``              ``TPM_S04``    
+ ``TARGET_APP_HADEC``        ``TPM_S17``    
+ ``TARGET_OBS_HADEC``        ``TPM_S20``    
+ ``TARGET_APP_AZEL``         ``TPM_S18``    
+ ``TARGET_OBS_AZEL``         ``TPM_S19``    
+ ``TARGET_OBS_WHAM``         ``TPM_S21``    
+ ``TARGET_HADEC``            ``TPM_S17``
+ ``TARGET_TOP_AZEL``         ``TPM_S18``
+========================   ===============
+
+TPM transition names
+--------------------
+
+The transitions between different states that can be performed in TPM
+are also coded as integer constants:
+
+===============  ==========================================================
+``N_TPM_TRANS``   Number of TPM transitions.
+``TPM_T00``       Null transition.
+``TPM_T01``       FK4 precession to B1950.
+``TPM_T02``       FK5 precession to J2000.
+``TPM_T03``       IAU 1980 ecliptic to FK5 equatorial.
+``TPM_T04``       IAU 1958 galactic to FK4 B1950.
+``TPM_T05``       IAU FK4 B1950 to FK5 J2000.
+``TPM_T06``       Heliocentric parallax.
+``TPM_T07``       Geocentric parallax.
+``TPM_T08``       Light deflection.
+``TPM_T09``       Aberration.
+``TPM_T10``       Precession from FK5 J2000 to date, i.e., given epoch.
+``TPM_T11``       Nutation.
+``TPM_T12``       Earth's rotation.
+``TPM_T13``       HA-Dec to Az-El.
+``TPM_T14``       Refraction.
+``TPM_T15``       WHAM coordinate system.
+===============  ==========================================================
+
+TPM data flags
+--------------
+
+These are the constants used to specify how the TPM data must be
+setup. See pages 14 and 15 of the TPM manual.
+ 
+=====================  ===================================================
+ ``TPM_INIT``           Initialize.
+ ``TPM_FAST``           Setup all calculations that are "fast".
+ ``TPM_SLOW``	          Setup all calculation that are "slow".
+ ``TPM_MEDIUM``         Setup all calculations that take "medium" amount.
+                        of time.
+ ``TPM_REFRACTION``     Setup refraction calculations.
+ ``TPM_ALL``	          Setup all calculations.
+=====================  ===================================================
+
 Miscellaneous constants
-------------------------
+-----------------------
 
 ==============  =======================================================
 ``POS``          Index of position vector in a :class:`V6` instance.
