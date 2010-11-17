@@ -310,5 +310,50 @@ has four floating point data attributes, ``a1``, ``d1``, ``a2`` and
 ``d2``, representing the coordinates of the two stars involved.
 
 .. autoclass:: CONS
+    :members:
+
+Classes representing TPM states
+-------------------------------
+
+The class ``TPM_TARGET`` describes a target. Following are the
+attributes of this class:
+
+.. TODO:: What is offset?
+
+============== ==============================================
+ ``name``       Name of the target.
+ ``state``      Integer constant identifying the state.
+ ``epoch``      Epoch for this state in Julian day number.
+ ``equinox``    Equinox for this state in Julian day number.
+ ``position``   Spherical coordinates in radians.
+ ``offset``     Offset in radians.
+ ``motion``     Proper motion in radians/day.
+ ``parallax``   Parallax in arcsec.
+ ``speed``      Space velocity in AU/day.
+============== ==============================================
+
+.. autoclass:: TPM_TARGET
+    :members:
+
+
+The "boresight" of a telescope is represented using the class
+``TPM_BORESIGHT``:
+
+.. autoclass:: TPM_BORESIGHT
+    :members:
+
+The state of the "telescope" is represented by the class
+``TPM_TSTATE``:
+
+.. autoclass:: TPM_TSTATE
+    :members:
+
+``TPM_PMCELL`` is an utility class used by TPM:
+
+.. autoclass:: TPM_PMCELL
+    :members:
+
+
+
 
 
