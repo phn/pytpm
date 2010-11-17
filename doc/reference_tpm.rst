@@ -240,11 +240,20 @@ attribute of ``v[tpm.POS]``.
 .. autoclass:: V6
     :members:
 
+The class ``M3`` represents a matrix. It consists of a 3x3 array
+attribute ``m``, each element of which is a floating point number.
+
 .. autoclass:: M3
     :members:
 
+``M6`` is a class for representing a rotation matrix that converts
+both coordinates and velocities at the same time. It is defined in
+REFERENCE. It has a 2x2 array attribute ``m``, each element of which
+hold a ``M3`` instance.
+
 .. autoclass:: M6
     :members:
+
 
 Classes for dates, times and angles
 -----------------------------------
@@ -284,4 +293,22 @@ number``.
 
 .. autoclass:: JD
     :members:
+
+Miscellaneous classes
+---------------------
+
+The class ``STAR`` can be used to represent a "catalog star". It has
+three floating point data attributes, ``a``, ``d`` and ``m``,
+representing the right ascension, declination and magnitude of a
+star, respectively.
+
+.. autoclass:: STAR
+    :members:
+
+The class ``CONS`` represens a "line segment" between two stars. It
+has four floating point data attributes, ``a1``, ``d1``, ``a2`` and
+``d2``, representing the coordinates of the two stars involved.
+
+.. autoclass:: CONS
+
 
