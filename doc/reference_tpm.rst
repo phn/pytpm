@@ -255,8 +255,8 @@ hold a ``M3`` instance.
     :members:
 
 
-Classes for dates, times and angles
------------------------------------
+Classes for date, time and angle
+--------------------------------
 
 The class **DMS** is used to represent an angle. It hold has three
 data attributes: ``dd``, ``mm`` and ``ss``. These represent, degrees,
@@ -342,16 +342,52 @@ The "boresight" of a telescope is represented using the class
 .. autoclass:: TPM_BORESIGHT
     :members:
 
-The state of the "telescope" is represented by the class
-``TPM_TSTATE``:
-
-.. autoclass:: TPM_TSTATE
-    :members:
-
 ``TPM_PMCELL`` is an utility class used by TPM:
 
 .. autoclass:: TPM_PMCELL
     :members:
+
+The state of the "telescope" is represented by the class
+``TPM_TSTATE``. The following are the properties that define the state
+of the telescope:
+
+================  =========================================================
+``utc``            Coordinated Univeral Time in Julian Day numbers
+``delta_at``       UTC + delta_at = TAI, International Atomic Time
+``delta_ut``       UTC + delta_ut = UT1, Universal Time
+``lon``            East geographic longitude in radians
+``lat``            North geographic latitude in radians, negative for South
+``alt``            Altitude above the geoid in meters
+``xpole``          Polar motion in radians
+``ypole``          Polar motion in radians
+``T``              Ambient Temperature in Kelvins
+``P``              Ambient pressure in millibars
+``H``              Ambient humidity (0 - 1)
+``wavelength``     Oberving wavelength in microns
+``tai``            International Atomic Time
+``tdt``            Terrestrial Dynamic Time
+``tdb``            Barycentric Dynamic Time
+``obliquity``      Obliquity of the ecliptic
+``nut_lon``        Nutation in longitude
+``nut_obl``        Nutation in the obliquity
+``nm``             Nutation matric for *now*
+``pm``             Precession matric from J2000 to *now*
+``ut1``            Universal Time
+``gmst``           Greenwich Mean Sidereal Time
+``gast``           Greenwich Apparent Sidereal Time
+``last``           Local Apparent Sidereal Time
+``eb``             Barycentric Earth state vector
+``eh``             Heliocentric Earth state vector
+``obs_m``          Geocentric Earth-fixed state vector, mean pole
+``obs_t``          Geocentric Earth-fixed state vector, true pole
+``obs_s``          Geocentric space-fixed state vector
+``refa``           Refraction coefficient
+``refb``           Refraction coefficient
+================  =========================================================
+
+.. autoclass:: TPM_TSTATE
+    :members:
+
 
 
 
