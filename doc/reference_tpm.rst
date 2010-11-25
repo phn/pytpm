@@ -437,13 +437,15 @@ V3 vector
 See the section on :class:`V3` for information on the fields of a V3
 instance. 
 
+.. rubric::  Initialize 
+
 To intialize a V3 instance, with all fields set to 0, use the
 ``v3init`` function. This function takes an integer indicating the
-type of the V3 instance and returns a V3 instance. In the case of the
-velocity vector in a ``V6`` instance, we use a different naming
-scheme. ``RDot
+type of the V3 instance and returns a V3 instance.
 
 .. autofunction:: v3init  
+
+.. rubric:: Formatted string representation
 
 To get a string representation of the vector, use the ``v3fmt``
 function.
@@ -453,6 +455,8 @@ function.
 For all the functions described below, the first argument must be a V3
 instance. The second must be a scalar or another V3 instance,
 depending on the type of operation.
+
+.. rubric:: Set the field values
 
 The following functions can be used to set the components of a
 :class:`V3` instance.  The appropriate field in the V3 instance is set
@@ -468,6 +472,8 @@ to the scalar provided.
 .. autofunction:: v3SetYf    
 .. autofunction:: v3SetZf    
 
+.. rubric:: Retrieve the field values
+
 These functions return the value of the relevant component of the
 vector.
 
@@ -481,6 +487,8 @@ vector.
 .. autofunction:: v3GetYf    
 .. autofunction:: v3GetZf    
 
+.. rubric:: Subtract a scalar from the field values
+
 The following functions can be used to subtract a scalar from a
 component of a :class:`V3` instance.
 
@@ -492,6 +500,8 @@ component of a :class:`V3` instance.
 .. autofunction:: v3DecXf           
 .. autofunction:: v3DecYf           
 .. autofunction:: v3DecZf
+
+.. rubric:: Divide fields with  a scalar
 
 Use the following functions to divide a component of a V3 instance
 with a scalar.
@@ -505,6 +515,8 @@ with a scalar.
 .. autofunction:: v3DivYf    
 .. autofunction:: v3DivZf    
 
+.. rubric:: Add a scalar to field values
+
 The following functions can be used to add a scalar to a V3 vector.
 
 .. autofunction:: v3IncAlphaf 
@@ -515,6 +527,8 @@ The following functions can be used to add a scalar to a V3 vector.
 .. autofunction:: v3IncXf     
 .. autofunction:: v3IncYf     
 .. autofunction:: v3IncZf     
+
+.. rubric:: Multiply fields with a scalar
 
 Use the following functions to multiply a component of a V3 vector
 with a scalar.
@@ -528,6 +542,7 @@ with a scalar.
 .. autofunction:: v3MulYf    
 .. autofunction:: v3MulZf    
 
+.. rubric:: Return normalized right ascension
 
 The ``v3alpha`` function returns the "Right Ascension", i.e., value in
 ``v3[1]``, normalized to the range [0 - 2*pi ). This function takes
@@ -535,11 +550,15 @@ only one argument, the V3 instance.
 
 .. autofunction:: v3alpha    
 
+.. rubric:: Return normalized declination
+
 The ``v3delta`` function returns the "Declination", i.e., value in
 ``v3[2]``, normalized to the range (-pi/2 - pi/2). This function takes
 only one argument, the V3 instance.
 
 .. autofunction:: v3delta 
+
+.. rubric:: Convert between cartesian and spherical
 
 The following functions convert between cartesian and spherical
 representations of a V3 vector. Both take a V3 instance as their
@@ -548,12 +567,16 @@ argument and returns a new V3 instance.
 .. autofunction:: v3c2s   
 .. autofunction:: v3s2c   
 
+.. rubric:: Cross product and dot product
+
 The function ``v3cross`` returns the cross product and ``v3dot``
 returns the dot product of two V3 vectors passed as arguments. Both
 return a new V3 instance.
 
 .. autofunction:: v3cross 
 .. autofunction:: v3dot   
+
+.. rubric:: Sum and difference of two vectors
 
 Function ``v3diff`` returns a V3 instance that stores the difference
 between two V3 vectors. Function ``v3sum`` returns the sum of two V3
@@ -562,19 +585,27 @@ vectors.
 .. autofunction:: v3diff  
 .. autofunction:: v3sum   
 
+.. rubric:: Modulus
+
 To cacluate the "modulus" or "length" of a vector use the ``v3mod``
 function. This function takes a V3 instance and returns a double.
 
 .. autofunction:: v3mod   
 
+.. rubric:: Scale fields with a scalar
+
 To scale a V3 vector with a scalar use the ``v3scale`` function.
 
 .. autofunction:: v3scale 
+
+.. rubric:: Unit vector
 
 The ``v3unit`` function converts the given vector into a unit vector,
 i.e., vector of "length" 1.
 
 .. autofunction:: v3unit  
+
+.. rubric:: Return position vector as a ``V6`` 
 
 The ``v32v6`` functions sets the given V3 vector as the "position"
 vector of a :class:``V6`` vector and returns the V6 vector. The type
@@ -591,14 +622,20 @@ first element, or more precisely, ``v6[tpm.POS]`` stores the position
 vector and the second, more precisely, ``v6[tpm.VEL]`` stores the
 velocity vector.
 
+.. rubric:: Initialize
+
 To initialize a ``V6`` vector, use the ``v6init`` function.
 
 .. autofunction:: v6init        
+
+.. rubric:: Formatted string representation
 
 To get a formatted string representation of the components of a ``V6``
 vector use the ``v6fmt`` function.
 
 .. autofunction:: v6fmt         
+
+.. rubric:: Set field values
 
 Use the following functions to set the various components of a ``V6``
 instance. These take a ``V6`` instance as the first argument and a
@@ -624,6 +661,8 @@ scalar as the second argument.
 .. autofunction:: v6SetZDotf    
 .. autofunction:: v6SetZf       
 
+.. rubric:: Get field values
+
 These functions retrieve the components of a ``V6`` instance. These
 take a ``V6`` instance as their arguments.
 
@@ -647,6 +686,8 @@ take a ``V6`` instance as their arguments.
 .. autofunction:: v6GetZDotf    
 .. autofunction:: v6GetZf       
 
+.. rubric:: Subtract scalars from field values
+
 To subtract a scalar from a component of a ``V6`` vector, use the
 following function. These take a ``V6`` instance as the first argument
 and a scalar as the second argument. These return a new ``V6``
@@ -669,6 +710,8 @@ instance.
 .. autofunction:: v6DecZDotf          
 .. autofunction:: v6DecZf             
 
+.. rubric:: Divide field values with a scalar
+
 The following function can be used to divide a component with a
 scalar. These take a ``V6`` instance as the first argument and a
 scalar as the second argument. These return a new ``V6`` instance.
@@ -689,6 +732,8 @@ scalar as the second argument. These return a new ``V6`` instance.
 .. autofunction:: v6DivYf       
 .. autofunction:: v6DivZDotf    
 .. autofunction:: v6DivZf       
+
+.. rubric:: Add a scalar to field values
 
 The following functions add a scalar to a component of a ``V6``
 instance. These take a ``V6`` instance as the first argument and a
@@ -711,6 +756,8 @@ scalar as the second argument. These return a new ``V6`` instance.
 .. autofunction:: v6IncZDotf    
 .. autofunction:: v6IncZf       
 
+.. rubric:: Multiply field values with a scalar
+
 Use these functions to multiply a component of a ``V6`` vector with a
 scalar. These take a ``V6`` instance as the first argument and a
 scalar as the second argument. These return a new ``V6`` instance.
@@ -732,6 +779,8 @@ scalar as the second argument. These return a new ``V6`` instance.
 .. autofunction:: v6MulZDotf    
 .. autofunction:: v6MulZf       
 
+.. rubric:: Retrive normalized RA and Dec
+
 To get the "RA" and "Dec" values in the position vector of a ``V6``
 vector, normalized to [0 - 2pi) and (-pi/2 and pi/2), respectively,
 use the functions ``v6alpha`` and ``v6delta``. 
@@ -739,11 +788,15 @@ use the functions ``v6alpha`` and ``v6delta``.
 .. autofunction:: v6alpha       
 .. autofunction:: v6delta       
 
+.. rubric:: Convert cartesian to spherical and vice-versa
+
 Use the following two functions to convert between cartesian and
 spherical representations of a ``V6`` vector.
 
 .. autofunction:: v6c2s         
 .. autofunction:: v6s2c         
+
+.. rubric:: Cross product and dot product
 
 The cross product and dot product of two ``V6`` vector use ``v6cross``
 and ``v6dot`` respectively.
@@ -751,27 +804,36 @@ and ``v6dot`` respectively.
 .. autofunction:: v6cross       
 .. autofunction:: v6dot         
 
+.. rubric:: Sum and difference
+
 To find the sum and difference of two ``V6`` vectors use ``v6sum`` and
 ``v6diff`` functions, respectively.
 
 .. autofunction:: v6sum         
 .. autofunction:: v6diff        
 
+.. rubric:: Modulus
+
 The  modulus or length of the position vector in a ``V6`` vector can
 be calculated using the ``v6mod`` function.
 
 .. autofunction:: v6mod         
+
+.. rubric:: Unit vector
 
 The ``v6unit`` vector converts the position vector in a ``V6`` vector
 into a unit vector.
 
 .. autofunction:: v6unit        
 
+.. rubric:: Scale field values with a scalar
+
 A ``V6`` vector can be scaled , i.e., all components multiplied, with
 a scalar using the ``v6scale`` function.
 
 .. autofunction:: v6scale       
 
+.. rubric:: Apply proper motion to position vector
 
 The ``v62v3`` function applies space motion to the position vector in
 a ``V6`` vector. The veolcity components and multiplied with the time
