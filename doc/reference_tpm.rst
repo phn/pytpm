@@ -2,6 +2,8 @@
 **pytpm.tpm** 
 =============
 
+.. contents::
+
 .. TODO:: 
   Inlcude examples of macros and functions for V3 etc., and
   provide links to reference_utils for their signatures and other
@@ -198,8 +200,8 @@ Miscellaneous constants
 ``SATURDAY``     Numerical value 6.
 ==============  =======================================================
 
-TPM data types and functions for manipulating them
-==================================================
+TPM data types
+==============
 
 TPM defines C structures to represent entities such as vectors,
 matrices and other. These are exposed as classes in PyTPM. Several
@@ -221,6 +223,16 @@ coordinates, indicated using the attribute ``type`` of a ``V3``
 instance; ``type == tpm.CARTESION`` for the former and ``type ==
 tpm.SPHERICAL`` for the latter.
 
+In TPM a ``V3`` vector is used to store 3D positions and velocities of
+an object. If the vector is cartesian, then we refer to ``v3[0]`` as
+``x``, ``v3[1]`` as ``y`` and ``v3[2]`` as ``z``. If the vector is
+spherical, then we refer to ``v3[0]`` as ``R``, ``v3[1]`` as ``Alpha``
+and ``RA`` and ``v3[2]`` as ``Delta`` and ``Dec``.
+
+These names are used in functions for manipulating these vectors. For
+example the function that returns the ``R`` value of a position vector
+is named ``GetRf``.
+
 .. TODO:: Link to section on v3 macros in reference_utils.
 
 .. autoclass:: V3
@@ -236,6 +248,19 @@ astronomical object. The two element array attribute ``v``, stores the
 type of the coordinate system; it is set equal to the ``type``
 attribute of ``v[tpm.POS]``.
 
+The naming scheme used for ``V3`` instances, i.e., ``R`` for the first
+element of the position vector, is also valid for ``V6``
+instances. For example, ``v6[tpm.POS][0]`` is refered to as ``X`` in
+the case of cartesian coordinates and as ``R`` in the case of
+spherical coordinates. 
+
+For the velocity vector, we use a different naming scheme. For
+cartesian velocity vectors, ``XDot`` refers to ``v6[tpm.VEL][0]``,
+``YDOT`` refers to ``v6[tpm.VEL]`` and ``ZDot`` refers to
+``v6[tpm.VEL]``. For spherical velocity vectors, ``RDot`` refers to
+``v6[tpm.VEL][0]``, ``AlphaDot`` and ``PMRA`` refers to
+``v6[tpm.VEL][1]``, and ``DeltaDot`` and ``PMDec`` refer to
+``v6[tpm.VEL][2]``.
 
 .. autoclass:: V6
     :members:
@@ -389,7 +414,369 @@ of the telescope:
     :members:
 
 
+TPM functions
+=============
+
+TPM comes with functions and macros, for manipulating vectors and
+matrices, calculating date and time, formating angles and several
+others purposes. As mentioned before, most of the macros are defined
+as functions in :mod:`pytpm.utils``. Macros for working with vectors
+and matrices are implemented as function in :mod:`pytpm.tpm`, with the
+character "f" added to the end of the macro name.
+
+Here we will list the functions and macros in :mod:`pytpm.tpm`. See
+:mod:`pytpm.utils` for the macros.
 
 
+Functions for manipulating vectors and matrices
+-----------------------------------------------
 
+V3 vector
+~~~~~~~~~
+
+See the section on :class:`V3` for information on the fields of a V3
+instance. 
+
+To intialize a V3 instance, with all fields set to 0, use the
+``v3init`` function. This function takes an integer indicating the
+type of the V3 instance and returns a V3 instance. In the case of the
+velocity vector in a ``V6`` instance, we use a different naming
+scheme. ``RDot
+
+.. autofunction:: v3init  
+
+To get a string representation of the vector, use the ``v3fmt``
+function.
+
+.. autofunction:: v3fmt   
+
+For all the functions described below, the first argument must be a V3
+instance. The second must be a scalar or another V3 instance,
+depending on the type of operation.
+
+The following functions can be used to set the components of a
+:class:`V3` instance.  The appropriate field in the V3 instance is set
+to the scalar provided.
+
+.. autofunction:: v3SetAlphaf
+.. autofunction:: v3SetDecf  
+.. autofunction:: v3SetDeltaf
+.. autofunction:: v3SetRAf   
+.. autofunction:: v3SetRf    
+.. autofunction:: v3SetTypef 
+.. autofunction:: v3SetXf    
+.. autofunction:: v3SetYf    
+.. autofunction:: v3SetZf    
+
+These functions return the value of the relevant component of the
+vector.
+
+.. autofunction:: v3GetAlphaf
+.. autofunction:: v3GetDecf  
+.. autofunction:: v3GetDeltaf
+.. autofunction:: v3GetRAf   
+.. autofunction:: v3GetRf    
+.. autofunction:: v3GetTypef 
+.. autofunction:: v3GetXf    
+.. autofunction:: v3GetYf    
+.. autofunction:: v3GetZf    
+
+The following functions can be used to subtract a scalar from a
+component of a :class:`V3` instance.
+
+.. autofunction:: v3DecAlphaf       
+.. autofunction:: v3DecDecf         
+.. autofunction:: v3DecDeltaf       
+.. autofunction:: v3DecRAf          
+.. autofunction:: v3DecRf           
+.. autofunction:: v3DecXf           
+.. autofunction:: v3DecYf           
+.. autofunction:: v3DecZf
+
+Use the following functions to divide a component of a V3 instance
+with a scalar.
+
+.. autofunction:: v3DivAlphaf       
+.. autofunction:: v3DivDecf         
+.. autofunction:: v3DivDeltaf       
+.. autofunction:: v3DivRAf        
+.. autofunction:: v3DivRf    
+.. autofunction:: v3DivXf    
+.. autofunction:: v3DivYf    
+.. autofunction:: v3DivZf    
+
+The following functions can be used to add a scalar to a V3 vector.
+
+.. autofunction:: v3IncAlphaf 
+.. autofunction:: v3IncDecf   
+.. autofunction:: v3IncDeltaf 
+.. autofunction:: v3IncRAf    
+.. autofunction:: v3IncRf     
+.. autofunction:: v3IncXf     
+.. autofunction:: v3IncYf     
+.. autofunction:: v3IncZf     
+
+Use the following functions to multiply a component of a V3 vector
+with a scalar.
+
+.. autofunction:: v3MulAlphaf 
+.. autofunction:: v3MulDecf   
+.. autofunction:: v3MulDeltaf 
+.. autofunction:: v3MulRAf    
+.. autofunction:: v3MulRf     
+.. autofunction:: v3MulXf    
+.. autofunction:: v3MulYf    
+.. autofunction:: v3MulZf    
+
+
+The ``v3alpha`` function returns the "Right Ascension", i.e., value in
+``v3[1]``, normalized to the range [0 - 2*pi ). This function takes
+only one argument, the V3 instance.
+
+.. autofunction:: v3alpha    
+
+The ``v3delta`` function returns the "Declination", i.e., value in
+``v3[2]``, normalized to the range (-pi/2 - pi/2). This function takes
+only one argument, the V3 instance.
+
+.. autofunction:: v3delta 
+
+The following functions convert between cartesian and spherical
+representations of a V3 vector. Both take a V3 instance as their
+argument and returns a new V3 instance.
+
+.. autofunction:: v3c2s   
+.. autofunction:: v3s2c   
+
+The function ``v3cross`` returns the cross product and ``v3dot``
+returns the dot product of two V3 vectors passed as arguments. Both
+return a new V3 instance.
+
+.. autofunction:: v3cross 
+.. autofunction:: v3dot   
+
+Function ``v3diff`` returns a V3 instance that stores the difference
+between two V3 vectors. Function ``v3sum`` returns the sum of two V3
+vectors.
+
+.. autofunction:: v3diff  
+.. autofunction:: v3sum   
+
+To cacluate the "modulus" or "length" of a vector use the ``v3mod``
+function. This function takes a V3 instance and returns a double.
+
+.. autofunction:: v3mod   
+
+To scale a V3 vector with a scalar use the ``v3scale`` function.
+
+.. autofunction:: v3scale 
+
+The ``v3unit`` function converts the given vector into a unit vector,
+i.e., vector of "length" 1.
+
+.. autofunction:: v3unit  
+
+The ``v32v6`` functions sets the given V3 vector as the "position"
+vector of a :class:``V6`` vector and returns the V6 vector. The type
+of the V6 vector is set to that of the V3 vector.
+
+.. autofunction:: v32v6
+
+V6 vectors
+~~~~~~~~~~
+
+A :class:`V6` vector, has a type, indicating whether it is cartesian
+or spherical, and a two element array of :class:`V3` vectors. The
+first element, or more precisely, ``v6[tpm.POS]`` stores the position
+vector and the second, more precisely, ``v6[tpm.VEL]`` stores the
+velocity vector.
+
+To initialize a ``V6`` vector, use the ``v6init`` function.
+
+.. autofunction:: v6init        
+
+To get a formatted string representation of the components of a ``V6``
+vector use the ``v6fmt`` function.
+
+.. autofunction:: v6fmt         
+
+Use the following functions to set the various components of a ``V6``
+instance. These take a ``V6`` instance as the first argument and a
+scalar as the second argument.
+
+.. autofunction:: v6SetAlphaDotf
+.. autofunction:: v6SetAlphaf   
+.. autofunction:: v6SetDecf     
+.. autofunction:: v6SetDeltaDotf
+.. autofunction:: v6SetDeltaf   
+.. autofunction:: v6SetPMDecf   
+.. autofunction:: v6SetPMRAf    
+.. autofunction:: v6SetPosf     
+.. autofunction:: v6SetRAf      
+.. autofunction:: v6SetRDotf    
+.. autofunction:: v6SetRf       
+.. autofunction:: v6SetTypef    
+.. autofunction:: v6SetVelf     
+.. autofunction:: v6SetXDotf    
+.. autofunction:: v6SetXf       
+.. autofunction:: v6SetYDotf    
+.. autofunction:: v6SetYf       
+.. autofunction:: v6SetZDotf    
+.. autofunction:: v6SetZf       
+
+These functions retrieve the components of a ``V6`` instance. These
+take a ``V6`` instance as their arguments.
+
+.. autofunction:: v6GetAlphaDotf
+.. autofunction:: v6GetAlphaf   
+.. autofunction:: v6GetDecf     
+.. autofunction:: v6GetDeltaDotf
+.. autofunction:: v6GetDeltaf   
+.. autofunction:: v6GetPMDecf   
+.. autofunction:: v6GetPMRAf    
+.. autofunction:: v6GetPosf     
+.. autofunction:: v6GetRAf      
+.. autofunction:: v6GetRDotf    
+.. autofunction:: v6GetRf       
+.. autofunction:: v6GetTypef    
+.. autofunction:: v6GetVelf     
+.. autofunction:: v6GetXDotf    
+.. autofunction:: v6GetXf       
+.. autofunction:: v6GetYDotf    
+.. autofunction:: v6GetYf       
+.. autofunction:: v6GetZDotf    
+.. autofunction:: v6GetZf       
+
+To subtract a scalar from a component of a ``V6`` vector, use the
+following function. These take a ``V6`` instance as the first argument
+and a scalar as the second argument. These return a new ``V6``
+instance.
+
+.. autofunction:: v6DecAlphaDotf      
+.. autofunction:: v6DecAlphaf         
+.. autofunction:: v6DecDecf           
+.. autofunction:: v6DecDeltaDotf      
+.. autofunction:: v6DecDeltaf         
+.. autofunction:: v6DecPMDecf         
+.. autofunction:: v6DecPMRAf          
+.. autofunction:: v6DecRAf            
+.. autofunction:: v6DecRDotf          
+.. autofunction:: v6DecRf             
+.. autofunction:: v6DecXDotf          
+.. autofunction:: v6DecXf             
+.. autofunction:: v6DecYDotf          
+.. autofunction:: v6DecYf             
+.. autofunction:: v6DecZDotf          
+.. autofunction:: v6DecZf             
+
+The following function can be used to divide a component with a
+scalar. These take a ``V6`` instance as the first argument and a
+scalar as the second argument. These return a new ``V6`` instance.
+
+.. autofunction:: v6DivAlphaDotf      
+.. autofunction:: v6DivAlphaf         
+.. autofunction:: v6DivDecf           
+.. autofunction:: v6DivDeltaDotf      
+.. autofunction:: v6DivDeltaf         
+.. autofunction:: v6DivPMDecf         
+.. autofunction:: v6DivPMRAf          
+.. autofunction:: v6DivRAf            
+.. autofunction:: v6DivRDotf          
+.. autofunction:: v6DivRf             
+.. autofunction:: v6DivXDotf          
+.. autofunction:: v6DivXf             
+.. autofunction:: v6DivYDotf    
+.. autofunction:: v6DivYf       
+.. autofunction:: v6DivZDotf    
+.. autofunction:: v6DivZf       
+
+The following functions add a scalar to a component of a ``V6``
+instance. These take a ``V6`` instance as the first argument and a
+scalar as the second argument. These return a new ``V6`` instance.
+
+.. autofunction:: v6IncAlphaDotf
+.. autofunction:: v6IncAlphaf   
+.. autofunction:: v6IncDecf     
+.. autofunction:: v6IncDeltaDotf
+.. autofunction:: v6IncDeltaf   
+.. autofunction:: v6IncPMDecf   
+.. autofunction:: v6IncPMRAf    
+.. autofunction:: v6IncRAf      
+.. autofunction:: v6IncRDotf    
+.. autofunction:: v6IncRf       
+.. autofunction:: v6IncXDotf    
+.. autofunction:: v6IncXf       
+.. autofunction:: v6IncYDotf    
+.. autofunction:: v6IncYf       
+.. autofunction:: v6IncZDotf    
+.. autofunction:: v6IncZf       
+
+Use these functions to multiply a component of a ``V6`` vector with a
+scalar. These take a ``V6`` instance as the first argument and a
+scalar as the second argument. These return a new ``V6`` instance.
+
+.. autofunction:: v6MulAlphaDotf
+.. autofunction:: v6MulAlphaf   
+.. autofunction:: v6MulDecf     
+.. autofunction:: v6MulDeltaDotf
+.. autofunction:: v6MulDeltaf   
+.. autofunction:: v6MulPMDecf   
+.. autofunction:: v6MulPMRAf    
+.. autofunction:: v6MulRAf      
+.. autofunction:: v6MulRDotf    
+.. autofunction:: v6MulRf       
+.. autofunction:: v6MulXDotf    
+.. autofunction:: v6MulXf       
+.. autofunction:: v6MulYDotf    
+.. autofunction:: v6MulYf       
+.. autofunction:: v6MulZDotf    
+.. autofunction:: v6MulZf       
+
+To get the "RA" and "Dec" values in the position vector of a ``V6``
+vector, normalized to [0 - 2pi) and (-pi/2 and pi/2), respectively,
+use the functions ``v6alpha`` and ``v6delta``. 
+
+.. autofunction:: v6alpha       
+.. autofunction:: v6delta       
+
+Use the following two functions to convert between cartesian and
+spherical representations of a ``V6`` vector.
+
+.. autofunction:: v6c2s         
+.. autofunction:: v6s2c         
+
+The cross product and dot product of two ``V6`` vector use ``v6cross``
+and ``v6dot`` respectively.
+
+.. autofunction:: v6cross       
+.. autofunction:: v6dot         
+
+To find the sum and difference of two ``V6`` vectors use ``v6sum`` and
+``v6diff`` functions, respectively.
+
+.. autofunction:: v6sum         
+.. autofunction:: v6diff        
+
+The  modulus or length of the position vector in a ``V6`` vector can
+be calculated using the ``v6mod`` function.
+
+.. autofunction:: v6mod         
+
+The ``v6unit`` vector converts the position vector in a ``V6`` vector
+into a unit vector.
+
+.. autofunction:: v6unit        
+
+A ``V6`` vector can be scaled , i.e., all components multiplied, with
+a scalar using the ``v6scale`` function.
+
+.. autofunction:: v6scale       
+
+
+The ``v62v3`` function applies space motion to the position vector in
+a ``V6`` vector. The veolcity components and multiplied with the time
+interval provided and then the result is added to the corresponding
+position component. The resulting ``V3`` position vector is returned.
+
+.. autofunction:: v62v3
 
