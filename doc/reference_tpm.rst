@@ -1116,3 +1116,109 @@ The function ``m6v6`` returns a ``V6`` obtained by taking the product
 of the given ``M6`` matrix and the given ``V6`` vector.
 
 .. autofunction:: m6v6    
+
+Functions related to dates and time
+-----------------------------------
+
+This section will discuss the function that deal with calculation of
+dates and time. Macros in TPM that deal with dates and time are
+provided as functions, with the same name as that of the macros, in
+:mod:`pytpm.utils`.
+
+.. autofunction:: d2dms
+.. autofunction:: dms2dms
+.. autofunction:: dms_diff
+.. autofunction:: dms_sum
+.. autofunction:: hms2dms
+.. autofunction:: dms2hms
+.. autofunction:: h2hms
+.. autofunction:: hms2hms
+.. autofunction:: hms_diff
+.. autofunction:: hms_sum
+.. autofunction:: j2jd
+.. autofunction:: jd2jd
+.. autofunction:: jd_diff
+.. autofunction:: jd_now
+.. autofunction:: jd_sum
+.. autofunction:: ymd2jd
+.. autofunction:: jd2ymd
+
+.. autofunction:: y2ymd
+.. autofunction:: ydd2ymd
+.. autofunction:: ymd2ymd
+.. autofunction:: fmt_alpha
+.. autofunction:: fmt_d
+.. autofunction:: fmt_delta
+.. autofunction:: fmt_h
+.. autofunction:: fmt_j
+
+.. autofunction:: fmt_ymd
+.. autofunction:: fmt_ymd_raw
+.. autofunction:: d2d
+.. autofunction:: dms2d
+.. autofunction:: gcal2j
+.. autofunction:: h2h
+.. autofunction:: hms2h
+.. autofunction:: jcal2j
+.. autofunction:: jd2j
+.. autofunction:: r2r
+.. autofunction:: utc_now
+
+
+.. autofunction:: ymd2y
+
+.. autofunction:: j2dow
+.. autofunction:: y2doy
+
+.. autofunction:: j2gcal
+
+.. autofunction:: j2jcal
+
+Functions for astrometry calculations
+-------------------------------------
+
+The following lists all functions used for performing astrometry
+calculations, such as applying aberration corrections.
+
+.. autofunction:: precess_m
+.. autofunction:: aberrate
+.. autofunction:: azel2hadec
+.. autofunction:: ecl2equ
+.. autofunction:: ellab
+.. autofunction:: equ2ecl
+.. autofunction:: equ2gal
+.. autofunction:: eterms
+.. autofunction:: fk425
+.. autofunction:: fk524
+.. autofunction:: gal2equ
+.. autofunction:: geod2geoc
+.. autofunction:: hadec2azel
+.. autofunction:: ldeflect
+.. autofunction:: precess
+.. autofunction:: proper_motion
+.. autofunction:: tpm_state
+.. autofunction:: delta_AT
+.. autofunction:: eccentricity
+.. autofunction:: eccentricity_dot
+.. autofunction:: obliquity
+.. autofunction:: obliquity_dot
+.. autofunction:: refract
+.. autofunction:: refraction
+.. autofunction:: solar_perigee
+.. autofunction:: solar_perigee_dot
+.. autofunction:: tdt2tdb
+.. autofunction:: theta
+.. autofunction:: thetadot
+.. autofunction:: ut12gmst
+.. autofunction:: zee
+.. autofunction:: zeedot
+.. autofunction:: tpm
+.. autofunction:: atm
+.. autofunction:: evp
+.. autofunction:: nutations
+.. autofunction:: refco
+.. autofunction:: tpm_data
+
+
+
+
