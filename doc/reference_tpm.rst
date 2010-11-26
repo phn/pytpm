@@ -271,10 +271,10 @@ attribute ``m``, each element of which is a floating point number.
 .. autoclass:: M3
     :members:
 
-``M6`` is a class for representing a rotation matrix that converts
-both coordinates and velocities at the same time. It is defined in
-REFERENCE. It has a 2x2 array attribute ``m``, each element of which
-hold a ``M3`` instance.
+A ``M6`` class consists of a 2x2 array, each element of which is a
+``M3`` matrix. This class is used to create a "Q" matrix, that can be
+used to rotate, or transform, position and velocitiy vectors from one
+coordinate system to another at the same time.
 
 .. autoclass:: M6
     :members:
@@ -842,3 +842,277 @@ position component. The resulting ``V3`` position vector is returned.
 
 .. autofunction:: v62v3
 
+M3 matrix
+~~~~~~~~~
+
+.. rubric:: Scaled identity matrix and null matrix
+
+Function ``m3I`` returns an identity ``M3`` matrix, scaled with the
+given scalar. To construct a null matrix, use the function ``m3O``.
+ 
+.. autofunction:: m3I     
+.. autofunction:: m3O     
+
+.. rubric:: Formatted string representation
+
+Use the function ``m3fmt`` to get a formatted string containing the
+elements of a matix.
+
+.. autofunction:: m3fmt    
+
+.. rubric:: Set values
+
+Use the following functions to set the various elements of a ``M3``
+matrix.
+
+.. autofunction:: m3SetXXf 
+.. autofunction:: m3SetXYf 
+.. autofunction:: m3SetXZf 
+.. autofunction:: m3SetYXf 
+.. autofunction:: m3SetYYf 
+.. autofunction:: m3SetYZf 
+.. autofunction:: m3SetZXf 
+.. autofunction:: m3SetZYf 
+.. autofunction:: m3SetZZf 
+
+.. rubric:: Retrive values
+
+The following functions return the value of a particular component of
+a matrix.
+
+.. autofunction:: m3GetXXf
+.. autofunction:: m3GetXYf
+.. autofunction:: m3GetXZf
+.. autofunction:: m3GetYXf
+.. autofunction:: m3GetYYf
+.. autofunction:: m3GetYZf
+.. autofunction:: m3GetZXf
+.. autofunction:: m3GetZYf
+.. autofunction:: m3GetZZf
+
+.. rubric:: Subtract a scalar from a component
+
+The following functions can be used to subtract a scalar from a
+component of a matrix. These take a ``M3`` instance as their first
+argument, a scalar as their second argument and returns a new ``M3``
+instance.
+
+
+.. autofunction:: m3DecXXf       
+.. autofunction:: m3DecXYf       
+.. autofunction:: m3DecXZf       
+.. autofunction:: m3DecYXf       
+.. autofunction:: m3DecYYf       
+.. autofunction:: m3DecYZf       
+.. autofunction:: m3DecZXf       
+.. autofunction:: m3DecZYf       
+.. autofunction:: m3DecZZf       
+
+.. rubric:: Divide a component with a scalar
+
+Use the following functions to divide a component with a scalar. These
+take a ``M3`` instance as their first argument, a scalar as their
+second argument and returns a new ``M3`` instance.
+
+.. autofunction:: m3DivXXf       
+.. autofunction:: m3DivXYf       
+.. autofunction:: m3DivXZf        
+.. autofunction:: m3DivYXf        
+.. autofunction:: m3DivYYf        
+.. autofunction:: m3DivYZf        
+.. autofunction:: m3DivZXf       
+.. autofunction:: m3DivZYf
+.. autofunction:: m3DivZZf
+
+.. rubric:: Add a scalar to a component
+
+Use the following functions to add a scalar to a component of a
+matrix. These take a ``M3`` instance as their first argument, a scalar
+as their second argument and returns a new ``M3`` instance.
+
+.. autofunction:: m3IncXXf
+.. autofunction:: m3IncXYf
+.. autofunction:: m3IncXZf
+.. autofunction:: m3IncYXf
+.. autofunction:: m3IncYYf
+.. autofunction:: m3IncYZf
+.. autofunction:: m3IncZXf
+.. autofunction:: m3IncZYf
+.. autofunction:: m3IncZZf
+
+.. rubric:: Multiply a component with a scalar
+
+The following functions return a matrix with the component set to the
+value obtained by multiplying the corresponding value in the input
+matirx with a scalar.
+
+.. autofunction:: m3MulXXf
+.. autofunction:: m3MulXYf
+.. autofunction:: m3MulXZf
+.. autofunction:: m3MulYXf
+.. autofunction:: m3MulYYf
+.. autofunction:: m3MulYZf
+.. autofunction:: m3MulZXf
+.. autofunction:: m3MulZYf
+.. autofunction:: m3MulZZf
+
+.. rubric:: Rotation matrices
+
+The main use of ``M3`` matrices in TPM is for creating rotation
+matrices. The following functions return rotation matrix about the
+axis indicated. These functions take an angle, the rotation angle, as
+their input.
+
+.. autofunction:: m3Rx    
+.. autofunction:: m3Ry     
+.. autofunction:: m3Rz     
+
+The following functions return the time derivative of the
+corresponding rotation matrices. These functions take a rotation angle
+and the time derivative of the rotation angle as inputs.
+
+.. autofunction:: m3RxDot  
+.. autofunction:: m3RyDot  
+.. autofunction:: m3RzDot  
+
+.. rubric:: Sum and difference of matrices
+
+The functions return the sum and difference of two matrices.
+
+.. autofunction:: m3sum    
+.. autofunction:: m3diff   
+
+.. rubric:: Inverse of an orthogonal matrix
+
+The functions return the inverse of a matrix, assuming that it is
+orthogonal. 
+
+.. autofunction:: m3inv    
+
+.. rubric:: Scale a matrix with a scalar
+
+The function ``m3scale`` return a ``M3`` martix with components set to
+those obtained by multiplying the corresponding components of the
+input matrix with a scalar.
+
+.. autofunction:: m3scale  
+
+.. rubric:: Product of two ``M3`` matrices
+
+The function ``m3v3`` returns a ``M3`` matrix that is the product of
+two input matrices.
+
+.. autofunction:: m3m3     
+
+.. rubric:: Product of a ``M3`` matrix with a ``V3`` matrix
+
+The function ``m3v3`` returns a ``V3`` vector that is the product of a
+``M3`` matrix with a ``V3`` vector.
+
+.. autofunction:: m3v3     
+
+.. rubric:: Product of a ``M3`` matrix with a ``V6`` matrix
+
+The function ``m3v6`` returns a ``V6`` vector, obtained by multiplying
+the velocity and position components of the input ``V6`` vecctor with
+the input ``M3`` matrix.
+
+.. autofunction:: m3v6     
+
+M6 matrix
+~~~~~~~~~
+
+.. rubric:: Scaled identity matrix and null matrix
+
+Function ``m6I`` returns an identity ``M6`` matrix, scaled with the
+given scalar. To construct a null matrix, use the function ``m6O``.
+
+.. autofunction:: m6I      
+.. autofunction:: m6O      
+
+.. rubric:: Formatted string representation
+
+Use the function ``m6fmt`` to get a formatted string containing the
+elements of a matix.
+
+.. autofunction:: m6fmt   
+
+.. rubric:: Set values
+
+Use the following functions to set the various elements of a ``M6``
+matrix.
+
+.. autofunction:: m6SetPPf 
+.. autofunction:: m6SetPVf
+.. autofunction:: m6SetVPf
+.. autofunction:: m6SetVVf
+
+.. rubric:: Retrive values
+
+The following functions return the value of a particular component of
+a matrix.
+
+.. autofunction:: m6GetPPf 
+.. autofunction:: m6GetPVf 
+.. autofunction:: m6GetVPf 
+.. autofunction:: m6GetVVf 
+
+.. rubric:: The 6x6 rotation matrix
+
+The "Q" matrix is a 6x6 matrix that can be used to rotate position and
+velocity vectors at the same time. The following functions return the
+rotation matrices for the specified axis. They take as input the
+rotation angle and the rate of change of the rotation angle.
+
+The 6x6 matrix actual is composed of a 2x2 array, with each element of
+the array being a ``M3`` matrix.
+
+.. autofunction:: m6Qx     
+.. autofunction:: m6Qy     
+.. autofunction:: m6Qz     
+
+.. rubric:: Sum and difference of matrices
+
+The functions return the sum and difference of two matrices.
+
+.. autofunction:: m6sum   
+.. autofunction:: m6diff  
+
+.. rubric:: Inverse of an orthogonal matrix
+
+The functions return the inverse of a matrix, assuming that the
+component ``M3`` matrices are orthogonal.
+
+.. autofunction:: m6inv   
+
+.. rubric:: Scale a matrix with a scalar
+
+The function ``m6scale`` return a ``M6`` martix with each of the
+``M3`` matrix component in the ``M6`` matrix scaled with the given
+constant.
+
+.. autofunction:: m6scale 
+
+.. rubric:: Product of two ``M6`` matrices
+
+Function ``m6m6`` returns a ``M6`` matrix obtained by taking the
+product of two ``M6`` matrices. The matrix is obtained by following
+the same procedures used in regular matrix multiplication, but the
+multiplications and additions are between ``M3``.
+
+.. autofunction:: m6m6    
+
+.. rubric:: Product of a ``M6`` matrix with a ``V3`` matrix
+
+The function ``m6v3`` returns a ``V3`` vector that is the product of
+the "PP" component, i.e., m6[0][0], of the ``M6`` matrix and a ``V3``
+vector.
+
+.. autofunction:: m6v3    
+
+.. rubric:: Product of a ``M6`` matrix with a ``V6`` vector
+
+The function ``m6v6`` returns a ``V6`` obtained by taking the product
+of the given ``M6`` matrix and the given ``V6`` vector.
+
+.. autofunction:: m6v6    
