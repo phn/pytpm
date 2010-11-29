@@ -1250,7 +1250,8 @@ degrees to the range [0, 360].
 
 The function ``fmt_d`` gives a formatted string representation of a
 scalar angle in degrees. To format a :class:`DMS` structure use the
-function :func:`pytpm.utils.fmt_dms`.
+function :func:`pytpm.utils.fmt_dms`. To format an angle in radians
+use the function :func:`pytpm.utils.fmt_r`.
 
 .. autofunction:: fmt_d
 
@@ -1471,33 +1472,257 @@ conversion between time and angles. For example,
 
 .. rubric:: Dates
 
+The function ``utc_now`` returns the current ``UTC`` date as a Julian
+day number. This is accurate to the nearest second. The function
+``jd_now`` returns the same, but the returned value is a :class:``JD``
+structure.
+
 .. autofunction:: utc_now
 .. autofunction:: jd_now
+
+.. sourcecode:: python
+
+  In [88]: tpm.utc_now()
+  Out[88]: 2455530.1067824075
+
+  In [98]: jd = tpm.jd_now()
+   
+  In [99]: jd.dd
+  Out[99]: 2455530.1088657407
+   
+  In [100]: jd.hms.hh
+  Out[100]: 0.0
+   
+  In [101]: jd.hms.mm
+  Out[101]: 0.0
+   
+  In [102]: jd.hms.ss
+  Out[102]: 0.0
+
+The ``j2jd`` function converts a scalar Julian day number into a
+:class:``JD`` structure. The ``dd`` member of the structure is set to
+the supplied scalar. To convert a :class:``JD`` structure into a
+scalar Julian day number, use the function ``jd2j``. To normalize the
+components of a :class:`JD`` structure use the function ``jd2jd``.
 
 .. autofunction:: j2jd
 .. autofunction:: jd2j
 .. autofunction:: jd2jd
+
+.. sourcecode:: ipython
+
+  In [103]: jd = tpm.jd2jd(jd)
+   
+  In [104]: jd.dd
+  Out[104]: 2455530.0
+   
+  In [105]: jd.hms.hh
+  Out[105]: 2.0
+   
+  In [106]: jd.hms.mm
+  Out[106]: 36.0
+   
+  In [107]: jd.hms.ss
+  Out[107]: 45.99999725818634
+
+  In [108]: j = tpm.utc_now()
+   
+  In [109]: jd = tpm.j2jd(j)
+   
+  In [110]: jd = tpm.jd2jd(jd)
+   
+  In [111]: print jd.dd, jd.hms.hh, jd.hms.mm, jd.hms.ss
+  --------> print(jd.dd, jd.hms.hh, jd.hms.mm, jd.hms.ss)
+  (2455530.0, 3.0, 32.0, 23.000002205371857)
+
+
+To find the sum and difference of dates represented by two :class:`JD`
+instances use the ``jd_diff`` and ``jd_sum`` functions.
+
 .. autofunction:: jd_diff
 .. autofunction:: jd_sum
+
+.. sourcecode:: ipython
+
+  In [112]: jd = tpm.utc_now()
+   
+  In [113]: jd1 = tpm.utc_now()
+   
+  In [114]: jd1 = tpm.jd_now()
+   
+  In [115]: jd2 = tpm.jd_now()
+   
+  In [116]: jd = tpm.jd_diff(jd2, jd1)
+   
+  In [117]: jd = tpm.jd2jd(jd)
+   
+  In [118]: print jd.dd, jd.hms.hh, jd.hms.mm, jd.hms.ss
+  --------> print(jd.dd, jd.hms.hh, jd.hms.mm, jd.hms.ss)
+  (0.0, 0.0, 0.0, 6.000007688999176)
+
+
+The ``gcal2j`` functions calculates the Julian day number for mid-day
+of the given *proleptic Gregorian calendar* date. In a proleptic
+Gregorian calendar all dates are expressed as Gregorian dates and no
+conversion to Julian calendar takes place. The ``jcal2j`` function
+calculates the Julian day number for mid-day of the given *proleptic
+Julian calendar* date. In a proleptic Julian calendar, all dates are
+expressed as Julian dates and no conversion to Gregorian calendar is
+performed. The functions ``j2gcal`` and ``j2jcal`` perform the reverse
+conversion, i.e., returns the calendar date on which the given Julian
+day number occurs.
+
+Functions ``gcal2j`` and ``jcal2j`` take as input an integer year, an
+integer month and an integer day, and returns a scalar Julian day
+number. Functions ``j2gcal`` and ``j2jcal`` take as input a scalar
+Julian day number and returns a list of the format [year, month, day],
+where all three are integers.
+
+In all these function, BC years are represented using negative
+numbers, with ``1 BC = 0``. So we have, ``10 BC = -9``, ``4713 BC =
+-4712`` and so on.
 
 .. autofunction:: gcal2j
 .. autofunction:: jcal2j
 .. autofunction:: j2gcal
 .. autofunction:: j2jcal
 
-.. autofunction:: j2dow
-.. autofunction:: y2doy
+.. sourcecode:: ipython
+
+  In [129]: j = tpm.gcal2j(1987,10,11)
+   
+  In [130]: j
+  Out[130]: 2447080.0
+   
+  In [131]: gcal = tpm.j2gcal(j)
+   
+  In [132]: gcal
+  Out[132]: [1987, 10, 11]
+   
+  In [133]: jcal = tpm.j2jcal(0)
+   
+  In [134]: jcal
+  Out[134]: [-4712, 1, 1]
+
+The function ``jd2ymd`` converts a Julian day number in a :class:`JD`
+structure into a Gregorian calendar date and time stored in a
+:class:`YMD`. This is more useful than :func:`j2gcal`, since it will
+also convert the fractional part of the Julian day number into hours,
+minutes and second of the corresponding *proleptic Gregorian* calendar
+date. For the reverse conversion use ``ymd2jd``. To normalize a
+:class:`YMD` structure, use the function ``ymd2ymd``.
 
 .. autofunction:: jd2ymd
 .. autofunction:: ymd2jd
 .. autofunction:: ymd2ymd
+
+.. sourcecode:: ipython
+
+  In [139]: ymd = tpm.jd2ymd(tpm.jd_now())
+   
+  In [140]: ymd = tpm.ymd2ymd(ymd)
+   
+  In [141]: ymd.y
+  Out[141]: 2010
+   
+  In [142]: ymd.m
+  Out[142]: 11
+   
+  In [143]: ymd.dd
+  Out[143]: 29.0
+   
+  In [144]: ymd.hms.hh
+  Out[144]: 16.0
+   
+  In [145]: ymd.hms.mm
+  Out[145]: 58.0
+   
+  In [146]: ymd.hms.ss
+  Out[146]: 1.0000151395797729
+
+
+There are three functions that convert dates between a scalar year and
+a :class:`YMD` structure. Functions ``y2ymd`` and ``ymd2y`` convert a
+scalar year, including fractional part, into a :class:`YMD` structure
+and a :class:`YMD` structure into scalar year, preserving the
+fractional part, respectively. The function ``ydd2ymd`` takes as input
+a year and a day, the latter can have fractional part, and returns a
+:class:`YMD` structure.
+
 .. autofunction:: y2ymd
 .. autofunction:: ymd2y
 .. autofunction:: ydd2ymd
 
+.. sourcecode:: ipython
+
+  In [153]: ymd = tpm.y2ymd(2000.12345)
+   
+  In [154]: ymd = tpm.ymd2ymd(ymd)
+   
+  In [155]: print ymd.y, ymd.m, ymd.dd, ymd.hms.hh, ymd.hms.mm, ymd.hms.ss
+  --------> print(ymd.y, ymd.m, ymd.dd, ymd.hms.hh, ymd.hms.mm, ymd.hms.ss)
+  (2000, 2, 14.0, 4.0, 23.0, 5.280020534992218)
+   
+  In [162]: ymd = tpm.ydd2ymd(2000,366)
+   
+  In [163]: ymd = tpm.ymd2ymd(ymd)
+   
+  In [164]: print ymd.y, ymd.m, ymd.dd, ymd.hms.hh, ymd.hms.mm, ymd.hms.ss
+  --------> print(ymd.y, ymd.m, ymd.dd, ymd.hms.hh, ymd.hms.mm, ymd.hms.ss)
+  (2000, 12, 31.0, 0.0, 0.0, 0.0)
+
+The function ``j2dow`` returns the day of the week corresponding to
+the given Julian day number; sunday is day 0. The function ``y2doy``
+calculates the number of days in the given *proleptic Gregorian* year.
+
+.. autofunction:: j2dow
+.. autofunction:: y2doy
+
+.. sourcecode:: ipython
+
+  In [165]: j = tpm.utc_now()
+   
+  In [166]: tpm.j2dow(j)
+  Out[166]: 1
+   
+  In [167]: tpm.y2doy(2000)
+  Out[167]: 366
+   
+  In [168]: tpm.y2doy(1900)
+  Out[168]: 365
+
+Several functions are provided for generating formatted string
+representations of dates. Function ``fmt_j`` formats a scalar year,
+whereas ``fmt_ymd`` and ``fmt_ymd_raw`` generate slightly different
+string representations of data in a :class:`YMD` structure.
+
+The function :func:`pytpm.utils.fmt_jd` will format a :class:`JD`
+structure and :func:`pytpm.utils.fmt_y` will format a scalar year.
+
+
 .. autofunction:: fmt_j
 .. autofunction:: fmt_ymd
 .. autofunction:: fmt_ymd_raw
+
+.. sourcecode:: ipython
+
+  In [169]: j = tpm.utc_now()
+   
+  In [170]: print tpm.fmt_j(j)
+  --------> print(tpm.fmt_j(j))
+   2455530  05H 40M 58.999S
+   
+  In [174]: ymd = tpm.y2ymd(2000.12345)
+   
+  In [175]: ymd = tpm.ymd2ymd(ymd)
+   
+  In [176]: print tpm.fmt_ymd(ymd)
+  --------> print(tpm.fmt_ymd(ymd))
+  Mon Feb 14 04:23:05.280 2000
+   
+  In [177]: print tpm.fmt_ymd_raw(ymd)
+  --------> print(tpm.fmt_ymd_raw(ymd))
+  2000 2 14 4 23 5.28002053499222
 
 
 Functions for astrometry calculations
