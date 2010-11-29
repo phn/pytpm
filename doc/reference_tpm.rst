@@ -1117,62 +1117,388 @@ of the given ``M6`` matrix and the given ``V6`` vector.
 
 .. autofunction:: m6v6    
 
-Functions related to dates and time
------------------------------------
+Functions related to date, time and angle
+-----------------------------------------
 
-This section will discuss the function that deal with calculation of
+ADD LINK TO FUNCTIONS IN utils AT APPROPRIATE LOCATIONS.
+
+This section will discuss the functions that deal with calculation of
 dates and time. Macros in TPM that deal with dates and time are
 provided as functions, with the same name as that of the macros, in
-:mod:`pytpm.utils`.
+:mod:`pytpm.utils`. Code samples shown below were copied from
+`ipython` shell.
+
+.. rubric:: Angles
+
+Function ``d2dms`` returns a :class:`DMS` with the given scalar set as
+the value of the "degrees" part of the DMS structure. 
 
 .. autofunction:: d2dms
+
+.. sourcecode:: ipython
+
+  In [2]: dms = tpm.d2dms(23.456)
+
+  In [3]: dms.dd
+  Out[3]: 23.456
+   
+  In [4]: dms.mm
+  Out[4]: 0.0
+   
+  In [5]: dms.ss
+  Out[5]: 0.0
+
+The function ``dms2dms`` is used to normalize a :class:`DMS`
+structure.
+
 .. autofunction:: dms2dms
-.. autofunction:: dms_diff
+
+.. sourcecode:: ipython
+
+  In [6]: dms = tpm.dms2dms(dms)
+   
+  In [7]: dms.dd
+  Out[7]: 23.0
+   
+  In [8]: dms.mm
+  Out[8]: 27.0
+   
+  In [9]: dms.ss
+  Out[9]: 21.599999999998261
+
+Functions ``dms_diff`` and ``dms_sum`` return a :class:`DMS` structure,
+that correponds to the difference and sum between the given DMS
+structures, repectively.
+
 .. autofunction:: dms_sum
-.. autofunction:: hms2dms
-.. autofunction:: dms2hms
+.. autofunction:: dms_diff
+
+.. sourcecode:: ipython
+
+  In [10]: dms1 = tpm.d2dms(23.4567)
+   
+  In [11]: dms2 = tpm.d2dms(13.1985)
+   
+  In [12]: dms = tpm.dms_diff(dms1, dms2)
+   
+  In [13]: dms.dd
+  Out[13]: 10.258200000000002
+   
+  In [14]: dms.mm
+  Out[14]: 0.0
+   
+  In [15]: dms.ss
+  Out[15]: 0.0
+   
+  In [16]: dms = tpm.dms2dms(dms)
+   
+  In [17]: dms.dd
+  Out[17]: 10.0
+   
+  In [18]: dms.mm
+  Out[18]: 15.0
+   
+  In [19]: dms.ss
+  Out[19]: 29.52000000000794
+
+  In [20]: dms = tpm.dms_sum(dms1, dms2)
+   
+  In [21]: dms = tpm.dms2dms(dms)
+   
+  In [22]: dms.dd
+  Out[22]: 36.0
+   
+  In [23]: dms.mm
+  Out[23]: 39.0
+   
+  In [24]: dms.ss
+  Out[24]: 18.720000000002415
+
+To convert a :class:`DMS` to a scalar degree value, use the function
+``dms2d``. 
+
+.. autofunction:: dms2d
+
+.. sourcecode:: ipython
+
+  In [28]: print tpm.dms2d(dms)
+  -------> print(tpm.dms2d(dms))
+  36.6552
+
+The function ``d2d`` can be used to normalize a scalar angle in
+degrees to the range [0, 360].
+
+.. autofunction:: d2d
+
+.. sourcecode:: ipython
+   
+  In [29]: tpm.d2d(45.1234)
+  Out[29]: 45.123399999999997
+   
+  In [30]: tpm.d2d(361.0)
+  Out[30]: 1.0
+   
+  In [31]: tpm.d2d(-361.0)
+  Out[31]: 359.0
+   
+  In [32]: tpm.d2d(-720.0)
+  Out[32]: 0.0
+   
+  In [33]: tpm.d2d(-721.0)
+  Out[33]: 359.0
+
+
+The function ``fmt_d`` gives a formatted string representation of a
+scalar angle in degrees. To format a :class:`DMS` structure use the
+function :func:`pytpm.utils.fmt_dms`.
+
+.. autofunction:: fmt_d
+
+.. sourcecode:: ipython
+
+  In [26]: print tpm.fmt_d(23.4567)
+  -------> print(tpm.fmt_d(23.4567))
+  +23D 27' 24.120"
+   
+  In [27]: utils.fmt_dms(dms)
+  Out[27]: '+36D 39\' 18.720"'
+
+The function ``r2r`` can be used to normalize an angle in radians to
+the range [0, 2π). Several functions are provided in
+:mod:`pytpm.utils` for converting angles between various
+units. Examples are, :func:`pytpm.utils.r2as`,
+:func:`pytpm.utils.r2d`, :func:`pytpm.utils.r2dms`,
+:func:`pytpm.utils.dms2r`, :func:`pytpm.utils.d2r`,
+:func:`pytpm.utils.d2as`, :func:`pytpm.utils.as2d`, and
+:func:`pytpm.utils.as2r`.
+
+.. autofunction:: r2r
+
+.. sourcecode:: ipython
+
+  In [34]: tpm.r2r(1.34)
+  Out[34]: 1.3400000000000001
+   
+  In [35]: tpm.r2r(3.456)
+  Out[35]: 3.456
+   
+  In [36]: tpm.r2r(2*3.456)
+  Out[36]: 0.62881469282041369
+   
+  In [37]: tpm.r2r(2*tpm.M_PI)
+  Out[37]: 0.0
+   
+  In [38]: tpm.r2r(-2*tpm.M_PI)
+  Out[38]: 0.0
+   
+  In [39]: tpm.r2r(-2*tpm.M_PI+tpm.M_PI)
+  Out[39]: 3.1415926535897931
+   
+  In [40]: tpm.r2r(-tpm.M_PI)
+  Out[40]: 3.1415926535897931
+
+The function ``fmt_delta`` converts an angle in radians into an angle
+in degrees in the range [-90, 90]. This is useful, for example, in
+normalizing a angle representing a declination coordinate.
+
+.. autofunction:: fmt_delta
+
+.. sourcecode:: ipython
+
+  In [41]: tpm.fmt_delta(tpm.M_PI)
+  Out[41]: '+00D 00\' 00.000"'
+   
+  In [42]: tpm.fmt_delta(-tpm.M_PI)
+  Out[42]: '+00D 00\' 00.000"'
+   
+  In [43]: tpm.fmt_delta(-2*tpm.M_PI)
+  Out[43]: '+00D 00\' 00.000"'
+   
+  In [44]: tpm.fmt_delta(tpm.M_PI/2)
+  Out[44]: '+90D 00\' 00.000"'
+   
+  In [45]: tpm.fmt_delta(tpm.M_PI/4)
+  Out[45]: '+45D 00\' 00.000"'
+   
+  In [46]: tpm.fmt_delta(-tpm.M_PI/4)
+  Out[46]: '-45D 00\' 00.000"'
+
+  In [48]: tpm.fmt_delta(utils.d2r(-91.0))
+  Out[48]: '-89D 00\' 00.000"'
+   
+  In [49]: tpm.fmt_delta(utils.d2r(91.0))
+  Out[49]: '+89D 00\' 00.000"'
+
+.. rubric:: Time
+
+The following are some functions for working with time. 
+
+Functions ``h2hms`` and ``hms2h`` convert between scalar hours and
+time stored in :class:`HMS` structure.
+
 .. autofunction:: h2hms
+.. autofunction:: hms2h
+
+.. sourcecode:: ipython
+
+  In [52]: hms = tpm.h2hms(12.5)
+   
+  In [53]: hms.hh
+  Out[53]: 12.5
+   
+  In [54]: hms.mm
+  Out[54]: 0.0
+   
+  In [55]: hms.ss
+  Out[55]: 0.0
+   
+  In [56]: h = tpm.hms2h(hms)
+   
+  In [57]: h
+  Out[57]: 12.5
+
+Use the function ``hms2hms`` to normalize a :class:`HMS` structure and
+the function ``h2h`` to normalize a scalar time in hours to the range
+[0, 24.0).
+
 .. autofunction:: hms2hms
+.. autofunction:: h2h
+
+.. sourcecode:: ipython
+
+  In [58]: tpm.h2h(24.1)
+  Out[58]: 0.10000000000000142
+   
+  In [59]: tpm.h2h(24)
+  Out[59]: 0.0
+   
+  In [60]: hms = tpm.hms2hms(hms)
+   
+  In [61]: hms.hh
+  Out[61]: 12.0
+   
+  In [62]: hms.mm
+  Out[62]: 30.0
+   
+  In [63]: hms.ss
+  Out[63]: 0.0
+
+
+The functions ``hms_diff`` and ``hms_sum`` return a :class:`HMS`
+structure containing the difference and sum of two ``HMS`` structures.
+
 .. autofunction:: hms_diff
 .. autofunction:: hms_sum
+
+.. sourcecode:: ipython
+
+  In [64]: hms1 = tpm.h2hms(12.345678)
+   
+  In [65]: hms2 = tpm.h2hms(9.7654321)
+   
+  In [66]: hms = tpm.hms_diff(hms1, hms2)
+   
+  In [67]: print hms.hh, hms.mm, hms.ss
+  -------> print(hms.hh, hms.mm, hms.ss)
+  (2.5802458999999995, 0.0, 0.0)
+   
+  In [68]: hms = tpm.hms2hms(hms)
+   
+  In [69]: print hms.hh, hms.mm, hms.ss
+  -------> print(hms.hh, hms.mm, hms.ss)
+  (2.0, 34.0, 48.885239999998333)
+   
+  In [70]: hms = tpm.hms2hms(tpm.hms_sum(hms1, hms2))
+   
+  In [71]: print hms.hh, hms.mm, hms.ss
+  -------> print(hms.hh, hms.mm, hms.ss)
+  (22.0, 6.0, 39.996359999991569)
+
+
+The function ``fmt_h`` returns a formatted string representation of a
+scalar time in hours. The function :func:`pytpm.utils.fmt_hms`` can be
+used to format a :class:`HMS` structure.
+
+.. autofunction:: fmt_h
+
+.. sourcecode:: ipython
+
+  In [74]: tpm.fmt_h(12.3456)
+  Out[74]: ' 12H 20M 44.159S'
+   
+  In [75]: tpm.fmt_h(24.3456)
+  Out[75]: ' 24H 20M 44.160S'
+
+
+.. rubric:: Converting between angles and time
+
+Functions ``dms2hms`` and ``hms2dms`` can convert between angles in a
+:class:`DMS` structure to time in a :class:`HMS` structure, assuming
+24 hours = 360.0 degrees. The function ``fmt_alpha`` converts a scalar
+angle in radians into time between [0, 24) hours and returns a
+formatted string representing this time.
+
+.. autofunction:: hms2dms
+.. autofunction:: dms2hms
+.. autofunction:: fmt_alpha
+
+.. sourcecode:: ipython
+
+  In [77]: tpm.fmt_alpha(tpm.M_PI)
+  Out[77]: ' 12H 00M 00.000S'
+   
+  In [78]: tpm.fmt_alpha(2*tpm.M_PI)
+  Out[78]: ' 00H 00M 00.000S'
+   
+  In [79]: dms = tpm.d2dms(23.45678)
+   
+  In [80]: utils.fmt_dms(tpm.dms2dms(dms))
+  Out[80]: '+23D 27\' 24.407"'
+   
+  In [81]: hms = tpm.dms2hms(dms)
+   
+  In [82]: utils.fmt_hms(hms)
+  Out[82]: ' 01H 33M 49.627S'
+
+
+The module :mod:`pytpm.utils` defines several functions that perform
+conversion between time and angles. For example,
+:func:`pytpm.utils.r2h`, :func:`pytpm.utils.r2hms`,
+:func:`pytpm.utils.h2as`, :func:`pytpm.utils.h2d`,
+:func:`pytpm.utils.h2dms`, :func:`pytpm.utils.h2r`,
+:func:`pytpm.utils.hms2d`, :func:`pytpm.utils.hms2r`,
+:func:`pytpm.utils.r2h`, and :func:`pytpm.utils.r2hms`.
+
+.. rubric:: Dates
+
+.. autofunction:: utc_now
+.. autofunction:: jd_now
+
 .. autofunction:: j2jd
+.. autofunction:: jd2j
 .. autofunction:: jd2jd
 .. autofunction:: jd_diff
-.. autofunction:: jd_now
 .. autofunction:: jd_sum
-.. autofunction:: ymd2jd
-.. autofunction:: jd2ymd
 
-.. autofunction:: y2ymd
-.. autofunction:: ydd2ymd
-.. autofunction:: ymd2ymd
-.. autofunction:: fmt_alpha
-.. autofunction:: fmt_d
-.. autofunction:: fmt_delta
-.. autofunction:: fmt_h
-.. autofunction:: fmt_j
-
-.. autofunction:: fmt_ymd
-.. autofunction:: fmt_ymd_raw
-.. autofunction:: d2d
-.. autofunction:: dms2d
 .. autofunction:: gcal2j
-.. autofunction:: h2h
-.. autofunction:: hms2h
 .. autofunction:: jcal2j
-.. autofunction:: jd2j
-.. autofunction:: r2r
-.. autofunction:: utc_now
-
-
-.. autofunction:: ymd2y
+.. autofunction:: j2gcal
+.. autofunction:: j2jcal
 
 .. autofunction:: j2dow
 .. autofunction:: y2doy
 
-.. autofunction:: j2gcal
+.. autofunction:: jd2ymd
+.. autofunction:: ymd2jd
+.. autofunction:: ymd2ymd
+.. autofunction:: y2ymd
+.. autofunction:: ymd2y
+.. autofunction:: ydd2ymd
 
-.. autofunction:: j2jcal
+.. autofunction:: fmt_j
+.. autofunction:: fmt_ymd
+.. autofunction:: fmt_ymd_raw
+
 
 Functions for astrometry calculations
 -------------------------------------
@@ -1218,7 +1544,4 @@ calculations, such as applying aberration corrections.
 .. autofunction:: nutations
 .. autofunction:: refco
 .. autofunction:: tpm_data
-
-
-
 
