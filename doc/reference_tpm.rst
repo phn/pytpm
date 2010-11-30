@@ -1128,7 +1128,8 @@ provided as functions, with the same name as that of the macros, in
 :mod:`pytpm.utils`. Code samples shown below were copied from
 `ipython` shell.
 
-.. rubric:: Angles
+Angles
+~~~~~~
 
 Function ``d2dms`` returns a :class:`DMS` with the given scalar set as
 the value of the "degrees" part of the DMS structure. 
@@ -1330,7 +1331,8 @@ normalizing a angle representing a declination coordinate.
   In [49]: tpm.fmt_delta(utils.d2r(91.0))
   Out[49]: '+89D 00\' 00.000"'
 
-.. rubric:: Time
+Time
+~~~~
 
 The following are some functions for working with time. 
 
@@ -1431,7 +1433,8 @@ used to format a :class:`HMS` structure.
   Out[75]: ' 24H 20M 44.160S'
 
 
-.. rubric:: Converting between angles and time
+Converting between angles and time
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Functions ``dms2hms`` and ``hms2dms`` can convert between angles in a
 :class:`DMS` structure to time in a :class:`HMS` structure, assuming
@@ -1470,7 +1473,8 @@ conversion between time and angles. For example,
 :func:`pytpm.utils.hms2d`, :func:`pytpm.utils.hms2r`,
 :func:`pytpm.utils.r2h`, and :func:`pytpm.utils.r2hms`.
 
-.. rubric:: Dates
+Dates
+~~~~~
 
 The function ``utc_now`` returns the current ``UTC`` date as a Julian
 day number. This is accurate to the nearest second. The function
