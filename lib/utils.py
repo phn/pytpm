@@ -1,5 +1,9 @@
 """Utility functions for the python interface to TPM library.
 
+Except for the ``convert`` function, these are equivalent to the
+several macros provided in TPM. The macros are provided as python
+functions since they can't be wrapped with SWIG.
+
 :Author: Prasanth Nair
 :Contact: prasanthhn@gmail.com
 """
@@ -70,9 +74,6 @@ def convert(x=0.0, y=0.0, s1=6, s2=19, epoch=tpm.J2000,
     These are of-course used only when the observer's location
     information is needed. The default values are for KPNO and are taken
     from the source code of the TPM C library.
-   
-    :Author: Prasanth Nair
-    :Contact: prasanthhn@gmail.com
     """
     # tpm.convert takes radians.
     x = math.radians(x)
@@ -86,7 +87,7 @@ def convert(x=0.0, y=0.0, s1=6, s2=19, epoch=tpm.J2000,
 # The functions below are defined are macros in the TPM header times.h.
 # These provide shortcuts to various time and angle conversions.
 def d2h(d):
-    """Converts decimal degrees into hours.
+    """Converts degrees into hours.
 
     >>> d2h(180.0)
     12.0
@@ -94,7 +95,7 @@ def d2h(d):
     return d/15.0
 
 def h2d(h):
-    """Converts decimal hours into degrees.
+    """Converts hours into degrees.
     
     >>> h2d(12.0)
     180.0
@@ -102,7 +103,7 @@ def h2d(h):
     return h*15.0
 
 def d2r(d):
-    """Converts decimal degrees into radians.
+    """Converts degrees into radians.
     
     >>> y = d2r(180.0)
     >>> import math
@@ -111,7 +112,7 @@ def d2r(d):
     return d*(tpm.M_PI/180.0)
 
 def r2d(r):
-    """Converts decimal radians into degrees.
+    """Converts radians into degrees.
     
     >>> r2d(tpm.M_PI)
     180.0
@@ -119,7 +120,7 @@ def r2d(r):
     return r*(180.0/tpm.M_PI)
 
 def h2r(h):
-    """Converts decimal hours into radians.
+    """Converts hours into radians.
     
     >>> import math
     >>> assert h2r(12.0) == math.pi
@@ -127,7 +128,7 @@ def h2r(h):
     return h*(tpm.M_PI/12.0) 
 
 def r2h(r):
-    """Converts decimal radians into hours.
+    """Converts radians into hours.
     
     >>> import math
     >>> r2h(math.pi) 
@@ -136,7 +137,7 @@ def r2h(r):
     return r*(12.0/tpm.M_PI)
 
 def d2as(d):
-    """Converts decimal degrees into arcseconds.
+    """Converts degrees into arcseconds.
     
     >>> d2as(1.0)
     3600.0
@@ -144,7 +145,7 @@ def d2as(d):
     return d*3600.0
 
 def as2d(a):
-    """Converts arcseconds into decimal degrees.
+    """Converts arcseconds into degrees.
     
     >>> as2d(3600.0)
     1.0
@@ -152,7 +153,7 @@ def as2d(a):
     return a/3600.0
 
 def as2h(a):
-    """Converts arcseconds into decimal degrees.
+    """Converts arcseconds into hours.
     
     >>> as2h(3600.0*15.0)
     1.0
@@ -168,7 +169,7 @@ def h2as(h):
     return d2as(h2d(h))
 
 def r2as(r):
-    """Converts arcseconds into radians.
+    """Converts radians into arcseconds.
     
     >>> import math
     >>> r2as(math.pi)
@@ -185,7 +186,7 @@ def as2r(a):
     return d2r(as2d(a))
 
 def d2hms(d):
-    """Converts decimal degrees into an HMS structure.
+    """Converts degrees into an HMS structure.
     
     >>> hms = d2hms(180.0)
     >>> print hms.hh, hms.mm, hms.ss

@@ -221,7 +221,6 @@ Conversion between angle and time
 Time transformations
 ====================
 
-
 .. autofunction:: ut2gmst
 .. autofunction:: utc2tai
 .. autofunction:: tai2utc
