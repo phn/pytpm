@@ -3,6 +3,10 @@
 ==========
 
 
+.. _Virtualenv: http://pypi.python.org/pypi/virtualenv 
+.. _Virtualenvwrapper: 
+   http://www.doughellmann.com/projects/virtualenvwrapper/
+
 .. contents::
 
 Telescope Pointing Machine C library
@@ -37,6 +41,10 @@ different function :func:`pytpm.utils.convert`, accepts keyword
 arguments and default values for the various arguments needed by
 :func:`pytpm.tpm.convert`, and then calls it, thereby providing an
 easier way of using the latter.
+
+PyTPM is a direct interface to the TPM library and do not add object
+oriented features on top of the C constructs i.e., this module is not,
+at this time, quite "pythonic".
 
 Installing PyTPM
 ================
@@ -76,6 +84,8 @@ bash.
   $ python setup.py install --prefix=~/lib/python
   $ export PYTHONPATH=~/lib/python/lib/python2.6/site-packages
 
+Even better, run ``python setup.py install`` inside a virtual
+environment created using `virtualenv`_ and `virtualenvwrapper`_.
 
 Source files and SWIG interface
 -------------------------------
@@ -111,7 +121,7 @@ To manually generate the static library and module, run the commands
 given below in the main source directory.  The first command is
 required only if the SWIG output files, *lib/tpm.py* and
 *src/tpm_wrap.c*, need to be regenerated. The sequence of commands
-will create files *src/_tpm.so* and *lib/tpm.py* . Copy these
+will create files *_tpm.so* and *lib/tpm.py* . Copy these
 two files, and the files *lib/utils.py* and *lib/__init__.py* to a
 directory of choice. Adding this directory to *PYTHONPATH* or running
 python from this directory, will enable access from python. Replace
@@ -121,7 +131,7 @@ header files, e.g., */usr* for */usr/include/python2.6*
 .. code-block:: sh
 
   $ swig -python -o src/tpm_wrap.c -outdir lib/ swig_interface/tpm.i
-  $ gcc -c src/tpm/*.c src/tpm_wrap.c src/convert.c -I PATH-TO/include/python2.6
+  $ gcc -c -fPIC src/tpm/*.c src/tpm_wrap.c src/convert.c -I PATH-TO/include/python2.6
   $ ld -shared *.o -o _tpm.so 
   $ rm -f *.o
 
@@ -138,7 +148,7 @@ ipython_ terminal session.
 
     In [3]: import pytpm.tpm as tpm
 
-    In [4]: import pytpm.utils as tpmu::
+    In [4]: import pytpm.utils as tpmu
 
   
 Get the current *UTC* time as a *Julian day* number
@@ -456,15 +466,16 @@ Credits
 =======
 
 `Jeff Percival`_ wrote the TPM__ C library. See
-src/tpm/TPM_LICENSE.txt for TPM license. The version used here was
-obtained from the coords_ package of the astrolib_ library. Send email
-to prasanthhn@gmail.com for reporting errors, comments, suggestions 
-etc., for the *pytpm* library.
+:file:`src/tpm/TPM_LICENSE.txt` for TPM license. The version used here
+was obtained from the coords_ package of the astrolib_ library. Send
+email to user prasanthhn, at the gmail.com domain, for reporting
+errors, comments, suggestions etc., for the PyTPM library.
 
 __ Telescope Pointing Machine
 
 License
 =======
 
-See src/tpm/TPM_LICENSE.txt for TPM license. Code for the python
-binding itself is released under the BSD license. See LICENSE.txt.
+See :file:`src/tpm/TPM_LICENSE.txt` for TPM license. Code for the
+python binding itself is released under the BSD license; see
+LICENSE.txt.

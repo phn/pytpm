@@ -1,8 +1,13 @@
 %define DOCSTRING
-"The module :mod:`pytpm.tpm` contains classes (c structures) and 
-functions defined in the TPM c library.
+"Module :mod:`pytpm.tpm` contains classes (C structures), functions and
+constants defined in the TPM C library. It also contains macros
+defined in TPM, but implemented as functions for use in PyTPM. These
+macros are those for manipulating vectors and matrices; defined in
+``v3.h``, ``v6.h``, ``m3.h`` and ``m6.h``. The functions defined in
+``misc.h``, for numerical integration, do not have direct interface
+from within PyTPM.
 
-The macros defined in the TPM c library are in the module 
+All other macros defined in TPM are provided as function in the module
 :mod:`pytpm.utils`.
 
 :Author: Prasanth Nair

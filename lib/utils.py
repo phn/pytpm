@@ -10,16 +10,16 @@ functions since they can't be wrapped with SWIG.
 from pytpm import tpm
 import math
 
-def convert(x=0.0, y=0.0, s1=6, s2=19, epoch=tpm.J2000, 
+def convert(x=None, y=None, s1=6, s2=19, epoch=tpm.J2000, 
             equinox=tpm.J2000, timetag=None, lon = -111.598333,
             lat = 31.956389, alt = 2093.093, T = 273.15, 
             P = 1013.25, H=0.0, W=0.55000):
     """Returns coordinates converted into target system.
 
     :param x: input ra or longitude in degrees
-    :type x: float
+    :type x: list of floats
     :param y: input dec or latitude in degrees
-    :type y: float
+    :type y: list of floats
     :param s1: starting TPM state
     :type s1: integer
     :param s2: ending TPM state
@@ -29,7 +29,7 @@ def convert(x=0.0, y=0.0, s1=6, s2=19, epoch=tpm.J2000,
     :param equinox: equinox of the input coordinates in JD (UTC)
     :type equinox: float
     :param timetag: time of the target state as JD (UTC)
-    :type timetag: float
+    :type timetag: list of floats
     :param lon: longitude (east +, west -) of observer in degrees
     :type lon: float
     :param lat: latitude (north +, south -) of the observer in degrees
@@ -46,8 +46,15 @@ def convert(x=0.0, y=0.0, s1=6, s2=19, epoch=tpm.J2000,
     :param W: wavelength of observation in microns
     :type W: float
 
-    This function calls the function tpm.convert() and returns
-    coordinates in the final TPM state. 
+    :returns: (x, y)
+    :rtype: ([list of floats], [list of floats])
+    
+    For coordinates given in the input x and y lists, x containing the
+    "x" coordinate and y containing the "y" coordinate, this function
+    calls the function tpm.convert() and returns coordinates converted
+    from the initial TPM state into the final TPM state. The return
+    value is a 2 element tuple of lists, where the first list contains
+    the "x" coordinates and the second contains the "y" coordinates.
     
     The input coordinates are specified using the paramters ``x`` and
     ``y``, both in degrees. The former is for the "longitudinal" angle,
@@ -66,9 +73,9 @@ def convert(x=0.0, y=0.0, s1=6, s2=19, epoch=tpm.J2000,
     ``epoch`` and ``equinox`` are for the input coordinates and
     specified as UTC Julian Day numbers.
 
-    ``timetag`` is the time at which the result should be calculated, or
-    in other words the time of "observation". This is given as UTC
-    Julian day number.
+    ``timetag`` is the time at which the result should be calculated,
+    or in other words the time of "observation". This is given as a
+    list of UTC Julian day numbers.
 
     The remaining parameters set the properties of the observer's site.
     These are of-course used only when the observer's location
@@ -76,16 +83,128 @@ def convert(x=0.0, y=0.0, s1=6, s2=19, epoch=tpm.J2000,
     from the source code of the TPM C library.
     """
     # tpm.convert takes radians.
-    x = math.radians(x)
-    y = math.radians(y)
+    if x == None:
+        x = [0.0]
+    if y == None:
+        y = [0.0]
     if timetag == None:
-        timetag = tpm.utc_now()
-    x1,y1 = tpm.convert(x,y,s1,s2,epoch,equinox,timetag,lon,lat,alt,
-            T,P,H,W)
-    return math.degrees(x1),math.degrees(y1)
+        timetag = [tpm.utc_now()]
+
+    x = [math.radians(i) for i in x]
+    y = [math.radians(i) for i in y]
+
+    # Convert python list into a c array in SWIG
+    def build_array(l):
+        a = tpm.doubleArray(len(l)) 
+        for i in range(len(l)):
+            a[i] = l[i]
+        return a
+
+    def build_list(a, nitems):
+	l = []
+        a_array = tpm.doubleArray_frompointer(a)
+        for i in range(nitems):
+            l.append(a_array[i])
+        return l
+
+    x_array = build_array(x)
+    y_array = build_array(y)
+    timetag_array = build_array(timetag)
+    x_result_array = tpm.doubleArray(len(x))
+    y_result_array = tpm.doubleArray(len(y))
+    
+    tpm.convert(x_array,y_array,len(x),s1,s2,epoch,equinox,timetag_array,
+                      lon,lat,alt,T,P,H,W, x_result_array, y_result_array)
+    
+    x = build_list(x_result_array, len(x))
+    y = build_list(y_result_array, len(x))
+
+    del x_array, y_array
+    del x_result_array, y_result_array
+    
+    return [math.degrees(i) for i in x],[math.degrees(i) for i in y]
+
+
+# The following are transformations defined in the astro.h header file
+# in the TPM library.
+
+# Definitive time transformations.
+def et2tdt(et):
+    return et
+
+def tai2tdt(tai):
+    return tai + 32.184/86400
+
+def tdt2et(tdt):
+    return tdt
+
+def utc2tai(utc):
+    return utc + tpm.delta_AT(utc)/86400
+
+# Approximate time transformations
+def tai2utc(tai):
+    return tai - tpm.delta_AT(tai)/86400
+
+def tdt2tai(tdt):
+    return tdt - 32.184/86400
+
+# Derived time transformations
+def et2tai(et):
+    return tdt2tai(et2tdt(et))
+
+def tai2et(tai):
+    return tdt2et(tai2tdt(tai))
+
+# Convenience time transformations
+def ut2gmst(ut):
+    return tpm.ut12gmst(ut)
+
 
 # The functions below are defined are macros in the TPM header times.h.
 # These provide shortcuts to various time and angle conversions.
+def byear2jd(x):
+    """Converts Besselian year into a Julian day number.
+
+    >>> print "{0:15.7f}".format(byear2jd(1950.0))
+    2433282.4234590
+    >>> print "{0:15.7f}".format(byear2jd(2000.0))
+    2451544.5333981
+    >>> "{0:4.5f}".format((byear2jd(2000) - byear2jd(1950)) / tpm.CJ*100)
+    '49.99893'
+    >>> import tpm
+    >>> "{0:4.1f}".format((byear2jd(2000) - byear2jd(1950)) / tpm.CB*100)
+    '50.0'
+    """
+    return tpm.B1950 + (x - 1950.0) * (tpm.CB/100.0)
+
+def jd2byear(x):
+    """Converts Julian day number into Besselian years.
+
+    >>> print "{0:6.1f}".format(jd2byear(2451544.5333981))
+    2000.0
+    """
+    return 1950.0 + (x - tpm.B1950) * (100.0/tpm.CB)
+
+def jyear2jd(x):
+    """Converts Julian year into Julian day number.
+
+    >>> jyear2jd(2000)
+    2451545.0
+    >>> jyear2jd(1950)
+    2433282.5
+    >>> (jyear2jd(2000.0) - jyear2jd(1950.0) ) / tpm.CJ * 100
+    50.0
+    """
+    return tpm.J2000 + (x - 2000.0) * (tpm.CJ/100.0)
+
+def jd2jyear(x):
+    """Converts Julian day number into Julian year.
+
+    >>> jd2jyear(2451545.0)
+    2000.0
+    """
+    return 2000.0 + (x - tpm.J2000) * (100.0/tpm.CJ)
+
 def d2h(d):
     """Converts degrees into hours.
 
@@ -243,7 +362,7 @@ def fmt_jd(jd):
     return tpm.fmt_j(tpm.jd2j(jd))
 
 def fmt_r(r):
-    """Returns a string representation of the angle given in radians.
+    """Returns a string, with the angle in radians converted into degrees.
 
     >>> print fmt_r(1.0)
     +57D 17' 44.806"
@@ -253,14 +372,15 @@ def fmt_r(r):
 def fmt_y(y):
     """Returns a string representation of the time given in years.
 
-    >>> import tpm
     >>> print fmt_y(2000.2454)
     Wed Mar 29 19:35:36.959 2000
+    >>> fmt_y(j2y(2400000.5))
+    'Wed Nov 17 00:00:00.000 1858'
     """
     return tpm.fmt_ymd(tpm.y2ymd(y))
 
 def h2dms(h):
-    """Converts hours into a DMS structure.
+    """Converts hours into an angle in a DMS structure.
 
     >>> dms = h2dms(12.0)
     >>> print dms.dd, dms.mm, dms.ss
@@ -269,7 +389,7 @@ def h2dms(h):
     return tpm.d2dms(h2d(h))
 
 def hms2d(hms):
-    """Converts time in an HMS structure into an angle in decimal degrees.
+    """Converts time in an HMS structure into an angle in degrees.
 
     >>> import tpm
     >>> hms2d(tpm.h2hms(12.0))
@@ -289,13 +409,13 @@ def hms2r(hms):
 def j2j(j):
     """Simply returns the input.
 
-    Inlcuded as this is present in tpm/times.h.
+    Inlcuded here, as this macro is present in tpm/times.h.
     """
     return j
 
 
 def jd2y(jd):
-    """Converts time in a JD structure into a Gregorian year. 
+    """Converts Julian day number in a JD structure into a Gregorian year. 
 
     >>> import tpm
     >>> jd = tpm.ymd2jd(tpm.y2ymd(2000))
@@ -313,7 +433,7 @@ def j2y(j):
     return jd2y(tpm.j2jd(j))
 
 def j2ymd(j):
-    """Converts a Julian day number into a YMD structure.
+    """Converts Julian day number into a Gregorian date, in a YMD structure.
     
     >>> ymd = j2ymd(2451545.0)
     >>> print tpm.fmt_ymd(ymd)
@@ -322,7 +442,7 @@ def j2ymd(j):
     return tpm.jd2ymd(tpm.j2jd(j))
 
 def r2dms(r):
-    """Converts angle in radians into a DMS structure.
+    """Converts angle in radians into degrees, in a DMS structure.
 
     >>> import tpm
     >>> dms = r2dms(tpm.M_PI)
@@ -332,7 +452,7 @@ def r2dms(r):
     return tpm.d2dms(r2d(r))
 
 def r2hms(r):
-    """Converts angle in radians into an HMS structure.
+    """Converts angle in radians into time, in an HMS structure.
 
     >>> import tpm
     >>> print fmt_hms(r2hms(tpm.M_PI))
@@ -341,74 +461,60 @@ def r2hms(r):
     return tpm.h2hms(r2h(r))
 
 def y2jd(y):
+    """Converts a Gregorian year into a Julian day number, in a JD structure.
+
+    >>> jd = y2jd(2000.0) # 1999/12/31 00:00:00
+    >>> jd = tpm.jd2jd(jd)
+    >>> fmt_jd(jd)
+    ' 2451543  12H 00M 00.000S'
+    """
     return tpm.ymd2jd(tpm.y2ymd(y))
 
 def y2j(y):
+    """Converts a Gregrorian year into a Julian day number.
+
+    >>> j = y2j(2000.0) # 1999/12/31 00:00:00
+    >>> j
+    2451543.5
+    """
     return tpm.jd2j(y2jd(y))
 
 def y2y(y):
+    """Simply returns the input.
+
+    Inlcuded here, as it is defined in tpm/times.h.
+    """
     return y
 
 def ymd2j(ymd):
+    """Convert Gregorian calendar date in YMD into a Julian day number.
+
+    >>> import tpm
+    >>> ymd = j2ymd(tpm.gcal2j(2000,1,1))
+    >>> ymd = tpm.ymd2ymd(ymd)
+    >>> ymd2j(ymd)
+    2451545.0
+    """
     return tpm.jd2j(tpm.ymd2jd(ymd))
 
 def ymd_diff(ymd1,ymd2):
-    return jd_diff(tpm.ymd2jd(ymd1),tpm.ymd2jd(ymd2))
+    """Returns the difference between two Gregorian dates, in YMD, as a JD.
 
-# The following are transformations defined in the astro.h header file
-# in the TPM library.
+    >>> import tpm
+    >>> ymd1 = j2ymd(tpm.gcal2j(2000,1,1))
+    >>> ymd2 = j2ymd(tpm.gcal2j(2001,1,1))
+    >>> jd = ymd_diff(ymd2, ymd1)
+    >>> fmt_jd(jd)
+    '     366  00H 00M 00.000S'
+    """
+    return tpm.jd_diff(tpm.ymd2jd(ymd1),tpm.ymd2jd(ymd2))
 
-# Definitive time transformations.
-def et2tdt(et):
-    return et
-
-def tai2tdt(tai):
-    return tai + 32.184/86400
-
-def tdt2et(tdt):
-    return tdt
-
-def utc2tai(utc):
-    return utc + tpm.delta_AT(utc)/86400
-
-# Approximate time transformations
-def tai2utc(tai):
-    return tai - tpm.delta_AT(tai)/86400
-
-def tdt2tai(tdt):
-    return tdt - 32.184/86400
-
-# Derived time transformations
-def et2tai(et):
-    return tdt2tai(et2tdt(et))
-
-def tai2et(tai):
-    return tdt2et(tai2tdt(tai))
-
-# Convenience time transformations
-def ut2gmst(ut):
-    return tpm.ut12gmst(ut)
 
 # The following are macros from times.h header in TPM for accessing and
 # modifying data in various data structures.
 # Note that the fields of data structures are 'pointers' and hence
 # modifying the data structures inside functions also modifies them in
 # the calling scope.
-def byear2jd(x):
-    """Macro BYEAR2JD in src/tpm/times.h"""
-    return tpm.B1950 + (x - 1950.0) * (tpm.CB/100.0)
-
-def jd2byear(x):
-    """Macro JD2BYEAR in src/tpm/times.h"""
-    return 1950.0 + (x - tpm.B1950) * (100.0/tpm.CB)
-
-def jyear2jd(x):
-    """Macro JYEAR2JD in src/tpm/times.h"""
-    return tpm.J2000 + (x - 2000.0) * (tpm.CJ/100.0)
-
-def jd2jyear(x):
-    """Macro JD2JYEAR in src/tpm/times.h"""
-    return 2000.0 + (x - tpm.J2000) * (100.0/tpm.CJ)
 
 def dmsDecDegrees(s, x):
     s.dd -= x

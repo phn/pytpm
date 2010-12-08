@@ -22,7 +22,7 @@ Structures used in representing TPM states are declared in
 :file:`tpm.h`. Finally, declarations for some routines for numerical
 integration are provided in :file:`misc.h`.
 
-The items in the TPM library that were wrapped with *swig* and made
+The items in the TPM library that were wrapped with *SWIG* and made
 available through PyTPM, are present in the :mod:`pytpm.tpm`
 module. This includes all functions and constants implemented in the
 TPM library, except the numerical integration routines defined in
@@ -32,7 +32,7 @@ The macros for manipulating vectors and matrices, declared in
 :file:`v3.h`, :file:`v6.h`, :file:`m3.h`, and :file:`m6.h`, have been
 re-written as C function, in :file:`v3Functions.c`,
 :file:`v6Functions.c`, :file:`m3Functions.c`, :file:`m6Functions.c`
-and corresponding headers. They were then wrapped with *swig* and are
+and corresponding headers. They were then wrapped with *SWIG* and are
 present in :mod:`pytpm.tpm`.  The names of these functions were
 constructed by adding an "f" to end of the C macro name.
 
@@ -43,13 +43,13 @@ macro.
 Interface to the numerical integration routines defined in
 :file:`misc.h` are not provided in PyTPM.
 
-In addition, a function :func:`tpm.convert` is provided for performing
+In addition, a function :func:`pytpm.tpm.convert` is provided for performing
 coordinate conversions. This function is an interface to a C function
 defined in :file:`convert.c`, and hence requires all arguments to be
-supplied when invoking it. Another function, :func:`utils.convert`, is
-provided to make it easier to call :func:`tpm.convert`. This is
+supplied when invoking it. Another function, :func:`pytpm.utils.convert`, is
+provided to make it easier to call :func:`pytpm.tpm.convert`. This is
 acheived by providing keyword arguments and default values for most of
-the arguments needed by :func:`tpm.convert``.
+the arguments needed by :func:`pytpm.tpm.convert``.
 
 .. toctree::
     :maxdepth: 0

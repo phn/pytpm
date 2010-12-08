@@ -1,6 +1,6 @@
-=============
-**pytpm.tpm** 
-=============
+===============
+ **pytpm.tpm**
+===============
 
 .. contents::
 
@@ -280,8 +280,8 @@ coordinate system to another at the same time.
     :members:
 
 
-Classes for date, time and angle
---------------------------------
+Classes for angles, time and dates
+----------------------------------
 
 The class **DMS** is used to represent an angle. It hold has three
 data attributes: ``dd``, ``mm`` and ``ss``. These represent, degrees,
@@ -317,24 +317,6 @@ minutes and seconds, i.e., the fractional part of the ``Julian day
 number``.
 
 .. autoclass:: JD
-    :members:
-
-Miscellaneous classes
----------------------
-
-The class ``STAR`` can be used to represent a "catalog star". It has
-three floating point data attributes, ``a``, ``d`` and ``m``,
-representing the right ascension, declination and magnitude of a
-star, respectively.
-
-.. autoclass:: STAR
-    :members:
-
-The class ``CONS`` represens a "line segment" between two stars. It
-has four floating point data attributes, ``a1``, ``d1``, ``a2`` and
-``d2``, representing the coordinates of the two stars involved.
-
-.. autoclass:: CONS
     :members:
 
 Classes representing TPM states
@@ -411,6 +393,24 @@ of the telescope:
 ================  =========================================================
 
 .. autoclass:: TPM_TSTATE
+    :members:
+
+Miscellaneous classes
+---------------------
+
+The class ``STAR`` can be used to represent a "catalog star". It has
+three floating point data attributes, ``a``, ``d`` and ``m``,
+representing the right ascension, declination and magnitude of a
+star, respectively.
+
+.. autoclass:: STAR
+    :members:
+
+The class ``CONS`` represens a "line segment" between two stars. It
+has four floating point data attributes, ``a1``, ``d1``, ``a2`` and
+``d2``, representing the coordinates of the two stars involved.
+
+.. autoclass:: CONS
     :members:
 
 
@@ -1117,8 +1117,8 @@ of the given ``M6`` matrix and the given ``V6`` vector.
 
 .. autofunction:: m6v6    
 
-Functions related to date, time and angle
------------------------------------------
+Functions related to angles, time and dates
+-------------------------------------------
 
 ADD LINK TO FUNCTIONS IN utils AT APPROPRIATE LOCATIONS.
 
@@ -1330,9 +1330,6 @@ normalizing a angle representing a declination coordinate.
    
   In [49]: tpm.fmt_delta(utils.d2r(91.0))
   Out[49]: '+89D 00\' 00.000"'
-
-Time
-~~~~
 
 The following are some functions for working with time. 
 
@@ -1729,48 +1726,106 @@ structure and :func:`pytpm.utils.fmt_y` will format a scalar year.
   2000 2 14 4 23 5.28002053499222
 
 
+Functions for working with TPM state machine
+--------------------------------------------
+
+.. autofunction:: tpm_state
+.. autofunction:: tpm_data
+.. autofunction:: tpm
+
 Functions for astrometry calculations
 -------------------------------------
 
 The following lists all functions used for performing astrometry
-calculations, such as applying aberration corrections.
+calculations, such as applying aberration corrections and finding the
+location of objects as viewed by different observers.
 
-.. autofunction:: precess_m
-.. autofunction:: aberrate
-.. autofunction:: azel2hadec
-.. autofunction:: ecl2equ
-.. autofunction:: ellab
-.. autofunction:: equ2ecl
-.. autofunction:: equ2gal
+Time scales
+~~~~~~~~~~~
+
+.. autofunction:: delta_AT
+.. autofunction:: tdt2tdb
+.. autofunction:: ut12gmst
+
+Proper motion
+~~~~~~~~~~~~~
+
+.. autofunction:: proper_motion
+
+Ephemerides
+~~~~~~~~~~~
+
+.. autofunction:: solar_perigee
+.. autofunction:: solar_perigee_dot
+.. autofunction:: evp
+
+Precession and nutation
+~~~~~~~~~~~~~~~~~~~~~~~
+
 .. autofunction:: eterms
+.. autofunction:: ellab
 .. autofunction:: fk425
 .. autofunction:: fk524
-.. autofunction:: gal2equ
-.. autofunction:: geod2geoc
-.. autofunction:: hadec2azel
-.. autofunction:: ldeflect
+.. autofunction:: precess_m
 .. autofunction:: precess
-.. autofunction:: proper_motion
-.. autofunction:: tpm_state
-.. autofunction:: delta_AT
 .. autofunction:: eccentricity
 .. autofunction:: eccentricity_dot
 .. autofunction:: obliquity
 .. autofunction:: obliquity_dot
-.. autofunction:: refract
-.. autofunction:: refraction
-.. autofunction:: solar_perigee
-.. autofunction:: solar_perigee_dot
-.. autofunction:: tdt2tdb
-.. autofunction:: theta
-.. autofunction:: thetadot
-.. autofunction:: ut12gmst
+.. autofunction:: nutations
 .. autofunction:: zee
 .. autofunction:: zeedot
-.. autofunction:: tpm
-.. autofunction:: atm
-.. autofunction:: evp
-.. autofunction:: nutations
-.. autofunction:: refco
-.. autofunction:: tpm_data
+.. autofunction:: theta
+.. autofunction:: thetadot
 
+Aberration and light deflection
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: aberrate
+.. autofunction:: ldeflect
+
+Locations on Earth
+~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: geod2geoc
+
+Tranform between equatorial, ecliptic and galactic systems
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: azel2hadec
+.. autofunction:: ecl2equ
+.. autofunction:: equ2ecl
+.. autofunction:: equ2gal
+.. autofunction:: gal2equ
+.. autofunction:: hadec2azel
+
+Refraction
+~~~~~~~~~~
+
+.. autofunction:: refract
+.. autofunction:: refraction
+.. autofunction:: atm
+.. autofunction:: refco
+
+
+Functions for generating string representations
+-----------------------------------------------
+
+This section collects together links to all functions that return
+string representations of data passed to them.
+
+* :func:`pytpm.tpm.fmt_alpha`          
+* :func:`pytpm.tpm.fmt_d`         
+* :func:`pytpm.tpm.fmt_delta`
+* :func:`pytpm.tpm.fmt_h` 
+* :func:`pytpm.tpm.fmt_j`  
+* :func:`pytpm.tpm.fmt_ymd` 
+* :func:`pytpm.tpm.fmt_ymd_raw`
+
+Similar functions in :mod:`pytpm.utils` are:
+
+* :func:`pytpm.utils.fmt_dms`
+* :func:`pytpm.utils.fmt_hms` 
+* :func:`pytpm.utils.fmt_jd` 
+* :func:`pytpm.utils.fmt_r`
+* :func:`pytpm.utils.fmt_y`
