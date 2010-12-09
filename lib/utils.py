@@ -10,16 +10,16 @@ functions since they can't be wrapped with SWIG.
 from pytpm import tpm
 import math
 
-def convert(x=None, y=None, s1=6, s2=19, epoch=tpm.J2000, 
+def convert(x=0.0, y=0.0, s1=6, s2=19, epoch=tpm.J2000, 
             equinox=tpm.J2000, timetag=None, lon = -111.598333,
             lat = 31.956389, alt = 2093.093, T = 273.15, 
             P = 1013.25, H=0.0, W=0.55000):
     """Returns coordinates converted into target system.
 
     :param x: input ra or longitude in degrees
-    :type x: list of floats
+    :type x: float
     :param y: input dec or latitude in degrees
-    :type y: list of floats
+    :type y: float
     :param s1: starting TPM state
     :type s1: integer
     :param s2: ending TPM state
@@ -29,7 +29,7 @@ def convert(x=None, y=None, s1=6, s2=19, epoch=tpm.J2000,
     :param equinox: equinox of the input coordinates in JD (UTC)
     :type equinox: float
     :param timetag: time of the target state as JD (UTC)
-    :type timetag: list of floats
+    :type timetag: float
     :param lon: longitude (east +, west -) of observer in degrees
     :type lon: float
     :param lat: latitude (north +, south -) of the observer in degrees
@@ -46,15 +46,8 @@ def convert(x=None, y=None, s1=6, s2=19, epoch=tpm.J2000,
     :param W: wavelength of observation in microns
     :type W: float
 
-    :returns: (x, y)
-    :rtype: ([list of floats], [list of floats])
-    
-    For coordinates given in the input x and y lists, x containing the
-    "x" coordinate and y containing the "y" coordinate, this function
-    calls the function tpm.convert() and returns coordinates converted
-    from the initial TPM state into the final TPM state. The return
-    value is a 2 element tuple of lists, where the first list contains
-    the "x" coordinates and the second contains the "y" coordinates.
+    This function calls the function tpm.convert() and returns
+    coordinates in the final TPM state. 
     
     The input coordinates are specified using the paramters ``x`` and
     ``y``, both in degrees. The former is for the "longitudinal" angle,
@@ -73,56 +66,26 @@ def convert(x=None, y=None, s1=6, s2=19, epoch=tpm.J2000,
     ``epoch`` and ``equinox`` are for the input coordinates and
     specified as UTC Julian Day numbers.
 
-    ``timetag`` is the time at which the result should be calculated,
-    or in other words the time of "observation". This is given as a
-    list of UTC Julian day numbers.
+    ``timetag`` is the time at which the result should be calculated, or
+    in other words the time of "observation". This is given as UTC
+    Julian day number.
 
     The remaining parameters set the properties of the observer's site.
     These are of-course used only when the observer's location
     information is needed. The default values are for KPNO and are taken
     from the source code of the TPM C library.
+   
+    :Author: Prasanth Nair
+    :Contact: prasanthhn@gmail.com
     """
     # tpm.convert takes radians.
-    if x == None:
-        x = [0.0]
-    if y == None:
-        y = [0.0]
+    x = math.radians(x)
+    y = math.radians(y)
     if timetag == None:
-        timetag = [tpm.utc_now()]
-
-    x = [math.radians(i) for i in x]
-    y = [math.radians(i) for i in y]
-
-    # Convert python list into a c array in SWIG
-    def build_array(l):
-        a = tpm.doubleArray(len(l)) 
-        for i in range(len(l)):
-            a[i] = l[i]
-        return a
-
-    def build_list(a, nitems):
-	l = []
-        a_array = tpm.doubleArray_frompointer(a)
-        for i in range(nitems):
-            l.append(a_array[i])
-        return l
-
-    x_array = build_array(x)
-    y_array = build_array(y)
-    timetag_array = build_array(timetag)
-    x_result_array = tpm.doubleArray(len(x))
-    y_result_array = tpm.doubleArray(len(y))
-    
-    tpm.convert(x_array,y_array,len(x),s1,s2,epoch,equinox,timetag_array,
-                      lon,lat,alt,T,P,H,W, x_result_array, y_result_array)
-    
-    x = build_list(x_result_array, len(x))
-    y = build_list(y_result_array, len(x))
-
-    del x_array, y_array
-    del x_result_array, y_result_array
-    
-    return [math.degrees(i) for i in x],[math.degrees(i) for i in y]
+        timetag = tpm.utc_now()
+    x1,y1 = tpm.convert(x,y,s1,s2,epoch,equinox,timetag,lon,lat,alt,
+            T,P,H,W)
+    return math.degrees(x1),math.degrees(y1)
 
 
 # The following are transformations defined in the astro.h header file
