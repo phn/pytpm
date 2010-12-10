@@ -447,7 +447,7 @@ system into (Az, EL) for KPNO, at the Julian day number 2455363.5 .
 
     In [33]: ra = (10.0+27.0/60.0+06.79/3600.0)*15.0
 
-    In [34]: dec = dec = 10+55/60.0+40.4/3600.0
+    In [34]: dec = 10+55/60.0+40.4/3600.0
 
     In [35]: az,el = tpmu.convert(ra,dec,timetag=2455363.5,**kpno)
 

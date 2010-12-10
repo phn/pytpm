@@ -116,7 +116,7 @@ Import the module.
 Get the current *UTC* time as a *Julian day* number
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
+::
 
   j = tpm.utc_now()
   print j

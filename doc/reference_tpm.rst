@@ -2,26 +2,22 @@
  **pytpm.tpm**
 ===============
 
-.. contents::
-
-.. TODO:: 
-  Inlcude examples of macros and functions for V3 etc., and
-  provide links to reference_utils for their signatures and other
-  details.
 
 .. automodule:: pytpm.tpm
 ..    :members:
 ..    :undoc-members:
 
+.. contents::
+
 Constants
 =========
 
 The following are the various constants defined in ``pytpm.tpm``. Note
-that in TPM, and hence in PyTPM, *all Julian Day numbers are in the
-UTC time system*.
+that in TPM, and hence in PyTPM, *all Julian dates are in the UTC time
+system*.
 
-Constants related to coordinate systems
----------------------------------------
+Constants defining the Galactic coordinate system
+-------------------------------------------------
 
 These constants define the galactic coordinate system, relative to the
 equatorial system of equinox B1950.0. See `this ADS page`__ for more
@@ -39,14 +35,14 @@ __ http://articles.adsabs.harvard.edu/cgi-bin/nph-iarticle_query?
 ``GAL_LON``      Zero of longitude (B1950.0)
 ==============  =======================================================
 
-Astrometry constants
---------------------
+Constants for selecting FK4 and FK5 precession angles
+-----------------------------------------------------
 
 The following are constants that can be used to select FK4 and FK5
 precession angles. The first 4 are FK4 angles and the final one is the
 "One True FK5" set of angles.
 
-See Aoki et al., 1983, Astornomy and Astrophysics 128, 263.
+See Aoki et al., 1983, Astronomy and Astrophysics 128, 263.
 
 =======================	 ==================================================
 ``PRECESS_NEWCOMB``				0; Aoki eqs 9a-c, ES 1961.
@@ -91,10 +87,13 @@ p.K6.
 ``IAU_W``        Rotational velocity of the Earth in radians/second.
 ==============  =======================================================
 
+.. _tpm_states:
+
 TPM state names
 ---------------
 
-The targets or states in TPM are identified with integer constants:
+The coordinate systems in TPM are identified with integer constants,
+referred to as states:
 
 =================  ==================================================
 ``N_TPM_STATES``    Number of TPM states.
@@ -122,7 +121,7 @@ The targets or states in TPM are identified with integer constants:
  ``TPM_S21``        Topocentric observed WHAM (longitude, latitude)
 =================  ==================================================
 
-Some of the targets have special names:
+Some of the states have special names:
 
 ========================   ===============
  ``TARGET_FK4``              ``TPM_S01``      
@@ -164,11 +163,15 @@ are also coded as integer constants:
 ``TPM_T15``       WHAM coordinate system.
 ===============  ==========================================================
 
+.. _tpm_data_flags:
+
 TPM data flags
 --------------
 
 These are the constants used to specify how the TPM data must be
-setup. See pages 14 and 15 of the TPM manual.
+setup. See pages 14 and 15 of the TPM manual. These flags are passed
+to the :func:`pytpm.tpm.tpm_data` function to set various properties
+of the TPM state.
  
 =====================  ===================================================
  ``TPM_INIT``           Initialize.
@@ -203,13 +206,11 @@ Miscellaneous constants
 TPM data types
 ==============
 
-TPM defines C structures to represent entities such as vectors,
-matrices and other. These are exposed as classes in PyTPM. Several
-functions are provided for manipulating these and are described
-below. As mentioned before, several C macros are provided in TPM for
-working with data types, in addition to functions, and implementations
-of these macros as python functions are available in
-:mod:`pytpm.utils`.
+TPM defines C structures to represent entities such as vectors and
+matrices. These are exposed as classes in PyTPM. Several functions are
+provided for manipulating these and are described below.  C macros
+provided in TPM, for working with data types, are implemented as
+Python functions and are available in :mod:`pytpm.utils`.
 
 
 Classes for vectors and matrices
@@ -217,36 +218,47 @@ Classes for vectors and matrices
 
 There are two classes, ``V3`` and ``V6``, for representing vectors. 
 
-``V3`` is used for representing 3D coordinates and 3D velocities of an
-astronomical object. This can be either spherical or cartesion
-coordinates, indicated using the attribute ``type`` of a ``V3``
-instance; ``type == tpm.CARTESION`` for the former and ``type ==
-tpm.SPHERICAL`` for the latter.
+.. _v3_vector:
 
-In TPM a ``V3`` vector is used to store 3D positions and velocities of
-an object. If the vector is cartesian, then we refer to ``v3[0]`` as
-``x``, ``v3[1]`` as ``y`` and ``v3[2]`` as ``z``. If the vector is
-spherical, then we refer to ``v3[0]`` as ``R``, ``v3[1]`` as ``Alpha``
-and ``RA`` and ``v3[2]`` as ``Delta`` and ``Dec``.
+``V3`` vectors
+~~~~~~~~~~~~~~
+
+``V3`` is used for representing 3D coordinates and 3D velocities of an
+astronomical object. This can be either in spherical or in cartesion
+coordinates. The type of a vector is indicated using the attribute
+``type`` of a ``V3`` instance; ``type == tpm.CARTESIAN`` for the
+former type and ``type == tpm.SPHERICAL`` for the latter type.
+
+If the vector is cartesian, then we refer to ``v3[0]`` as ``X``,
+``v3[1]`` as ``Y`` and ``v3[2]`` as ``Z``. If the vector is spherical,
+then we refer to ``v3[0]`` as ``R``, ``v3[1]`` as ``Alpha`` or ``RA``,
+and ``v3[2]`` as ``Delta`` or ``Dec``.
 
 These names are used in functions for manipulating these vectors. For
-example the function that returns the ``R`` value of a position vector
-is named ``GetRf``.
-
-.. TODO:: Link to section on v3 macros in reference_utils.
+example, the function that returns the ``R`` value of a position vector
+is named ``GetRf``. See section on functions for manipulating
+:ref:`v3_func_manip_vec_mat` for more information on these function.
 
 .. autoclass:: V3
     :members:
+
+.. _v6_vector:
+
+``V6`` vectors
+~~~~~~~~~~~~~~
 
 The class ``V6`` is used to represent a "six-vector" as opposed to a
 "three-vector" represented using ``V3``. A ``V6`` instance uses two
 ``V3`` instances to store the coordinates and velocities of an
 astronomical object. The two element array attribute ``v``, stores the
-``V3`` instance representing coordinates in ``v[tpm.POS]`` and the
-``V3`` instance representing velocities in ``v[tpm.VEL]``, where
-``tpm.POS == 0`` and ``tpm.VEL == 1``. The ``type`` attribute sets the
-type of the coordinate system; it is set equal to the ``type``
-attribute of ``v[tpm.POS]``.
+``V3`` instances. The ``V3`` vector representing position coordinates
+is kept in ``v[tpm.POS]`` and the ``V3`` instance representing
+velocities is kept in ``v[tpm.VEL]``. By default, ``tpm.POS == 0`` and
+``tpm.VEL == 1``; do not change these defaults.
+
+The ``type`` attribute of a ``V6`` instance sets the type of the
+coordinate system of both position and velocity vectors; it is set
+equal to the ``type`` attribute of ``v[tpm.POS]``.
 
 The naming scheme used for ``V3`` instances, i.e., ``R`` for the first
 element of the position vector, is also valid for ``V6``
@@ -256,107 +268,141 @@ spherical coordinates.
 
 For the velocity vector, we use a different naming scheme. For
 cartesian velocity vectors, ``XDot`` refers to ``v6[tpm.VEL][0]``,
-``YDOT`` refers to ``v6[tpm.VEL]`` and ``ZDot`` refers to
-``v6[tpm.VEL]``. For spherical velocity vectors, ``RDot`` refers to
+``YDot`` refers to ``v6[tpm.VEL][1]`` and ``ZDot`` refers to
+``v6[tpm.VEL][2]``. For spherical velocity vectors, ``RDot`` refers to
 ``v6[tpm.VEL][0]``, ``AlphaDot`` and ``PMRA`` refers to
 ``v6[tpm.VEL][1]``, and ``DeltaDot`` and ``PMDec`` refer to
 ``v6[tpm.VEL][2]``.
 
+See section on functions for manipulating :ref:`v6_func_manip_vec_mat`
+for more information on these function.
+
 .. autoclass:: V6
     :members:
 
+.. _m3_matrix:
+
+``M3`` matrices
+~~~~~~~~~~~~~~~
+
 The class ``M3`` represents a matrix. It consists of a 3x3 array
-attribute ``m``, each element of which is a floating point number.
+attribute ``m``, each element of which is a floating point
+number. This class is used for representing a rotation matrix, "R",
+for ``V3`` vectors.
 
 .. autoclass:: M3
     :members:
 
+See section on functions for manipulating :ref:`m3_func_manip_vec_mat`
+for more information on these function.
+
+.. _m6_matrix:
+
+``M6`` matrices
+~~~~~~~~~~~~~~~
+
 A ``M6`` class consists of a 2x2 array, each element of which is a
 ``M3`` matrix. This class is used to create a "Q" matrix, that can be
-used to rotate, or transform, position and velocitiy vectors from one
-coordinate system to another at the same time.
+used to rotate, or transform, position and velocity vectors from one
+coordinate system to another at the same time; a rotation matrix for
+`V6` vectors.
 
 .. autoclass:: M6
     :members:
 
+See section on functions for manipulating :ref:`m6_func_manip_vec_mat`
+for more information on these function.
 
 Classes for angles, time and dates
 ----------------------------------
 
-The class **DMS** is used to represent an angle. It hold has three
+.. _dms_structure:
+
+``DMS`` structures
+~~~~~~~~~~~~~~~~~~
+
+The class ``DMS`` is used to represent an angle. It hold has three
 data attributes: ``dd``, ``mm`` and ``ss``. These represent, degrees,
-arc-minutes and arc-seconds in an angle, respectively. All three are
-floating point numbers.
+arcminutes and arcseconds in an angle, respectively. All three are
+floating point numbers. The :ref:`section on functions for Angles
+<d_and_dms_func>` lists some functions for manipulating and formating
+angles and ``DMS`` structures.
 
 .. autoclass:: DMS
     :members:   
 
-There are three classes that represent time in different
-formats. These are **HMS**, **YMD**, and **JD**.
+.. _time_and_date_structure:
 
-The class **HMS** stores time as hours, minutes and seconds, in
+Time and date structures
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+There are three classes that represent time in different
+formats. These are ``HMS``, ``YMD``, and ``JD``.
+
+.. _hms_structure:
+
+``HMS`` structures
+++++++++++++++++++
+
+The class ``HMS`` stores time as hours, minutes and seconds, in
 floating point data attributes ``hh``, ``mm`` and ``ss``,
-respectively.
+respectively. See :ref:`functions for manipulating time and HMS
+structures <h_and_hms_func>`.
+
+The section, :ref:`dms_and_hms_func`, describes functions that can be
+used to convert between ``DMS`` and ``HMS`` structures.
 
 .. autoclass:: HMS
     :members:
 
-For a given date, the class **YMD** stores the year and month in the
+.. _ymd_structure:
+
+``YMD`` structures
+++++++++++++++++++
+
+For a given date, the class ``YMD`` stores the year and month in the
 integer attibutes ``y`` and ``mm``, respectively. It stores the day
-part in the floating point attribute ``dd``. **YMD** uses an instance
-of :class:`HMS`, ``hms``, to store the hours, minutes and seconds part of
-the time.
+part in the floating point attribute ``dd``. In addition, ``YMD`` uses
+an instance of :class:`HMS`, as attribute ``hms``, to store the hours,
+minutes and seconds part of the time. 
 
 .. autoclass:: YMD
     :members:
 
-The third class **JD** stores time as a ``Julian Day number``. It has
-a floating point attribute ``dd`` that stores the day part of the
-``Julian Date`` and an instance of :class:``HMS`` to store the hours,
-minutes and seconds, i.e., the fractional part of the ``Julian day
-number``.
+.. _jd_structure:
+
+``JD`` structures
++++++++++++++++++
+
+The third class ``JD`` stores date as a ``Julian date``. It has a
+floating point attribute ``dd`` that stores the day part of the
+``Julian date``, i.e., the ``Julian Day number``, and an instance of
+the :class:``HMS``, in the attribute ``hms``, to store the hours,
+minutes and seconds, i.e., the fractional part, of the ``Julian
+date``.
 
 .. autoclass:: JD
     :members:
 
+See the section :ref:`date_func`, for more information on functions
+that can be used to manipulate dates, including ``YMD`` and ``JD``
+structures.
+
 Classes representing TPM states
 -------------------------------
 
-The class ``TPM_TARGET`` describes a target. Following are the
-attributes of this class:
+TPM state vector
+~~~~~~~~~~~~~~~~
 
-.. TODO:: What is offset?
+The state of the telescope or observer is represented by the class
+``TPM_TSTATE``. This state, in effect, defines the coordinate
+frame. The following are the properties that define the state of the
+telescope. These are divided into two categories: independent and
+dependent. 
 
-============== ==============================================
- ``name``       Name of the target.
- ``state``      Integer constant identifying the state.
- ``epoch``      Epoch for this state in Julian day number.
- ``equinox``    Equinox for this state in Julian day number.
- ``position``   Spherical coordinates in radians.
- ``offset``     Offset in radians.
- ``motion``     Proper motion in radians/day.
- ``parallax``   Parallax in arcsec.
- ``speed``      Space velocity in AU/day.
-============== ==============================================
+.. _indep_props_state_vector:
 
-.. autoclass:: TPM_TARGET
-    :members:
-
-
-The "boresight" of a telescope is represented using the class
-``TPM_BORESIGHT``:
-
-.. autoclass:: TPM_BORESIGHT
-    :members:
-
-``TPM_PMCELL`` is an utility class used by TPM:
-
-.. autoclass:: TPM_PMCELL
-    :members:
-
-The state of the "telescope" is represented by the class
-``TPM_TSTATE``. The following are the properties that define the state
-of the telescope:
+.. rubric:: Independent properties of TPM state vector
 
 ================  =========================================================
 ``utc``            Coordinated Univeral Time in Julian Day numbers
@@ -371,6 +417,13 @@ of the telescope:
 ``P``              Ambient pressure in millibars
 ``H``              Ambient humidity (0 - 1)
 ``wavelength``     Oberving wavelength in microns
+================  =========================================================
+
+.. _dep_props_state_vector:
+
+.. rubric:: Dependent properties of TPM state vector
+
+================  =========================================================
 ``tai``            International Atomic Time
 ``tdt``            Terrestrial Dynamic Time
 ``tdb``            Barycentric Dynamic Time
@@ -395,8 +448,62 @@ of the telescope:
 .. autoclass:: TPM_TSTATE
     :members:
 
+The function :func:`pytpm.tpm.tpm_data` is used to initialize a TPM
+state and for performing calulations that will set various dependent
+properties of the state. The independent properties must be set
+manually.
+
+.. TODO:: Examples
+
+
 Miscellaneous classes
 ---------------------
+
+These are used internally by TPM for various purposes.
+
+TPM_TARGET
+~~~~~~~~~~
+
+The class ``TPM_TARGET`` describes a target, i.e., an object for which
+we want to apply coordinate transformations. Following are the
+attributes of this class:
+
+.. TODO:: What is offset?
+
+============== ====================================================
+ ``name``       Name of the target.
+ ``state``      Integer constant identifying the state.
+ ``epoch``      Epoch for this state in Julian day number.
+ ``equinox``    Equinox for this state in Julian day number.
+ ``position``   Spherical coordinates in radians; 2 element array
+ ``offset``     Offset in radians; 2 element array
+ ``motion``     Proper motion in radians/day; 2 element array
+ ``parallax``   Parallax in arcsec.
+ ``speed``      Space velocity in AU/day.
+============== ====================================================
+
+.. autoclass:: TPM_TARGET
+    :members:
+
+TPM_BORESIGHT
+~~~~~~~~~~~~~
+
+The "boresight" of a telescope is represented using the class
+``TPM_BORESIGHT``:
+
+.. autoclass:: TPM_BORESIGHT
+    :members:
+
+TPM_PMCELL
+~~~~~~~~~~
+
+``TPM_PMCELL`` is an utility class used by TPM:
+
+.. autoclass:: TPM_PMCELL
+    :members:
+
+STAR
+~~~~
 
 The class ``STAR`` can be used to represent a "catalog star". It has
 three floating point data attributes, ``a``, ``d`` and ``m``,
@@ -405,6 +512,9 @@ star, respectively.
 
 .. autoclass:: STAR
     :members:
+
+CONS
+~~~~
 
 The class ``CONS`` represens a "line segment" between two stars. It
 has four floating point data attributes, ``a1``, ``d1``, ``a2`` and
@@ -419,25 +529,88 @@ TPM functions
 
 TPM comes with functions and macros, for manipulating vectors and
 matrices, calculating date and time, formating angles and several
-others purposes. As mentioned before, most of the macros are defined
-as functions in :mod:`pytpm.utils``. Macros for working with vectors
-and matrices are implemented as function in :mod:`pytpm.tpm`, with the
-character "f" added to the end of the macro name.
+others purposes.  
 
-Here we will list the functions and macros in :mod:`pytpm.tpm`. See
-:mod:`pytpm.utils` for the macros.
+All constants and functions defined in TPM are available in
+:mod:`pytpm.tpm`. In TPM macros for working with vectors and matrices
+are implemented in ``v3.h``, ``v6.h``, ``m3.h`` and ``m6.h``. In
+PyTPM, these are implemented as function in ``pytpm.tpm``. The
+function names are constructed by adding the character "f" to the end
+of the macro name.
 
+Module ``pytpm.tpm`` also contains the function
+:func:`pytpm.tpm.convert` for performing coordinate conversions. This
+function is not present in TPM. But see :func:`pytpm.utils.convert`
+for a more user friendly version of this function.
+
+As mentioned before, all the other macros in TPM are defined as
+functions in :mod:`pytpm.utils``.
+
+.. _tpm_convert_func:
+
+The ``convert`` function
+------------------------
+
+
+This function takes as input the ``X`` and ``Y`` coordinates, i.e.,
+``RA`` and ``DEC`` or latitude and longitude, and all the
+:ref:`independent variables of the TPM state vector
+<indep_props_state_vector>`. It initializes the state vector, sets the
+independent properties and caclulates all the :ref:`dependent
+properties <dep_props_state_vector>`. It then call the TPM state
+machine and performs the coordinate conversion requested. The
+resultant values are returned.
+
+This is a direct interface to the C function, ``convert``, and hence
+all arguments must be provided in the proper order. Function
+:func:`pytpm.utils.convert` on the other hand, is a Python function
+that accepts keyword arguments and has default values for the
+parameters. The default values are for KPNO observatory. This function
+call ``pytpm.tpm.convert`` and takes care of providing all the
+required arguments in the proper order.
+
+For more details on how to use TPM to perform coordinate conversions
+see the explanation and examples given in :func:``pytpm.utils.convert``.
+
+The arguments expected by ``pytpm.tpm.convert`` are:
+
+``x0``        The X coordinate; RA or longitude in radians
+``y0``        The Y coordinate; DEC or latitude in radians
+``s1``        Initial :ref:`TPM state <tpm_states>`; integer
+``s2``        Final :ref:`TPM state <tpm_states>`; integer
+``epoch``     Epoch of coordinate position; Julian date
+``equinox``   Equinox of coordinate system; Julian date
+``timetag``   Time of observation; Julian date
+
+
+double x0, double y0, int s1, int s2, 
+             double epoch, double equinox, double timetag,
+             double lon, double lat, double alt,
+             double T, double P, double H, 
+             double W,
+
+.. autofunction:: convert
+
+
+.. _func_manip_vec_mat:
 
 Functions for manipulating vectors and matrices
 -----------------------------------------------
 
-V3 vector
-~~~~~~~~~
+The following sections describe various functions that can be used for
+manipulating :class:`V3` and :class:`V6` vectors and :class:`M3` and
+:class:`M6` matrices.
+
+.. _v3_func_manip_vec_mat:
+
+V3 vectors
+~~~~~~~~~~
 
 See the section on :class:`V3` for information on the fields of a V3
 instance. 
 
-.. rubric::  Initialize 
+Initialize
+++++++++++
 
 To intialize a V3 instance, with all fields set to 0, use the
 ``v3init`` function. This function takes an integer indicating the
@@ -445,7 +618,8 @@ type of the V3 instance and returns a V3 instance.
 
 .. autofunction:: v3init  
 
-.. rubric:: Formatted string representation
+Formatted string representation
++++++++++++++++++++++++++++++++
 
 To get a string representation of the vector, use the ``v3fmt``
 function.
@@ -456,7 +630,8 @@ For all the functions described below, the first argument must be a V3
 instance. The second must be a scalar or another V3 instance,
 depending on the type of operation.
 
-.. rubric:: Set the field values
+Set the field values
+++++++++++++++++++++
 
 The following functions can be used to set the components of a
 :class:`V3` instance.  The appropriate field in the V3 instance is set
@@ -472,7 +647,8 @@ to the scalar provided.
 .. autofunction:: v3SetYf    
 .. autofunction:: v3SetZf    
 
-.. rubric:: Retrieve the field values
+Retrieve the field values
++++++++++++++++++++++++++
 
 These functions return the value of the relevant component of the
 vector.
@@ -487,7 +663,8 @@ vector.
 .. autofunction:: v3GetYf    
 .. autofunction:: v3GetZf    
 
-.. rubric:: Subtract a scalar from the field values
+Subtract a scalar from the field values
++++++++++++++++++++++++++++++++++++++++
 
 The following functions can be used to subtract a scalar from a
 component of a :class:`V3` instance.
@@ -501,7 +678,8 @@ component of a :class:`V3` instance.
 .. autofunction:: v3DecYf           
 .. autofunction:: v3DecZf
 
-.. rubric:: Divide fields with  a scalar
+Divide fields with  a scalar
+++++++++++++++++++++++++++++
 
 Use the following functions to divide a component of a V3 instance
 with a scalar.
@@ -515,7 +693,8 @@ with a scalar.
 .. autofunction:: v3DivYf    
 .. autofunction:: v3DivZf    
 
-.. rubric:: Add a scalar to field values
+Add a scalar to field values
+++++++++++++++++++++++++++++
 
 The following functions can be used to add a scalar to a V3 vector.
 
@@ -528,7 +707,8 @@ The following functions can be used to add a scalar to a V3 vector.
 .. autofunction:: v3IncYf     
 .. autofunction:: v3IncZf     
 
-.. rubric:: Multiply fields with a scalar
+Multiply fields with a scalar
++++++++++++++++++++++++++++++
 
 Use the following functions to multiply a component of a V3 vector
 with a scalar.
@@ -542,7 +722,8 @@ with a scalar.
 .. autofunction:: v3MulYf    
 .. autofunction:: v3MulZf    
 
-.. rubric:: Return normalized right ascension
+Return normalized right ascension
++++++++++++++++++++++++++++++++++
 
 The ``v3alpha`` function returns the "Right Ascension", i.e., value in
 ``v3[1]``, normalized to the range [0 - 2*pi ). This function takes
@@ -550,7 +731,8 @@ only one argument, the V3 instance.
 
 .. autofunction:: v3alpha    
 
-.. rubric:: Return normalized declination
+Return normalized declination
++++++++++++++++++++++++++++++
 
 The ``v3delta`` function returns the "Declination", i.e., value in
 ``v3[2]``, normalized to the range (-pi/2 - pi/2). This function takes
@@ -558,7 +740,8 @@ only one argument, the V3 instance.
 
 .. autofunction:: v3delta 
 
-.. rubric:: Convert between cartesian and spherical
+Convert between cartesian and spherical
++++++++++++++++++++++++++++++++++++++++
 
 The following functions convert between cartesian and spherical
 representations of a V3 vector. Both take a V3 instance as their
@@ -567,7 +750,8 @@ argument and returns a new V3 instance.
 .. autofunction:: v3c2s   
 .. autofunction:: v3s2c   
 
-.. rubric:: Cross product and dot product
+Cross product and dot product
++++++++++++++++++++++++++++++
 
 The function ``v3cross`` returns the cross product and ``v3dot``
 returns the dot product of two V3 vectors passed as arguments. Both
@@ -576,7 +760,8 @@ return a new V3 instance.
 .. autofunction:: v3cross 
 .. autofunction:: v3dot   
 
-.. rubric:: Sum and difference of two vectors
+Sum and difference of two vectors
++++++++++++++++++++++++++++++++++
 
 Function ``v3diff`` returns a V3 instance that stores the difference
 between two V3 vectors. Function ``v3sum`` returns the sum of two V3
@@ -585,33 +770,39 @@ vectors.
 .. autofunction:: v3diff  
 .. autofunction:: v3sum   
 
-.. rubric:: Modulus
+Modulus
++++++++
 
 To cacluate the "modulus" or "length" of a vector use the ``v3mod``
 function. This function takes a V3 instance and returns a double.
 
 .. autofunction:: v3mod   
 
-.. rubric:: Scale fields with a scalar
+Scale fields with a scalar
+++++++++++++++++++++++++++
 
 To scale a V3 vector with a scalar use the ``v3scale`` function.
 
 .. autofunction:: v3scale 
 
-.. rubric:: Unit vector
+Unit vector
++++++++++++
 
 The ``v3unit`` function converts the given vector into a unit vector,
 i.e., vector of "length" 1.
 
 .. autofunction:: v3unit  
 
-.. rubric:: Return position vector as a ``V6`` 
+Return position vector as a ``V6`` vector
++++++++++++++++++++++++++++++++++++++++++
 
 The ``v32v6`` functions sets the given V3 vector as the "position"
 vector of a :class:``V6`` vector and returns the V6 vector. The type
 of the V6 vector is set to that of the V3 vector.
 
 .. autofunction:: v32v6
+
+.. _v6_func_manip_vec_mat:
 
 V6 vectors
 ~~~~~~~~~~
@@ -622,20 +813,23 @@ first element, or more precisely, ``v6[tpm.POS]`` stores the position
 vector and the second, more precisely, ``v6[tpm.VEL]`` stores the
 velocity vector.
 
-.. rubric:: Initialize
+Initialize
+++++++++++
 
 To initialize a ``V6`` vector, use the ``v6init`` function.
 
 .. autofunction:: v6init        
 
-.. rubric:: Formatted string representation
+Formatted string representation
++++++++++++++++++++++++++++++++
 
 To get a formatted string representation of the components of a ``V6``
 vector use the ``v6fmt`` function.
 
 .. autofunction:: v6fmt         
 
-.. rubric:: Set field values
+Set field values
+++++++++++++++++
 
 Use the following functions to set the various components of a ``V6``
 instance. These take a ``V6`` instance as the first argument and a
@@ -661,7 +855,8 @@ scalar as the second argument.
 .. autofunction:: v6SetZDotf    
 .. autofunction:: v6SetZf       
 
-.. rubric:: Get field values
+Get field values
+++++++++++++++++
 
 These functions retrieve the components of a ``V6`` instance. These
 take a ``V6`` instance as their arguments.
@@ -686,7 +881,8 @@ take a ``V6`` instance as their arguments.
 .. autofunction:: v6GetZDotf    
 .. autofunction:: v6GetZf       
 
-.. rubric:: Subtract scalars from field values
+Subtract scalars from field values
+++++++++++++++++++++++++++++++++++
 
 To subtract a scalar from a component of a ``V6`` vector, use the
 following function. These take a ``V6`` instance as the first argument
@@ -710,7 +906,8 @@ instance.
 .. autofunction:: v6DecZDotf          
 .. autofunction:: v6DecZf             
 
-.. rubric:: Divide field values with a scalar
+Divide field values with a scalar
++++++++++++++++++++++++++++++++++
 
 The following function can be used to divide a component with a
 scalar. These take a ``V6`` instance as the first argument and a
@@ -733,7 +930,8 @@ scalar as the second argument. These return a new ``V6`` instance.
 .. autofunction:: v6DivZDotf    
 .. autofunction:: v6DivZf       
 
-.. rubric:: Add a scalar to field values
+Add a scalar to field values
+++++++++++++++++++++++++++++
 
 The following functions add a scalar to a component of a ``V6``
 instance. These take a ``V6`` instance as the first argument and a
@@ -756,7 +954,8 @@ scalar as the second argument. These return a new ``V6`` instance.
 .. autofunction:: v6IncZDotf    
 .. autofunction:: v6IncZf       
 
-.. rubric:: Multiply field values with a scalar
+Multiply field values with a scalar
++++++++++++++++++++++++++++++++++++
 
 Use these functions to multiply a component of a ``V6`` vector with a
 scalar. These take a ``V6`` instance as the first argument and a
@@ -779,7 +978,8 @@ scalar as the second argument. These return a new ``V6`` instance.
 .. autofunction:: v6MulZDotf    
 .. autofunction:: v6MulZf       
 
-.. rubric:: Retrive normalized RA and Dec
+Retrive normalized RA and Dec
++++++++++++++++++++++++++++++
 
 To get the "RA" and "Dec" values in the position vector of a ``V6``
 vector, normalized to [0 - 2pi) and (-pi/2 and pi/2), respectively,
@@ -788,7 +988,8 @@ use the functions ``v6alpha`` and ``v6delta``.
 .. autofunction:: v6alpha       
 .. autofunction:: v6delta       
 
-.. rubric:: Convert cartesian to spherical and vice-versa
+Convert cartesian to spherical and vice-versa
++++++++++++++++++++++++++++++++++++++++++++++
 
 Use the following two functions to convert between cartesian and
 spherical representations of a ``V6`` vector.
@@ -796,7 +997,8 @@ spherical representations of a ``V6`` vector.
 .. autofunction:: v6c2s         
 .. autofunction:: v6s2c         
 
-.. rubric:: Cross product and dot product
+Cross product and dot product
++++++++++++++++++++++++++++++
 
 The cross product and dot product of two ``V6`` vector use ``v6cross``
 and ``v6dot`` respectively.
@@ -804,7 +1006,8 @@ and ``v6dot`` respectively.
 .. autofunction:: v6cross       
 .. autofunction:: v6dot         
 
-.. rubric:: Sum and difference
+Sum and difference
+++++++++++++++++++
 
 To find the sum and difference of two ``V6`` vectors use ``v6sum`` and
 ``v6diff`` functions, respectively.
@@ -812,28 +1015,32 @@ To find the sum and difference of two ``V6`` vectors use ``v6sum`` and
 .. autofunction:: v6sum         
 .. autofunction:: v6diff        
 
-.. rubric:: Modulus
+Modulus
++++++++
 
 The  modulus or length of the position vector in a ``V6`` vector can
 be calculated using the ``v6mod`` function.
 
 .. autofunction:: v6mod         
 
-.. rubric:: Unit vector
+Unit vector
++++++++++++
 
 The ``v6unit`` vector converts the position vector in a ``V6`` vector
 into a unit vector.
 
 .. autofunction:: v6unit        
 
-.. rubric:: Scale field values with a scalar
+Scale field values with a scalar
+++++++++++++++++++++++++++++++++
 
 A ``V6`` vector can be scaled , i.e., all components multiplied, with
 a scalar using the ``v6scale`` function.
 
 .. autofunction:: v6scale       
 
-.. rubric:: Apply proper motion to position vector
+Apply proper motion to position vector
+++++++++++++++++++++++++++++++++++++++
 
 The ``v62v3`` function applies space motion to the position vector in
 a ``V6`` vector. The veolcity components and multiplied with the time
@@ -842,10 +1049,13 @@ position component. The resulting ``V3`` position vector is returned.
 
 .. autofunction:: v62v3
 
-M3 matrix
-~~~~~~~~~
+.. _m3_func_manip_vec_mat:
 
-.. rubric:: Scaled identity matrix and null matrix
+M3 matrices
+~~~~~~~~~~~
+
+Scaled identity matrix and null matrix
+++++++++++++++++++++++++++++++++++++++
 
 Function ``m3I`` returns an identity ``M3`` matrix, scaled with the
 given scalar. To construct a null matrix, use the function ``m3O``.
@@ -853,14 +1063,16 @@ given scalar. To construct a null matrix, use the function ``m3O``.
 .. autofunction:: m3I     
 .. autofunction:: m3O     
 
-.. rubric:: Formatted string representation
+Formatted string representation
++++++++++++++++++++++++++++++++
 
 Use the function ``m3fmt`` to get a formatted string containing the
 elements of a matix.
 
 .. autofunction:: m3fmt    
 
-.. rubric:: Set values
+Set values
+++++++++++
 
 Use the following functions to set the various elements of a ``M3``
 matrix.
@@ -875,7 +1087,8 @@ matrix.
 .. autofunction:: m3SetZYf 
 .. autofunction:: m3SetZZf 
 
-.. rubric:: Retrive values
+Retrive values
+++++++++++++++
 
 The following functions return the value of a particular component of
 a matrix.
@@ -890,7 +1103,8 @@ a matrix.
 .. autofunction:: m3GetZYf
 .. autofunction:: m3GetZZf
 
-.. rubric:: Subtract a scalar from a component
+Subtract a scalar from a component
+++++++++++++++++++++++++++++++++++
 
 The following functions can be used to subtract a scalar from a
 component of a matrix. These take a ``M3`` instance as their first
@@ -908,7 +1122,8 @@ instance.
 .. autofunction:: m3DecZYf       
 .. autofunction:: m3DecZZf       
 
-.. rubric:: Divide a component with a scalar
+Divide a component with a scalar
+++++++++++++++++++++++++++++++++
 
 Use the following functions to divide a component with a scalar. These
 take a ``M3`` instance as their first argument, a scalar as their
@@ -924,7 +1139,8 @@ second argument and returns a new ``M3`` instance.
 .. autofunction:: m3DivZYf
 .. autofunction:: m3DivZZf
 
-.. rubric:: Add a scalar to a component
+Add a scalar to a component
++++++++++++++++++++++++++++
 
 Use the following functions to add a scalar to a component of a
 matrix. These take a ``M3`` instance as their first argument, a scalar
@@ -940,7 +1156,8 @@ as their second argument and returns a new ``M3`` instance.
 .. autofunction:: m3IncZYf
 .. autofunction:: m3IncZZf
 
-.. rubric:: Multiply a component with a scalar
+Multiply a component with a scalar
+++++++++++++++++++++++++++++++++++
 
 The following functions return a matrix with the component set to the
 value obtained by multiplying the corresponding value in the input
@@ -956,7 +1173,8 @@ matirx with a scalar.
 .. autofunction:: m3MulZYf
 .. autofunction:: m3MulZZf
 
-.. rubric:: Rotation matrices
+Rotation matrices
++++++++++++++++++
 
 The main use of ``M3`` matrices in TPM is for creating rotation
 matrices. The following functions return rotation matrix about the
@@ -975,21 +1193,24 @@ and the time derivative of the rotation angle as inputs.
 .. autofunction:: m3RyDot  
 .. autofunction:: m3RzDot  
 
-.. rubric:: Sum and difference of matrices
+Sum and difference of matrices
+++++++++++++++++++++++++++++++
 
 The functions return the sum and difference of two matrices.
 
 .. autofunction:: m3sum    
 .. autofunction:: m3diff   
 
-.. rubric:: Inverse of an orthogonal matrix
+Inverse of an orthogonal matrix
++++++++++++++++++++++++++++++++
 
 The functions return the inverse of a matrix, assuming that it is
 orthogonal. 
 
 .. autofunction:: m3inv    
 
-.. rubric:: Scale a matrix with a scalar
+Scale a matrix with a scalar
+++++++++++++++++++++++++++++
 
 The function ``m3scale`` return a ``M3`` martix with components set to
 those obtained by multiplying the corresponding components of the
@@ -997,21 +1218,24 @@ input matrix with a scalar.
 
 .. autofunction:: m3scale  
 
-.. rubric:: Product of two ``M3`` matrices
+Product of two ``M3`` matrices
+++++++++++++++++++++++++++++++
 
 The function ``m3v3`` returns a ``M3`` matrix that is the product of
 two input matrices.
 
 .. autofunction:: m3m3     
 
-.. rubric:: Product of a ``M3`` matrix with a ``V3`` matrix
+Product of a ``M3`` matrix with a ``V3`` matrix
++++++++++++++++++++++++++++++++++++++++++++++++
 
 The function ``m3v3`` returns a ``V3`` vector that is the product of a
 ``M3`` matrix with a ``V3`` vector.
 
 .. autofunction:: m3v3     
 
-.. rubric:: Product of a ``M3`` matrix with a ``V6`` matrix
+Product of a ``M3`` matrix with a ``V6`` matrix
++++++++++++++++++++++++++++++++++++++++++++++++
 
 The function ``m3v6`` returns a ``V6`` vector, obtained by multiplying
 the velocity and position components of the input ``V6`` vecctor with
@@ -1019,10 +1243,13 @@ the input ``M3`` matrix.
 
 .. autofunction:: m3v6     
 
-M6 matrix
-~~~~~~~~~
+.. _m6_func_manip_vec_mat:
 
-.. rubric:: Scaled identity matrix and null matrix
+M6 matrices
+~~~~~~~~~~~
+
+Scaled iDentity matrix and null matrix
+++++++++++++++++++++++++++++++++++++++
 
 Function ``m6I`` returns an identity ``M6`` matrix, scaled with the
 given scalar. To construct a null matrix, use the function ``m6O``.
@@ -1030,14 +1257,16 @@ given scalar. To construct a null matrix, use the function ``m6O``.
 .. autofunction:: m6I      
 .. autofunction:: m6O      
 
-.. rubric:: Formatted string representation
+Formatted string representation
++++++++++++++++++++++++++++++++
 
 Use the function ``m6fmt`` to get a formatted string containing the
 elements of a matix.
 
 .. autofunction:: m6fmt   
 
-.. rubric:: Set values
+Set values
+++++++++++
 
 Use the following functions to set the various elements of a ``M6``
 matrix.
@@ -1047,7 +1276,8 @@ matrix.
 .. autofunction:: m6SetVPf
 .. autofunction:: m6SetVVf
 
-.. rubric:: Retrive values
+Retrive values
+++++++++++++++
 
 The following functions return the value of a particular component of
 a matrix.
@@ -1057,7 +1287,8 @@ a matrix.
 .. autofunction:: m6GetVPf 
 .. autofunction:: m6GetVVf 
 
-.. rubric:: The 6x6 rotation matrix
+The 6x6 rotation matrix
++++++++++++++++++++++++
 
 The "Q" matrix is a 6x6 matrix that can be used to rotate position and
 velocity vectors at the same time. The following functions return the
@@ -1071,21 +1302,24 @@ the array being a ``M3`` matrix.
 .. autofunction:: m6Qy     
 .. autofunction:: m6Qz     
 
-.. rubric:: Sum and difference of matrices
+Sum and difference of matrices
+++++++++++++++++++++++++++++++
 
 The functions return the sum and difference of two matrices.
 
 .. autofunction:: m6sum   
 .. autofunction:: m6diff  
 
-.. rubric:: Inverse of an orthogonal matrix
+Inverse of an orthogonal matrix
++++++++++++++++++++++++++++++++
 
 The functions return the inverse of a matrix, assuming that the
 component ``M3`` matrices are orthogonal.
 
 .. autofunction:: m6inv   
 
-.. rubric:: Scale a matrix with a scalar
+Scale a matrix with a scalar
+++++++++++++++++++++++++++++
 
 The function ``m6scale`` return a ``M6`` martix with each of the
 ``M3`` matrix component in the ``M6`` matrix scaled with the given
@@ -1093,7 +1327,8 @@ constant.
 
 .. autofunction:: m6scale 
 
-.. rubric:: Product of two ``M6`` matrices
+Product of two ``M6`` matrices
+++++++++++++++++++++++++++++++
 
 Function ``m6m6`` returns a ``M6`` matrix obtained by taking the
 product of two ``M6`` matrices. The matrix is obtained by following
@@ -1102,7 +1337,8 @@ multiplications and additions are between ``M3``.
 
 .. autofunction:: m6m6    
 
-.. rubric:: Product of a ``M6`` matrix with a ``V3`` matrix
+Product of a ``M6`` matrix with a ``V3`` matrix
++++++++++++++++++++++++++++++++++++++++++++++++
 
 The function ``m6v3`` returns a ``V3`` vector that is the product of
 the "PP" component, i.e., m6[0][0], of the ``M6`` matrix and a ``V3``
@@ -1110,7 +1346,8 @@ vector.
 
 .. autofunction:: m6v3    
 
-.. rubric:: Product of a ``M6`` matrix with a ``V6`` vector
+Product of a ``M6`` matrix with a ``V6`` vector
++++++++++++++++++++++++++++++++++++++++++++++++
 
 The function ``m6v6`` returns a ``V6`` obtained by taking the product
 of the given ``M6`` matrix and the given ``V6`` vector.
@@ -1120,8 +1357,6 @@ of the given ``M6`` matrix and the given ``V6`` vector.
 Functions related to angles, time and dates
 -------------------------------------------
 
-ADD LINK TO FUNCTIONS IN utils AT APPROPRIATE LOCATIONS.
-
 This section will discuss the functions that deal with calculation of
 dates and time. Macros in TPM that deal with dates and time are
 provided as functions, with the same name as that of the macros, in
@@ -1130,6 +1365,8 @@ provided as functions, with the same name as that of the macros, in
 
 Angles
 ~~~~~~
+
+.. _d_and_dms_func:
 
 Function ``d2dms`` returns a :class:`DMS` with the given scalar set as
 the value of the "degrees" part of the DMS structure. 
@@ -1331,6 +1568,8 @@ normalizing a angle representing a declination coordinate.
   In [49]: tpm.fmt_delta(utils.d2r(91.0))
   Out[49]: '+89D 00\' 00.000"'
 
+.. _h_and_hms_func:
+
 The following are some functions for working with time. 
 
 Functions ``h2hms`` and ``hms2h`` convert between scalar hours and
@@ -1430,6 +1669,8 @@ used to format a :class:`HMS` structure.
   Out[75]: ' 24H 20M 44.160S'
 
 
+.. _dms_and_hms_func:
+
 Converting between angles and time
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1469,6 +1710,8 @@ conversion between time and angles. For example,
 :func:`pytpm.utils.h2dms`, :func:`pytpm.utils.h2r`,
 :func:`pytpm.utils.hms2d`, :func:`pytpm.utils.hms2r`,
 :func:`pytpm.utils.r2h`, and :func:`pytpm.utils.r2hms`.
+
+.. _date_func:
 
 Dates
 ~~~~~
@@ -1729,9 +1972,149 @@ structure and :func:`pytpm.utils.fmt_y` will format a scalar year.
 Functions for working with TPM state machine
 --------------------------------------------
 
+tpm_state
+~~~~~~~~~
+
+The ``tpm_state`` function accepts an integer argument, between 0 and
+``N_TPM_STATES``, and returns the name of the corresponding state. See
+:ref:`tpm_states` for more information on state names.
+
 .. autofunction:: tpm_state
+
+.. sourcecode:: ipython
+
+  In [2]: tpm.tpm_state(10)
+  Out[2]: 'S09 + Precession'
+  In [3]: tpm.tpm_state(tpm.TPM_S10)
+  Out[3]: 'S09 + Precession'
+  In [5]: for i in range(tpm.N_TPM_STATES):
+     ....:      print "S{0:02d} {1:s}".format(i, tpm.tpm_state(i))
+     ....: 
+  S00 null
+  S01 Helio. mean FK4
+  S02 Helio. mean FK5
+  S03 IAU 1980 Ecliptic
+  S04 IAU 1958 Galactic
+  S05 Helio. mean FK4
+  S06 Helio. mean FK5
+  S07 Geoc. mean FK5
+  S08 S07 + Light Defl.
+  S09 S08 + Aberration
+  S10 S09 + Precession
+  S11 Geoc. app. FK5
+  S12 Topo. mean FK5
+  S13 S12 + Light Defl.
+  S14 S13 + Aberration
+  S15 S14 + Precession
+  S16 Topo. app. FK5
+  S17 Topo. app. HA/Dec
+  S18 Topo. app. Az/El
+  S19 Topo. obs. Az/El
+  S20 Topo. obs. HA/Dec
+  S21 Topo. obs. WHAM
+
+
+tpm_data
+~~~~~~~~
+
+Function, ``tpm_data`` is used for computing the :ref:`dependent
+properties <dep_props_state_vector>` of a TPM state. It takes two
+arguments: the :class:`pytpm.tpm.TPM_STATE` instance and a :ref:`TPM
+data flag <tpm_data_flag>`. More than one data flag can be passed at a
+time by combining the flags with the "&" operator.
+
+If data flag is ``TPM_INIT``, then both independent and dependent
+properties are set to default values. In this case. ``utc`` is set to
+current time, ``delta_at`` is set to ``utc + delta_AT(utc)``, ``T`` is
+set to 273.15, ``P`` is set to 1013.25, ``wavelength`` is set to
+0.550, ``refa`` is set to 58.3 arcseconds converted into radians and
+``refb`` is set to -0.067 arcseconds converted into radians. All other
+scalar values are set to 0 and vectors and matrices are set to null
+values of identity matrices.
+
+For the data flag ``TPM_FAST``, the quantities that change on a short
+time scales are calculated. The dynamical times, ``tai``, ``tdt`` and
+``tdb``, and the rotational times, ``ut1``, ``gmst``, ``gast`` and
+``last`` are calculated. Value of ``tai = utc + delta_at``. The value
+of ``delta_at`` must be set manually.
+  
+If the data flag is ``TPM_MEDIUM`` then the quantities that change on
+a "medium" time scales are computed. These are the observer's
+Earth-fixed and space state vectors: ``obs_m``, ``obs_t`` and
+``obs_s``.
+
+If data flag is ``TPM_SLOW`` then the "slowly" changing quantities are
+calculated.  ``obliquity``, nutation in longitude, ``nut_lon``, nutation
+in obliquity, ``nut_obl``, the nutation matrix, ``nm``, the precession
+matrix, ``pm``, the barycentric Earth vector, ``eb`` and the
+heliocentric Earth vector, ``eh``.
+
+If data flag is ``TPM_REFRACTION`` then the refraction coefficients
+are computed by calling :func:`pytpm.tpm.refco`.
+
+If the flag ``TPM_ALL`` is provided then all the above calculations,
+except those corresponding to ``TPM_INIT``, are carried out.
+
 .. autofunction:: tpm_data
+
+In the example, below we initialize a TPM state vector and then print
+its contents; only a portion of the output is shown. The module
+``fmt_tpm.py`` can be downloaded from :download:`this url
+<code/fmt_tpm.py>`.
+
+.. sourcecode:: ipython
+
+  In [1]: from pytpm import tpm, utils
+
+  In [2]: tstate = tpm.TPM_TSTATE()
+   
+  In [3]: tpm.tpm_data(tstate, tpm.TPM_INIT)
+   
+  In [4]: import fmt_tpm
+   
+  In [5]: fmt_tpm.print_state(tstate)
+   
+  *************** Independent properties **********************
+   
+  UTC (Julian date)      : 2455541.10182870
+  Delta AT (s)           :     34.00000000
+  Delta UT (s)           :      0.00000000
+  Latitude (rad)         :      0.00000000
+  Longitude (rad)        :      0.00000000
+  Polar motion x (rad)   :      0.00000000
+  Polar motion y (rad)   :      0.00000000
+  Altitude (meters)      :      0.00000000
+  Humidity (0-1)         :      0.00000000
+  Pressure (milli-bars)  :   1013.25000000
+  Temperature (Kelvin)   :    273.15000000
+  Wavelength (microns)   :      0.55000000
+   
+  *************** Dependent properties ************************
+   
+  UT1 (s)                :      0.00000000
+  GAST (Julian date)     :      0.00000000
+  GMST (Julian date)     :      0.00000000
+  LAST (Julian date)     :      0.00000000
+  TAI (Julian date)      :      0.00000000
+  TDB (Julian date)      :      0.00000000
+  TDT (Julian date)      :      0.00000000
+  Obliquity (rad)        :      0.00000000
+  Nutation in longitude  :      0.00000000
+  Nutation in obliquity  :      0.00000000
+  Refraction coeff. A    :      0.00028265
+  Refraction coeff. B    :     -0.00000032
+  .
+  .
+  .
+  .
+
+
+
+tpm
+~~~
+
 .. autofunction:: tpm
+
 
 Functions for astrometry calculations
 -------------------------------------
@@ -1808,6 +2191,8 @@ Refraction
 .. autofunction:: refco
 
 
+.. _tpm_func_gen_string:
+
 Functions for generating string representations
 -----------------------------------------------
 
@@ -1821,6 +2206,10 @@ string representations of data passed to them.
 * :func:`pytpm.tpm.fmt_j`  
 * :func:`pytpm.tpm.fmt_ymd` 
 * :func:`pytpm.tpm.fmt_ymd_raw`
+* :func:`pytpm.tpm.v3fmt`
+* :func:`pytpm.tpm.v6fmt`
+* :func:`pytpm.tpm.m3fmt`
+* :func:`pytpm.tpm.m6fmt`
 
 Similar functions in :mod:`pytpm.utils` are:
 
@@ -1829,3 +2218,4 @@ Similar functions in :mod:`pytpm.utils` are:
 * :func:`pytpm.utils.fmt_jd` 
 * :func:`pytpm.utils.fmt_r`
 * :func:`pytpm.utils.fmt_y`
+

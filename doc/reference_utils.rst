@@ -3,11 +3,51 @@
 ===============
 
 
-.. contents::
-
 .. automodule:: pytpm.utils
 ..    :members:
 ..    :undoc-members:
+
+.. contents::
+
+Coordinate conversion
+=====================
+
+.. TODO:: Explain how to use with lots of examples. Or in a different
+       section?
+
+       Explain epoch, equinox etc., are AND when these are used by
+       TPM. Proper motion correction to required epoch must be done
+       manually.
+
+       Equinox: The direction of the intersection of the equator and
+       ecliptic at this time, was used to define the coordinate
+       system.
+
+       Epoch: When did an object occupy the given position in the
+       coordinate system indicated by the equinox.
+
+       Timetag: The time of observation.
+
+       Proper motion must be applied to get the position from epoch to
+       timetag. This is not carried out by TPM.
+
+       The coordinate system will be in given equinox or catalog
+       equinox as required. The coodinates will not have proper
+       motions applied to them, i.e., they remain in the epoch
+       provided. So when converting to equinox-of-date, the epoch is
+       not used at all. In fact epoch is used only for +- T05.
+
+       For merely converting from one equinox to another S02 to S02
+       two calls convert function cannot be used, i.e., two states
+       must differ. Or we can do S02 to S06 and then perform S06 to
+       S02 with a different equinox for the second S02.
+
+The ``convert`` function is provided for performing coordinate
+conversions using a single function call. It can be used to set all
+the independent parameters of a TPM state and perform coordinate
+conversion between any two TPM target states.
+
+.. autofunction:: convert
 
 Functions for manipulating data structures
 ==========================================
@@ -18,37 +58,43 @@ Functions for manipulating data structures
 The following are convenience functions for manipulating a
 :class:`pytpm.tpm.DMS` structure.
 
-.. rubric:: Set the components of :class:`pytpm.tpm.DMS` to scalar values
+Set the components of :class:`pytpm.tpm.DMS` to scalar values
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: dmsSetDegrees
 .. autofunction:: dmsSetMinutes
 .. autofunction:: dmsSetSeconds
 
-.. rubric:: Retrive components of :class:`pytpm.tpm.DMS`
+Retrive components of :class:`pytpm.tpm.DMS`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: dmsGetDegrees
 .. autofunction:: dmsGetMinutes
 .. autofunction:: dmsGetSeconds
 
-.. rubric:: Subtract a scalar from components of :class:`pytpm.tpm.DMS`
+Subtract a scalar from components of :class:`pytpm.tpm.DMS`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: dmsDecDegrees
 .. autofunction:: dmsDecMinutes
 .. autofunction:: dmsDecSeconds
 
-.. rubric:: Divide components of :class:`pytpm.tpm.DMS` with scalar
+Divide components of :class:`pytpm.tpm.DMS` with scalar
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: dmsDivDegrees
 .. autofunction:: dmsDivMinutes
 .. autofunction:: dmsDivSeconds
 
-.. rubric:: Add a scalar to components of :class:`pytpm.tpm.DMS`
+Add a scalar to components of :class:`pytpm.tpm.DMS`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: dmsIncDegrees
 .. autofunction:: dmsIncMinutes
 .. autofunction:: dmsIncSeconds
 
-.. rubric:: Multiply components of :class:`pytpm.tpm.DMS` with a scalar
+Multiply components of :class:`pytpm.tpm.DMS` with a scalar
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: dmsMulDegrees
 .. autofunction:: dmsMulMinutes
@@ -61,37 +107,43 @@ The following are convenience functions for manipulating a
 The following are convenience functions for manipulating a
 :class:`pytpm.tpm.HMS` structure.
 
-.. rubric:: Set the components of :class:`pytpm.tpm.HMS` to scalar values
+Set the components of :class:`pytpm.tpm.HMS` to scalar values
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: hmsSetHours
 .. autofunction:: hmsSetMinutes
 .. autofunction:: hmsSetSeconds
 
-.. rubric:: Retrive components of :class:`pytpm.tpm.HMS`
+Retrive components of :class:`pytpm.tpm.HMS`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: hmsGetHours
 .. autofunction:: hmsGetMinutes
 .. autofunction:: hmsGetSeconds
 
-.. rubric:: Subtract a scalar from components of :class:`pytpm.tpm.HMS`
+Subtract a scalar from components of :class:`pytpm.tpm.HMS`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: hmsDecHours
 .. autofunction:: hmsDecMinutes
 .. autofunction:: hmsDecSeconds
 
-.. rubric:: Divide components of :class:`pytpm.tpm.HMS` with scalar
+Divide components of :class:`pytpm.tpm.HMS` with scalar
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: hmsDivHours
 .. autofunction:: hmsDivMinutes
 .. autofunction:: hmsDivSeconds
 
-.. rubric:: Add a scalar to components of :class:`pytpm.tpm.HMS`
+Add a scalar to components of :class:`pytpm.tpm.HMS`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: hmsIncHours
 .. autofunction:: hmsIncMinutes
 .. autofunction:: hmsIncSeconds
 
-.. rubric:: Multiply components of :class:`pytpm.tpm.HMS` with a scalar
+Multiply components of :class:`pytpm.tpm.HMS` with a scalar
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: hmsMulHours
 .. autofunction:: hmsMulMinutes
@@ -103,42 +155,48 @@ The following are convenience functions for manipulating a
 The following are convenience functions for manipulating a
 :class:`pytpm.tpm.JD` structures.
 
-.. rubric:: Set the components of :class:`pytpm.tpm.JD` to scalar values
+Set the components of :class:`pytpm.tpm.JD` to scalar values
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: jdSetDay 
 .. autofunction:: jdSetHours
 .. autofunction:: jdSetMinutes
 .. autofunction:: jdSetSeconds
 
-.. rubric:: Retrive components of :class:`pytpm.tpm.JD`
+Retrive components of :class:`pytpm.tpm.JD`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: jdGetDay	
 .. autofunction:: jdGetHours
 .. autofunction:: jdGetMinutes
 .. autofunction:: jdGetSeconds
 
-.. rubric:: Subtract a scalar from components of :class:`pytpm.tpm.JD`
+Subtract a scalar from components of :class:`pytpm.tpm.JD`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: jdDecDay 
 .. autofunction:: jdDecHours
 .. autofunction:: jdDecMinutes
 .. autofunction:: jdDecSeconds
 
-.. rubric:: Divide components of :class:`pytpm.tpm.JD` with scalar
+Divide components of :class:`pytpm.tpm.JD` with scalar
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: jdDivDay 
 .. autofunction:: jdDivHours
 .. autofunction:: jdDivMinutes
 .. autofunction:: jdDivSeconds
 
-.. rubric:: Add a scalar to components of :class:`pytpm.tpm.JD`
+Add a scalar to components of :class:`pytpm.tpm.JD`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: jdIncDay 
 .. autofunction:: jdIncHours
 .. autofunction:: jdIncMinutes
 .. autofunction:: jdIncSeconds
 
-.. rubric:: Multiply components of :class:`pytpm.tpm.JD` with a scalar
+Multiply components of :class:`pytpm.tpm.JD` with a scalar
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: jdMulDay 
 .. autofunction:: jdMulHours
@@ -152,7 +210,8 @@ The following are convenience functions for manipulating a
 These are convenience functions for working with
 :class:``pytpm.tpm.YMD`` instances.
 
-.. rubric:: Set the components of :class:`pytpm.tpm.YMD` to scalar values
+Set the components of :class:`pytpm.tpm.YMD` to scalar values
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: ymdSetDay 
 .. autofunction:: ymdSetHours
@@ -161,7 +220,8 @@ These are convenience functions for working with
 .. autofunction:: ymdSetSeconds
 .. autofunction:: ymdSetYear
 
-.. rubric:: Retrive components of :class:`pytpm.tpm.YMD`
+Retrive components of :class:`pytpm.tpm.YMD`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: ymdGetDay	
 .. autofunction:: ymdGetHours
@@ -170,7 +230,8 @@ These are convenience functions for working with
 .. autofunction:: ymdGetSeconds
 .. autofunction:: ymdGetYear
 
-.. rubric:: Subtract a scalar from components of :class:`pytpm.tpm.YMD`
+Subtract a scalar from components of :class:`pytpm.tpm.YMD`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: ymdDecDay 
 .. autofunction:: ymdDecHours
@@ -179,7 +240,8 @@ These are convenience functions for working with
 .. autofunction:: ymdDecSeconds
 .. autofunction:: ymdDecYear
 
-.. rubric:: Divide components of :class:`pytpm.tpm.YMD` with scalar
+Divide components of :class:`pytpm.tpm.YMD` with scalar
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: ymdDivDay 
 .. autofunction:: ymdDivHours
@@ -216,15 +278,9 @@ in the appropriate data structures passed to them.
 .. autofunction:: fmt_hms
 .. autofunction:: fmt_jd
 
-Cooordinate conversion
-======================
+Several other string formating functions are listed in the section
+titled :ref:`tpm_func_gen_string`.
 
-The ``convert`` function is provided for performing coordinate
-conversions using a single function call. It can be used to set all
-the independent parameters of a TPM state and perform coordinate
-conversion between any two TPM target states.
-
-.. autofunction:: convert
 
 Date conversion
 ===============
