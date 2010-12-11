@@ -8,3 +8,4 @@ build/
 doc/_build/
 *_exe
 pytpm-ghpages.rst
+.ropeproject/
