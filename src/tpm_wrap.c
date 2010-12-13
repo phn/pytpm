@@ -8950,6 +8950,86 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_zeta(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  double arg2 ;
+  int arg3 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:zeta",&obj0,&obj1,&obj2)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "zeta" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = (double)(val1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "zeta" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "zeta" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = (int)(val3);
+  result = (double)zeta(arg1,arg2,arg3);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_zetadot(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  double arg2 ;
+  int arg3 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:zetadot",&obj0,&obj1,&obj2)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "zetadot" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = (double)(val1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "zetadot" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "zetadot" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = (int)(val3);
+  result = (double)zetadot(arg1,arg2,arg3);
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_tpm(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   V6 *arg1 = (V6 *) 0 ;
@@ -18518,6 +18598,8 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"ut12gmst", _wrap_ut12gmst, METH_VARARGS, (char *)"ut12gmst(double ut1) -> double"},
 	 { (char *)"zee", _wrap_zee, METH_VARARGS, (char *)"zee(double j1, double j2, int pflag) -> double"},
 	 { (char *)"zeedot", _wrap_zeedot, METH_VARARGS, (char *)"zeedot(double j1, double j2, int pflag) -> double"},
+	 { (char *)"zeta", _wrap_zeta, METH_VARARGS, (char *)"zeta(double j1, double j2, int pflag) -> double"},
+	 { (char *)"zetadot", _wrap_zetadot, METH_VARARGS, (char *)"zetadot(double j1, double j2, int pflag) -> double"},
 	 { (char *)"tpm", _wrap_tpm, METH_VARARGS, (char *)"tpm( pvec, int s1, int s2, double ep, double eq,  tstate) -> int"},
 	 { (char *)"atm", _wrap_atm, METH_VARARGS, (char *)"atm(double r, double n, double dndr)"},
 	 { (char *)"evp", _wrap_evp, METH_VARARGS, (char *)"evp(double tdb,  v6b,  v6h)"},

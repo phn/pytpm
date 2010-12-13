@@ -35,6 +35,8 @@ __ http://articles.adsabs.harvard.edu/cgi-bin/nph-iarticle_query?
 ``GAL_LON``      Zero of longitude (B1950.0)
 ==============  =======================================================
 
+.. _tpm_fk4_fk5_precess_angles:
+
 Constants for selecting FK4 and FK5 precession angles
 -----------------------------------------------------
 
@@ -1718,8 +1720,8 @@ Dates
 
 The function ``utc_now`` returns the current ``UTC`` date as a Julian
 day number. This is accurate to the nearest second. The function
-``jd_now`` returns the same, but the returned value is a :class:``JD``
-structure.
+``jd_now`` returns the same, but the returned value is a :class:`JD
+<pytpm.tpm.JD>` structure.
 
 .. autofunction:: utc_now
 .. autofunction:: jd_now
@@ -2113,6 +2115,16 @@ its contents; only a portion of the output is shown. The module
 tpm
 ~~~
 
+The is the function that performs the conversion of a given state
+vector from one coordinate system into another. It takes as arguments
+an array of ``V6`` vectors, the starting state number, the end state
+number, epoch of the coordinates in the ``V6`` vector, the equinox of
+the coordinates in the ``V6`` vector and the state data. 
+
+Currently, there is no way of creating an array of ``V6`` vectors from
+within ``pytpm`` and hence this has to be called indirectly using the
+:func:`pytpm.tpm.convert`` function.
+
 .. autofunction:: tpm
 
 
@@ -2123,73 +2135,236 @@ The following lists all functions used for performing astrometry
 calculations, such as applying aberration corrections and finding the
 location of objects as viewed by different observers.
 
+.. _time_scales:
+
 Time scales
 ~~~~~~~~~~~
 
+Function ``delta_AT`` returns the difference between the International
+Atomic Time, TAI, and the Coordinated Universal Time, UTC, at the time
+given by the input UTC.
+
+.. attention::
+
+  The values in the source file, ``delta_AT.c`` must be updated, and
+  ``pytpm`` rebuild, whenever new values for ``TAI - UTC`` are
+  published. This information is available at
+  http://maia.usno.navy.mil/, specifically in the file
+  http://maia.usno.navy.mil/ser7/tai-utc.dat available at the former
+  URL. 
+
 .. autofunction:: delta_AT
+
+.. sourcecode:: ipython
+
+  In [2]: tpm.delta_AT(tpm.utc_now())
+  Out[2]: 34.0
+
+The function ``tdt2tdb`` converts Terrestrial Dynamic Time, TDT, to
+Barycentric Dynamic Time, TDB.
+
 .. autofunction:: tdt2tdb
+
+Function ``ut12gmst`` return the Greenwich Mean Sidereal Time, as an
+angle in radians, normalized to the range [0, 2π).
+
+NOTE: CURRENTLY THERE IS NO FUNCTION TO CONVERT UTC TO UT1. TPM STATE
+ENDS UP USING UTC INSTEAD OF UT1. CURRENTLY UT1 - UTC = -0.2.
+
 .. autofunction:: ut12gmst
+
+.. sourcecode:: ipython
+
+  In [4]: x = tpm.ut12gmst(tpm.utc_now())
+  In [5]: print(tpm.fmt_h(utils.r2h(x)))
+  15H 54M 19.166S
+
 
 Proper motion
 ~~~~~~~~~~~~~
 
+TPM never applies proper motion to output coordinates. Proper motion
+must be applied by the user. The function ``proper_motion`` takes a
+``V6`` vector, ``v6``, an end time, ``t``, and a start time, ``t0``
+and applies proper motion for the interval ``t - t0``. The time
+difference is assumed to be in days; use Julian dates for ``t`` and
+``t0``. Velocities in ``V6`` vectors are in radians/day.
+
 .. autofunction:: proper_motion
+
 
 Ephemerides
 ~~~~~~~~~~~
 
+Function ``solar_perigee`` calculates the mean longitude of the
+perigee of the solar orbit for the given Terrestrial Dynamic Time (TDT) in
+radians. The rate of change of this quantity, for a given TDT is
+returned by ``solar_perigee_dot``.
+
 .. autofunction:: solar_perigee
 .. autofunction:: solar_perigee_dot
+
+For a given Barycentric Dynamic Time (TDB), the function ``evp``
+return the barycentric and heliocentric state vectors for the Earth.
+
 .. autofunction:: evp
 
 Precession and nutation
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-.. autofunction:: eterms
-.. autofunction:: ellab
-.. autofunction:: fk425
-.. autofunction:: fk524
-.. autofunction:: precess_m
-.. autofunction:: precess
+Functions ``eccentricity`` and ``eccentricity_dot`` return the
+eccentricity of the Earth's orbit for the given TDT.  Functions
+``obliquity`` and ``obliquity_do`` return the mean obliquity of the
+ecliptic for the epoch J2000 at the given TDT. All these functions
+return values in radians and radians per Julian centruy as
+appropriate.
+
+.. TODO:: Check units of eccentricity_dot and obliquity_dot.
+
 .. autofunction:: eccentricity
 .. autofunction:: eccentricity_dot
 .. autofunction:: obliquity
 .. autofunction:: obliquity_dot
-.. autofunction:: nutations
+
+Function ``eterms`` returns the ecliptic E-terms of aberrations, as
+a :class:`V6 <pytpm.tpm.V6>` vector.
+
+.. autofunction:: eterms
+
+Function ``ellab`` adds to or removes from a :class:`V6
+<pytpm.tpm.V6>` vector, the E-terms of aberration for the given
+TDT. It removes E-terms if the ``flag`` is negative and adds the
+E-terms if the ``flag`` is positive.
+
+.. autofunction:: ellab
+
+The following 6 functions calculate the rotation angles for precessing
+equatorial coordinates, inluding velocities, between equator and
+equinox of two epochs. The first and second parameters are the initial
+and target epochs of the equator and equinox, as Julian dates. The
+``flag`` indicates which version of these angles should be used. These
+flags defined are defined as constants in TPM and decribed earlier in
+:ref:`tpm_fk4_fk5_precess_angles`.
+
+
 .. autofunction:: zee
 .. autofunction:: zeedot
 .. autofunction:: theta
 .. autofunction:: thetadot
+.. autofunction:: zeta
+.. autofunction:: zetadot
+
+
+The functions ``precess_m`` calculates the precession matrix, using
+the above six functions, for precessing equatorial coordinates between
+equator and equinox at two different epochs. The first two parameters
+are the initial and final epochs, the parameter ``pflag`` selects the
+appropriate precession angles as described in the section
+:ref:`tpm_fk4_fk5_precess_angles`. The last parameter, ``sflag``
+indicates whether the precession involves transition from or to a
+non-inertial frame. FK4-FK5 and FK5-FK4 precessions invlove the non-inertial FK4
+reference frame. All these are described in the section
+:ref:`tpm_fk4_fk5_precess_angles`. 
+
+.. autofunction:: precess_m
+.. autofunction:: precess
+
+Given a :class:`V6 <pytpm.tpm.V6>` vector, the functions ``fk425`` and
+`fk542` converts it from FK4 system to FK5 system and vice-versa,
+respectively.
+
+.. autofunction:: fk425
+.. autofunction:: fk524
+
+Function ``nutations`` returns the nutation in longitude and nutation
+in obliquity for the given TDT.
+
+.. autofunction:: nutations
 
 Aberration and light deflection
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Function ``aberrate`` adds or substracts aberration, given as a
+:class:`V6 <pytpm.tpm.V6>` vector, from another :class:`V6
+<pytpm.tpm.V6>` vector. The latter is given as the first argument to
+the function and the latter is given as the second. If argument
+``flag`` is positive then aberation is added to the state vector, else
+it is subtracted from the state vector.
+
 .. autofunction:: aberrate
+
+Function ``ldeflect`` takes a :class:`V6 <pytpm.tpm.V6>` state vector
+as its first argument, and a :class:`V6 <pytpm.tpm.V6>` state vector
+representing the heliocentric coordinates of Earth, and applies the
+correction for gravitational deflection of light. If the third
+argument, ``flag`` is positive then the change is added to the state
+vector, else the change is subtracted from the state vector.
+ 
 .. autofunction:: ldeflect
 
 Locations on Earth
 ~~~~~~~~~~~~~~~~~~
 
+Given longitude, latitude and altitude, in that order, ``geod2geoc``
+returns the geocentric state vector as a :class:`V6 <pytpm.tpm.V6>`
+instance. 
+
 .. autofunction:: geod2geoc
 
-Tranform between equatorial, ecliptic and galactic systems
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Tranform between local, equatorial, ecliptic and galactic systems
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following functions rotate a :class:`V6 <pytpm.tpm.V6>` vector
+from one coordinate system to the other.
+
+Given a latitude, in radians, as the second argument, ``azel2hadec``
+converts the :class:`V6 <pytpm.tpm.V6>` vector from the local
+*azimuth-elevation* system into local equatorial, i.e., *hour
+angle-declination* system. Function ``hadec2azel`` performs the
+opposite conversion.
 
 .. autofunction:: azel2hadec
+.. autofunction:: hadec2azel
+
+Given a :class:`V6 <pytpm.tpm.V6>` vector and the obliquity of the
+ecliptic, as second argument, ``ecl2equ`` rotates the ecliptic
+coordinates into equatorial coordinates. Function ``equ2ecl`` performs
+the opposite conversion.
+
 .. autofunction:: ecl2equ
 .. autofunction:: equ2ecl
+
+Functions ``equ2gal`` and ``gal2equ`` converts equatorial coordiantes
+to galactic and vice-versa, respectively. Both accept a :class:`V6
+<pytpm.tpm.V6>` vector as their only argument.
+
 .. autofunction:: equ2gal
 .. autofunction:: gal2equ
-.. autofunction:: hadec2azel
 
 Refraction
 ~~~~~~~~~~
 
-.. autofunction:: refract
-.. autofunction:: refraction
-.. autofunction:: atm
+Given latitude, altitude, ambient temperature in Kelvins, ambient
+pressure in milli-bars, relative humidity (0-1), wavelength of
+observation in micrometers and the required fractional accuracy, in
+that order, ``refco`` calculates the refraction coefficients, ``A``
+and ``B``. 
+
 .. autofunction:: refco
 
+Functions ``atm`` and ``refraction`` are use to perform the full
+refraction calculations. The former defines a model atmosphere.
+
+.. autofunction:: refraction
+.. autofunction:: atm
+
+Given a zenith angle, refraction coefficient A, refraction coefficient
+B, and a flag the function ``refract`` will return the zenith distance
+after applying refraction, if ``flag`` is positive and the zenith
+distance after removing refraction, if ``flag`` is not positive.
+
+.. autofunction:: refract
 
 .. _tpm_func_gen_string:
 

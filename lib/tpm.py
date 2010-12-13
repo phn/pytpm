@@ -894,6 +894,14 @@ def zeedot(*args):
   """zeedot(double j1, double j2, int pflag) -> double"""
   return _tpm.zeedot(*args)
 
+def zeta(*args):
+  """zeta(double j1, double j2, int pflag) -> double"""
+  return _tpm.zeta(*args)
+
+def zetadot(*args):
+  """zetadot(double j1, double j2, int pflag) -> double"""
+  return _tpm.zetadot(*args)
+
 def tpm(*args):
   """tpm( pvec, int s1, int s2, double ep, double eq,  tstate) -> int"""
   return _tpm.tpm(*args)

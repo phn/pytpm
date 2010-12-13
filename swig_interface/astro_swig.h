@@ -220,8 +220,8 @@ extern double ut12gmst(double ut1);
 /*extern double zd2airmass(double zd);*/
 extern double zee(double j1, double j2, int pflag);
 extern double zeedot(double j1, double j2, int pflag);
-/*extern double zeta(double j1, double j2, int pflag);
-extern double zetadot(double j1, double j2, int pflag);*/
+extern double zeta(double j1, double j2, int pflag);
+extern double zetadot(double j1, double j2, int pflag);
 /*extern int n_cons_data(void);
   extern int n_star_data(void);*/
 extern int tpm(V6 *pvec, int s1, int s2, double ep, double eq, TPM_TSTATE *tstate);

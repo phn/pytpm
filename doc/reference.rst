@@ -5,10 +5,6 @@ Reference
 .. currentmodule:: pytpm
 
 
-Documentation for the TPM C library, in PDF format, is included with
-the source code and is also available at :download:`this url
-<TPM/tpm.pdf>`.
-
 TPM library defines a set a data structures for representing vectors
 and matrices, and functions and macros for manipulating these data
 structures. Declarations for all these are available in the C header
@@ -21,6 +17,10 @@ related to astrometry are declared in the header file :file:`astro.h`.
 Structures used in representing TPM states are declared in
 :file:`tpm.h`. Finally, declarations for some routines for numerical
 integration are provided in :file:`misc.h`.
+
+Documentation for the TPM C library, in PDF format, is included with
+the source code and is also available at :download:`this url
+<TPM/tpm.pdf>`.
 
 The items in the TPM library that were wrapped with *SWIG* and made
 available through PyTPM, are present in the :mod:`pytpm.tpm`
@@ -49,7 +49,7 @@ defined in :file:`convert.c`, and hence requires all arguments to be
 supplied when invoking it. Another function, :func:`pytpm.utils.convert`, is
 provided to make it easier to call :func:`pytpm.tpm.convert`. This is
 acheived by providing keyword arguments and default values for most of
-the arguments needed by :func:`pytpm.tpm.convert``.
+the arguments needed by :func:`pytpm.tpm.convert`.
 
 .. toctree::
     :maxdepth: 0
