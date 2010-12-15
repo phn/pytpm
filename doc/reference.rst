@@ -4,7 +4,6 @@ Reference
 
 .. currentmodule:: pytpm
 
-
 TPM library defines a set a data structures for representing vectors
 and matrices, and functions and macros for manipulating these data
 structures. Declarations for all these are available in the C header
@@ -51,8 +50,11 @@ provided to make it easier to call :func:`pytpm.tpm.convert`. This is
 acheived by providing keyword arguments and default values for most of
 the arguments needed by :func:`pytpm.tpm.convert`.
 
+Modules
+-------
+
 .. toctree::
-    :maxdepth: 0
+    :maxdepth: 1
 
     reference_tpm
     reference_utils
