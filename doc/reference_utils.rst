@@ -781,6 +781,8 @@ Functions for generating string representations
 .. autofunction:: fmt_r
 .. autofunction:: fmt_y
 
+.. _utils_angle_conv_functions:
+
 Functions related to angles
 ---------------------------
 
@@ -791,6 +793,8 @@ Functions related to angles
 .. autofunction:: as2d
 .. autofunction:: r2as
 .. autofunction:: as2r
+
+.. _utils_conv_angle_time:
 
 Conversion between angle and time
 ---------------------------------

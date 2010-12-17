@@ -3,18 +3,26 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-PyTPM: Python interface to the Telescope Pointing Machine library
-=================================================================
+PyTPM: Python interface to the Telescope Pointing Machine C library
+===================================================================
 
-This document describes the PyTPM library, which provides a python
-interface to the Telescope Pointing Machine C library, written by Jeff
-Percival. 
+PyTPM Python library, provides a python interface to the Telescope
+Pointing Machine C library, written by Jeff Percival.
+
+:doc:`overview` gives a description of the usage of the
+library. :doc:`tpm` gives a brief description of the TPM library; read
+the :download:`TPM manual <TPM/tpm.pdf>` (PDF file; also included with
+source) for detailed information on TPM. The :doc:`reference` section
+describes all the facilities of the TPM library that are exposed by
+PyTPM.
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
     
-   overview.rst
-   reference.rst
+   overview
+   tpm
+   astrometry
+   reference
 
 Indices and tables
 ==================

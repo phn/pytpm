@@ -139,6 +139,8 @@ Some of the states have special names:
  ``TARGET_TOP_AZEL``         ``TPM_S18``
 ========================   ===============
 
+.. _tpm_trans_names:
+
 TPM transition names
 --------------------
 
@@ -1505,13 +1507,7 @@ use the function :func:`pytpm.utils.fmt_r`.
   Out[27]: '+36D 39\' 18.720"'
 
 The function ``r2r`` can be used to normalize an angle in radians to
-the range [0, 2π). Several functions are provided in
-:mod:`pytpm.utils` for converting angles between various
-units. Examples are, :func:`pytpm.utils.r2as`,
-:func:`pytpm.utils.r2d`, :func:`pytpm.utils.r2dms`,
-:func:`pytpm.utils.dms2r`, :func:`pytpm.utils.d2r`,
-:func:`pytpm.utils.d2as`, :func:`pytpm.utils.as2d`, and
-:func:`pytpm.utils.as2r`.
+the range [0, 2π). 
 
 .. autofunction:: r2r
 
@@ -1569,6 +1565,9 @@ normalizing a angle representing a declination coordinate.
    
   In [49]: tpm.fmt_delta(utils.d2r(91.0))
   Out[49]: '+89D 00\' 00.000"'
+
+`Some functions are provided <utils_angle_conv_functions>`_ in
+:mod:`pytpm.utils` for converting angles between various units.
 
 .. _h_and_hms_func:
 
@@ -1704,14 +1703,8 @@ formatted string representing this time.
   In [82]: utils.fmt_hms(hms)
   Out[82]: ' 01H 33M 49.627S'
 
-
-The module :mod:`pytpm.utils` defines several functions that perform
-conversion between time and angles. For example,
-:func:`pytpm.utils.r2h`, :func:`pytpm.utils.r2hms`,
-:func:`pytpm.utils.h2as`, :func:`pytpm.utils.h2d`,
-:func:`pytpm.utils.h2dms`, :func:`pytpm.utils.h2r`,
-:func:`pytpm.utils.hms2d`, :func:`pytpm.utils.hms2r`,
-:func:`pytpm.utils.r2h`, and :func:`pytpm.utils.r2hms`.
+`Several functions are provided <utils_conv_angle_time>`_ in
+:mod:`pytpm.utils` for converting between angles and time.
 
 .. _date_func:
 
@@ -2122,8 +2115,8 @@ number, epoch of the coordinates in the ``V6`` vector, the equinox of
 the coordinates in the ``V6`` vector and the state data. 
 
 Currently, there is no way of creating an array of ``V6`` vectors from
-within ``pytpm`` and hence this has to be called indirectly using the
-:func:`pytpm.tpm.convert`` function.
+within PyTPM and hence this has to be called indirectly using the
+:func:`pytpm.tpm.convert` or :func:`pytpm.utils.convert` functions.
 
 .. autofunction:: tpm
 
