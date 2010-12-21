@@ -12,9 +12,10 @@ Pointing Machine C library, written by Jeff Percival.
 :doc:`overview` gives a description of the usage of the
 library. :doc:`tpm` gives a brief description of the TPM library; read
 the :download:`TPM manual <TPM/tpm.pdf>` (PDF file; also included with
-source) for detailed information on TPM. The :doc:`reference` section
-describes all the facilities of the TPM library that are exposed by
-PyTPM.
+source) for detailed information on TPM. :doc:`astrometry` has some
+pointers on data sources and documents for learning about concepts in
+astrometry. :doc:`reference` section describes all the facilities of
+the TPM library that are exposed by PyTPM.
 
 .. toctree::
    :maxdepth: 2

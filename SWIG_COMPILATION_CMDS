@@ -1,7 +1,7 @@
 Create SWIG interface file: Must be run whenever modifications are
 made to C source code.  
 
-swig -python -o src/tpm_wrap.c -outdir lib/swig_interface/tpm.i
+swig -python -o src/tpm_wrap.c -outdir lib/ swig_interface/tpm.i
 
 Manually create shared library:
 
