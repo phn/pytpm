@@ -37,6 +37,7 @@ the topics listed below. `USNO Astronomical Applications`_ division
 maintains a large repository of information on astronomical phenomena
 and astrometric data.
 
+
 Time scales and calendars
 =========================
 
@@ -48,6 +49,9 @@ below.
 Information on ``TAI - UTC`` is also maintaiend in the file
 ftp://maia.usno.navy.mil/ser7/tai-utc.dat, which lists ``TAI - UTC``
 values beginning from 1961 Jan. 1.
+
+See files in the directory ftp://hpiers.obspm.fr/eop-pc/eop/eopc04_05
+for listings that give ``UT1 - UTC`` values.
 
 Earth data
 ==========
@@ -319,7 +323,15 @@ that delivers all their data bulletins and messages:
 
   IERS Bulletin A contains Earth orientation parameters x/y pole,
   ``UT1 - UTC`` and their errors at daily intervals and predictions
-  for 1 year into the future.
+  for 1 year into the future. 
+
+  But also see files in the directory
+  ftp://hpiers.obspm.fr/eop-pc/eop/eopc04_05 for listings that give
+  ``UT1 - UTC`` values. These are probably easier to use. For example
+  the file ``eopc04_IAU2000.62-now`` in the above directory gives
+  ``UT1 - UTC`` values, in addition to many others, for the
+  appropriate period.
+
 
 + Bulletin B (monthly)
 
@@ -344,11 +356,12 @@ that delivers all their data bulletins and messages:
 
 See `IERS data products page
 <http://www.iers.org/IERS/EN/DataProducts/data.html>`_ page for all
-data provided by IERS.
+data provided by IERS. The "directory" http://maia.usno.navy.mil/ser7/
+contains collection of files that has data from all published
+bulletins, for example bulletin B. For information of the contents of
+various bulletins see appropriate files in
+ftp://hpiers.obspm.fr/iers/bul.
 
-The "directory" http://maia.usno.navy.mil/ser7/ contains collection of
-files that has data from all published bulletins, for example 
-bulletin B.
-
-For information of the contents of various bulletins see appropriate
-files in ftp://hpiers.obspm.fr/iers/bul.
+See files in the directory ftp://hpiers.obspm.fr/eop-pc/eop/eopc04_05
+for listings that give ``UT1 - UTC`` and other Earth orientation
+parameters.
