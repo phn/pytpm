@@ -2052,9 +2052,10 @@ def m6SetVVf(*args):
 def convert(*args):
   """
     convert(double x0, double y0, int s1, int s2, double epoch, 
-        double equinox, double timetag, double lon, 
-        double lat, double alt, double T, double P, double H, 
-        double W)
+        double equinox, double timetag, double delta_ut, 
+        double lon, double lat, double alt, double x_pole, 
+        double y_pole, double T, double P, 
+        double H, double W)
     """
   return _tpm.convert(*args)
 

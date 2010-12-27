@@ -3,7 +3,9 @@
 /* xo and y0 are in radians. */
 void convert(double x0, double y0, int s1, int s2, 
              double epoch, double equinox, double timetag,
+             double delta_ut,
              double lon, double lat, double alt,
+             double x_pole, double y_pole, 
              double T, double P, double H, 
              double W,
              double *x1, double *y1){
@@ -23,6 +25,7 @@ void convert(double x0, double y0, int s1, int s2,
     tstate.H = H;
     tstate.wavelength = W;
     tstate.utc = timetag;
+    tstate.delta_ut = delta_ut;
 
     tpm_data(&tstate, TPM_ALL);
 

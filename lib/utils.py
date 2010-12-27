@@ -12,8 +12,9 @@ from pytpm import tpm
 import math
 
 def convert(x=0.0, y=0.0, s1=6, s2=19, epoch=tpm.J2000, 
-            equinox=tpm.J2000, timetag=None, lon = -111.598333,
-            lat = 31.956389, alt = 2093.093, T = 273.15, 
+            equinox=tpm.J2000, timetag=None, delta_ut = 0,
+            lon = -111.598333, lat = 31.956389, alt = 2093.093,
+            x_pole = 0.0, y_pole = 0.0, T = 273.15, 
             P = 1013.25, H=0.0, W=0.55000):
     """Returns coordinates converted into target system.
 
@@ -84,8 +85,8 @@ def convert(x=0.0, y=0.0, s1=6, s2=19, epoch=tpm.J2000,
     y = math.radians(y)
     if timetag == None:
         timetag = tpm.utc_now()
-    x1,y1 = tpm.convert(x,y,s1,s2,epoch,equinox,timetag,lon,lat,alt,
-            T,P,H,W)
+    x1,y1 = tpm.convert(x,y,s1,s2,epoch,equinox,timetag,delta_ut,
+                        lon,lat,alt,x_pole, y_pole, T,P,H,W)
     return math.degrees(x1),math.degrees(y1)
 
 

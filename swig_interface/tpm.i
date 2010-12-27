@@ -33,11 +33,13 @@ All other macros defined in TPM are provided as function in the module
   #include "m3Functions.h"
   #include "m6Functions.h"
   extern void convert(double x0, double y0, int s1, int s2,
-                    double epoch, double equinox, double timetag,
-                    double lon, double lat, double alt,
-                    double T, double P, double H, 
-                    double W,
-                    double *x1, double *x2);
+                      double epoch, double equinox, double timetag,
+                      double delta_ut,
+                      double lon, double lat, double alt,
+                      double x_pole, double y_pole,
+                      double T, double P, double H,
+                      double W,
+                      double *x1, double *x2);
 %}
 
 %feature("autodoc","1");
@@ -56,11 +58,12 @@ All other macros defined in TPM are provided as function in the module
 %include "../src/m6Functions.h"
 
 %include "typemaps.i"
-
 extern void convert(double x0, double y0, int s1, int s2,
-                    double epoch, double equinox, double timetag,
-                    double lon, double lat, double alt,
-                    double T, double P, double H, 
-                    double W,
-                    double *OUTPUT, double *OUTPUT);
+                      double epoch, double equinox, double timetag,
+                      double delta_ut,
+                      double lon, double lat, double alt,
+                      double x_pole, double y_pole,
+                      double T, double P, double H,
+                      double W,
+                      double *OUTPUT, double *OUTPUT);
 

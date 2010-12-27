@@ -2724,11 +2724,13 @@ static swig_module_info swig_module = {swig_types, 19, 0, 0, 0, 0};
   #include "m3Functions.h"
   #include "m6Functions.h"
   extern void convert(double x0, double y0, int s1, int s2,
-                    double epoch, double equinox, double timetag,
-                    double lon, double lat, double alt,
-                    double T, double P, double H, 
-                    double W,
-                    double *x1, double *x2);
+                      double epoch, double equinox, double timetag,
+                      double delta_ut,
+                      double lon, double lat, double alt,
+                      double x_pole, double y_pole,
+                      double T, double P, double H,
+                      double W,
+                      double *x1, double *x2);
 
 
 #include <limits.h>
@@ -18242,8 +18244,11 @@ SWIGINTERN PyObject *_wrap_convert(PyObject *SWIGUNUSEDPARM(self), PyObject *arg
   double arg12 ;
   double arg13 ;
   double arg14 ;
-  double *arg15 = (double *) 0 ;
-  double *arg16 = (double *) 0 ;
+  double arg15 ;
+  double arg16 ;
+  double arg17 ;
+  double *arg18 = (double *) 0 ;
+  double *arg19 = (double *) 0 ;
   double val1 ;
   int ecode1 = 0 ;
   double val2 ;
@@ -18272,10 +18277,16 @@ SWIGINTERN PyObject *_wrap_convert(PyObject *SWIGUNUSEDPARM(self), PyObject *arg
   int ecode13 = 0 ;
   double val14 ;
   int ecode14 = 0 ;
-  double temp15 ;
-  int res15 = SWIG_TMPOBJ ;
-  double temp16 ;
-  int res16 = SWIG_TMPOBJ ;
+  double val15 ;
+  int ecode15 = 0 ;
+  double val16 ;
+  int ecode16 = 0 ;
+  double val17 ;
+  int ecode17 = 0 ;
+  double temp18 ;
+  int res18 = SWIG_TMPOBJ ;
+  double temp19 ;
+  int res19 = SWIG_TMPOBJ ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
@@ -18290,10 +18301,13 @@ SWIGINTERN PyObject *_wrap_convert(PyObject *SWIGUNUSEDPARM(self), PyObject *arg
   PyObject * obj11 = 0 ;
   PyObject * obj12 = 0 ;
   PyObject * obj13 = 0 ;
+  PyObject * obj14 = 0 ;
+  PyObject * obj15 = 0 ;
+  PyObject * obj16 = 0 ;
   
-  arg15 = &temp15;
-  arg16 = &temp16;
-  if (!PyArg_ParseTuple(args,(char *)"OOOOOOOOOOOOOO:convert",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6,&obj7,&obj8,&obj9,&obj10,&obj11,&obj12,&obj13)) SWIG_fail;
+  arg18 = &temp18;
+  arg19 = &temp19;
+  if (!PyArg_ParseTuple(args,(char *)"OOOOOOOOOOOOOOOOO:convert",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6,&obj7,&obj8,&obj9,&obj10,&obj11,&obj12,&obj13,&obj14,&obj15,&obj16)) SWIG_fail;
   ecode1 = SWIG_AsVal_double(obj0, &val1);
   if (!SWIG_IsOK(ecode1)) {
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "convert" "', argument " "1"" of type '" "double""'");
@@ -18364,19 +18378,34 @@ SWIGINTERN PyObject *_wrap_convert(PyObject *SWIGUNUSEDPARM(self), PyObject *arg
     SWIG_exception_fail(SWIG_ArgError(ecode14), "in method '" "convert" "', argument " "14"" of type '" "double""'");
   } 
   arg14 = (double)(val14);
-  convert(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16);
+  ecode15 = SWIG_AsVal_double(obj14, &val15);
+  if (!SWIG_IsOK(ecode15)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode15), "in method '" "convert" "', argument " "15"" of type '" "double""'");
+  } 
+  arg15 = (double)(val15);
+  ecode16 = SWIG_AsVal_double(obj15, &val16);
+  if (!SWIG_IsOK(ecode16)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode16), "in method '" "convert" "', argument " "16"" of type '" "double""'");
+  } 
+  arg16 = (double)(val16);
+  ecode17 = SWIG_AsVal_double(obj16, &val17);
+  if (!SWIG_IsOK(ecode17)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode17), "in method '" "convert" "', argument " "17"" of type '" "double""'");
+  } 
+  arg17 = (double)(val17);
+  convert(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19);
   resultobj = SWIG_Py_Void();
-  if (SWIG_IsTmpObj(res15)) {
-    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_From_double((*arg15)));
+  if (SWIG_IsTmpObj(res18)) {
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_From_double((*arg18)));
   } else {
-    int new_flags = SWIG_IsNewObj(res15) ? (SWIG_POINTER_OWN |  0 ) :  0 ;
-    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_NewPointerObj((void*)(arg15), SWIGTYPE_p_double, new_flags));
+    int new_flags = SWIG_IsNewObj(res18) ? (SWIG_POINTER_OWN |  0 ) :  0 ;
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_NewPointerObj((void*)(arg18), SWIGTYPE_p_double, new_flags));
   }
-  if (SWIG_IsTmpObj(res16)) {
-    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_From_double((*arg16)));
+  if (SWIG_IsTmpObj(res19)) {
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_From_double((*arg19)));
   } else {
-    int new_flags = SWIG_IsNewObj(res16) ? (SWIG_POINTER_OWN |  0 ) :  0 ;
-    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_NewPointerObj((void*)(arg16), SWIGTYPE_p_double, new_flags));
+    int new_flags = SWIG_IsNewObj(res19) ? (SWIG_POINTER_OWN |  0 ) :  0 ;
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_NewPointerObj((void*)(arg19), SWIGTYPE_p_double, new_flags));
   }
   return resultobj;
 fail:
@@ -18930,9 +18959,10 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"m6SetVVf", _wrap_m6SetVVf, METH_VARARGS, (char *)"m6SetVVf( m6,  m3)"},
 	 { (char *)"convert", _wrap_convert, METH_VARARGS, (char *)"\n"
 		"convert(double x0, double y0, int s1, int s2, double epoch, \n"
-		"    double equinox, double timetag, double lon, \n"
-		"    double lat, double alt, double T, double P, double H, \n"
-		"    double W)\n"
+		"    double equinox, double timetag, double delta_ut, \n"
+		"    double lon, double lat, double alt, double x_pole, \n"
+		"    double y_pole, double T, double P, \n"
+		"    double H, double W)\n"
 		""},
 	 { NULL, NULL, 0, NULL }
 };
