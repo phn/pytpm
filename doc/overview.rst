@@ -49,9 +49,7 @@ The main function needed for performing coordinate transformation in
 TPM is ``tpm()``. This needs as one of its input an array of
 vectors. At this moment this array cannot be created from within PyTPM
 and hence directly calling the ``tpm()`` function is not
-possible. This will be remedied in the next release. For the time
-being use the ``convert`` functions mentioned above and explained in
-the examples below.
+possible.
 
 Installing PyTPM
 ================
@@ -470,6 +468,17 @@ system into (Az, EL) for KPNO, at the Julian date 2455363.5 .
     In [39]: print tpm.fmt_d(168.2412), tpm.fmt_d(68.5353)
     -------> print(tpm.fmt_d(168.2412), tpm.fmt_d(68.5353))
     ('+168D 14\' 28.319"', '+68D 32\' 07.080"')
+
+
+The ``convert`` function was used to convert SIMABD coordinates
+between different systems. These tests are in the file
+``test/test_convert.py`` file. The Python module gives identical
+results to that from the TPM C library. 
+
+When values were compared with those given by SIMBAD itself,for
+example convert SIMBAD coordinates from FK4 to FK5 and compare with
+SIMABD FK5, the result from ``convert`` agreed to 3 decimal places in
+decimal degrees, i.e., slightly greater than 1 arc-second.
 
 
 For more information see reference sections for :doc:`reference_tpm`
