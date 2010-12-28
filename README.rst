@@ -64,7 +64,9 @@ documentation is available with the source code.
 
 The package can be installed by running the command
 
-.. code-block:: sh
+.. .. code-block:: sh
+
+::
 
   $ python setup.py install
 
@@ -77,7 +79,9 @@ case the ``PYTHONPATH`` environment variable must be set accordingly.
 The following assumes that the Python version is 2.6 and the shell is
 bash.
 
-.. code-block:: sh
+.. .. code-block:: sh
+
+::
 
   $ mkdir ~/lib/python
   $ python setup.py install --prefix=~/lib/python
@@ -125,7 +129,9 @@ from Python. Replace "PATH-TO", in the listing below, with the actual
 path to the Python header files, e.g., ``/usr`` for
 ``/usr/include/python2.6``
 
-.. code-block:: sh
+.. .. code-block:: sh
+
+::
 
   $ swig -python -o src/tpm_wrap.c -outdir lib/ swig_interface/tpm.i
   $ gcc -c -fPIC src/tpm/*.c src/tpm_wrap.c src/convert.c -I PATH-TO/include/python2.6
@@ -142,7 +148,9 @@ functions in PyTPM, see the reference section in the documentation.
 Code fragments in the following sections are from an ipython_ terminal
 session.
 
-.. code-block:: ipython
+.. .. code-block:: ipython
+
+::
 
     In [2]: import pytpm
 
@@ -154,7 +162,9 @@ session.
 Get the current *UTC* time as a *Julian date*
 ---------------------------------------------
 
-.. code-block:: ipython
+.. .. code-block:: ipython
+
+::
 
     In [5]: j = tpm.utc_now()
 
@@ -176,7 +186,9 @@ represenation of a *Julian date*.
 Convert *Gregorian calendar* date into a *Julian date*
 ------------------------------------------------------
 
-.. code-block:: ipython
+.. .. code-block:: ipython
+
+::
 
     In [9]: j = tpm.gcal2j(2000,1,1)
 
@@ -192,7 +204,9 @@ YYYY, MM, DD, into the corresponding *Julian date* for midday, 12H 00M
 Convert a *Julian date* into a date in the *Gregorian calendar*
 ---------------------------------------------------------------
 
-.. code-block:: ipython
+.. .. code-block:: ipython
+
+::
 
     In [11]: j = tpm.gcal2j(2000,1,1)
 
@@ -210,7 +224,9 @@ occurs.
 Convert decimal degrees into *DMS* string
 -----------------------------------------
 
-.. code-block:: ipython
+.. .. code-block:: ipython
+
+::
 
     In [14]: d = 12.3456
 
@@ -245,7 +261,9 @@ properly normalized.
 The following code replaces the default separators in the *DMS*
 string.
 
-.. code-block:: ipython
+.. .. code-block:: ipython
+
+::
 
     In [21]: dms_str = utils.fmt_dms(dms)
 
@@ -261,7 +279,9 @@ string.
 Convert decimal hours into *HMS* string
 ---------------------------------------
 
-.. code-block:: ipython
+.. .. code-block:: ipython
+
+::
 
     In [25]: h = 12.3456
 
@@ -282,7 +302,10 @@ The function ``utils.convert`` provides a way of performing coordinate
 transformations with one function call The signature of the this
 function is:
 
-.. code-block:: python
+.. .. code-block:: python
+
+::
+
 
   tpm.utils.convert(x=0.0, y=0.0, s1=6, s2=19, epoch=2451545.0,
                     equinox=2451545.0, timetag=None, lon=-111.598333,
@@ -295,7 +318,10 @@ time, for location corresponding to the KPNO observatory, we can use
 the following function call. The default parameters are for the KPNO
 observatory location, and is taken from the TPM code.
 
-.. code-block:: ipython
+.. .. code-block:: ipython
+
+::
+
 
     In [28]: az,el = utils.convert()
 
@@ -434,7 +460,9 @@ Some of these states have additional special names.
 In the following example we convert the (RA,DEC) coordinates in FK5
 system into (Az, EL) for KPNO, at the Julian date 2455363.5 .
 
-.. code-block:: ipython
+.. .. code-block:: ipython
+
+::
 
     In [30]: # Change site parameters to that for KPNO given by JPL HORIZONS
     In [31]: kpno = {'lon':248.405300, 'lat':31.9584932, 'P':5.6, 'T':210,
