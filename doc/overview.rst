@@ -480,6 +480,31 @@ example convert SIMBAD coordinates from FK4 to FK5 and compare with
 SIMABD FK5, the result from ``convert`` agreed to 3 decimal places in
 decimal degrees, i.e., slightly greater than 1 arc-second.
 
+The following example in taken from page 36 of the book Practical
+Astronomy With Your Calculator.  We convert hour angle and declination
+to azimuth and latiude for an observer at 52.0 degree north
+lattitude. The only quantity of concern that is different from the
+defaults is the observer's latitude.
+
+.. sourcecode:: ipython
+
+  In [2]: lat = 52.0 # Degrees north.
+   
+  In [3]: hour_angle = utils.h2d(5.862222) # East.
+   
+  In [4]: declination = 23.219444 # Degrees north.
+   
+  In [7]: azimuth, elevation = \
+     ....:  utils.convert(hour_angle, declination, s1=17, s2=18, lat=lat)
+   
+  In [9]: if azimuth < 0:
+     ....:  azimuth += 360.0
+     ....:     
+     ....:     
+   
+  In [11]: print tpm.fmt_d(azimuth), tpm.fmt_d(elevation)
+  -------> print(tpm.fmt_d(azimuth), tpm.fmt_d(elevation))
+  ('+283D 16\' 15.688"', '+19D 20\' 03.648"')
 
 For more information see reference sections for :doc:`reference_tpm`
 and :doc:`reference_utils`.
