@@ -26,7 +26,10 @@ void convert(double x0, double y0, int s1, int s2,
     tstate.wavelength = W;
     tstate.utc = timetag;
     tstate.delta_ut = delta_ut;
-
+    tstate.delta_at = delta_AT(timetag);
+    tstate.xpole = x_pole;
+    tstate.ypole = y_pole;
+        
     tpm_data(&tstate, TPM_ALL);
 
     /* Set up position-velocity vector for the object */

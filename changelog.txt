@@ -4,6 +4,8 @@ Version: 0.3
 + utils.convert now accepts delta UT value and polar motion
   components. 
 
+  ``delta_ut`` is set with value corresponding to time in timetag.
+
 + Added more documentation.
 
 + A few more tests

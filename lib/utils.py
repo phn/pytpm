@@ -32,12 +32,18 @@ def convert(x=0.0, y=0.0, s1=6, s2=19, epoch=tpm.J2000,
     :type equinox: float
     :param timetag: time of the target state as JD (UTC)
     :type timetag: float
+    :param delta_ut: Value of ``UT1 - UTC``, in seconds
+    :type delta_ut: float
     :param lon: longitude (east +, west -) of observer in degrees
     :type lon: float
     :param lat: latitude (north +, south -) of the observer in degrees
     :type lat: float
     :param alt: altitude of the observer in meter
     :type alt: float
+    :param x_pole: polar motion in radians
+    :type x_pole: float
+    :param y_pole: polar motion in radians
+    :type y_pole: float
     :param T: temperature at the observer's location in kelvin
     :type T: float
     :param P: atmospheric pressure at the observer's location in
