@@ -3,10 +3,11 @@ import glob
 
 srcfiles = glob.glob('src/tpm/*.c')
 srcfiles.remove('src/tpm/tpm_main.c')
-srcfiles.extend(['src/convert.c','src/tpm_wrap.c'])
+srcfiles.extend(['src/convert.c','src/tpm_wrap.c','src/v3Functions.c',
+    'src/v6Functions.c','src/m3Functions.c', 'src/m6Functions.c'])
 
 long_desc = """\
-*pytpm* is a python interface to the Telescope Pointing Machine C
+*PyTPM* is a python interface to the Telescope Pointing Machine C
 library written by Jeff Percival. The interface is generated using
 the SWIG_ application.
 
@@ -20,7 +21,7 @@ function of the same name provided in the file *convert.c*.
 """
 setup(
         name = 'pytpm',
-        version = '0.1',
+        version = '0.3',
         description = 'Python interface to the TPM astrometry library.',
         long_description = long_desc,
         license = 'BSD',

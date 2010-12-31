@@ -20,12 +20,12 @@
 
 #ifndef V3_INCLUDE
 #define V3_INCLUDE
-/* Don't need this directly from within python*/
-//typedef struct s_v3 {
-//	int type;	/* vector type, cartesian or spherical */
-//	double v[3];
-//} V3;
+typedef struct s_v3 {
+    int type;	/* vector type, cartesian or spherical */
+    double v[3];
+} V3;
 
+/* SWIG doesn't process these macros.
 #define v3DecX(v3,x)		(v3.v[0] -= (x))
 #define v3DecY(v3,x)		(v3.v[1] -= (x))
 #define v3DecZ(v3,x)		(v3.v[2] -= (x))
@@ -69,9 +69,9 @@
 #define v3SetR(v3,x)		(v3.v[0] = (x))
 #define v3SetAlpha(v3,x)	(v3.v[1] = (x))
 #define v3SetDelta(v3,x)	(v3.v[2] = (x))
-
+*/
 /* some astro convenience macros */
-
+/* SWIG doesn't process these macros
 #define v3DecRA(f,x)		(v3DecAlpha(f,x))
 #define v3DecDec(f,x)		(v3DecDelta(f,x))
 
@@ -89,7 +89,7 @@
 
 #define v3SetRA(f,x)		(v3SetAlpha(f,x))
 #define v3SetDec(f,x)		(v3SetDelta(f,x))
-
+*/
 /* EXTERN_START */
 /* EXTERN_STOP */
 

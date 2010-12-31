@@ -5,6 +5,23 @@
 # the SWIG interface file instead.
 # This file is compatible with both classic and new-style classes.
 
+"""
+Module :mod:`pytpm.tpm` contains classes (C structures), functions and
+constants defined in the TPM C library. It also contains macros
+defined in TPM, but implemented as functions for use in PyTPM. These
+macros are those for manipulating vectors and matrices; defined in
+``v3.h``, ``v6.h``, ``m3.h`` and ``m6.h``. The functions defined in
+``misc.h``, for numerical integration, do not have direct interface
+from within PyTPM.
+
+All other macros defined in TPM are provided as function in the module
+:mod:`pytpm.utils`.
+
+:Author: Prasanth Nair
+:Contact: prasanthhn@gmail.com
+
+"""
+
 from sys import version_info
 if version_info >= (2,6,0):
     def swig_import_helper():
@@ -66,12 +83,323 @@ except AttributeError:
     _newclass = 0
 
 
+class V3(_object):
+    """Proxy of C V3 struct"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, V3, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, V3, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["type"] = _tpm.V3_type_set
+    __swig_getmethods__["type"] = _tpm.V3_type_get
+    if _newclass:type = _swig_property(_tpm.V3_type_get, _tpm.V3_type_set)
+    __swig_setmethods__["v"] = _tpm.V3_v_set
+    __swig_getmethods__["v"] = _tpm.V3_v_get
+    if _newclass:v = _swig_property(_tpm.V3_v_get, _tpm.V3_v_set)
+    def __init__(self): 
+        """__init__(self) -> V3"""
+        this = _tpm.new_V3()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _tpm.delete_V3
+    __del__ = lambda self : None;
+V3_swigregister = _tpm.V3_swigregister
+V3_swigregister(V3)
+
+class V6(_object):
+    """Proxy of C V6 struct"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, V6, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, V6, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["v"] = _tpm.V6_v_set
+    __swig_getmethods__["v"] = _tpm.V6_v_get
+    if _newclass:v = _swig_property(_tpm.V6_v_get, _tpm.V6_v_set)
+    def __init__(self): 
+        """__init__(self) -> V6"""
+        this = _tpm.new_V6()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _tpm.delete_V6
+    __del__ = lambda self : None;
+V6_swigregister = _tpm.V6_swigregister
+V6_swigregister(V6)
+
 POS = _tpm.POS
 VEL = _tpm.VEL
+class M3(_object):
+    """Proxy of C M3 struct"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, M3, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, M3, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["m"] = _tpm.M3_m_set
+    __swig_getmethods__["m"] = _tpm.M3_m_get
+    if _newclass:m = _swig_property(_tpm.M3_m_get, _tpm.M3_m_set)
+    def __init__(self): 
+        """__init__(self) -> M3"""
+        this = _tpm.new_M3()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _tpm.delete_M3
+    __del__ = lambda self : None;
+M3_swigregister = _tpm.M3_swigregister
+M3_swigregister(M3)
+
+class M6(_object):
+    """Proxy of C M6 struct"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, M6, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, M6, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["m"] = _tpm.M6_m_set
+    __swig_getmethods__["m"] = _tpm.M6_m_get
+    if _newclass:m = _swig_property(_tpm.M6_m_get, _tpm.M6_m_set)
+    def __init__(self): 
+        """__init__(self) -> M6"""
+        this = _tpm.new_M6()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _tpm.delete_M6
+    __del__ = lambda self : None;
+M6_swigregister = _tpm.M6_swigregister
+M6_swigregister(M6)
+
 M_PI = _tpm.M_PI
 CARTESIAN = _tpm.CARTESIAN
 SPHERICAL = _tpm.SPHERICAL
 POLAR = _tpm.POLAR
+
+def m3I(*args):
+  """m3I(double x)"""
+  return _tpm.m3I(*args)
+
+def m3O():
+  """m3O()"""
+  return _tpm.m3O()
+
+def m3Rx(*args):
+  """m3Rx(double x)"""
+  return _tpm.m3Rx(*args)
+
+def m3RxDot(*args):
+  """m3RxDot(double x, double xdot)"""
+  return _tpm.m3RxDot(*args)
+
+def m3Ry(*args):
+  """m3Ry(double y)"""
+  return _tpm.m3Ry(*args)
+
+def m3RyDot(*args):
+  """m3RyDot(double y, double ydot)"""
+  return _tpm.m3RyDot(*args)
+
+def m3Rz(*args):
+  """m3Rz(double z)"""
+  return _tpm.m3Rz(*args)
+
+def m3RzDot(*args):
+  """m3RzDot(double z, double zdot)"""
+  return _tpm.m3RzDot(*args)
+
+def m3diff(*args):
+  """m3diff( m1,  m2)"""
+  return _tpm.m3diff(*args)
+
+def m3inv(*args):
+  """m3inv( m)"""
+  return _tpm.m3inv(*args)
+
+def m3m3(*args):
+  """m3m3( m1,  m2)"""
+  return _tpm.m3m3(*args)
+
+def m3scale(*args):
+  """m3scale( m, double s)"""
+  return _tpm.m3scale(*args)
+
+def m3sum(*args):
+  """m3sum( m1,  m2)"""
+  return _tpm.m3sum(*args)
+
+def m6I(*args):
+  """m6I(double x)"""
+  return _tpm.m6I(*args)
+
+def m6O():
+  """m6O()"""
+  return _tpm.m6O()
+
+def m6Qx(*args):
+  """m6Qx(double x, double xdot)"""
+  return _tpm.m6Qx(*args)
+
+def m6Qy(*args):
+  """m6Qy(double y, double ydot)"""
+  return _tpm.m6Qy(*args)
+
+def m6Qz(*args):
+  """m6Qz(double z, double zdot)"""
+  return _tpm.m6Qz(*args)
+
+def m6diff(*args):
+  """m6diff( m1,  m2)"""
+  return _tpm.m6diff(*args)
+
+def m6inv(*args):
+  """m6inv( m)"""
+  return _tpm.m6inv(*args)
+
+def m6m6(*args):
+  """m6m6( m1,  m2)"""
+  return _tpm.m6m6(*args)
+
+def m6scale(*args):
+  """m6scale( m, double s)"""
+  return _tpm.m6scale(*args)
+
+def m6sum(*args):
+  """m6sum( m1,  m2)"""
+  return _tpm.m6sum(*args)
+
+def m3v3(*args):
+  """m3v3( m,  v1)"""
+  return _tpm.m3v3(*args)
+
+def m6v3(*args):
+  """m6v3( m,  v)"""
+  return _tpm.m6v3(*args)
+
+def v3c2s(*args):
+  """v3c2s( vc)"""
+  return _tpm.v3c2s(*args)
+
+def v3cross(*args):
+  """v3cross( v1,  v2)"""
+  return _tpm.v3cross(*args)
+
+def v3diff(*args):
+  """v3diff( v1,  v2)"""
+  return _tpm.v3diff(*args)
+
+def v3init(*args):
+  """v3init(int type)"""
+  return _tpm.v3init(*args)
+
+def v3s2c(*args):
+  """v3s2c( vs)"""
+  return _tpm.v3s2c(*args)
+
+def v3scale(*args):
+  """v3scale( v, double s)"""
+  return _tpm.v3scale(*args)
+
+def v3sum(*args):
+  """v3sum( v1,  v2)"""
+  return _tpm.v3sum(*args)
+
+def v3unit(*args):
+  """v3unit( v)"""
+  return _tpm.v3unit(*args)
+
+def v62v3(*args):
+  """v62v3( v6, double dt)"""
+  return _tpm.v62v3(*args)
+
+def m3v6(*args):
+  """m3v6( m,  v1)"""
+  return _tpm.m3v6(*args)
+
+def m6v6(*args):
+  """m6v6( m,  v1)"""
+  return _tpm.m6v6(*args)
+
+def v32v6(*args):
+  """v32v6( v3)"""
+  return _tpm.v32v6(*args)
+
+def v6c2s(*args):
+  """v6c2s( vc)"""
+  return _tpm.v6c2s(*args)
+
+def v6cross(*args):
+  """v6cross( v1,  v2)"""
+  return _tpm.v6cross(*args)
+
+def v6diff(*args):
+  """v6diff( v1,  v2)"""
+  return _tpm.v6diff(*args)
+
+def v6init(*args):
+  """v6init(int type)"""
+  return _tpm.v6init(*args)
+
+def v6s2c(*args):
+  """v6s2c( vs)"""
+  return _tpm.v6s2c(*args)
+
+def v6scale(*args):
+  """v6scale( v, double s)"""
+  return _tpm.v6scale(*args)
+
+def v6sum(*args):
+  """v6sum( v1,  v2)"""
+  return _tpm.v6sum(*args)
+
+def v6unit(*args):
+  """v6unit( v)"""
+  return _tpm.v6unit(*args)
+
+def m3fmt(*args):
+  """m3fmt( m) -> char"""
+  return _tpm.m3fmt(*args)
+
+def m6fmt(*args):
+  """m6fmt( m) -> char"""
+  return _tpm.m6fmt(*args)
+
+def v3fmt(*args):
+  """v3fmt( v) -> char"""
+  return _tpm.v3fmt(*args)
+
+def v6fmt(*args):
+  """v6fmt( v) -> char"""
+  return _tpm.v6fmt(*args)
+
+def v3alpha(*args):
+  """v3alpha( v) -> double"""
+  return _tpm.v3alpha(*args)
+
+def v3delta(*args):
+  """v3delta( v) -> double"""
+  return _tpm.v3delta(*args)
+
+def v3dot(*args):
+  """v3dot( v1,  v2) -> double"""
+  return _tpm.v3dot(*args)
+
+def v3mod(*args):
+  """v3mod( v) -> double"""
+  return _tpm.v3mod(*args)
+
+def v6alpha(*args):
+  """v6alpha( v) -> double"""
+  return _tpm.v6alpha(*args)
+
+def v6delta(*args):
+  """v6delta( v) -> double"""
+  return _tpm.v6delta(*args)
+
+def v6dot(*args):
+  """v6dot( v1,  v2) -> double"""
+  return _tpm.v6dot(*args)
+
+def v6mod(*args):
+  """v6mod( v) -> double"""
+  return _tpm.v6mod(*args)
 REAL = _tpm.REAL
 IMAG = _tpm.IMAG
 MJD_0 = _tpm.MJD_0
@@ -88,6 +416,7 @@ THURSDAY = _tpm.THURSDAY
 FRIDAY = _tpm.FRIDAY
 SATURDAY = _tpm.SATURDAY
 class DMS(_object):
+    """Proxy of C DMS struct"""
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, DMS, name, value)
     __swig_getmethods__ = {}
@@ -103,6 +432,7 @@ class DMS(_object):
     __swig_getmethods__["ss"] = _tpm.DMS_ss_get
     if _newclass:ss = _swig_property(_tpm.DMS_ss_get, _tpm.DMS_ss_set)
     def __init__(self): 
+        """__init__(self) -> DMS"""
         this = _tpm.new_DMS()
         try: self.this.append(this)
         except: self.this = this
@@ -112,6 +442,7 @@ DMS_swigregister = _tpm.DMS_swigregister
 DMS_swigregister(DMS)
 
 class HMS(_object):
+    """Proxy of C HMS struct"""
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, HMS, name, value)
     __swig_getmethods__ = {}
@@ -127,6 +458,7 @@ class HMS(_object):
     __swig_getmethods__["ss"] = _tpm.HMS_ss_get
     if _newclass:ss = _swig_property(_tpm.HMS_ss_get, _tpm.HMS_ss_set)
     def __init__(self): 
+        """__init__(self) -> HMS"""
         this = _tpm.new_HMS()
         try: self.this.append(this)
         except: self.this = this
@@ -136,6 +468,7 @@ HMS_swigregister = _tpm.HMS_swigregister
 HMS_swigregister(HMS)
 
 class YMD(_object):
+    """Proxy of C YMD struct"""
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, YMD, name, value)
     __swig_getmethods__ = {}
@@ -154,6 +487,7 @@ class YMD(_object):
     __swig_getmethods__["hms"] = _tpm.YMD_hms_get
     if _newclass:hms = _swig_property(_tpm.YMD_hms_get, _tpm.YMD_hms_set)
     def __init__(self): 
+        """__init__(self) -> YMD"""
         this = _tpm.new_YMD()
         try: self.this.append(this)
         except: self.this = this
@@ -163,6 +497,7 @@ YMD_swigregister = _tpm.YMD_swigregister
 YMD_swigregister(YMD)
 
 class JD(_object):
+    """Proxy of C JD struct"""
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, JD, name, value)
     __swig_getmethods__ = {}
@@ -175,6 +510,7 @@ class JD(_object):
     __swig_getmethods__["hms"] = _tpm.JD_hms_get
     if _newclass:hms = _swig_property(_tpm.JD_hms_get, _tpm.JD_hms_set)
     def __init__(self): 
+        """__init__(self) -> JD"""
         this = _tpm.new_JD()
         try: self.this.append(this)
         except: self.this = this
@@ -185,172 +521,172 @@ JD_swigregister(JD)
 
 
 def d2dms(*args):
+  """d2dms(double d)"""
   return _tpm.d2dms(*args)
-d2dms = _tpm.d2dms
 
 def dms2dms(*args):
+  """dms2dms( dms)"""
   return _tpm.dms2dms(*args)
-dms2dms = _tpm.dms2dms
 
 def dms_diff(*args):
+  """dms_diff( dms1,  dms2)"""
   return _tpm.dms_diff(*args)
-dms_diff = _tpm.dms_diff
 
 def dms_sum(*args):
+  """dms_sum( dms1,  dms2)"""
   return _tpm.dms_sum(*args)
-dms_sum = _tpm.dms_sum
 
 def hms2dms(*args):
+  """hms2dms( hms)"""
   return _tpm.hms2dms(*args)
-hms2dms = _tpm.hms2dms
 
 def dms2hms(*args):
+  """dms2hms( dms)"""
   return _tpm.dms2hms(*args)
-dms2hms = _tpm.dms2hms
 
 def h2hms(*args):
+  """h2hms(double h)"""
   return _tpm.h2hms(*args)
-h2hms = _tpm.h2hms
 
 def hms2hms(*args):
+  """hms2hms( hms)"""
   return _tpm.hms2hms(*args)
-hms2hms = _tpm.hms2hms
 
 def hms_diff(*args):
+  """hms_diff( hms1,  hms2)"""
   return _tpm.hms_diff(*args)
-hms_diff = _tpm.hms_diff
 
 def hms_sum(*args):
+  """hms_sum( hms1,  hms2)"""
   return _tpm.hms_sum(*args)
-hms_sum = _tpm.hms_sum
 
 def j2jd(*args):
+  """j2jd(double j)"""
   return _tpm.j2jd(*args)
-j2jd = _tpm.j2jd
 
 def jd2jd(*args):
+  """jd2jd( jd)"""
   return _tpm.jd2jd(*args)
-jd2jd = _tpm.jd2jd
 
 def jd_diff(*args):
+  """jd_diff( jd1,  jd2)"""
   return _tpm.jd_diff(*args)
-jd_diff = _tpm.jd_diff
 
 def jd_now():
+  """jd_now()"""
   return _tpm.jd_now()
-jd_now = _tpm.jd_now
 
 def jd_sum(*args):
+  """jd_sum( jd1,  jd2)"""
   return _tpm.jd_sum(*args)
-jd_sum = _tpm.jd_sum
 
 def ymd2jd(*args):
+  """ymd2jd( ymd)"""
   return _tpm.ymd2jd(*args)
-ymd2jd = _tpm.ymd2jd
 
 def jd2ymd(*args):
+  """jd2ymd( jd)"""
   return _tpm.jd2ymd(*args)
-jd2ymd = _tpm.jd2ymd
 
 def y2ymd(*args):
+  """y2ymd(double y)"""
   return _tpm.y2ymd(*args)
-y2ymd = _tpm.y2ymd
 
 def ydd2ymd(*args):
+  """ydd2ymd(int y, double dd)"""
   return _tpm.ydd2ymd(*args)
-ydd2ymd = _tpm.ydd2ymd
 
 def ymd2ymd(*args):
+  """ymd2ymd( ymd)"""
   return _tpm.ymd2ymd(*args)
-ymd2ymd = _tpm.ymd2ymd
 
 def fmt_alpha(*args):
+  """fmt_alpha(double alpha) -> char"""
   return _tpm.fmt_alpha(*args)
-fmt_alpha = _tpm.fmt_alpha
 
 def fmt_d(*args):
+  """fmt_d(double d) -> char"""
   return _tpm.fmt_d(*args)
-fmt_d = _tpm.fmt_d
 
 def fmt_delta(*args):
+  """fmt_delta(double delta) -> char"""
   return _tpm.fmt_delta(*args)
-fmt_delta = _tpm.fmt_delta
 
 def fmt_h(*args):
+  """fmt_h(double h) -> char"""
   return _tpm.fmt_h(*args)
-fmt_h = _tpm.fmt_h
 
 def fmt_j(*args):
+  """fmt_j(double j) -> char"""
   return _tpm.fmt_j(*args)
-fmt_j = _tpm.fmt_j
 
 def fmt_ymd(*args):
+  """fmt_ymd( ymd) -> char"""
   return _tpm.fmt_ymd(*args)
-fmt_ymd = _tpm.fmt_ymd
 
 def fmt_ymd_raw(*args):
+  """fmt_ymd_raw( ymd) -> char"""
   return _tpm.fmt_ymd_raw(*args)
-fmt_ymd_raw = _tpm.fmt_ymd_raw
 
 def d2d(*args):
+  """d2d(double d) -> double"""
   return _tpm.d2d(*args)
-d2d = _tpm.d2d
 
 def dms2d(*args):
+  """dms2d( dms) -> double"""
   return _tpm.dms2d(*args)
-dms2d = _tpm.dms2d
 
 def gcal2j(*args):
+  """gcal2j(int y, int m, int d) -> double"""
   return _tpm.gcal2j(*args)
-gcal2j = _tpm.gcal2j
 
 def h2h(*args):
+  """h2h(double h) -> double"""
   return _tpm.h2h(*args)
-h2h = _tpm.h2h
 
 def hms2h(*args):
+  """hms2h( hms) -> double"""
   return _tpm.hms2h(*args)
-hms2h = _tpm.hms2h
 
 def jcal2j(*args):
+  """jcal2j(int y, int m, int d) -> double"""
   return _tpm.jcal2j(*args)
-jcal2j = _tpm.jcal2j
 
 def jd2j(*args):
+  """jd2j( jd) -> double"""
   return _tpm.jd2j(*args)
-jd2j = _tpm.jd2j
 
 def r2r(*args):
+  """r2r(double r) -> double"""
   return _tpm.r2r(*args)
-r2r = _tpm.r2r
 
 def utc_now():
+  """utc_now() -> double"""
   return _tpm.utc_now()
-utc_now = _tpm.utc_now
 
 def ymd2dd(*args):
+  """ymd2dd( ymd) -> double"""
   return _tpm.ymd2dd(*args)
-ymd2dd = _tpm.ymd2dd
 
 def ymd2y(*args):
+  """ymd2y( ymd) -> double"""
   return _tpm.ymd2y(*args)
-ymd2y = _tpm.ymd2y
 
 def j2dow(*args):
+  """j2dow(double j) -> int"""
   return _tpm.j2dow(*args)
-j2dow = _tpm.j2dow
 
 def y2doy(*args):
+  """y2doy(int y) -> int"""
   return _tpm.y2doy(*args)
-y2doy = _tpm.y2doy
 
 def j2gcal(*args):
+  """j2gcal(double j)"""
   return _tpm.j2gcal(*args)
-j2gcal = _tpm.j2gcal
 
 def j2jcal(*args):
+  """j2jcal(double j)"""
   return _tpm.j2jcal(*args)
-j2jcal = _tpm.j2jcal
 IAU_K = _tpm.IAU_K
 IAU_DM = _tpm.IAU_DM
 IAU_AU = _tpm.IAU_AU
@@ -371,22 +707,228 @@ PRECESS_FK4 = _tpm.PRECESS_FK4
 PRECESS_FK5 = _tpm.PRECESS_FK5
 PRECESS_INERTIAL = _tpm.PRECESS_INERTIAL
 PRECESS_ROTATING = _tpm.PRECESS_ROTATING
+class STAR(_object):
+    """Proxy of C STAR struct"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, STAR, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, STAR, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["a"] = _tpm.STAR_a_set
+    __swig_getmethods__["a"] = _tpm.STAR_a_get
+    if _newclass:a = _swig_property(_tpm.STAR_a_get, _tpm.STAR_a_set)
+    __swig_setmethods__["d"] = _tpm.STAR_d_set
+    __swig_getmethods__["d"] = _tpm.STAR_d_get
+    if _newclass:d = _swig_property(_tpm.STAR_d_get, _tpm.STAR_d_set)
+    __swig_setmethods__["m"] = _tpm.STAR_m_set
+    __swig_getmethods__["m"] = _tpm.STAR_m_get
+    if _newclass:m = _swig_property(_tpm.STAR_m_get, _tpm.STAR_m_set)
+    def __init__(self): 
+        """__init__(self) -> STAR"""
+        this = _tpm.new_STAR()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _tpm.delete_STAR
+    __del__ = lambda self : None;
+STAR_swigregister = _tpm.STAR_swigregister
+STAR_swigregister(STAR)
+
+class CONS(_object):
+    """Proxy of C CONS struct"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, CONS, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, CONS, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["a1"] = _tpm.CONS_a1_set
+    __swig_getmethods__["a1"] = _tpm.CONS_a1_get
+    if _newclass:a1 = _swig_property(_tpm.CONS_a1_get, _tpm.CONS_a1_set)
+    __swig_setmethods__["d1"] = _tpm.CONS_d1_set
+    __swig_getmethods__["d1"] = _tpm.CONS_d1_get
+    if _newclass:d1 = _swig_property(_tpm.CONS_d1_get, _tpm.CONS_d1_set)
+    __swig_setmethods__["a2"] = _tpm.CONS_a2_set
+    __swig_getmethods__["a2"] = _tpm.CONS_a2_get
+    if _newclass:a2 = _swig_property(_tpm.CONS_a2_get, _tpm.CONS_a2_set)
+    __swig_setmethods__["d2"] = _tpm.CONS_d2_set
+    __swig_getmethods__["d2"] = _tpm.CONS_d2_get
+    if _newclass:d2 = _swig_property(_tpm.CONS_d2_get, _tpm.CONS_d2_set)
+    def __init__(self): 
+        """__init__(self) -> CONS"""
+        this = _tpm.new_CONS()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _tpm.delete_CONS
+    __del__ = lambda self : None;
+CONS_swigregister = _tpm.CONS_swigregister
+CONS_swigregister(CONS)
+
+
+def precess_m(*args):
+  """precess_m(double j1, double j2, int pflag, int sflag)"""
+  return _tpm.precess_m(*args)
+
+def aberrate(*args):
+  """aberrate( p,  e, int flag)"""
+  return _tpm.aberrate(*args)
+
+def azel2hadec(*args):
+  """azel2hadec( v6, double latitude)"""
+  return _tpm.azel2hadec(*args)
+
+def ecl2equ(*args):
+  """ecl2equ( v6, double obl)"""
+  return _tpm.ecl2equ(*args)
+
+def ellab(*args):
+  """ellab(double tdt,  star, int flag)"""
+  return _tpm.ellab(*args)
+
+def equ2ecl(*args):
+  """equ2ecl( v6, double obl)"""
+  return _tpm.equ2ecl(*args)
+
+def equ2gal(*args):
+  """equ2gal( v6)"""
+  return _tpm.equ2gal(*args)
+
+def eterms(*args):
+  """eterms(double ep)"""
+  return _tpm.eterms(*args)
+
+def fk425(*args):
+  """fk425( v)"""
+  return _tpm.fk425(*args)
+
+def fk524(*args):
+  """fk524( v)"""
+  return _tpm.fk524(*args)
+
+def gal2equ(*args):
+  """gal2equ( v6)"""
+  return _tpm.gal2equ(*args)
+
+def geod2geoc(*args):
+  """geod2geoc(double lon, double lat, double alt)"""
+  return _tpm.geod2geoc(*args)
+
+def hadec2azel(*args):
+  """hadec2azel( v6, double latitude)"""
+  return _tpm.hadec2azel(*args)
+
+def ldeflect(*args):
+  """ldeflect( s,  e, int flag)"""
+  return _tpm.ldeflect(*args)
+
+def precess(*args):
+  """precess(double j1, double j2,  v6, int pflag)"""
+  return _tpm.precess(*args)
+
+def proper_motion(*args):
+  """proper_motion( v6, double t, double t0)"""
+  return _tpm.proper_motion(*args)
 
 def tpm_state(*args):
+  """tpm_state(int state) -> char"""
   return _tpm.tpm_state(*args)
-tpm_state = _tpm.tpm_state
 
 def delta_AT(*args):
+  """delta_AT(double utc) -> double"""
   return _tpm.delta_AT(*args)
-delta_AT = _tpm.delta_AT
+
+def eccentricity(*args):
+  """eccentricity(double tdt) -> double"""
+  return _tpm.eccentricity(*args)
+
+def eccentricity_dot(*args):
+  """eccentricity_dot(double tdt) -> double"""
+  return _tpm.eccentricity_dot(*args)
+
+def obliquity(*args):
+  """obliquity(double tdt) -> double"""
+  return _tpm.obliquity(*args)
+
+def obliquity_dot(*args):
+  """obliquity_dot(double tdt) -> double"""
+  return _tpm.obliquity_dot(*args)
+
+def refract(*args):
+  """refract(double zx, double refa, double refb, int flag) -> double"""
+  return _tpm.refract(*args)
+
+def refraction(*args):
+  """
+    refraction(double zobs, double lat, double alt, double T, double P, 
+        double rh, double _lambda, double eps) -> double
+    """
+  return _tpm.refraction(*args)
+
+def solar_perigee(*args):
+  """solar_perigee(double tdt) -> double"""
+  return _tpm.solar_perigee(*args)
+
+def solar_perigee_dot(*args):
+  """solar_perigee_dot(double tdt) -> double"""
+  return _tpm.solar_perigee_dot(*args)
 
 def tdt2tdb(*args):
+  """tdt2tdb(double tdt) -> double"""
   return _tpm.tdt2tdb(*args)
-tdt2tdb = _tpm.tdt2tdb
+
+def theta(*args):
+  """theta(double j1, double j2, int pflag) -> double"""
+  return _tpm.theta(*args)
+
+def thetadot(*args):
+  """thetadot(double j1, double j2, int pflag) -> double"""
+  return _tpm.thetadot(*args)
 
 def ut12gmst(*args):
+  """ut12gmst(double ut1) -> double"""
   return _tpm.ut12gmst(*args)
-ut12gmst = _tpm.ut12gmst
+
+def zee(*args):
+  """zee(double j1, double j2, int pflag) -> double"""
+  return _tpm.zee(*args)
+
+def zeedot(*args):
+  """zeedot(double j1, double j2, int pflag) -> double"""
+  return _tpm.zeedot(*args)
+
+def zeta(*args):
+  """zeta(double j1, double j2, int pflag) -> double"""
+  return _tpm.zeta(*args)
+
+def zetadot(*args):
+  """zetadot(double j1, double j2, int pflag) -> double"""
+  return _tpm.zetadot(*args)
+
+def tpm(*args):
+  """tpm( pvec, int s1, int s2, double ep, double eq,  tstate) -> int"""
+  return _tpm.tpm(*args)
+
+def atm(*args):
+  """atm(double r, double n, double dndr)"""
+  return _tpm.atm(*args)
+
+def evp(*args):
+  """evp(double tdb,  v6b,  v6h)"""
+  return _tpm.evp(*args)
+
+def nutations(*args):
+  """nutations(double tdt, double delta_phi, double delta_eps)"""
+  return _tpm.nutations(*args)
+
+def refco(*args):
+  """
+    refco(double lat, double alt, double T, double P, double rh, 
+        double _lambda, double eps, double refa, 
+        double refb)
+    """
+  return _tpm.refco(*args)
+
+def tpm_data(*args):
+  """tpm_data( p, int flags)"""
+  return _tpm.tpm_data(*args)
 TPM_S00 = _tpm.TPM_S00
 TPM_S01 = _tpm.TPM_S01
 TPM_S02 = _tpm.TPM_S02
@@ -427,6 +969,50 @@ TPM_T13 = _tpm.TPM_T13
 TPM_T14 = _tpm.TPM_T14
 TPM_T15 = _tpm.TPM_T15
 N_TPM_TRANS = _tpm.N_TPM_TRANS
+class TPM_TARGET(_object):
+    """Proxy of C TPM_TARGET struct"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, TPM_TARGET, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, TPM_TARGET, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["name"] = _tpm.TPM_TARGET_name_set
+    __swig_getmethods__["name"] = _tpm.TPM_TARGET_name_get
+    if _newclass:name = _swig_property(_tpm.TPM_TARGET_name_get, _tpm.TPM_TARGET_name_set)
+    __swig_setmethods__["state"] = _tpm.TPM_TARGET_state_set
+    __swig_getmethods__["state"] = _tpm.TPM_TARGET_state_get
+    if _newclass:state = _swig_property(_tpm.TPM_TARGET_state_get, _tpm.TPM_TARGET_state_set)
+    __swig_setmethods__["epoch"] = _tpm.TPM_TARGET_epoch_set
+    __swig_getmethods__["epoch"] = _tpm.TPM_TARGET_epoch_get
+    if _newclass:epoch = _swig_property(_tpm.TPM_TARGET_epoch_get, _tpm.TPM_TARGET_epoch_set)
+    __swig_setmethods__["equinox"] = _tpm.TPM_TARGET_equinox_set
+    __swig_getmethods__["equinox"] = _tpm.TPM_TARGET_equinox_get
+    if _newclass:equinox = _swig_property(_tpm.TPM_TARGET_equinox_get, _tpm.TPM_TARGET_equinox_set)
+    __swig_setmethods__["position"] = _tpm.TPM_TARGET_position_set
+    __swig_getmethods__["position"] = _tpm.TPM_TARGET_position_get
+    if _newclass:position = _swig_property(_tpm.TPM_TARGET_position_get, _tpm.TPM_TARGET_position_set)
+    __swig_setmethods__["offset"] = _tpm.TPM_TARGET_offset_set
+    __swig_getmethods__["offset"] = _tpm.TPM_TARGET_offset_get
+    if _newclass:offset = _swig_property(_tpm.TPM_TARGET_offset_get, _tpm.TPM_TARGET_offset_set)
+    __swig_setmethods__["motion"] = _tpm.TPM_TARGET_motion_set
+    __swig_getmethods__["motion"] = _tpm.TPM_TARGET_motion_get
+    if _newclass:motion = _swig_property(_tpm.TPM_TARGET_motion_get, _tpm.TPM_TARGET_motion_set)
+    __swig_setmethods__["parallax"] = _tpm.TPM_TARGET_parallax_set
+    __swig_getmethods__["parallax"] = _tpm.TPM_TARGET_parallax_get
+    if _newclass:parallax = _swig_property(_tpm.TPM_TARGET_parallax_get, _tpm.TPM_TARGET_parallax_set)
+    __swig_setmethods__["speed"] = _tpm.TPM_TARGET_speed_set
+    __swig_getmethods__["speed"] = _tpm.TPM_TARGET_speed_get
+    if _newclass:speed = _swig_property(_tpm.TPM_TARGET_speed_get, _tpm.TPM_TARGET_speed_set)
+    def __init__(self): 
+        """__init__(self) -> TPM_TARGET"""
+        this = _tpm.new_TPM_TARGET()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _tpm.delete_TPM_TARGET
+    __del__ = lambda self : None;
+TPM_TARGET_swigregister = _tpm.TPM_TARGET_swigregister
+TPM_TARGET_swigregister(TPM_TARGET)
+
 TARGET_FK4 = _tpm.TARGET_FK4
 TARGET_FK5 = _tpm.TARGET_FK5
 TARGET_ECL = _tpm.TARGET_ECL
@@ -438,15 +1024,1039 @@ TARGET_OBS_AZEL = _tpm.TARGET_OBS_AZEL
 TARGET_OBS_WHAM = _tpm.TARGET_OBS_WHAM
 TARGET_HADEC = _tpm.TARGET_HADEC
 TARGET_TOP_AZEL = _tpm.TARGET_TOP_AZEL
+class TPM_BORESIGHT(_object):
+    """Proxy of C TPM_BORESIGHT struct"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, TPM_BORESIGHT, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, TPM_BORESIGHT, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["epoch"] = _tpm.TPM_BORESIGHT_epoch_set
+    __swig_getmethods__["epoch"] = _tpm.TPM_BORESIGHT_epoch_get
+    if _newclass:epoch = _swig_property(_tpm.TPM_BORESIGHT_epoch_get, _tpm.TPM_BORESIGHT_epoch_set)
+    __swig_setmethods__["position"] = _tpm.TPM_BORESIGHT_position_set
+    __swig_getmethods__["position"] = _tpm.TPM_BORESIGHT_position_get
+    if _newclass:position = _swig_property(_tpm.TPM_BORESIGHT_position_get, _tpm.TPM_BORESIGHT_position_set)
+    __swig_setmethods__["offset"] = _tpm.TPM_BORESIGHT_offset_set
+    __swig_getmethods__["offset"] = _tpm.TPM_BORESIGHT_offset_get
+    if _newclass:offset = _swig_property(_tpm.TPM_BORESIGHT_offset_get, _tpm.TPM_BORESIGHT_offset_set)
+    __swig_setmethods__["motion"] = _tpm.TPM_BORESIGHT_motion_set
+    __swig_getmethods__["motion"] = _tpm.TPM_BORESIGHT_motion_get
+    if _newclass:motion = _swig_property(_tpm.TPM_BORESIGHT_motion_get, _tpm.TPM_BORESIGHT_motion_set)
+    def __init__(self): 
+        """__init__(self) -> TPM_BORESIGHT"""
+        this = _tpm.new_TPM_BORESIGHT()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _tpm.delete_TPM_BORESIGHT
+    __del__ = lambda self : None;
+TPM_BORESIGHT_swigregister = _tpm.TPM_BORESIGHT_swigregister
+TPM_BORESIGHT_swigregister(TPM_BORESIGHT)
+
+class TPM_TSTATE(_object):
+    """Proxy of C TPM_TSTATE struct"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, TPM_TSTATE, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, TPM_TSTATE, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["utc"] = _tpm.TPM_TSTATE_utc_set
+    __swig_getmethods__["utc"] = _tpm.TPM_TSTATE_utc_get
+    if _newclass:utc = _swig_property(_tpm.TPM_TSTATE_utc_get, _tpm.TPM_TSTATE_utc_set)
+    __swig_setmethods__["delta_at"] = _tpm.TPM_TSTATE_delta_at_set
+    __swig_getmethods__["delta_at"] = _tpm.TPM_TSTATE_delta_at_get
+    if _newclass:delta_at = _swig_property(_tpm.TPM_TSTATE_delta_at_get, _tpm.TPM_TSTATE_delta_at_set)
+    __swig_setmethods__["delta_ut"] = _tpm.TPM_TSTATE_delta_ut_set
+    __swig_getmethods__["delta_ut"] = _tpm.TPM_TSTATE_delta_ut_get
+    if _newclass:delta_ut = _swig_property(_tpm.TPM_TSTATE_delta_ut_get, _tpm.TPM_TSTATE_delta_ut_set)
+    __swig_setmethods__["lon"] = _tpm.TPM_TSTATE_lon_set
+    __swig_getmethods__["lon"] = _tpm.TPM_TSTATE_lon_get
+    if _newclass:lon = _swig_property(_tpm.TPM_TSTATE_lon_get, _tpm.TPM_TSTATE_lon_set)
+    __swig_setmethods__["lat"] = _tpm.TPM_TSTATE_lat_set
+    __swig_getmethods__["lat"] = _tpm.TPM_TSTATE_lat_get
+    if _newclass:lat = _swig_property(_tpm.TPM_TSTATE_lat_get, _tpm.TPM_TSTATE_lat_set)
+    __swig_setmethods__["alt"] = _tpm.TPM_TSTATE_alt_set
+    __swig_getmethods__["alt"] = _tpm.TPM_TSTATE_alt_get
+    if _newclass:alt = _swig_property(_tpm.TPM_TSTATE_alt_get, _tpm.TPM_TSTATE_alt_set)
+    __swig_setmethods__["xpole"] = _tpm.TPM_TSTATE_xpole_set
+    __swig_getmethods__["xpole"] = _tpm.TPM_TSTATE_xpole_get
+    if _newclass:xpole = _swig_property(_tpm.TPM_TSTATE_xpole_get, _tpm.TPM_TSTATE_xpole_set)
+    __swig_setmethods__["ypole"] = _tpm.TPM_TSTATE_ypole_set
+    __swig_getmethods__["ypole"] = _tpm.TPM_TSTATE_ypole_get
+    if _newclass:ypole = _swig_property(_tpm.TPM_TSTATE_ypole_get, _tpm.TPM_TSTATE_ypole_set)
+    __swig_setmethods__["T"] = _tpm.TPM_TSTATE_T_set
+    __swig_getmethods__["T"] = _tpm.TPM_TSTATE_T_get
+    if _newclass:T = _swig_property(_tpm.TPM_TSTATE_T_get, _tpm.TPM_TSTATE_T_set)
+    __swig_setmethods__["P"] = _tpm.TPM_TSTATE_P_set
+    __swig_getmethods__["P"] = _tpm.TPM_TSTATE_P_get
+    if _newclass:P = _swig_property(_tpm.TPM_TSTATE_P_get, _tpm.TPM_TSTATE_P_set)
+    __swig_setmethods__["H"] = _tpm.TPM_TSTATE_H_set
+    __swig_getmethods__["H"] = _tpm.TPM_TSTATE_H_get
+    if _newclass:H = _swig_property(_tpm.TPM_TSTATE_H_get, _tpm.TPM_TSTATE_H_set)
+    __swig_setmethods__["wavelength"] = _tpm.TPM_TSTATE_wavelength_set
+    __swig_getmethods__["wavelength"] = _tpm.TPM_TSTATE_wavelength_get
+    if _newclass:wavelength = _swig_property(_tpm.TPM_TSTATE_wavelength_get, _tpm.TPM_TSTATE_wavelength_set)
+    __swig_setmethods__["tai"] = _tpm.TPM_TSTATE_tai_set
+    __swig_getmethods__["tai"] = _tpm.TPM_TSTATE_tai_get
+    if _newclass:tai = _swig_property(_tpm.TPM_TSTATE_tai_get, _tpm.TPM_TSTATE_tai_set)
+    __swig_setmethods__["tdt"] = _tpm.TPM_TSTATE_tdt_set
+    __swig_getmethods__["tdt"] = _tpm.TPM_TSTATE_tdt_get
+    if _newclass:tdt = _swig_property(_tpm.TPM_TSTATE_tdt_get, _tpm.TPM_TSTATE_tdt_set)
+    __swig_setmethods__["tdb"] = _tpm.TPM_TSTATE_tdb_set
+    __swig_getmethods__["tdb"] = _tpm.TPM_TSTATE_tdb_get
+    if _newclass:tdb = _swig_property(_tpm.TPM_TSTATE_tdb_get, _tpm.TPM_TSTATE_tdb_set)
+    __swig_setmethods__["obliquity"] = _tpm.TPM_TSTATE_obliquity_set
+    __swig_getmethods__["obliquity"] = _tpm.TPM_TSTATE_obliquity_get
+    if _newclass:obliquity = _swig_property(_tpm.TPM_TSTATE_obliquity_get, _tpm.TPM_TSTATE_obliquity_set)
+    __swig_setmethods__["nut_lon"] = _tpm.TPM_TSTATE_nut_lon_set
+    __swig_getmethods__["nut_lon"] = _tpm.TPM_TSTATE_nut_lon_get
+    if _newclass:nut_lon = _swig_property(_tpm.TPM_TSTATE_nut_lon_get, _tpm.TPM_TSTATE_nut_lon_set)
+    __swig_setmethods__["nut_obl"] = _tpm.TPM_TSTATE_nut_obl_set
+    __swig_getmethods__["nut_obl"] = _tpm.TPM_TSTATE_nut_obl_get
+    if _newclass:nut_obl = _swig_property(_tpm.TPM_TSTATE_nut_obl_get, _tpm.TPM_TSTATE_nut_obl_set)
+    __swig_setmethods__["nm"] = _tpm.TPM_TSTATE_nm_set
+    __swig_getmethods__["nm"] = _tpm.TPM_TSTATE_nm_get
+    if _newclass:nm = _swig_property(_tpm.TPM_TSTATE_nm_get, _tpm.TPM_TSTATE_nm_set)
+    __swig_setmethods__["pm"] = _tpm.TPM_TSTATE_pm_set
+    __swig_getmethods__["pm"] = _tpm.TPM_TSTATE_pm_get
+    if _newclass:pm = _swig_property(_tpm.TPM_TSTATE_pm_get, _tpm.TPM_TSTATE_pm_set)
+    __swig_setmethods__["ut1"] = _tpm.TPM_TSTATE_ut1_set
+    __swig_getmethods__["ut1"] = _tpm.TPM_TSTATE_ut1_get
+    if _newclass:ut1 = _swig_property(_tpm.TPM_TSTATE_ut1_get, _tpm.TPM_TSTATE_ut1_set)
+    __swig_setmethods__["gmst"] = _tpm.TPM_TSTATE_gmst_set
+    __swig_getmethods__["gmst"] = _tpm.TPM_TSTATE_gmst_get
+    if _newclass:gmst = _swig_property(_tpm.TPM_TSTATE_gmst_get, _tpm.TPM_TSTATE_gmst_set)
+    __swig_setmethods__["gast"] = _tpm.TPM_TSTATE_gast_set
+    __swig_getmethods__["gast"] = _tpm.TPM_TSTATE_gast_get
+    if _newclass:gast = _swig_property(_tpm.TPM_TSTATE_gast_get, _tpm.TPM_TSTATE_gast_set)
+    __swig_setmethods__["last"] = _tpm.TPM_TSTATE_last_set
+    __swig_getmethods__["last"] = _tpm.TPM_TSTATE_last_get
+    if _newclass:last = _swig_property(_tpm.TPM_TSTATE_last_get, _tpm.TPM_TSTATE_last_set)
+    __swig_setmethods__["eb"] = _tpm.TPM_TSTATE_eb_set
+    __swig_getmethods__["eb"] = _tpm.TPM_TSTATE_eb_get
+    if _newclass:eb = _swig_property(_tpm.TPM_TSTATE_eb_get, _tpm.TPM_TSTATE_eb_set)
+    __swig_setmethods__["eh"] = _tpm.TPM_TSTATE_eh_set
+    __swig_getmethods__["eh"] = _tpm.TPM_TSTATE_eh_get
+    if _newclass:eh = _swig_property(_tpm.TPM_TSTATE_eh_get, _tpm.TPM_TSTATE_eh_set)
+    __swig_setmethods__["obs_m"] = _tpm.TPM_TSTATE_obs_m_set
+    __swig_getmethods__["obs_m"] = _tpm.TPM_TSTATE_obs_m_get
+    if _newclass:obs_m = _swig_property(_tpm.TPM_TSTATE_obs_m_get, _tpm.TPM_TSTATE_obs_m_set)
+    __swig_setmethods__["obs_t"] = _tpm.TPM_TSTATE_obs_t_set
+    __swig_getmethods__["obs_t"] = _tpm.TPM_TSTATE_obs_t_get
+    if _newclass:obs_t = _swig_property(_tpm.TPM_TSTATE_obs_t_get, _tpm.TPM_TSTATE_obs_t_set)
+    __swig_setmethods__["obs_s"] = _tpm.TPM_TSTATE_obs_s_set
+    __swig_getmethods__["obs_s"] = _tpm.TPM_TSTATE_obs_s_get
+    if _newclass:obs_s = _swig_property(_tpm.TPM_TSTATE_obs_s_get, _tpm.TPM_TSTATE_obs_s_set)
+    __swig_setmethods__["refa"] = _tpm.TPM_TSTATE_refa_set
+    __swig_getmethods__["refa"] = _tpm.TPM_TSTATE_refa_get
+    if _newclass:refa = _swig_property(_tpm.TPM_TSTATE_refa_get, _tpm.TPM_TSTATE_refa_set)
+    __swig_setmethods__["refb"] = _tpm.TPM_TSTATE_refb_set
+    __swig_getmethods__["refb"] = _tpm.TPM_TSTATE_refb_get
+    if _newclass:refb = _swig_property(_tpm.TPM_TSTATE_refb_get, _tpm.TPM_TSTATE_refb_set)
+    def __init__(self): 
+        """__init__(self) -> TPM_TSTATE"""
+        this = _tpm.new_TPM_TSTATE()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _tpm.delete_TPM_TSTATE
+    __del__ = lambda self : None;
+TPM_TSTATE_swigregister = _tpm.TPM_TSTATE_swigregister
+TPM_TSTATE_swigregister(TPM_TSTATE)
+
 TPM_INIT = _tpm.TPM_INIT
 TPM_FAST = _tpm.TPM_FAST
 TPM_MEDIUM = _tpm.TPM_MEDIUM
 TPM_SLOW = _tpm.TPM_SLOW
 TPM_REFRACTION = _tpm.TPM_REFRACTION
 TPM_ALL = _tpm.TPM_ALL
+class TPM_PMCELL(_object):
+    """Proxy of C TPM_PMCELL struct"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, TPM_PMCELL, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, TPM_PMCELL, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["ptrans"] = _tpm.TPM_PMCELL_ptrans_set
+    __swig_getmethods__["ptrans"] = _tpm.TPM_PMCELL_ptrans_get
+    if _newclass:ptrans = _swig_property(_tpm.TPM_PMCELL_ptrans_get, _tpm.TPM_PMCELL_ptrans_set)
+    __swig_setmethods__["pstate"] = _tpm.TPM_PMCELL_pstate_set
+    __swig_getmethods__["pstate"] = _tpm.TPM_PMCELL_pstate_get
+    if _newclass:pstate = _swig_property(_tpm.TPM_PMCELL_pstate_get, _tpm.TPM_PMCELL_pstate_set)
+    def __init__(self): 
+        """__init__(self) -> TPM_PMCELL"""
+        this = _tpm.new_TPM_PMCELL()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _tpm.delete_TPM_PMCELL
+    __del__ = lambda self : None;
+TPM_PMCELL_swigregister = _tpm.TPM_PMCELL_swigregister
+TPM_PMCELL_swigregister(TPM_PMCELL)
+
+
+def v3DecXf(*args):
+  """v3DecXf( v3, double x)"""
+  return _tpm.v3DecXf(*args)
+
+def v3DecYf(*args):
+  """v3DecYf( v3, double x)"""
+  return _tpm.v3DecYf(*args)
+
+def v3DecZf(*args):
+  """v3DecZf( v3, double x)"""
+  return _tpm.v3DecZf(*args)
+
+def v3DecRf(*args):
+  """v3DecRf( v3, double x)"""
+  return _tpm.v3DecRf(*args)
+
+def v3DecAlphaf(*args):
+  """v3DecAlphaf( v3, double x)"""
+  return _tpm.v3DecAlphaf(*args)
+
+def v3DecDeltaf(*args):
+  """v3DecDeltaf( v3, double x)"""
+  return _tpm.v3DecDeltaf(*args)
+
+def v3DivXf(*args):
+  """v3DivXf( v3, double x)"""
+  return _tpm.v3DivXf(*args)
+
+def v3DivYf(*args):
+  """v3DivYf( v3, double x)"""
+  return _tpm.v3DivYf(*args)
+
+def v3DivZf(*args):
+  """v3DivZf( v3, double x)"""
+  return _tpm.v3DivZf(*args)
+
+def v3DivRf(*args):
+  """v3DivRf( v3, double x)"""
+  return _tpm.v3DivRf(*args)
+
+def v3DivAlphaf(*args):
+  """v3DivAlphaf( v3, double x)"""
+  return _tpm.v3DivAlphaf(*args)
+
+def v3DivDeltaf(*args):
+  """v3DivDeltaf( v3, double x)"""
+  return _tpm.v3DivDeltaf(*args)
+
+def v3GetTypef(*args):
+  """v3GetTypef( v3) -> int"""
+  return _tpm.v3GetTypef(*args)
+
+def v3GetXf(*args):
+  """v3GetXf( v3) -> double"""
+  return _tpm.v3GetXf(*args)
+
+def v3GetYf(*args):
+  """v3GetYf( v3) -> double"""
+  return _tpm.v3GetYf(*args)
+
+def v3GetZf(*args):
+  """v3GetZf( v3) -> double"""
+  return _tpm.v3GetZf(*args)
+
+def v3GetRf(*args):
+  """v3GetRf( v3) -> double"""
+  return _tpm.v3GetRf(*args)
+
+def v3GetAlphaf(*args):
+  """v3GetAlphaf( v3) -> double"""
+  return _tpm.v3GetAlphaf(*args)
+
+def v3GetDeltaf(*args):
+  """v3GetDeltaf( v3) -> double"""
+  return _tpm.v3GetDeltaf(*args)
+
+def v3IncXf(*args):
+  """v3IncXf( v3, double x)"""
+  return _tpm.v3IncXf(*args)
+
+def v3IncYf(*args):
+  """v3IncYf( v3, double x)"""
+  return _tpm.v3IncYf(*args)
+
+def v3IncZf(*args):
+  """v3IncZf( v3, double x)"""
+  return _tpm.v3IncZf(*args)
+
+def v3IncRf(*args):
+  """v3IncRf( v3, double x)"""
+  return _tpm.v3IncRf(*args)
+
+def v3IncAlphaf(*args):
+  """v3IncAlphaf( v3, double x)"""
+  return _tpm.v3IncAlphaf(*args)
+
+def v3IncDeltaf(*args):
+  """v3IncDeltaf( v3, double x)"""
+  return _tpm.v3IncDeltaf(*args)
+
+def v3MulXf(*args):
+  """v3MulXf( v3, double x)"""
+  return _tpm.v3MulXf(*args)
+
+def v3MulYf(*args):
+  """v3MulYf( v3, double x)"""
+  return _tpm.v3MulYf(*args)
+
+def v3MulZf(*args):
+  """v3MulZf( v3, double x)"""
+  return _tpm.v3MulZf(*args)
+
+def v3MulRf(*args):
+  """v3MulRf( v3, double x)"""
+  return _tpm.v3MulRf(*args)
+
+def v3MulAlphaf(*args):
+  """v3MulAlphaf( v3, double x)"""
+  return _tpm.v3MulAlphaf(*args)
+
+def v3MulDeltaf(*args):
+  """v3MulDeltaf( v3, double x)"""
+  return _tpm.v3MulDeltaf(*args)
+
+def v3SetTypef(*args):
+  """v3SetTypef( v3, int t)"""
+  return _tpm.v3SetTypef(*args)
+
+def v3SetXf(*args):
+  """v3SetXf( v3, double x)"""
+  return _tpm.v3SetXf(*args)
+
+def v3SetYf(*args):
+  """v3SetYf( v3, double y)"""
+  return _tpm.v3SetYf(*args)
+
+def v3SetZf(*args):
+  """v3SetZf( v3, double z)"""
+  return _tpm.v3SetZf(*args)
+
+def v3SetRf(*args):
+  """v3SetRf( v3, double r)"""
+  return _tpm.v3SetRf(*args)
+
+def v3SetAlphaf(*args):
+  """v3SetAlphaf( v3, double alpha)"""
+  return _tpm.v3SetAlphaf(*args)
+
+def v3SetDeltaf(*args):
+  """v3SetDeltaf( v3, double delta)"""
+  return _tpm.v3SetDeltaf(*args)
+
+def v3DecRAf(*args):
+  """v3DecRAf( v3, double x)"""
+  return _tpm.v3DecRAf(*args)
+
+def v3DecDecf(*args):
+  """v3DecDecf( v3, double x)"""
+  return _tpm.v3DecDecf(*args)
+
+def v3DivRAf(*args):
+  """v3DivRAf( v3, double x)"""
+  return _tpm.v3DivRAf(*args)
+
+def v3DivDecf(*args):
+  """v3DivDecf( v3, double x)"""
+  return _tpm.v3DivDecf(*args)
+
+def v3GetRAf(*args):
+  """v3GetRAf( v3) -> double"""
+  return _tpm.v3GetRAf(*args)
+
+def v3GetDecf(*args):
+  """v3GetDecf( v3) -> double"""
+  return _tpm.v3GetDecf(*args)
+
+def v3IncRAf(*args):
+  """v3IncRAf( v3, double x)"""
+  return _tpm.v3IncRAf(*args)
+
+def v3IncDecf(*args):
+  """v3IncDecf( v3, double x)"""
+  return _tpm.v3IncDecf(*args)
+
+def v3MulRAf(*args):
+  """v3MulRAf( v3, double x)"""
+  return _tpm.v3MulRAf(*args)
+
+def v3MulDecf(*args):
+  """v3MulDecf( v3, double x)"""
+  return _tpm.v3MulDecf(*args)
+
+def v3SetRAf(*args):
+  """v3SetRAf( v3, double ra)"""
+  return _tpm.v3SetRAf(*args)
+
+def v3SetDecf(*args):
+  """v3SetDecf( v3, double dec)"""
+  return _tpm.v3SetDecf(*args)
+
+def v6GetPosf(*args):
+  """v6GetPosf( v6)"""
+  return _tpm.v6GetPosf(*args)
+
+def v6GetVelf(*args):
+  """v6GetVelf( v6)"""
+  return _tpm.v6GetVelf(*args)
+
+def v6SetPosf(*args):
+  """v6SetPosf( v6,  v3)"""
+  return _tpm.v6SetPosf(*args)
+
+def v6SetVelf(*args):
+  """v6SetVelf( v6,  v3)"""
+  return _tpm.v6SetVelf(*args)
+
+def v6DecXf(*args):
+  """v6DecXf( v6, double x)"""
+  return _tpm.v6DecXf(*args)
+
+def v6DecYf(*args):
+  """v6DecYf( v6, double x)"""
+  return _tpm.v6DecYf(*args)
+
+def v6DecZf(*args):
+  """v6DecZf( v6, double x)"""
+  return _tpm.v6DecZf(*args)
+
+def v6DecXDotf(*args):
+  """v6DecXDotf( v6, double x)"""
+  return _tpm.v6DecXDotf(*args)
+
+def v6DecYDotf(*args):
+  """v6DecYDotf( v6, double x)"""
+  return _tpm.v6DecYDotf(*args)
+
+def v6DecZDotf(*args):
+  """v6DecZDotf( v6, double x)"""
+  return _tpm.v6DecZDotf(*args)
+
+def v6DecRf(*args):
+  """v6DecRf( v6, double x)"""
+  return _tpm.v6DecRf(*args)
+
+def v6DecAlphaf(*args):
+  """v6DecAlphaf( v6, double x)"""
+  return _tpm.v6DecAlphaf(*args)
+
+def v6DecDeltaf(*args):
+  """v6DecDeltaf( v6, double x)"""
+  return _tpm.v6DecDeltaf(*args)
+
+def v6DecRDotf(*args):
+  """v6DecRDotf( v6, double x)"""
+  return _tpm.v6DecRDotf(*args)
+
+def v6DecAlphaDotf(*args):
+  """v6DecAlphaDotf( v6, double x)"""
+  return _tpm.v6DecAlphaDotf(*args)
+
+def v6DecDeltaDotf(*args):
+  """v6DecDeltaDotf( v6, double x)"""
+  return _tpm.v6DecDeltaDotf(*args)
+
+def v6DivXf(*args):
+  """v6DivXf( v6, double x)"""
+  return _tpm.v6DivXf(*args)
+
+def v6DivYf(*args):
+  """v6DivYf( v6, double x)"""
+  return _tpm.v6DivYf(*args)
+
+def v6DivZf(*args):
+  """v6DivZf( v6, double x)"""
+  return _tpm.v6DivZf(*args)
+
+def v6DivXDotf(*args):
+  """v6DivXDotf( v6, double x)"""
+  return _tpm.v6DivXDotf(*args)
+
+def v6DivYDotf(*args):
+  """v6DivYDotf( v6, double x)"""
+  return _tpm.v6DivYDotf(*args)
+
+def v6DivZDotf(*args):
+  """v6DivZDotf( v6, double x)"""
+  return _tpm.v6DivZDotf(*args)
+
+def v6DivRf(*args):
+  """v6DivRf( v6, double x)"""
+  return _tpm.v6DivRf(*args)
+
+def v6DivAlphaf(*args):
+  """v6DivAlphaf( v6, double x)"""
+  return _tpm.v6DivAlphaf(*args)
+
+def v6DivDeltaf(*args):
+  """v6DivDeltaf( v6, double x)"""
+  return _tpm.v6DivDeltaf(*args)
+
+def v6DivRDotf(*args):
+  """v6DivRDotf( v6, double x)"""
+  return _tpm.v6DivRDotf(*args)
+
+def v6DivAlphaDotf(*args):
+  """v6DivAlphaDotf( v6, double x)"""
+  return _tpm.v6DivAlphaDotf(*args)
+
+def v6DivDeltaDotf(*args):
+  """v6DivDeltaDotf( v6, double x)"""
+  return _tpm.v6DivDeltaDotf(*args)
+
+def v6GetTypef(*args):
+  """v6GetTypef( v6) -> int"""
+  return _tpm.v6GetTypef(*args)
+
+def v6GetXf(*args):
+  """v6GetXf( v6) -> double"""
+  return _tpm.v6GetXf(*args)
+
+def v6GetYf(*args):
+  """v6GetYf( v6) -> double"""
+  return _tpm.v6GetYf(*args)
+
+def v6GetZf(*args):
+  """v6GetZf( v6) -> double"""
+  return _tpm.v6GetZf(*args)
+
+def v6GetXDotf(*args):
+  """v6GetXDotf( v6) -> double"""
+  return _tpm.v6GetXDotf(*args)
+
+def v6GetYDotf(*args):
+  """v6GetYDotf( v6) -> double"""
+  return _tpm.v6GetYDotf(*args)
+
+def v6GetZDotf(*args):
+  """v6GetZDotf( v6) -> double"""
+  return _tpm.v6GetZDotf(*args)
+
+def v6GetRf(*args):
+  """v6GetRf( v6) -> double"""
+  return _tpm.v6GetRf(*args)
+
+def v6GetAlphaf(*args):
+  """v6GetAlphaf( v6) -> double"""
+  return _tpm.v6GetAlphaf(*args)
+
+def v6GetDeltaf(*args):
+  """v6GetDeltaf( v6) -> double"""
+  return _tpm.v6GetDeltaf(*args)
+
+def v6GetRDotf(*args):
+  """v6GetRDotf( v6) -> double"""
+  return _tpm.v6GetRDotf(*args)
+
+def v6GetAlphaDotf(*args):
+  """v6GetAlphaDotf( v6) -> double"""
+  return _tpm.v6GetAlphaDotf(*args)
+
+def v6GetDeltaDotf(*args):
+  """v6GetDeltaDotf( v6) -> double"""
+  return _tpm.v6GetDeltaDotf(*args)
+
+def v6IncXf(*args):
+  """v6IncXf( v6, double x)"""
+  return _tpm.v6IncXf(*args)
+
+def v6IncYf(*args):
+  """v6IncYf( v6, double x)"""
+  return _tpm.v6IncYf(*args)
+
+def v6IncZf(*args):
+  """v6IncZf( v6, double x)"""
+  return _tpm.v6IncZf(*args)
+
+def v6IncXDotf(*args):
+  """v6IncXDotf( v6, double x)"""
+  return _tpm.v6IncXDotf(*args)
+
+def v6IncYDotf(*args):
+  """v6IncYDotf( v6, double x)"""
+  return _tpm.v6IncYDotf(*args)
+
+def v6IncZDotf(*args):
+  """v6IncZDotf( v6, double x)"""
+  return _tpm.v6IncZDotf(*args)
+
+def v6IncRf(*args):
+  """v6IncRf( v6, double x)"""
+  return _tpm.v6IncRf(*args)
+
+def v6IncAlphaf(*args):
+  """v6IncAlphaf( v6, double x)"""
+  return _tpm.v6IncAlphaf(*args)
+
+def v6IncDeltaf(*args):
+  """v6IncDeltaf( v6, double x)"""
+  return _tpm.v6IncDeltaf(*args)
+
+def v6IncRDotf(*args):
+  """v6IncRDotf( v6, double x)"""
+  return _tpm.v6IncRDotf(*args)
+
+def v6IncAlphaDotf(*args):
+  """v6IncAlphaDotf( v6, double x)"""
+  return _tpm.v6IncAlphaDotf(*args)
+
+def v6IncDeltaDotf(*args):
+  """v6IncDeltaDotf( v6, double x)"""
+  return _tpm.v6IncDeltaDotf(*args)
+
+def v6MulXf(*args):
+  """v6MulXf( v6, double x)"""
+  return _tpm.v6MulXf(*args)
+
+def v6MulYf(*args):
+  """v6MulYf( v6, double x)"""
+  return _tpm.v6MulYf(*args)
+
+def v6MulZf(*args):
+  """v6MulZf( v6, double x)"""
+  return _tpm.v6MulZf(*args)
+
+def v6MulXDotf(*args):
+  """v6MulXDotf( v6, double x)"""
+  return _tpm.v6MulXDotf(*args)
+
+def v6MulYDotf(*args):
+  """v6MulYDotf( v6, double x)"""
+  return _tpm.v6MulYDotf(*args)
+
+def v6MulZDotf(*args):
+  """v6MulZDotf( v6, double x)"""
+  return _tpm.v6MulZDotf(*args)
+
+def v6MulRf(*args):
+  """v6MulRf( v6, double x)"""
+  return _tpm.v6MulRf(*args)
+
+def v6MulAlphaf(*args):
+  """v6MulAlphaf( v6, double x)"""
+  return _tpm.v6MulAlphaf(*args)
+
+def v6MulDeltaf(*args):
+  """v6MulDeltaf( v6, double x)"""
+  return _tpm.v6MulDeltaf(*args)
+
+def v6MulRDotf(*args):
+  """v6MulRDotf( v6, double x)"""
+  return _tpm.v6MulRDotf(*args)
+
+def v6MulAlphaDotf(*args):
+  """v6MulAlphaDotf( v6, double x)"""
+  return _tpm.v6MulAlphaDotf(*args)
+
+def v6MulDeltaDotf(*args):
+  """v6MulDeltaDotf( v6, double x)"""
+  return _tpm.v6MulDeltaDotf(*args)
+
+def v6SetTypef(*args):
+  """v6SetTypef( v6, int t)"""
+  return _tpm.v6SetTypef(*args)
+
+def v6SetXf(*args):
+  """v6SetXf( v6, double x)"""
+  return _tpm.v6SetXf(*args)
+
+def v6SetYf(*args):
+  """v6SetYf( v6, double x)"""
+  return _tpm.v6SetYf(*args)
+
+def v6SetZf(*args):
+  """v6SetZf( v6, double x)"""
+  return _tpm.v6SetZf(*args)
+
+def v6SetXDotf(*args):
+  """v6SetXDotf( v6, double x)"""
+  return _tpm.v6SetXDotf(*args)
+
+def v6SetYDotf(*args):
+  """v6SetYDotf( v6, double x)"""
+  return _tpm.v6SetYDotf(*args)
+
+def v6SetZDotf(*args):
+  """v6SetZDotf( v6, double x)"""
+  return _tpm.v6SetZDotf(*args)
+
+def v6SetRf(*args):
+  """v6SetRf( v6, double x)"""
+  return _tpm.v6SetRf(*args)
+
+def v6SetAlphaf(*args):
+  """v6SetAlphaf( v6, double x)"""
+  return _tpm.v6SetAlphaf(*args)
+
+def v6SetDeltaf(*args):
+  """v6SetDeltaf( v6, double x)"""
+  return _tpm.v6SetDeltaf(*args)
+
+def v6SetRDotf(*args):
+  """v6SetRDotf( v6, double x)"""
+  return _tpm.v6SetRDotf(*args)
+
+def v6SetAlphaDotf(*args):
+  """v6SetAlphaDotf( v6, double x)"""
+  return _tpm.v6SetAlphaDotf(*args)
+
+def v6SetDeltaDotf(*args):
+  """v6SetDeltaDotf( v6, double x)"""
+  return _tpm.v6SetDeltaDotf(*args)
+
+def v6DecRAf(*args):
+  """v6DecRAf( v6, double x)"""
+  return _tpm.v6DecRAf(*args)
+
+def v6DecPMRAf(*args):
+  """v6DecPMRAf( v6, double x)"""
+  return _tpm.v6DecPMRAf(*args)
+
+def v6DecDecf(*args):
+  """v6DecDecf( v6, double x)"""
+  return _tpm.v6DecDecf(*args)
+
+def v6DecPMDecf(*args):
+  """v6DecPMDecf( v6, double x)"""
+  return _tpm.v6DecPMDecf(*args)
+
+def v6DivRAf(*args):
+  """v6DivRAf( v6, double x)"""
+  return _tpm.v6DivRAf(*args)
+
+def v6DivPMRAf(*args):
+  """v6DivPMRAf( v6, double x)"""
+  return _tpm.v6DivPMRAf(*args)
+
+def v6DivDecf(*args):
+  """v6DivDecf( v6, double x)"""
+  return _tpm.v6DivDecf(*args)
+
+def v6DivPMDecf(*args):
+  """v6DivPMDecf( v6, double x)"""
+  return _tpm.v6DivPMDecf(*args)
+
+def v6GetRAf(*args):
+  """v6GetRAf( v6) -> double"""
+  return _tpm.v6GetRAf(*args)
+
+def v6GetPMRAf(*args):
+  """v6GetPMRAf( v6) -> double"""
+  return _tpm.v6GetPMRAf(*args)
+
+def v6GetDecf(*args):
+  """v6GetDecf( v6) -> double"""
+  return _tpm.v6GetDecf(*args)
+
+def v6GetPMDecf(*args):
+  """v6GetPMDecf( v6) -> double"""
+  return _tpm.v6GetPMDecf(*args)
+
+def v6IncRAf(*args):
+  """v6IncRAf( v6, double x)"""
+  return _tpm.v6IncRAf(*args)
+
+def v6IncPMRAf(*args):
+  """v6IncPMRAf( v6, double x)"""
+  return _tpm.v6IncPMRAf(*args)
+
+def v6IncDecf(*args):
+  """v6IncDecf( v6, double x)"""
+  return _tpm.v6IncDecf(*args)
+
+def v6IncPMDecf(*args):
+  """v6IncPMDecf( v6, double x)"""
+  return _tpm.v6IncPMDecf(*args)
+
+def v6MulRAf(*args):
+  """v6MulRAf( v6, double x)"""
+  return _tpm.v6MulRAf(*args)
+
+def v6MulPMRAf(*args):
+  """v6MulPMRAf( v6, double x)"""
+  return _tpm.v6MulPMRAf(*args)
+
+def v6MulDecf(*args):
+  """v6MulDecf( v6, double x)"""
+  return _tpm.v6MulDecf(*args)
+
+def v6MulPMDecf(*args):
+  """v6MulPMDecf( v6, double x)"""
+  return _tpm.v6MulPMDecf(*args)
+
+def v6SetRAf(*args):
+  """v6SetRAf( v6, double x)"""
+  return _tpm.v6SetRAf(*args)
+
+def v6SetPMRAf(*args):
+  """v6SetPMRAf( v6, double x)"""
+  return _tpm.v6SetPMRAf(*args)
+
+def v6SetDecf(*args):
+  """v6SetDecf( v6, double x)"""
+  return _tpm.v6SetDecf(*args)
+
+def v6SetPMDecf(*args):
+  """v6SetPMDecf( v6, double x)"""
+  return _tpm.v6SetPMDecf(*args)
+
+def m3DecXXf(*args):
+  """m3DecXXf( m3, double x)"""
+  return _tpm.m3DecXXf(*args)
+
+def m3DecXYf(*args):
+  """m3DecXYf( m3, double x)"""
+  return _tpm.m3DecXYf(*args)
+
+def m3DecXZf(*args):
+  """m3DecXZf( m3, double x)"""
+  return _tpm.m3DecXZf(*args)
+
+def m3DecYXf(*args):
+  """m3DecYXf( m3, double x)"""
+  return _tpm.m3DecYXf(*args)
+
+def m3DecYYf(*args):
+  """m3DecYYf( m3, double x)"""
+  return _tpm.m3DecYYf(*args)
+
+def m3DecYZf(*args):
+  """m3DecYZf( m3, double x)"""
+  return _tpm.m3DecYZf(*args)
+
+def m3DecZXf(*args):
+  """m3DecZXf( m3, double x)"""
+  return _tpm.m3DecZXf(*args)
+
+def m3DecZYf(*args):
+  """m3DecZYf( m3, double x)"""
+  return _tpm.m3DecZYf(*args)
+
+def m3DecZZf(*args):
+  """m3DecZZf( m3, double x)"""
+  return _tpm.m3DecZZf(*args)
+
+def m3DivXXf(*args):
+  """m3DivXXf( m3, double x)"""
+  return _tpm.m3DivXXf(*args)
+
+def m3DivXYf(*args):
+  """m3DivXYf( m3, double x)"""
+  return _tpm.m3DivXYf(*args)
+
+def m3DivXZf(*args):
+  """m3DivXZf( m3, double x)"""
+  return _tpm.m3DivXZf(*args)
+
+def m3DivYXf(*args):
+  """m3DivYXf( m3, double x)"""
+  return _tpm.m3DivYXf(*args)
+
+def m3DivYYf(*args):
+  """m3DivYYf( m3, double x)"""
+  return _tpm.m3DivYYf(*args)
+
+def m3DivYZf(*args):
+  """m3DivYZf( m3, double x)"""
+  return _tpm.m3DivYZf(*args)
+
+def m3DivZXf(*args):
+  """m3DivZXf( m3, double x)"""
+  return _tpm.m3DivZXf(*args)
+
+def m3DivZYf(*args):
+  """m3DivZYf( m3, double x)"""
+  return _tpm.m3DivZYf(*args)
+
+def m3DivZZf(*args):
+  """m3DivZZf( m3, double x)"""
+  return _tpm.m3DivZZf(*args)
+
+def m3GetXXf(*args):
+  """m3GetXXf( m3) -> double"""
+  return _tpm.m3GetXXf(*args)
+
+def m3GetXYf(*args):
+  """m3GetXYf( m3) -> double"""
+  return _tpm.m3GetXYf(*args)
+
+def m3GetXZf(*args):
+  """m3GetXZf( m3) -> double"""
+  return _tpm.m3GetXZf(*args)
+
+def m3GetYXf(*args):
+  """m3GetYXf( m3) -> double"""
+  return _tpm.m3GetYXf(*args)
+
+def m3GetYYf(*args):
+  """m3GetYYf( m3) -> double"""
+  return _tpm.m3GetYYf(*args)
+
+def m3GetYZf(*args):
+  """m3GetYZf( m3) -> double"""
+  return _tpm.m3GetYZf(*args)
+
+def m3GetZXf(*args):
+  """m3GetZXf( m3) -> double"""
+  return _tpm.m3GetZXf(*args)
+
+def m3GetZYf(*args):
+  """m3GetZYf( m3) -> double"""
+  return _tpm.m3GetZYf(*args)
+
+def m3GetZZf(*args):
+  """m3GetZZf( m3) -> double"""
+  return _tpm.m3GetZZf(*args)
+
+def m3IncXXf(*args):
+  """m3IncXXf( m3, double x)"""
+  return _tpm.m3IncXXf(*args)
+
+def m3IncXYf(*args):
+  """m3IncXYf( m3, double x)"""
+  return _tpm.m3IncXYf(*args)
+
+def m3IncXZf(*args):
+  """m3IncXZf( m3, double x)"""
+  return _tpm.m3IncXZf(*args)
+
+def m3IncYXf(*args):
+  """m3IncYXf( m3, double x)"""
+  return _tpm.m3IncYXf(*args)
+
+def m3IncYYf(*args):
+  """m3IncYYf( m3, double x)"""
+  return _tpm.m3IncYYf(*args)
+
+def m3IncYZf(*args):
+  """m3IncYZf( m3, double x)"""
+  return _tpm.m3IncYZf(*args)
+
+def m3IncZXf(*args):
+  """m3IncZXf( m3, double x)"""
+  return _tpm.m3IncZXf(*args)
+
+def m3IncZYf(*args):
+  """m3IncZYf( m3, double x)"""
+  return _tpm.m3IncZYf(*args)
+
+def m3IncZZf(*args):
+  """m3IncZZf( m3, double x)"""
+  return _tpm.m3IncZZf(*args)
+
+def m3MulXXf(*args):
+  """m3MulXXf( m3, double x)"""
+  return _tpm.m3MulXXf(*args)
+
+def m3MulXYf(*args):
+  """m3MulXYf( m3, double x)"""
+  return _tpm.m3MulXYf(*args)
+
+def m3MulXZf(*args):
+  """m3MulXZf( m3, double x)"""
+  return _tpm.m3MulXZf(*args)
+
+def m3MulYXf(*args):
+  """m3MulYXf( m3, double x)"""
+  return _tpm.m3MulYXf(*args)
+
+def m3MulYYf(*args):
+  """m3MulYYf( m3, double x)"""
+  return _tpm.m3MulYYf(*args)
+
+def m3MulYZf(*args):
+  """m3MulYZf( m3, double x)"""
+  return _tpm.m3MulYZf(*args)
+
+def m3MulZXf(*args):
+  """m3MulZXf( m3, double x)"""
+  return _tpm.m3MulZXf(*args)
+
+def m3MulZYf(*args):
+  """m3MulZYf( m3, double x)"""
+  return _tpm.m3MulZYf(*args)
+
+def m3MulZZf(*args):
+  """m3MulZZf( m3, double x)"""
+  return _tpm.m3MulZZf(*args)
+
+def m3SetXXf(*args):
+  """m3SetXXf( m3, double x)"""
+  return _tpm.m3SetXXf(*args)
+
+def m3SetXYf(*args):
+  """m3SetXYf( m3, double x)"""
+  return _tpm.m3SetXYf(*args)
+
+def m3SetXZf(*args):
+  """m3SetXZf( m3, double x)"""
+  return _tpm.m3SetXZf(*args)
+
+def m3SetYXf(*args):
+  """m3SetYXf( m3, double x)"""
+  return _tpm.m3SetYXf(*args)
+
+def m3SetYYf(*args):
+  """m3SetYYf( m3, double x)"""
+  return _tpm.m3SetYYf(*args)
+
+def m3SetYZf(*args):
+  """m3SetYZf( m3, double x)"""
+  return _tpm.m3SetYZf(*args)
+
+def m3SetZXf(*args):
+  """m3SetZXf( m3, double x)"""
+  return _tpm.m3SetZXf(*args)
+
+def m3SetZYf(*args):
+  """m3SetZYf( m3, double x)"""
+  return _tpm.m3SetZYf(*args)
+
+def m3SetZZf(*args):
+  """m3SetZZf( m3, double x)"""
+  return _tpm.m3SetZZf(*args)
+
+def m6GetPPf(*args):
+  """m6GetPPf( m6)"""
+  return _tpm.m6GetPPf(*args)
+
+def m6GetPVf(*args):
+  """m6GetPVf( m6)"""
+  return _tpm.m6GetPVf(*args)
+
+def m6GetVPf(*args):
+  """m6GetVPf( m6)"""
+  return _tpm.m6GetVPf(*args)
+
+def m6GetVVf(*args):
+  """m6GetVVf( m6)"""
+  return _tpm.m6GetVVf(*args)
+
+def m6SetPPf(*args):
+  """m6SetPPf( m6,  m3)"""
+  return _tpm.m6SetPPf(*args)
+
+def m6SetPVf(*args):
+  """m6SetPVf( m6,  m3)"""
+  return _tpm.m6SetPVf(*args)
+
+def m6SetVPf(*args):
+  """m6SetVPf( m6,  m3)"""
+  return _tpm.m6SetVPf(*args)
+
+def m6SetVVf(*args):
+  """m6SetVVf( m6,  m3)"""
+  return _tpm.m6SetVVf(*args)
 
 def convert(*args):
+  """
+    convert(double x0, double y0, int s1, int s2, double epoch, 
+        double equinox, double timetag, double delta_ut, 
+        double lon, double lat, double alt, double x_pole, 
+        double y_pole, double T, double P, 
+        double H, double W)
+    """
   return _tpm.convert(*args)
-convert = _tpm.convert
 
 

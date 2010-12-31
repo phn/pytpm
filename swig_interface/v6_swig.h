@@ -20,15 +20,18 @@
 
 #ifndef V6_INCLUDE
 #define V6_INCLUDE
-/* Don't need this directly from within python
+
 typedef struct s_v6 {
 	V3 v[2];
-} V6;*/
+} V6;
 
 /* index into the 6-vector */
 #define POS	(0)
 #define VEL	(1)
-
+/* SWIG doesn't wrap these macros. Functions equivalent to these are
+ * defined in src/v6Functions.h and src/v5Functions.c, for use from
+ * python.
+ 
 #define v6GetPos(v6)	(v6.v[POS])
 #define v6GetVel(v6)	(v6.v[VEL])
 
@@ -114,9 +117,9 @@ typedef struct s_v6 {
 #define v6SetRDot(v6,x)		(v6.v[VEL].v[0] = (x))
 #define v6SetAlphaDot(v6,x)	(v6.v[VEL].v[1] = (x))
 #define v6SetDeltaDot(v6,x)	(v6.v[VEL].v[2] = (x))
-
+*/
 /* some astro convenience macros */
-
+/*
 #define v6DecRA(f,x)		(v6DecAlpha(f,x))
 #define v6DecPMRA(f,x)		(v6DecAlphaDot(f,x))
 #define v6DecDec(f,x)		(v6DecDelta(f,x))
@@ -146,7 +149,7 @@ typedef struct s_v6 {
 #define v6SetPMRA(f,x)		(v6SetAlphaDot(f,x))
 #define v6SetDec(f,x)		(v6SetDelta(f,x))
 #define v6SetPMDec(f,x)		(v6SetDeltaDot(f,x))
-
+*/
 /* EXTERN_START */
 /* EXTERN_STOP */
 
