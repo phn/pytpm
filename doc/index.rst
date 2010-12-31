@@ -6,7 +6,7 @@
 PyTPM: Python interface to the Telescope Pointing Machine C library
 ===================================================================
 
-PyTPM provides a python interface to the Telescope Pointing Machine C
+PyTPM provides a Python interface to the Telescope Pointing Machine C
 library, written by Jeff Percival.
 
 :doc:`overview` gives a description of the usage of the
