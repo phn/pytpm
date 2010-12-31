@@ -6,6 +6,8 @@
 .. _Virtualenv: http://pypi.python.org/pypi/virtualenv 
 .. _Virtualenvwrapper: 
    http://www.doughellmann.com/projects/virtualenvwrapper/
+.. _Practical Astronomy With Your Calculator: 
+  http://www.amazon.com/Practical-Astronomy-Calculator-Peter-Duffett-Smith/dp/0521356997
 
 .. contents::
 
@@ -30,26 +32,27 @@ astronomical coordinate systems. It is used by the `KPNO WIYN
 observatory`_ and the WHAM_ project for calculating directions of
 astronomical objects.
 
-PyTPM is a python interface to the TPM library, generated using the
+PyTPM is a Python interface to the TPM library, generated using the
 SWIG_ application.
 
-A covenience function, :func:`pytpm.tpm.convert`, is provided for
+A convenience function, :func:`pytpm.tpm.convert`, is provided for
 performing coordinate conversions. This function is an interface to a
-function of the same name provided in the file *convert.c*. A
-different function :func:`pytpm.utils.convert`, accepts keyword
-arguments and default values for the various arguments needed by
-:func:`pytpm.tpm.convert`, and then calls it, thereby providing an
-easier way of using this function.
+function of the same name provided in the file *convert.c*. This
+function takes a large number of arguments, and so is not very user
+friendly. A second function, :func:`pytpm.utils.convert`, accepts
+keyword arguments, many of which have default values, and then calls
+the :func:`pytpm.tpm.convert` function. This function is the preferred
+tool for performing coordinate conversions.
 
 PyTPM is a direct interface to the TPM library and do not add object
 oriented features on top of the C constructs i.e., this module is not,
 at this time, quite "pythonic".
 
 The main function needed for performing coordinate transformation in
-TPM is ``tpm()``. This needs as one of its input an array of
-vectors. At this moment this array cannot be created from within PyTPM
-and hence directly calling the ``tpm()`` function is not
-possible.
+TPM is ``tpm()``. This needs as one of its input an array of a
+particular C structure used in TPM. At this time, this array cannot be
+created from within PyTPM and hence directly calling the ``tpm()``
+function is not possible. 
 
 Installing PyTPM
 ================
@@ -77,17 +80,26 @@ The package can be installed by running the command
 in the main source code directory.
 
 This will install the library in the default python *site-packages*
-directory, which usually requires root access. To install the library
-in a different location, the following commands can be used. In this
-case the *PYTHONPATH* environment variable must be set accordingly.
-The following assumes that the python version is 2.6 and the shell is
-bash.
+directory, which usually requires root access. 
+
+For Python versions >= 2.6, we can install the package without needing
+root access using:
 
 .. code-block:: sh
 
-  $ mkdir ~/lib/python
-  $ python setup.py install --prefix=~/lib/python
-  $ export PYTHONPATH=~/lib/python/lib/python2.6/site-packages
+  $ python setup.py install --user
+
+
+If that doesn't work then, then the package can be installed in the
+*PYTHONPATH* directory. The following assumes that the Python version
+is 2.6 and the shell is bash.
+
+.. code-block:: sh
+
+  $ mkdir ~/lib
+  $ export PYTHONPATH=${HOME}/lib/python2.6/site-packages
+  $ python setup.py install --prefix=${HOME}
+
 
 Even better, run ``python setup.py install`` inside a virtual
 environment created using `virtualenv`_ and `virtualenvwrapper`_.
@@ -102,14 +114,14 @@ part of the astrolib_ library. The convenience function,
 
 The macros for manipulating vectors and matrices, declared in
 :file:`v3.h`, :file:`v6.h`, :file:`m3.h`, and :file:`m6.h`, have been
-re-written as C function, in :file:`src/v3Functions.c`,
-:file:`src/v6Functions.c`, :file:`src/m3Functions.c`,
-:file:`src/m6Functions.c` and corresponding headers in
-:file:`src/`. This was needed, since only simple macros can be wrapped
-with SWIG.
+re-written as C function. They are available in
+:file:`src/v3Functions.c`, :file:`src/v6Functions.c`,
+:file:`src/m3Functions.c`, :file:`src/m6Functions.c` and corresponding
+headers in :file:`src/`. This was needed, since only simple macros can
+be wrapped with SWIG.
 
-The Python module *lib/utils.py*, contains implementation of various
-macros in TPM as Python functions. It also defines the
+The Python module *lib/utils.py*, contains implementations of the rest
+of the macros in TPM, as Python functions. It also defines the
 :func:`pytpm.utils.convert` function.
 
 SWIG interface file and related header files are present in the
@@ -147,8 +159,8 @@ Examples
 For detailed information on the constants, data structures and
 functions in PyTPM, see the :doc:`reference` section.
 
-Code fragments in the following sections are from an ipython_ terminal
-session.
+Code fragments in the following sections are from ipython_ terminal
+sessions.
 
 .. sourcecode:: ipython
 
@@ -179,7 +191,7 @@ Get the current *UTC* time as a *Julian date*
 
 The function :func:`tpm.utc_now() <pytpm.tpm.utc_now>` returns the
 current *UTC* time as a *Julian day* number. The function
-``tpm.fmt_j()`` returns a string represenation of a *Julian date*.
+``tpm.fmt_j()`` returns a string representation of a *Julian date*.
 
 Convert *Gregorian calendar* date into a *Julian date*
 ------------------------------------------------------
@@ -294,16 +306,17 @@ The signature of the this function is:
 
 .. code-block:: python
 
-  tpm.utils.convert(x=0.0, y=0.0, s1=6, s2=19, epoch=2451545.0,
-                    equinox=2451545.0, timetag=None, lon=-111.598333,
-                    lat=31.956389, alt=2093.093, T=273.15, P=1013.25,
-                    H=0.0, W=0.55000)
+  tpm.utils.convert(x=0.0, y=0.0, s1=6, s2=19, epoch=tpm.J2000, 
+            equinox=tpm.J2000, timetag=None, delta_ut = 0,
+            lon = -111.598333, lat = 31.956389, alt = 2093.093,
+            x_pole = 0.0, y_pole = 0.0, T = 273.15, 
+            P = 1013.25, H=0.0, W=0.55000):
 
 As an example, to convert heliocentric mean FK5 J2000 coordinates
 (0,0), to topocentric observed (azimuth, elevation) at the current
-time, for location corresponding to the KPNO observatory, we can use
-the following function call. The default parameters are for the KPNO
-observatory location, and is taken from the TPM code.
+time, for the location corresponding to the KPNO observatory, we can
+use the following function call. The default parameters are for the
+KPNO observatory location, and is taken from the TPM code.
 
 .. sourcecode:: ipython
 
@@ -345,11 +358,17 @@ specified.
 |            | the time corresponding to the end state i.e.,      |
 |            | target time; defaults to the current UTC           |
 +------------+----------------------------------------------------+
+| delta_ut   | UT1 - UTC in seconds.                              |
++------------+----------------------------------------------------+
 | lon        | geographic longitude in degrees                    |
 +------------+----------------------------------------------------+
 | lat        | geographic latitude in degrees                     |
 +------------+----------------------------------------------------+
 | alt        | altitude in meters                                 |
++------------+----------------------------------------------------+
+| x_pole     | ploar motion in radians                            |
++------------+----------------------------------------------------+
+| y_pole     | ploar motion in radians                            |
 +------------+----------------------------------------------------+
 | T          | temperature in kelvin                              |
 +------------+----------------------------------------------------+
@@ -408,11 +427,11 @@ the coordinate system used by the WHAM_ project.
 +---------+------------------------------------------------+
 | TPM_S16 | Topocentric apparent FK5, current equinox      |
 +---------+------------------------------------------------+
-| TPM_S17 | Topocentric apparent FK5, current equnix       |
+| TPM_S17 | Topocentric apparent FK5, current equinox      |
 +---------+------------------------------------------------+
 | TPM_S18 | Topocentric apparent (Hour Angle, Declination) |
 +---------+------------------------------------------------+
-| TPM_S19 | Topecentric observed (Azimuth, Elevation)      |
+| TPM_S19 | Topocentric observed (Azimuth, Elevation)      |
 +---------+------------------------------------------------+
 | TPM_S20 | Topocentric observed (Hour Angle, Declination) |
 +---------+------------------------------------------------+
@@ -470,21 +489,22 @@ system into (Az, EL) for KPNO, at the Julian date 2455363.5 .
     ('+168D 14\' 28.319"', '+68D 32\' 07.080"')
 
 
-The ``convert`` function was used to convert SIMABD coordinates
-between different systems. These tests are in the file
+In tests, the ``convert`` function was used to convert SIMBAD
+coordinates between different systems. These tests are in the file
 ``test/test_convert.py`` file. The Python module gives identical
-results to that from the TPM C library. 
+results to that from the binary created with the TPM C library,
+using the ``tpm_main.c`` program that is included in the source code.
 
 When values were compared with those given by SIMBAD itself,for
-example convert SIMBAD coordinates from FK4 to FK5 and compare with
-SIMABD FK5, the result from ``convert`` agreed to 3 decimal places in
-decimal degrees, i.e., slightly greater than 1 arc-second.
+example, convert SIMBAD coordinates from FK4 to FK5 and compare with
+SIMBAD FK5, the result from ``convert`` agreed to 3 decimal places in
+decimal degrees, i.e., slightly greater than 2-3 arc-second.
 
-The following example in taken from page 36 of the book Practical
-Astronomy With Your Calculator.  We convert hour angle and declination
-to azimuth and latiude for an observer at 52.0 degree north
-lattitude. The only quantity of concern that is different from the
-defaults is the observer's latitude.
+The following example is taken from page 36 of the book `Practical
+Astronomy With Your Calculator`_.  We convert hour angle and
+declination to azimuth and latitude for an observer at 52.0 degree
+north latitude. The only quantity of concern that is different from
+the defaults is the observer's latitude.
 
 .. sourcecode:: ipython
 
@@ -524,5 +544,5 @@ License
 =======
 
 See :file:`src/tpm/TPM_LICENSE.txt` for TPM license. Code for the
-python binding itself is released under the BSD license; see
+Python binding itself is released under the BSD license; see
 LICENSE.txt.

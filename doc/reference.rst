@@ -47,7 +47,7 @@ coordinate conversions. This function is an interface to a C function
 defined in :file:`convert.c`, and hence requires all arguments to be
 supplied when invoking it. Another function, :func:`pytpm.utils.convert`, is
 provided to make it easier to call :func:`pytpm.tpm.convert`. This is
-acheived by providing keyword arguments and default values for most of
+achieved by providing keyword arguments and default values for most of
 the arguments needed by :func:`pytpm.tpm.convert`.
 
 Modules

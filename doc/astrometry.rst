@@ -22,6 +22,7 @@
 .. _USNO Earth Orientation: http://www.usno.navy.mil/USNO/earth-orientation
 .. _Precise Time: http://www.usno.navy.mil/USNO/time
 
+.. currentmodule:: pytpm
 
 This section will given some pointers to resources for obtaining data
 related to astrometry and, links to some documents that describe
@@ -41,26 +42,35 @@ and astrometric data.
 Time scales and calendars
 =========================
 
-Information on ``TAI - UTC``, leap seconds in UTC and other similar
+Information on ``delta_AT = TAI - UTC``, leap seconds in UTC and other similar
 information are available from the International Earth Rotation and
-Reference Systems Service (IERS). See the section on :ref:`iers`
+Reference Systems Service (IERS). See the section on :ref:`iers_sec`
 below.
 
-Information on ``TAI - UTC`` is also maintaiend in the file
-ftp://maia.usno.navy.mil/ser7/tai-utc.dat, which lists ``TAI - UTC``
+Information on ``delta_AT`` is also maintained in the file
+ftp://maia.usno.navy.mil/ser7/tai-utc.dat, which lists ``delta_AT``
 values beginning from 1961 Jan. 1.
 
 See files in the directory ftp://hpiers.obspm.fr/eop-pc/eop/eopc04_05
-for listings that give ``UT1 - UTC`` values.
+for listings that give ``delta_UT = UT1 - UTC`` values.
 
-Earth data
-==========
+The last two resource are the easiest way for obtaining ``delta_AT``
+and ``delta_UT``, respectively. 
+
+PyTPM has a function :func:`pytpm.tpm.delta_AT` that gives the value
+for ``delta_AT`` for the given ``UTC``. But this file has to be
+updated, using values in the ``tai-utc.dat`` file mentioned
+above. Notification of changes are notified through the IERS mailing
+lists. See :ref:`iers_sec` below.
+
+Geographical and Earth data
+===========================
 
 Use the `geo names search facility`_ provided by the `National
 Geospatial-Intelligence Survey <http://www.nga.mil/>`_ for finding
-longitude and latitudes of places, use place and country names. Google
-Maps and Google Earth also give longitude, latitude and altitude
-information.
+longitude and latitudes of places, using place and country
+names. Google Maps and Google Earth also give longitude, latitude and
+altitude information.
 
 Websites of individual observatories may have information on their
 geodetic and geocentric positions.
@@ -165,6 +175,9 @@ and Moon, phases of Moon and others.
 .. _SkyCalc: http://www.dartmouth.edu/~physics/people/faculty/thorstensen.html
 .. _Astronomy on the Personal Computer:
   http://www.amazon.com/Astronomy-Personal-Computer-Oliver-Montenbruck/dp/3540672214
+.. _Practical Astronomy With Your Calculator: 
+  http://www.amazon.com/Practical-Astronomy-Calculator-Peter-Duffett-Smith/dp/0521356997
+
 
 + SLALIB_ 
 + SOFA_
@@ -175,6 +188,7 @@ and Moon, phases of Moon and others.
 + JSky_
 + JSkyCalc_ and SkyCalc_
 + `Astronomy on the Personal Computer`_
++ `Practical Astronomy With Your Calculator`_
 
 Sky visualization and exploration
 =================================
@@ -218,8 +232,8 @@ motion ; data can be accessed using the `ViZier service
 + NOMAD_ (Naval Observatory Merged Astrometric Dataset)
 
   NOMAD is a simple merge of data from the Hipparcos, Tycho-2, UCAC-2
-  and USNO-B1 catalogues, supplemented by photometric information from
-  the 2MASS final release point source catalogue. The primary aim of
+  and USNO-B1 catalogs, supplemented by photometric information from
+  the 2MASS final release point source catalog. The primary aim of
   NOMAD is to help users retrieve the best currently available
   astrometric data for any star in the sky by providing these data in
   one place.
@@ -250,9 +264,23 @@ astrometry related concepts.
   that is distributed with it. It has good explanations of concepts
   such as orbital elements, precession angles and others.
 
++  `Practical Astronomy With Your Calculator`_
+
+  Step-by-step instructions on performing astrometry calculations
+  using a calculator. Great book for understanding basic ideas in
+  astrometry.
+
 The SOFA cookbooks, Tools for Earth Attitude and Time Scales and
 Calendar Tools, are perhaps the best documents to start
-with.
+with. `Spherical Astronomy`_ by Robin M. Green and `Fundamentals of
+Astrometry`_ by Jean Kovalevsky and P. Kenneth Seidelmann, are two
+relevant textbooks.
+
+.. _Spherical Astronomy:
+  http://www.amazon.com/Spherical-Astronomy-Robin-M-Green/dp/0521317797
+.. _Fundamentals of Astrometry:
+  http://www.amazon.com/Fundamentals-Astrometry-Jean-Kovalevsky/dp/0521642167
+
 
 Organizations
 =============

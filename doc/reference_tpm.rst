@@ -28,9 +28,9 @@ __ http://articles.adsabs.harvard.edu/cgi-bin/nph-iarticle_query?
    data_type=GIF&type=SCREEN_VIEW&classic=YES
 
 ==============  =======================================================
-``GAL_RA``       Equatorial right ascension of the galatic pole, 
+``GAL_RA``       Equatorial right ascension of the galactic pole, 
                  in degrees (B1950.0).
-``GAL_DEC``      Equatorial declination of the galatic pole, in
+``GAL_DEC``      Equatorial declination of the galactic pole, in
                  degrees (B1950.0).
 ``GAL_LON``      Zero of longitude (B1950.0)
 ==============  =======================================================
@@ -116,9 +116,9 @@ referred to as states:
  ``TPM_S14``        TPM_S13 + aberration                           
  ``TPM_S15``        TPM_S14 + precession                           
  ``TPM_S16``        Topocentric apparent FK5, current equinox      
- ``TPM_S17``        Topocentric apparent FK5, current equnix       
+ ``TPM_S17``        Topocentric apparent FK5, current equinox       
  ``TPM_S18``        Topocentric apparent (Hour Angle, Declination) 
- ``TPM_S19``        Topecentric observed (Azimuth, Elevation)      
+ ``TPM_S19``        Topocentric observed (Azimuth, Elevation)      
  ``TPM_S20``        Topocentric observed (Hour Angle, Declination) 
  ``TPM_S21``        Topocentric observed WHAM (longitude, latitude)
 =================  ==================================================
@@ -228,7 +228,7 @@ There are two classes, ``V3`` and ``V6``, for representing vectors.
 ~~~~~~~~~~~~~~
 
 ``V3`` is used for representing 3D coordinates and 3D velocities of an
-astronomical object. This can be either in spherical or in cartesion
+astronomical object. This can be either in spherical or in Cartesian
 coordinates. The type of a vector is indicated using the attribute
 ``type`` of a ``V3`` instance; ``type == tpm.CARTESIAN`` for the
 former type and ``type == tpm.SPHERICAL`` for the latter type.
@@ -266,7 +266,7 @@ equal to the ``type`` attribute of ``v[tpm.POS]``.
 
 The naming scheme used for ``V3`` instances, i.e., ``R`` for the first
 element of the position vector, is also valid for ``V6``
-instances. For example, ``v6[tpm.POS][0]`` is refered to as ``X`` in
+instances. For example, ``v6[tpm.POS][0]`` is referred to as ``X`` in
 the case of cartesian coordinates and as ``R`` in the case of
 spherical coordinates. 
 
@@ -329,7 +329,7 @@ The class ``DMS`` is used to represent an angle. It hold has three
 data attributes: ``dd``, ``mm`` and ``ss``. These represent, degrees,
 arcminutes and arcseconds in an angle, respectively. All three are
 floating point numbers. The :ref:`section on functions for Angles
-<d_and_dms_func>` lists some functions for manipulating and formating
+<d_and_dms_func>` lists some functions for manipulating and formatting
 angles and ``DMS`` structures.
 
 .. autoclass:: DMS
@@ -365,7 +365,7 @@ used to convert between ``DMS`` and ``HMS`` structures.
 ++++++++++++++++++
 
 For a given date, the class ``YMD`` stores the year and month in the
-integer attibutes ``y`` and ``mm``, respectively. It stores the day
+integer attributes ``y`` and ``mm``, respectively. It stores the day
 part in the floating point attribute ``dd``. In addition, ``YMD`` uses
 an instance of :class:`HMS`, as attribute ``hms``, to store the hours,
 minutes and seconds part of the time. 
@@ -409,7 +409,7 @@ dependent.
 .. rubric:: Independent properties of TPM state vector
 
 ================  =========================================================
-``utc``            Coordinated Univeral Time in Julian Day numbers
+``utc``            Coordinated Universal Time in Julian Day numbers
 ``delta_at``       UTC + delta_at = TAI, International Atomic Time
 ``delta_ut``       UTC + delta_ut = UT1, Universal Time
 ``lon``            East geographic longitude in radians
@@ -420,7 +420,7 @@ dependent.
 ``T``              Ambient Temperature in Kelvins
 ``P``              Ambient pressure in millibars
 ``H``              Ambient humidity (0 - 1)
-``wavelength``     Oberving wavelength in microns
+``wavelength``     Observing wavelength in microns
 ================  =========================================================
 
 .. _dep_props_state_vector:
@@ -453,7 +453,7 @@ dependent.
     :members:
 
 The function :func:`pytpm.tpm.tpm_data` is used to initialize a TPM
-state and for performing calulations that will set various dependent
+state and for performing calculations that will set various dependent
 properties of the state. The independent properties must be set
 manually.
 
@@ -482,7 +482,7 @@ attributes of this class:
  ``position``   Spherical coordinates in radians; 2 element array
  ``offset``     Offset in radians; 2 element array
  ``motion``     Proper motion in radians/day; 2 element array
- ``parallax``   Parallax in arcsec.
+ ``parallax``   Parallax in arcseconds.
  ``speed``      Space velocity in AU/day.
 ============== ====================================================
 
@@ -520,7 +520,7 @@ star, respectively.
 CONS
 ~~~~
 
-The class ``CONS`` represens a "line segment" between two stars. It
+The class ``CONS`` represents a "line segment" between two stars. It
 has four floating point data attributes, ``a1``, ``d1``, ``a2`` and
 ``d2``, representing the coordinates of the two stars involved.
 
@@ -532,7 +532,7 @@ TPM functions
 =============
 
 TPM comes with functions and macros, for manipulating vectors and
-matrices, calculating date and time, formating angles and several
+matrices, calculating date and time, formatting angles and several
 others purposes.  
 
 All constants and functions defined in TPM are available in
@@ -560,7 +560,7 @@ This function takes as input the ``X`` and ``Y`` coordinates, i.e.,
 ``RA`` and ``DEC`` or latitude and longitude, and all the
 :ref:`independent variables of the TPM state vector
 <indep_props_state_vector>`. It initializes the state vector, sets the
-independent properties and caclulates all the :ref:`dependent
+independent properties and calculates all the :ref:`dependent
 properties <dep_props_state_vector>`. It then call the TPM state
 machine and performs the coordinate conversion requested. The
 resultant values are returned.
@@ -616,7 +616,7 @@ instance.
 Initialize
 ++++++++++
 
-To intialize a V3 instance, with all fields set to 0, use the
+To initialize a V3 instance, with all fields set to 0, use the
 ``v3init`` function. This function takes an integer indicating the
 type of the V3 instance and returns a V3 instance.
 
@@ -747,7 +747,7 @@ only one argument, the V3 instance.
 Convert between cartesian and spherical
 +++++++++++++++++++++++++++++++++++++++
 
-The following functions convert between cartesian and spherical
+The following functions convert between Cartesian and spherical
 representations of a V3 vector. Both take a V3 instance as their
 argument and returns a new V3 instance.
 
@@ -777,7 +777,7 @@ vectors.
 Modulus
 +++++++
 
-To cacluate the "modulus" or "length" of a vector use the ``v3mod``
+To calculate the "modulus" or "length" of a vector use the ``v3mod``
 function. This function takes a V3 instance and returns a double.
 
 .. autofunction:: v3mod   
@@ -995,7 +995,7 @@ use the functions ``v6alpha`` and ``v6delta``.
 Convert cartesian to spherical and vice-versa
 +++++++++++++++++++++++++++++++++++++++++++++
 
-Use the following two functions to convert between cartesian and
+Use the following two functions to convert between Cartesian and
 spherical representations of a ``V6`` vector.
 
 .. autofunction:: v6c2s         
@@ -1047,7 +1047,7 @@ Apply proper motion to position vector
 ++++++++++++++++++++++++++++++++++++++
 
 The ``v62v3`` function applies space motion to the position vector in
-a ``V6`` vector. The veolcity components and multiplied with the time
+a ``V6`` vector. The velocity components and multiplied with the time
 interval provided and then the result is added to the corresponding
 position component. The resulting ``V3`` position vector is returned.
 
@@ -1165,7 +1165,7 @@ Multiply a component with a scalar
 
 The following functions return a matrix with the component set to the
 value obtained by multiplying the corresponding value in the input
-matirx with a scalar.
+matrix with a scalar.
 
 .. autofunction:: m3MulXXf
 .. autofunction:: m3MulXYf
@@ -1216,7 +1216,7 @@ orthogonal.
 Scale a matrix with a scalar
 ++++++++++++++++++++++++++++
 
-The function ``m3scale`` return a ``M3`` martix with components set to
+The function ``m3scale`` return a ``M3`` matrix with components set to
 those obtained by multiplying the corresponding components of the
 input matrix with a scalar.
 
@@ -1242,7 +1242,7 @@ Product of a ``M3`` matrix with a ``V6`` matrix
 +++++++++++++++++++++++++++++++++++++++++++++++
 
 The function ``m3v6`` returns a ``V6`` vector, obtained by multiplying
-the velocity and position components of the input ``V6`` vecctor with
+the velocity and position components of the input ``V6`` vector with
 the input ``M3`` matrix.
 
 .. autofunction:: m3v6     
@@ -1252,7 +1252,7 @@ the input ``M3`` matrix.
 M6 matrices
 ~~~~~~~~~~~
 
-Scaled iDentity matrix and null matrix
+Scaled identity matrix and null matrix
 ++++++++++++++++++++++++++++++++++++++
 
 Function ``m6I`` returns an identity ``M6`` matrix, scaled with the
@@ -1325,7 +1325,7 @@ component ``M3`` matrices are orthogonal.
 Scale a matrix with a scalar
 ++++++++++++++++++++++++++++
 
-The function ``m6scale`` return a ``M6`` martix with each of the
+The function ``m6scale`` return a ``M6`` matrix with each of the
 ``M3`` matrix component in the ``M6`` matrix scaled with the given
 constant.
 
@@ -1409,8 +1409,8 @@ structure.
   Out[9]: 21.599999999998261
 
 Functions ``dms_diff`` and ``dms_sum`` return a :class:`DMS` structure,
-that correponds to the difference and sum between the given DMS
-structures, repectively.
+that corresponds to the difference and sum between the given DMS
+structures, respectively.
 
 .. autofunction:: dms_sum
 .. autofunction:: dms_diff
@@ -1911,7 +1911,7 @@ a year and a day, the latter can have fractional part, and returns a
   (2000, 12, 31.0, 0.0, 0.0, 0.0)
 
 The function ``j2dow`` returns the day of the week corresponding to
-the given Julian day number; sunday is day 0. The function ``y2doy``
+the given Julian day number; Sunday is day 0. The function ``y2doy``
 calculates the number of days in the given *proleptic Gregorian* year.
 
 .. autofunction:: j2dow
@@ -2054,7 +2054,7 @@ except those corresponding to ``TPM_INIT``, are carried out.
 
 In the example, below we initialize a TPM state vector and then print
 its contents; only a portion of the output is shown. The module
-``fmt_tpm.py`` can be downloaded from :download:`this url
+``fmt_tpm.py`` can be downloaded from :download:`this URL
 <code/fmt_tpm.py>`.
 
 .. sourcecode:: ipython
@@ -2209,7 +2209,7 @@ Functions ``eccentricity`` and ``eccentricity_dot`` return the
 eccentricity of the Earth's orbit for the given TDT.  Functions
 ``obliquity`` and ``obliquity_do`` return the mean obliquity of the
 ecliptic for the epoch J2000 at the given TDT. All these functions
-return values in radians and radians per Julian centruy as
+return values in radians and radians per Julian century as
 appropriate.
 
 .. TODO:: Check units of eccentricity_dot and obliquity_dot.
@@ -2232,11 +2232,11 @@ E-terms if the ``flag`` is positive.
 .. autofunction:: ellab
 
 The following 6 functions calculate the rotation angles for precessing
-equatorial coordinates, inluding velocities, between equator and
+equatorial coordinates, including velocities, between equator and
 equinox of two epochs. The first and second parameters are the initial
 and target epochs of the equator and equinox, as Julian dates. The
 ``flag`` indicates which version of these angles should be used. These
-flags defined are defined as constants in TPM and decribed earlier in
+flags defined are defined as constants in TPM and described earlier in
 :ref:`tpm_fk4_fk5_precess_angles`.
 
 
@@ -2255,7 +2255,7 @@ are the initial and final epochs, the parameter ``pflag`` selects the
 appropriate precession angles as described in the section
 :ref:`tpm_fk4_fk5_precess_angles`. The last parameter, ``sflag``
 indicates whether the precession involves transition from or to a
-non-inertial frame. FK4-FK5 and FK5-FK4 precessions invlove the non-inertial FK4
+non-inertial frame. FK4-FK5 and FK5-FK4 precession involve the non-inertial FK4
 reference frame. All these are described in the section
 :ref:`tpm_fk4_fk5_precess_angles`. 
 
@@ -2277,11 +2277,11 @@ in obliquity for the given TDT.
 Aberration and light deflection
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Function ``aberrate`` adds or substracts aberration, given as a
+Function ``aberrate`` adds or subtracts aberration, given as a
 :class:`V6 <pytpm.tpm.V6>` vector, from another :class:`V6
 <pytpm.tpm.V6>` vector. The latter is given as the first argument to
 the function and the latter is given as the second. If argument
-``flag`` is positive then aberation is added to the state vector, else
+``flag`` is positive then aberration is added to the state vector, else
 it is subtracted from the state vector.
 
 .. autofunction:: aberrate
@@ -2289,6 +2289,7 @@ it is subtracted from the state vector.
 Function ``ldeflect`` takes a :class:`V6 <pytpm.tpm.V6>` state vector
 as its first argument, and a :class:`V6 <pytpm.tpm.V6>` state vector
 representing the heliocentric coordinates of Earth, and applies the
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 correction for gravitational deflection of light. If the third
 argument, ``flag`` is positive then the change is added to the state
 vector, else the change is subtracted from the state vector.
@@ -2305,8 +2306,8 @@ instance.
 .. autofunction:: geod2geoc
 
 
-Tranform between local, equatorial, ecliptic and galactic systems
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Transform between local, equatorial, ecliptic and galactic systems
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The following functions rotate a :class:`V6 <pytpm.tpm.V6>` vector
 from one coordinate system to the other.
@@ -2328,7 +2329,7 @@ the opposite conversion.
 .. autofunction:: ecl2equ
 .. autofunction:: equ2ecl
 
-Functions ``equ2gal`` and ``gal2equ`` converts equatorial coordiantes
+Functions ``equ2gal`` and ``gal2equ`` converts equatorial coordinates
 to galactic and vice-versa, respectively. Both accept a :class:`V6
 <pytpm.tpm.V6>` vector as their only argument.
 

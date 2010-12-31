@@ -32,7 +32,7 @@ Coordinate conversion
        timetag. This is not carried out by TPM.
 
        The coordinate system will be in given equinox or catalog
-       equinox as required. The coodinates will not have proper
+       equinox as required. The coordinates will not have proper
        motions applied to them, i.e., they remain in the epoch
        provided. So when converting to equinox-of-date, the epoch is
        not used at all. In fact epoch is used only for +- T05.
@@ -728,14 +728,14 @@ Multiply components of :class:`pytpm.tpm.YMD` with a scalar
 Functions for generating string representations
 -----------------------------------------------
 
-The following functions return string represenation of the quantities
+The following functions return string representation of the quantities
 in the appropriate data structures passed to them.
 
 .. autofunction:: fmt_dms
 .. autofunction:: fmt_hms
 .. autofunction:: fmt_jd
 
-Several other string formating functions are listed in the section
+Several other string formatting functions are listed in the section
 titled :ref:`tpm_func_gen_string`.
 
 
@@ -747,7 +747,7 @@ a year. The function ``byear2jd`` converts the given year in the in
 the Basselian year system into Julian day number.  ``jd2byear``
 converts a Julian day number into a year in the Basselian year
 system. Functions ``jyear2jd`` and ``jd2jyear`` performs a similar
-convertion between a Julian day number and a year in the Julian year
+conversion between a Julian day number and a year in the Julian year
 system.
 
 .. autofunction:: byear2jd
@@ -813,8 +813,8 @@ Conversion between angle and time
 .. autofunction:: as2h
 .. autofunction:: h2as
 
-Funtions related to dates
--------------------------
+Functions related to dates
+--------------------------
 
 .. autofunction:: j2j
 .. autofunction:: j2y
