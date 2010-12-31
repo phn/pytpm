@@ -37,4 +37,4 @@ available, and the main documentation.
 import tpm
 import utils
 
-__version__ = "0.3dev"
+__version__ = "0.3"

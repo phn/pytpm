@@ -21,7 +21,7 @@ function of the same name provided in the file *convert.c*.
 """
 setup(
         name = 'pytpm',
-        version = '0.3dev',
+        version = '0.3',
         description = 'Python interface to the TPM astrometry library.',
         long_description = long_desc,
         license = 'BSD',
