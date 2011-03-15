@@ -1,1 +1,0 @@
-gcc example.c -lm -I./ -L./ -Wl,libtpm.a -o example
