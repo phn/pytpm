@@ -1,0 +1,252 @@
+# -*- coding: utf-8 -*-
+# The following line must be present in the pytpm.pyx file.
+# cimport _tpm_times 
+
+MJD_0 = _tpm_times.MJD_0
+B1950 = _tpm_times.B1950
+J2000 = _tpm_times.J2000
+J1984 = _tpm_times.J1984
+CB = _tpm_times.CB
+CJ = _tpm_times.CJ
+SUNDAY	= _tpm_times.SUNDAY 
+MONDAY	= _tpm_times.MONDAY
+TUESDAY	= _tpm_times.TUESDAY
+WEDNESDAY = _tpm_times.WEDNESDAY
+THURSDAY =  _tpm_times.THURSDAY
+FRIDAY	=   _tpm_times.FRIDAY
+SATURDAY =  _tpm_times.SATURDAY 
+
+cdef class DMS(object):
+    cdef _tpm_times.DMS _dms
+    def __cinit__(self):
+        self._dms.dd = 0.0
+        self._dms.mm = 0.0
+        self._dms.ss = 0.0
+
+    def __init__(self,dms={'dd':0.0,'mm':0.0,'ss':0.0}):
+        self._dms.dd = dms.get('dd',0.0)
+        self._dms.mm = dms.get('mm',0.0) 
+        self._dms.ss = dms.get('ss',0.0) 
+        
+    def __getdd(self):
+        return self._dms.dd
+    def __setdd(self,value):
+        self._dms.dd = value
+    dd = property(__getdd, __setdd,doc="Degrees.")
+
+    def __getmm(self):
+        return self._dms.mm
+    def __setmm(self,value):
+        self._dms.mm = value
+    mm = property(__getmm, __setmm,doc="Minutes of arc.")
+
+    def __getss(self):
+        return self._dms.ss
+    def __setss(self,value):
+        self._dms.ss = value
+    ss = property(__getss, __setss,doc="Seconds of arc.")
+
+    def __repr__(self):
+        d = {'dd':  self.dd, 'mm': self.mm, 'ss': self.ss}
+        return repr(d)
+    
+    def __str__(self):
+        return self.__unicode__().encode("utf-8")
+    
+    def __unicode__(self):
+        cdef _tpm_times.DMS dms
+        dms = _tpm_times.dms2dms(self._dms)
+        return u"{0:+03.0f}\u00B0 {1:02.0f}' {2:06.3f}\"".format(
+            dms.dd, dms.mm, dms.ss)
+
+    def __add__(self, other):
+        # Cython does not have __radd__ and the first parameter may not
+        # be this object
+        if isinstance(self, DMS) and isinstance(other, DMS):
+            # return a new DMS object
+            dms = self.__class__()
+            dms.dd = self.dd + other.dd
+            dms.mm = self.mm + other.mm
+            dms.ss = self.ss + other.ss
+            return dms
+        else:
+            raise TypeError, "Can only add two DMS values."
+
+    def __sub__(self, other):
+        # Cython does not have __rsub__ and the first parameter may not
+        # be this object
+        if isinstance(self, DMS) and isinstance(other, DMS):
+            # return a new DMS object
+            dms = self.__class__()
+            dms.dd = self.dd - other.dd
+            dms.mm = self.mm - other.mm
+            dms.ss = self.ss - other.ss
+            return dms
+        else:
+            raise TypeError, "Can only subtract two DMS values."
+
+cdef class HMS(object):
+    cdef _tpm_times.HMS _hms
+    def __cinit__(self):
+        self._hms.hh = 0.0
+        self._hms.mm = 0.0
+        self._hms.ss = 0.0
+
+    def __init__(self,hms={'hh':0.0,'mm':0.0,'ss':0.0}):
+        self._hms.hh = hms.get('hh',0.0)
+        self._hms.mm = hms.get('mm',0.0) 
+        self._hms.ss = hms.get('ss',0.0) 
+        
+    def __gethh(self):
+        return self._hms.hh
+    def __sethh(self,value):
+        self._hms.hh = value
+    hh = property(__gethh, __sethh,doc="Hours.")
+
+    def __getmm(self):
+        return self._hms.mm
+    def __setmm(self,value):
+        self._hms.mm = value
+    mm = property(__getmm, __setmm,doc="Minutes.")
+
+    def __getss(self):
+        return self._hms.ss
+    def __setss(self,value):
+        self._hms.ss = value
+    ss = property(__getss, __setss,doc="Seconds.")
+
+    def __repr__(self):
+        d = {'hh':  self.hh, 'mm': self.mm, 'ss': self.ss}
+        return repr(d)
+    
+    def __str__(self):
+        return self.__unicode__().encode("utf-8")
+    
+    def __unicode__(self):
+        cdef _tpm_times.HMS hms
+        hms = _tpm_times.hms2hms(self._hms)
+        s = _tpm_times.fmt_hms(hms)
+        return unicode(s)
+
+    def __add__(self, other):
+        # Cython does not have __rdd__ and the first parameter may not
+        # be this object
+        if isinstance(self, HMS) and isinstance(other, HMS):
+            # return a new HMS object
+            hms = self.__class__()
+            hms.hh = self.hh + other.hh
+            hms.mm = self.mm + other.mm
+            hms.ss = self.ss + other.ss
+            return hms
+        else:
+            raise TypeError, "Can only add two HMS values."
+
+    def __sub__(self, other):
+        # Cython does not have __rsub__ and the first parameter may not
+        # be this object
+        if isinstance(self, HMS) and isinstance(other, HMS):
+            # return a new HMS object
+            hms = self.__class__()
+            hms.hh = self.hh - other.hh
+            hms.mm = self.mm - other.mm
+            hms.ss = self.ss - other.ss
+            return hms
+        else:
+            raise TypeError, "Can only subtract two HMS values."
+
+#double BYEAR2JD(double x)
+#cpdef double BYEAR2JD(double byear):
+#    """Convert Besselian year into a Julian date."""
+#    return _tpm_times.BYEAR2JD(byear)
+# 
+##double JD2BYEAR(double x)
+#cpdef double JD2BYEAR(double jd):
+#    """Convert Julian date into a Julian year."""
+#    return _tpm_times.JD2BYEAR(jd)
+# 
+##double JYEAR2JD(double x)
+##double JD2JYEAR(double x)
+# 
+##DMS d2dms(double d)
+#cpdef DMS d2dms(double d):
+#    return _tpm_times.d2dms(d)
+# 
+##DMS dms2dms(DMS dms)
+#cpdef DMS dms2dms(DMS dms):
+#    return DMS(_tpm_times.dms2dms(dms._dms))
+
+#DMS dms_diff(DMS dms1, DMS dms2)
+#DMS dms_sum(DMS dms1, DMS dms2)
+#DMS hms2dms(HMS hms)
+#HMS dms2hms(DMS dms)
+#HMS h2hms(double h)
+#HMS hms2hms(HMS hms)
+#HMS hms_diff(HMS hms1, HMS hms2)
+#HMS hms_sum(HMS hms1, HMS hms2)
+#JD j2jd(double j)
+#JD jd2jd(JD jd)
+#JD jd_diff(JD jd1, JD jd2)
+#JD jd_now(void)
+#JD jd_sum(JD jd1, JD jd2)
+#JD ymd2jd(YMD ymd)
+#YMD jd2ymd(JD jd)
+#YMD rdb2ymd(double rdb)
+#YMD y2ymd(double y)
+#YMD ydd2ymd(int y, double dd)
+#YMD ymd2ymd(YMD ymd)
+#char *fmt_alpha(double alpha)
+#char *fmt_d(double d)
+#char *fmt_delta(double delta)
+#char *fmt_h(double h)
+#char *fmt_j(double j)
+#char *fmt_rdb(double rdb)
+#char *fmt_ymd(YMD ymd)
+#char *fmt_ymd_raw(YMD ymd)
+#double d2d(double d)
+#double dms2d(DMS dms)
+#double gcal2j(int y, int m, int d)
+#double h2h(double h)
+#double hms2h(HMS hms)
+#double jcal2j(int y, int m, int d)
+#double jd2j(JD jd)
+#double r2r(double r)
+#double utc_now(void)
+#double ymd2dd(YMD ymd)
+#double ymd2rdb(YMD ymd)
+#double ymd2y(YMD ymd)
+#int argv2dms(DMS *dms, char *argv[], int argnum, int cooked)
+#int argv2hms(HMS *hms, char *argv[], int argnum, int cooked)
+#int argv2ymd(YMD *ymd, char *argv[], int argnum, int cooked)
+#int j2dow(double j)
+#int y2doy(int y)
+#void j2gcal(int *y, int *m, int *d, double j)
+#void j2jcal(int *y, int *m, int *d, double j)
+# 
+#DMS d2hms(double d)
+#double dms2h(DMS dms)
+#double dms2r(DMS dms)
+#char *fmt_dms(DMS dms)
+cpdef char* fmt_dms(DMS dms):
+    return _tpm_times.fmt_dms(dms._dms)
+#char *fmt_hms(HMS hms)
+cpdef char *fmt_hms (HMS hms):
+    return _tpm_times.fmt_hms(hms._hms)
+#char *fmt_jd(JD jd)
+#char *fmt_r(double r)
+#char *fmt_y(double y)
+#DMS h2dms(double h)
+#double hms2d(HMS hms)
+#double hms2r(HMS hms)
+#double j2j(double j)
+#double j2y(double j)
+#double j2ymd(double j)
+#double jd2y(JD jd)
+#DMS r2dms(double r)
+#HMS r2hms(double r)
+#double y2j(double y)
+#JD y2jd(double y)
+#double y2y(double y)
+#double ymd2j(YMD ymd)
+#YMD ymd_diff(YMD ymd1, YMD ymd2)
+
+
