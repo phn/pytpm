@@ -10,3 +10,4 @@ doc/_build/
 pytpm-ghpages.rst
 .ropeproject/
 setup.cfg
+*.egg-info
