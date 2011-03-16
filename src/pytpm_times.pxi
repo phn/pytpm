@@ -154,6 +154,93 @@ cdef class HMS(object):
         else:
             raise TypeError, "Can only subtract two HMS values."
 
+cdef class YMD(object):
+    cdef _tpm_times.YMD _ymd
+    def __cinit__(self):
+        self._ymd.y = 0
+        self._ymd.m = 0
+        self._ymd.dd = 0.0
+        self._ymd.hms.hh = 0.0
+        self._ymd.hms.mm = 0.0
+        self._ymd.hms.ss = 0.0
+        
+    def __init__(self,ymd={'y':0,'m':0,'dd':0.0,'hh':0.0,'mm':0.0,'ss':0.0}):
+        self._ymd.y = ymd.get('y',0)
+        self._ymd.m = ymd.get('m',0)
+        self._ymd.dd = ymd.get('dd',0)
+        self._ymd.hms.hh = ymd.get('hh',0.0) 
+        self._ymd.hms.mm = ymd.get('mm',0.0) 
+        self._ymd.hms.ss = ymd.get('ss',0.0)
+        
+    def __gety(self):
+        return self._ymd.y
+    def __sety(self,value):
+        assert type(value) == type(1), "Year must be an integer."
+        self._ymd.y = value
+    y = property(__gety, __sety,doc="Year as an integer.")
+
+    def __getm(self):
+        return self._ymd.m
+    def __setm(self,value):
+        assert type(value) == type(1), "Month must be an integer."
+        self._ymd.m = value
+    m = property(__getm, __setm,doc="Month as an integer.")
+
+    def __getdd(self):
+        return self._ymd.dd
+    def __setdd(self,value):
+        self._ymd.dd = value
+    dd = property(__getdd, __setdd,doc="Day as a float.")
+
+    def __gethh(self):
+        return self._ymd.hms.hh
+    def __sethh(self,value):
+        self._ymd.hms.hh = value
+    hh = property(__gethh, __sethh,doc="Hours as a float.")
+
+    def __getmm(self):
+        return self._ymd.hms.mm
+    def __setmm(self,value):
+        self._ymd.hms.mm = value
+    mm = property(__getmm, __setmm,doc="Minutes as a float.")
+
+    def __getss(self):
+        return self._ymd.hms.ss
+    def __setss(self,value):
+        self._ymd.hms.ss = value
+    ss = property(__getss, __setss,doc="Seconds as a float.")
+
+    def __repr__(self):
+        ymd = dict(y=self.y, m=self.m, dd=self.dd, hh=self.hh,
+                   mm=self.mm, ss=self.ss)
+        return repr(ymd)
+
+    def __str__(self):
+        return self.__unicode__().encode("utf-8")
+
+    def __unicode__(self):
+        cdef _tpm_times.YMD ymd
+        ymd = _tpm_times.ymd2ymd(self._ymd)
+        s = _tpm_times.fmt_ymd(ymd)
+        return unicode(s)
+
+    def __sub__(self, other):
+        # Cython does not have __rdd__ and the first parameter may not
+        # be this object
+        if isinstance(self, YMD) and isinstance(other, YMD):
+            # return a new HMS object
+            ymd = self.__class__()
+            ymd.y = self.y - other.y
+            ymd.m = self.m - other.m
+            ymd.dd = self.dd - other.dd
+            ymd.hh = self.hh - other.hh
+            ymd.mm = self.mm - other.mm
+            ymd.ss = self.ss - other.ss
+            return ymd
+        else:
+            raise TypeError, "Can only subtract two YMD values."
+
+
 #double BYEAR2JD(double x)
 #cpdef double BYEAR2JD(double byear):
 #    """Convert Besselian year into a Julian date."""
@@ -248,5 +335,4 @@ cpdef char *fmt_hms (HMS hms):
 #double y2y(double y)
 #double ymd2j(YMD ymd)
 #YMD ymd_diff(YMD ymd1, YMD ymd2)
-
 
