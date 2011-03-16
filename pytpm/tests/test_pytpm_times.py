@@ -281,6 +281,130 @@ class TestYMDStructure(unittest.TestCase):
         s = unicode(ymd)
         self.assertEqual(s, u"Sat Oct  2 00:54:09.090    2 BC")
 
+
+class TestJDStructure(unittest.TestCase):
+    def testCreate(self):
+        """Must be able to create a JD object."""
+        jd = tpm.JD()
+        self.assertEqual(type(jd), tpm.JD)
+
+    def testGetFields(self):
+        """Must be able to retrieve values of fields."""
+        jd = tpm.JD()
+        self.assertEqual(jd.dd, 0.0)
+        self.assertEqual(jd.hh, 0.0)
+        self.assertEqual(jd.mm, 0.0)
+        self.assertEqual(jd.ss, 0.0)
+
+    def testSetFieldValuesAtInit(self):
+        """Must be able to set fields of JD at initialization."""
+        j = dict(dd=2451445.0, hh=12.0, mm=0.0, ss=0.0)
+        jd = tpm.JD(j)
+        self.assertEqual(jd.dd, j['dd'])
+        self.assertEqual(jd.hh, j['hh'])
+        self.assertEqual(jd.mm, j['mm'])
+        self.assertEqual(jd.ss, j['ss'])
+
+    def testSetFieldValues(self):
+        """Must be able to set fields of a JD object."""
+        j = dict(dd=2451445.0, hh=12.0, mm=0.0, ss=0.0)
+        jd = tpm.JD()
+        jd.dd = j['dd']
+        jd.hh = j['hh']
+        jd.mm = j['mm']
+        jd.ss = j['ss']
+        self.assertEqual(jd.dd, j['dd'])
+        self.assertEqual(jd.hh, j['hh'])
+        self.assertEqual(jd.mm, j['mm'])
+        self.assertEqual(jd.ss, j['ss'])
+
+    def testAddition(self):
+        """Must be able to add two JD values."""
+        j1 = dict(dd=2451445.0, hh=12.0, mm=0.0, ss=0.0)
+        j2 = dict(dd=1.0, hh=2.3, mm=23.4, ss=2.0)
+        jd1 = tpm.JD()
+        jd1.dd = j1['dd']
+        jd1.hh = j1['hh']
+        jd1.mm = j1['mm']
+        jd1.ss = j1['ss']
+        jd2 = tpm.JD()
+        jd2.dd = j2['dd']
+        jd2.hh = j2['hh']
+        jd2.mm = j2['mm']
+        jd2.ss = j2['ss']
+        jd = jd1 + jd2
+        self.assertEqual(jd.dd, jd1.dd + jd2.dd)
+        self.assertEqual(jd.hh, jd1.hh + jd2.hh)
+        self.assertEqual(jd.mm, jd1.mm + jd2.mm)
+        self.assertEqual(jd.ss, jd1.ss + jd2.ss)
+
+    def testAddNonJD(self):
+        """Must raise exception if subtraction involves non JD value."""
+        jd = tpm.JD() # All zeros.
+        def add_jd(jd,x):
+            return jd - x
+        self.assertRaises(TypeError,add_jd, jd, 1)
+                        
+    def testSubtraction(self):
+        """Must be able to subtract two JD values."""
+        j1 = dict(dd=2451445.0, hh=12.0, mm=0.0, ss=0.0)
+        j2 = dict(dd=1.0, hh=2.3, mm=23.4, ss=2.0)
+        jd1 = tpm.JD()
+        jd1.dd = j1['dd']
+        jd1.hh = j1['hh']
+        jd1.mm = j1['mm']
+        jd1.ss = j1['ss']
+        jd2 = tpm.JD()
+        jd2.dd = j2['dd']
+        jd2.hh = j2['hh']
+        jd2.mm = j2['mm']
+        jd2.ss = j2['ss']
+        jd = jd1 - jd2
+        self.assertEqual(jd.dd, jd1.dd - jd2.dd)
+        self.assertEqual(jd.hh, jd1.hh - jd2.hh)
+        self.assertEqual(jd.mm, jd1.mm - jd2.mm)
+        self.assertEqual(jd.ss, jd1.ss - jd2.ss)
+
+    def testSubtractNonJD(self):
+        """Must raise exception if subtraction involves non JD value."""
+        jd = tpm.JD() # All zeros.
+        def sub_jd(jd,x):
+            return jd - x
+        self.assertRaises(TypeError,sub_jd, jd, 1)
+    
+    def testRepr(self):
+        """Must give proper repr string."""
+        j = dict(dd=2451445.0, hh=12.0, mm=0.0, ss=0.0)
+        jd = tpm.JD()
+        jd.dd = j['dd']
+        jd.hh = j['hh']
+        jd.mm = j['mm']
+        jd.ss = j['ss']
+        self.assertEqual(j, eval(repr(jd)))
+
+    def testUnicodeAndStr(self):
+        """Must give proper string representations."""
+        # Output strings used as checks are from the file pytpm/tests
+        # /c_tests/fmt_jd_test.c.
+        s1 = " 2451545  12H 00M 00.000S"
+        s2 = " 2456745  15H 06M 50.515S"
+        j1 = dict(dd=2451545.0, hh=12.0, mm=0.0, ss=0.0)
+        j2 = dict(dd=2456745.2456, hh=9.0, mm=12.3446, ss=49.99999)
+        jd1 = tpm.JD()
+        jd2 = tpm.JD()
+        jd1.dd = j1['dd']
+        jd1.hh = j1['hh']
+        jd1.mm = j1['mm']
+        jd1.ss = j1['ss']
+        jd2.dd = j2['dd']
+        jd2.hh = j2['hh']
+        jd2.mm = j2['mm']
+        jd2.ss = j2['ss']
+
+        self.assertEqual(str(jd1), s1)
+        self.assertEqual(unicode(jd1), unicode(s1))
+        self.assertEqual(str(jd2), s2)
+        self.assertEqual(unicode(jd2), unicode(s2))
         
 if __name__ == '__main__':
     unittest.main()

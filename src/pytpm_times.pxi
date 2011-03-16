@@ -241,6 +241,86 @@ cdef class YMD(object):
             raise TypeError, "Can only subtract two YMD values."
 
 
+cdef class JD(object):
+    cdef _tpm_times.JD _jd
+    def __cinit__(self):
+        self._jd.dd = 0.0
+        self._jd.hms.hh = 0.0
+        self._jd.hms.mm = 0.0
+        self._jd.hms.ss = 0.0
+
+    def __init__(self, jd={'dd':0.0,'hh':0.0,'mm':0.0,'ss':0.0}):
+        self._jd.dd = jd.get('dd',0.0)
+        self._jd.hms.hh = jd.get('hh', 0.0)
+        self._jd.hms.mm = jd.get('mm', 0.0)
+        self._jd.hms.ss = jd.get('ss', 0.0)
+
+    def __getdd(self):
+        return self._jd.dd
+    def __setdd(self,value):
+        self._jd.dd = value
+    dd = property(__getdd, __setdd,doc="Day as a float.")
+
+    def __gethh(self):
+        return self._jd.hms.hh
+    def __sethh(self,value):
+        self._jd.hms.hh = value
+    hh = property(__gethh, __sethh,doc="Hours.")
+
+    def __getmm(self):
+        return self._jd.hms.mm
+    def __setmm(self,value):
+        self._jd.hms.mm = value
+    mm = property(__getmm, __setmm,doc="Minutes.")
+
+    def __getss(self):
+        return self._jd.hms.ss
+    def __setss(self,value):
+        self._jd.hms.ss = value
+    ss = property(__getss, __setss,doc="Seconds.")
+
+    def __repr__(self):
+        d = dict(dd=self.dd, hh=self.hh, mm=self.mm, ss=self.ss)
+        return repr(d)
+
+    def __str__(self):
+        return self.__unicode__().encode("utf-8")
+
+    def __unicode__(self):
+        cdef _tpm_times.JD jd
+        jd = _tpm_times.jd2jd(self._jd)
+        s = _tpm_times.fmt_jd(jd)
+        return unicode(s)
+
+    def __add__(self, other):
+        # Cython does not have __rdd__ and the first parameter may not
+        # be this object
+        if isinstance(self, JD) and isinstance(other, JD):
+            # return a new JD object
+            jd = self.__class__()
+            jd.dd = self.dd + other.dd
+            jd.hh = self.hh + other.hh
+            jd.mm = self.mm + other.mm
+            jd.ss = self.ss + other.ss
+            return jd
+        else:
+            raise TypeError, "Can only add two JD values."
+
+    def __sub__(self, other):
+        # Cython does not have __rsub__ and the first parameter may not
+        # be this object
+        if isinstance(self, JD) and isinstance(other, JD):
+            # return a new JD object
+            jd = self.__class__()
+            jd.dd = self.dd - other.dd
+            jd.hh = self.hh - other.hh
+            jd.mm = self.mm - other.mm
+            jd.ss = self.ss - other.ss
+            return jd
+        else:
+            raise TypeError, "Can only add two JD values."
+
+    
 #double BYEAR2JD(double x)
 #cpdef double BYEAR2JD(double byear):
 #    """Convert Besselian year into a Julian date."""
