@@ -49,6 +49,13 @@ class TestDMSStructure(unittest.TestCase):
         self.assertAlmostEqual(dms.mm, dms1.mm+dms2.mm)
         self.assertAlmostEqual(dms.ss, dms1.ss+dms2.ss)
 
+    def testAdditionNonHMS(self):
+        """Must raise exception if addition involves non DMS value."""
+        dms = tpm.DMS() # All zeros.
+        def add_dms(dms,x):
+            return dms + x
+        self.assertRaises(TypeError,add_dms, dms, 1)
+
     def testSubtraction(self):
         """Must perform subtraction of two DMS values."""
         dms1 = tpm.DMS()
@@ -63,6 +70,13 @@ class TestDMSStructure(unittest.TestCase):
         self.assertAlmostEqual(dms.dd, dms1.dd-dms2.dd)
         self.assertAlmostEqual(dms.mm, dms1.mm-dms2.mm)
         self.assertAlmostEqual(dms.ss, dms1.ss-dms2.ss)
+
+    def testSubtractionNonDMS(self):
+        """Must raise exception if subtraction involves non DMS value."""
+        dms = tpm.DMS() # All zeros.
+        def sub_dms(dms,x):
+            return dms - x
+        self.assertRaises(TypeError,sub_dms, dms, 1)
 
     def testRepr(self):
         """The __repr__ method must give proper output."""
@@ -130,6 +144,13 @@ class TestHMSStructure(unittest.TestCase):
         self.assertAlmostEqual(hms.hh, hms1.hh+hms2.hh)
         self.assertAlmostEqual(hms.mm, hms1.mm+hms2.mm)
         self.assertAlmostEqual(hms.ss, hms1.ss+hms2.ss)
+        
+    def testAdditionNonHMS(self):
+        """Must raise exception if addition involves non HMS value."""
+        hms = tpm.HMS() # All zeros.
+        def add_hms(hms,x):
+            return hms + x
+        self.assertRaises(TypeError, add_hms, hms, 1)
 
     def testSubtraction(self):
         """Must perform subtraction of two HMS values."""
@@ -145,6 +166,13 @@ class TestHMSStructure(unittest.TestCase):
         self.assertAlmostEqual(hms.hh, hms1.hh-hms2.hh)
         self.assertAlmostEqual(hms.mm, hms1.mm-hms2.mm)
         self.assertAlmostEqual(hms.ss, hms1.ss-hms2.ss)
+
+    def testSubtractNonHMS(self):
+        """Must raise exception if subtraction involves non HMS value."""
+        hms = tpm.HMS() # All zeros.
+        def sub_hms(hms,x):
+            return hms - x
+        self.assertRaises(TypeError,sub_hms, hms, 1)
 
     def testRepr(self):
         """The __repr__ method must give proper output."""
