@@ -109,7 +109,67 @@ class TestDMSStructure(unittest.TestCase):
         self.assertEqual(hms.mm, t_hms['mm']) 
         self.assertEqual(hms.ss, t_hms['ss'])
 
-    
+    def testNormalize(self):
+        """Must properly normalize degrees, arc-minutes and arc-seconds."""
+        def verify(t,t_norm):
+            dms = tpm.DMS(t)
+            dms.normalize()
+            self.assertAlmostEqual(dms.dd, t_norm['dd'])
+            self.assertAlmostEqual(dms.mm, t_norm['mm'])
+            self.assertAlmostEqual(dms.ss, t_norm['ss'])
+
+        # See tests/c_tests/dms2dms_test.c
+        # Note:
+        # angle = (dms.dd) + (dms.mm/60.0) + (dms.ss/3600.0)
+        # i.e., each must have its own sign. But in string
+        # representation only the degrees will have sign. Normalization
+        # removes negative sign from mm and ss and incorporates the
+        # necessary change into the degrees part and range is (-360.0, 360.0).
+        # That is string -12D 14' 43" => -(12+14/60.0+43/3600.0) and
+        # dms.hh = -12 dms.mm=14 dms.ss=43 => (-12)+(14/60.0)+(43/3600.0).
+        # So -12.425 = "-12D 14' 43\"" = (dms.dd=-13, dms.mm=45, dms.ss=18)
+        # = (dms.dd=-12, dms.mm=-14, dms.ss=-43) to three decimal places.
+        # Also -360.0 = 0.0 = 360.0
+        t = {'dd': 180.0, 'mm':450.0, 'ss':0.0 }
+        t_norm = {'dd': 187.0, 'mm': 30.0, 'ss':0.0}
+        verify(t,t_norm)
+        
+        t = {'dd':12.245, 'mm':0.0, 'ss':0.0}
+        t_norm = {'dd': 12.0, 'mm': 14.0, 'ss': 42.0}
+        verify(t,t_norm)
+        
+        t = {'dd':-12.245, 'mm':0.0, 'ss':0.0}
+        t_norm = {'dd': -13.0, 'mm': 45.0, 'ss': 18.0}
+        verify(t,t_norm)
+
+        t = {'dd':361.1230, 'mm':0.0, 'ss':0.0}
+        t_norm = {'dd': 1.0, 'mm': 7.0, 'ss': 22.8}
+        verify(t,t_norm)
+
+        t = {'dd':-361.1230, 'mm':0.0, 'ss':0.0}
+        t_norm = {'dd': 358.0, 'mm': 52.0, 'ss': 37.2}
+        verify(t,t_norm)
+        
+        t = {'dd':-358.0, 'mm':-1.0, 'ss':-1.0}
+        t_norm = {'dd': -359.0, 'mm': 58.0, 'ss': 59.0}
+        verify(t,t_norm)
+
+        t = {'dd':-358.0, 'mm':0.0, 'ss':0.0}
+        t_norm = {'dd': -358.0, 'mm': 0.0, 'ss': 0.0}
+        verify(t,t_norm)
+
+        t = {'dd':-710.0, 'mm':0.0, 'ss':0.0}
+        t_norm = {'dd': 10.0, 'mm': 0.0, 'ss': 0.0}
+        verify(t,t_norm)
+
+        t = {'dd':710.0, 'mm':0.0, 'ss':0.0}
+        t_norm = {'dd': 350.0, 'mm': 0.0, 'ss': 0.0}
+        verify(t,t_norm)
+
+        t = {'dd':-730.0, 'mm':0.0, 'ss':0.0}
+        t_norm = {'dd': 350.0, 'mm': 0.0, 'ss': 0.0}
+        verify(t,t_norm)
+
 class TestHMSStructure(unittest.TestCase):
     """Test if the methods in the HMS class work."""
     def testCreate(self):
