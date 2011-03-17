@@ -98,7 +98,18 @@ class TestDMSStructure(unittest.TestCase):
         self.assertEqual(str(dms),"+01\xc2\xb0 02' 03.000\"")
         self.assertEqual(dms.__unicode__(),u"+01\u00B0 02' 03.000\"")
 
-        
+    def testToHMS(self):
+        """Must return a tpm.HMS object with appropriate field values."""
+        t = {'dd': 180.0, 'mm':450.0, 'ss':0.0 }
+        t_hms = {'hh': 12.0, 'mm':30.0, 'ss': 0.0}
+        dms = tpm.DMS(t)
+        hms = dms.to_hms()
+        self.assertEqual(type(hms), tpm.HMS)
+        self.assertEqual(hms.hh, t_hms['hh'])
+        self.assertEqual(hms.mm, t_hms['mm']) 
+        self.assertEqual(hms.ss, t_hms['ss'])
+
+    
 class TestHMSStructure(unittest.TestCase):
     """Test if the methods in the HMS class work."""
     def testCreate(self):
@@ -193,6 +204,17 @@ class TestHMSStructure(unittest.TestCase):
         hms.ss = 3.0
         self.assertEqual(str(hms)," 01H 02M 03.000S")
         self.assertEqual(hms.__unicode__(),u" 01H 02M 03.000S")
+
+    def testToDMS(self):
+        """Must return a tpm.DMS object with appropriate field values."""
+        t = {'hh': 12.0, 'mm':30.0, 'ss': 0.0}
+        t_dms = {'dd': 180.0, 'mm':450.0, 'ss':0.0 }
+        hms = tpm.HMS(t)
+        dms = hms.to_dms()
+        self.assertEqual(type(dms), tpm.DMS)
+        self.assertEqual(dms.dd, t_dms['dd'])
+        self.assertEqual(dms.mm, t_dms['mm']) 
+        self.assertEqual(dms.ss, t_dms['ss'])
 
         
 class TestYMDStructure(unittest.TestCase):

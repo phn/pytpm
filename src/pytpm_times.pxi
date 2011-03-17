@@ -85,6 +85,14 @@ cdef class DMS(object):
         else:
             raise TypeError, "Can only subtract two DMS values."
 
+    def to_hms(self):
+        """Convert to HMS object."""
+        cdef _tpm_times.HMS _hms
+        _hms = _tpm_times.dms2hms(self._dms)
+        hms = HMS()
+        hms._hms = _hms
+        return hms
+        
 cdef class HMS(object):
     cdef _tpm_times.HMS _hms
     def __cinit__(self):
@@ -154,6 +162,13 @@ cdef class HMS(object):
         else:
             raise TypeError, "Can only subtract two HMS values."
 
+    def to_dms(self):
+        cdef _tpm_times.DMS _dms
+        _dms = _tpm_times.hms2dms(self._hms)
+        dms = DMS()
+        dms._dms = _dms
+        return dms
+    
 cdef class YMD(object):
     cdef _tpm_times.YMD _ymd
     def __cinit__(self):
@@ -342,8 +357,6 @@ cdef class JD(object):
 #cpdef DMS dms2dms(DMS dms):
 #    return DMS(_tpm_times.dms2dms(dms._dms))
 
-#DMS dms_diff(DMS dms1, DMS dms2)
-#DMS dms_sum(DMS dms1, DMS dms2)
 #DMS hms2dms(HMS hms)
 #HMS dms2hms(DMS dms)
 #HMS h2hms(double h)
