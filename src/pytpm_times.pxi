@@ -172,6 +172,11 @@ cdef class HMS(object):
         dms = DMS()
         dms._dms = _dms
         return dms
+
+    def normalize(self):
+        """Normalize components."""
+        self._hms = _tpm_times.hms2hms(self._hms)
+     
     
 cdef class YMD(object):
     cdef _tpm_times.YMD _ymd

@@ -276,6 +276,47 @@ class TestHMSStructure(unittest.TestCase):
         self.assertEqual(dms.mm, t_dms['mm']) 
         self.assertEqual(dms.ss, t_dms['ss'])
 
+    def testNormalize(self):
+        """Must properly normalize degrees, arc-minutes and arc-seconds."""
+        # See tests/c_tests/hms2hms_test.c
+        # Note:
+        # h = (hms.dd) + (hms.mm/60.0) + (hms.ss/3600.0) i.e., each
+        # must have its own
+        # sign. But in string representation only the hours will have
+        # sign. Normalization removes negative sign from mm and ss,
+        # normalizes them into the range 0-60 and incorporates the
+        # necessary change into the hours part. 
+        def verify(t,t_norm):
+            hms = tpm.HMS(t)
+            hms.normalize()
+            self.assertAlmostEqual(hms.hh, t_norm['hh'])
+            self.assertAlmostEqual(hms.mm, t_norm['mm'])
+            self.assertAlmostEqual(hms.ss, t_norm['ss'])
+
+        t = dict(hh=25.0, mm=0.0, ss=0.0)
+        t_norm = dict(hh=25.0, mm=0.0, ss=0.0)
+        verify(t, t_norm)
+
+        t = dict(hh=23.345, mm=0.0, ss=0.0)
+        t_norm = dict(hh=23.0, mm=20.0, ss=42.0)
+        verify(t, t_norm)
+
+        t = dict(hh=6.0, mm=128.0, ss=2000.0)
+        t_norm = dict(hh=8.0, mm=41.0, ss=20.0)
+        verify(t, t_norm)
+
+        t = dict(hh=-12.456, mm=0.0, ss=0.0)
+        t_norm = dict(hh=-13.0, mm=32.0, ss=38.4)
+        verify(t, t_norm)
+
+        t = dict(hh=-25.0, mm=0.0, ss=0.0)
+        t_norm = dict(hh=-25.0, mm=0.0, ss=0.0)
+        verify(t, t_norm)
+
+        t = dict(hh=-1.0, mm=-1.0, ss=-1.0)
+        t_norm = dict(hh=-2.0, mm=58.0, ss=59.0)
+        verify(t, t_norm)
+
         
 class TestYMDStructure(unittest.TestCase):
     def testCreate(self):
