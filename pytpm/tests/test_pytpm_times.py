@@ -556,6 +556,58 @@ class TestJDStructure(unittest.TestCase):
         self.assertEqual(unicode(jd1), unicode(s1))
         self.assertEqual(str(jd2), s2)
         self.assertEqual(unicode(jd2), unicode(s2))
+
+    def testNormalize(self):
+        """Must properly normalize JD value."""
+        def verify(t, t_norm):
+            jd = tpm.JD(t)
+            jd.normalize()
+            self.assertAlmostEqual(jd.dd, t_norm['dd']) 
+            self.assertAlmostEqual(jd.hh, t_norm['hh']) 
+            self.assertAlmostEqual(jd.mm, t_norm['mm']) 
+            self.assertAlmostEqual(jd.ss, t_norm['ss'], 4) 
+
+        # Why 59 and 60 ?
+        t = dict(dd=2451545.0, hh=25.0, mm=0.0, ss=0.0)
+        t_norm = dict(dd=2451546.0, hh=0.0, mm=59.0, ss=60.0)
+        verify(t, t_norm)
+
+        t = dict(dd=2451545.0, hh=-12.0, mm=0.0, ss=0.0)
+        t_norm = dict(dd=2451544.0, hh=12.0000, mm=0.0, ss=0.0)
+        verify(t, t_norm)
+
+        t = dict(dd=2441230.0, hh=0.0, mm=12345678.0, ss=12345.0345)
+        t_norm = dict(dd=2449803.0, hh=12.0000, mm=43.0, ss=45.0345)
+        verify(t, t_norm)
+
+    def testToYMD(self):
+        """Must convert properly from JD to YMD."""
+        def verify(t,t_norm):
+            jd = tpm.JD(t)
+            ymd = jd.to_ymd()
+            self.assertAlmostEqual(ymd.y, t_norm['y'])
+            self.assertAlmostEqual(ymd.m, t_norm['m'])
+            self.assertAlmostEqual(ymd.dd, t_norm['dd'])
+            self.assertAlmostEqual(ymd.mm, t_norm['mm'])
+            self.assertAlmostEqual(ymd.ss, t_norm['ss'])
+
+        # See pytpm/tests/c_tests/jd2ymd_test.c.
+        t = dict(dd=tpm.MJD_0, hh=0.0, mm=0.0, ss=0.0)
+        t_norm = dict(y=1858,m=11,dd=17.0,hh=0.0,mm=0.0,ss=0.0)
+        verify(t, t_norm)
+
+        t = dict(dd=tpm.B1950, hh=0.0, mm=0.0, ss=0.0)
+        t_norm = dict(y=1949,m=12,dd=31.923459,hh=0.0,mm=0.0,ss=0.0)
+        verify(t, t_norm)
+
+        t = dict(dd=tpm.J2000, hh=0.0, mm=0.0, ss=0.0)
+        t_norm = dict(y=2000,m=1,dd=1.5, hh=0.0,mm=0.0,ss=0.0)
+        verify(t, t_norm)
+
+        t = dict(dd=tpm.J1984, hh=0.0, mm=0.0, ss=0.0)
+        t_norm = dict(y=1984,m=1,dd=1.0,hh=0.0,mm=0.0,ss=0.0)
+        verify(t, t_norm)
+
         
 if __name__ == '__main__':
     unittest.main()

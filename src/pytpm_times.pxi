@@ -344,6 +344,17 @@ cdef class JD(object):
         else:
             raise TypeError, "Can only add two JD values."
 
+    def normalize(self):
+        """Normalize the JD structure."""
+        self._jd = _tpm_times.jd2jd(self._jd)
+
+    def to_ymd(self):
+        """Convert to YMD (Gregorian calendar)."""
+        cdef _tpm_times.YMD _ymd
+        _ymd = _tpm_times.jd2ymd(self._jd)
+        ymd = YMD()
+        ymd._ymd = _ymd
+        return ymd
     
 #double BYEAR2JD(double x)
 #cpdef double BYEAR2JD(double byear):
@@ -370,8 +381,6 @@ cdef class JD(object):
 #HMS dms2hms(DMS dms)
 #HMS h2hms(double h)
 #HMS hms2hms(HMS hms)
-#HMS hms_diff(HMS hms1, HMS hms2)
-#HMS hms_sum(HMS hms1, HMS hms2)
 #JD j2jd(double j)
 #JD jd2jd(JD jd)
 #JD jd_diff(JD jd1, JD jd2)
