@@ -440,8 +440,14 @@ class TestYMDStructure(unittest.TestCase):
         
         t_norm = dict(y=1950, m=1, dd=0.923459,    hh =0.0, mm=0.0, ss=0.0)
         verify(dict(year=1950.002530024794), t_norm)
-        
 
+        # For initialization with Julian date.
+        t_norm = dict(y=1949, m=12, dd=31.923459,    hh =0.0, mm=0.0, ss=0.0)
+        verify(dict(j=2433282.42345900), t_norm)
+        
+        t_norm = dict(y=2000, m=1,  dd=1.0, hh =0.0, mm=0.0, ss=0.0)
+        verify(dict(j=2451544.5), t_norm)
+        
     def testSetFieldValues(self):
         """Must be able to set field values."""
         t = dict(y=2010, m=11, dd=19.34, hh=29.3, mm=1.345, ss=10.8)
@@ -679,6 +685,11 @@ class TestYMDStructure(unittest.TestCase):
         t = dict(y=1985, m=12,  dd=31.0, hh =23.0, mm=59.0, ss=60.0)
         verify(t, 2446431.50)
         
+        # Check if YMD initialized with Julian date gives back the
+        # Julian date; added after initialization was set to accept a
+        # Julian date.
+        self.assertAlmostEqual(tpm.YMD(j=2433282.42345900).to_j(),
+                               2433282.42345900)
         
 class TestJDStructure(unittest.TestCase):
     def testCreate(self):

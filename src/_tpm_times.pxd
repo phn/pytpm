@@ -104,7 +104,7 @@ cdef extern from "tpm/times.h":
     double hms2r(HMS hms)
     double j2j(double j)
     double j2y(double j)
-    double j2ymd(double j)
+    YMD j2ymd(double j)
     double jd2y(JD jd)
     DMS r2dms(double r)
     HMS r2hms(double r)

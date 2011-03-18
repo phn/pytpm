@@ -214,7 +214,9 @@ cdef class YMD(object):
         self._ymd.hms.ss = 0.0
         
     def __init__(self,**kwarg):
-        if "year" in kwarg:
+        if "j" in kwarg:
+            self._ymd = _tpm_times.j2ymd(kwarg['j'])
+        elif "year" in kwarg:
             self._ymd = _tpm_times.y2ymd(kwarg['year'])
         else:
             self._ymd.y = kwarg.get('y',2000)
