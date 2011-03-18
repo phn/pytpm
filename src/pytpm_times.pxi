@@ -277,6 +277,10 @@ cdef class YMD(object):
         jd._jd = _jd
         return jd
 
+    def raw_str(self):
+        """YMD string in the 'raw' format."""
+        return _tpm_times.fmt_ymd_raw(self._ymd)
+
     
 cdef class JD(object):
     cdef _tpm_times.JD _jd

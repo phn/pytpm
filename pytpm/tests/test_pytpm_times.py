@@ -493,8 +493,16 @@ class TestYMDStructure(unittest.TestCase):
         t_norm = dict(dd=2445701.0, hh=-12.0, mm=0.0, ss=0.0)
         verify(t, t_norm)
 
+    def testRawStr(self):
+        """Proper 'raw' representation of YMD."""
+        t = dict(y=2010, m=10, dd=16.789, hh=15.654, mm=1.345, ss=9.45)
+        ymd = tpm.YMD(**t)
+        self.assertEqual(ymd.raw_str(), "2010 10 16.789 15.654 1.345 9.45")
 
-            
+        t = dict(y=-1, m=10, dd=1.0, hh=23.9999, mm=54.0, ss=9.45)
+        ymd = tpm.YMD(**t)
+        self.assertEqual(ymd.raw_str(), "-1 10 1 23.9999 54 9.45")
+        
 
 class TestJDStructure(unittest.TestCase):
     def testCreate(self):
