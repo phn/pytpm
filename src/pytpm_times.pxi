@@ -96,6 +96,7 @@ cdef class DMS(object):
     def normalize(self):
         """Normalize components."""
         self._dms = _tpm_times.dms2dms(self._dms)
+
         
 cdef class HMS(object):
     cdef _tpm_times.HMS _hms
@@ -264,7 +265,19 @@ cdef class YMD(object):
         else:
             raise TypeError, "Can only subtract two YMD values."
 
+    def normalize(self):
+        """Normalize YMD."""
+        self._ymd = _tpm_times.ymd2ymd(self._ymd)
 
+    def to_jd(self):
+        """Convert into YMD."""
+        cdef _tpm_times.JD _jd
+        _jd = _tpm_times.ymd2jd(self._ymd)
+        jd = JD()
+        jd._jd = _jd
+        return jd
+
+    
 cdef class JD(object):
     cdef _tpm_times.JD _jd
     def __cinit__(self):
@@ -355,6 +368,8 @@ cdef class JD(object):
         ymd = YMD()
         ymd._ymd = _ymd
         return ymd
+
+
     
 #double BYEAR2JD(double x)
 #cpdef double BYEAR2JD(double byear):

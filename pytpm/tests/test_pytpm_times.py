@@ -432,6 +432,67 @@ class TestYMDStructure(unittest.TestCase):
         s = unicode(ymd)
         self.assertEqual(s, u"Sat Oct  2 00:54:09.090    2 BC")
 
+    def testNormalize(self):
+        """Must properly normalize a YMD value."""
+        def verify(t, t_norm):
+            ymd = tpm.YMD(t)
+            ymd.normalize()
+            self.assertAlmostEqual(ymd.y, t_norm['y'])
+            self.assertAlmostEqual(ymd.m, t_norm['m'])
+            self.assertAlmostEqual(ymd.dd, t_norm['dd'])
+            self.assertAlmostEqual(ymd.mm, t_norm['mm'])
+            self.assertAlmostEqual(ymd.ss, t_norm['ss'])
+
+        t = dict(y=2000, m=11, dd=366.0, hh=0.0, mm=0.0, ss=31536000.0)
+        t_norm = dict(y=2002, m=11, dd=1.0, hh=0.0, mm=0.0, ss=0.0)
+        verify(t, t_norm)
+
+        t = dict(y=2000, m=0, dd=0.0, hh=0.0, mm=0.0, ss=0.0)
+        t_norm = dict(y=2000, m=11, dd=30.0, hh=0.0, mm=0.0, ss=0.0)
+        verify(t, t_norm)
+
+        t = dict(y=2000, m=-3, dd=0.0, hh=0.0, mm=0.0, ss=0.0)
+        t_norm = dict(y=2000, m=8, dd=31.0, hh=0.0, mm=0.0, ss=0.0)
+        verify(t, t_norm)
+
+        t = dict(y=2000, m=1, dd=-365.0, hh=0.0, mm=0.0, ss=0.0)
+        t_norm = dict(y=1998, m=12, dd=31.0, hh=0.0, mm=0.0, ss=0.0)
+        verify(t, t_norm)
+
+        t = dict(y=2000, m=1, dd=1.0, hh=-24.0, mm=0.0, ss=0.0)
+        t_norm = dict(y=1999, m=12, dd=31.0, hh=0.0, mm=0.0, ss=0.0)
+        verify(t, t_norm)
+
+        
+    def testToJD(self):
+        """Must convert to an equivalent JD."""
+        def verify(t, t_norm):
+            ymd = tpm.YMD(t)
+            jd = ymd.to_jd()
+            self.assertAlmostEqual(jd.dd, t_norm['dd'])
+            self.assertAlmostEqual(jd.hh, t_norm['hh'])
+            self.assertAlmostEqual(jd.mm, t_norm['mm'])
+            self.assertAlmostEqual(jd.ss, t_norm['ss'])
+
+        # See pytpm/tests/c_tests/ymd2jd_test.c
+        t = dict(y=1858,m=11,dd=17.0,hh=0.0,mm=0.0,ss=0.0)
+        t_norm = dict(dd=2400001.0, hh=-12.0, mm=0.0, ss=0.0)
+        verify(t, t_norm)
+
+        t = dict(y=1949,m=12,dd=31.923459,hh=0.0,mm=0.0,ss=0.0)
+        t_norm = dict(dd=2433282.923459, hh=-12.0, mm=0.0, ss=0.0)
+        verify(t, t_norm)
+
+        t = dict(y=2000,m=1,dd=1.5, hh=0.0,mm=0.0,ss=0.0)
+        t_norm = dict(dd=2451545.5, hh=-12.0, mm=0.0, ss=0.0)
+        verify(t, t_norm)
+
+        t = dict(y=1984,m=1,dd=1.0,hh=0.0,mm=0.0,ss=0.0)
+        t_norm = dict(dd=2445701.0, hh=-12.0, mm=0.0, ss=0.0)
+        verify(t, t_norm)
+
+
+            
 
 class TestJDStructure(unittest.TestCase):
     def testCreate(self):
