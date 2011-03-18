@@ -301,6 +301,10 @@ cdef class YMD(object):
         jd._jd = _jd
         return jd
 
+    def to_j(self):
+        """Convert YMD into scalar Julian date."""
+        return _tpm_times.ymd2j(self._ymd)
+        
     def raw_str(self):
         """YMD string in the 'raw' format."""
         return _tpm_times.fmt_ymd_raw(self._ymd)
@@ -409,6 +413,10 @@ cdef class JD(object):
     def to_j(self):
         """Convert JD to a Julian date."""
         return _tpm_times.jd2j(self._jd)
+
+    def to_year(self):
+        """Convert JD into year (Gregorian calendar)."""
+        return _tpm_times.jd2y(self._jd)
 
     
 #double BYEAR2JD(double x)

@@ -605,7 +605,7 @@ class TestYMDStructure(unittest.TestCase):
         t = dict(y=1984, m=1, dd=1.0, hh=0.0, mm=0.0, ss=0.0)
         verify(t, 1.0)
         
-    def testToY(self):
+    def testToYear(self):
         """Must convert YMD into a year number."""
         def verify(t, t_norm):
             ymd = tpm.YMD(**t)
@@ -639,7 +639,28 @@ class TestYMDStructure(unittest.TestCase):
         t = dict(y=1985, m=12, dd=31.0, hh =23.0, mm=59.0, ss=60.0)
         verify(t, 1986.00273973)
 
+    def testToJ(self):
+        """Must Convert YMD into a scalar Julian date."""
+        def verify(t, t_norm):
+            ymd = tpm.YMD(**t)
+            self.assertAlmostEqual(ymd.to_j(), t_norm)
 
+        # See pytpm/tests/c_tests/ymd2j_test.c.
+        t = dict(y=1858, m=11.0, dd=17.0, hh =0.0, mm=0.0, ss=0.0)
+        verify(t, 2400000.5)
+        
+        t = dict(y=1949, m=12, dd=31.923459,    hh =0.0, mm=0.0, ss=0.0)
+        verify(t, 2433282.42345900)
+        
+        t = dict(y=2000, m=1,  dd=1.0, hh =0.0, mm=0.0, ss=0.0)
+        verify(t, 2451544.5)
+        
+        t = dict(y=1984, m=1,  dd=1.0, hh =0.0, mm=0.0, ss=0.0)
+        verify(t, 2445700.5)
+        
+        t = dict(y=1985, m=12,  dd=31.0, hh =23.0, mm=59.0, ss=60.0)
+        verify(t, 2446431.50)
+        
         
 class TestJDStructure(unittest.TestCase):
     def testCreate(self):
@@ -828,6 +849,20 @@ class TestJDStructure(unittest.TestCase):
 
         t = dict(dd=2433142.678, hh=10.1230, mm=-10.3450, ss=1.0400)
         verify(t, 2433143.09261968)
+
+    def testToYear(self):
+        """Must convert JD into equivalent year (Gregorian calendar)."""
+        def verify(t, t_norm):
+            jd = tpm.JD(**t)
+            self.assertAlmostEqual(jd.to_year(), t_norm)
+
+        # See pytpm/tests/c_tests/jd2y_test.c.
+        t = dict(dd=2451545.0, hh=10.0, mm=0.0, ss=0.0)
+        verify(t, 2000.00523679)
+
+        t = dict(dd=2433142.678, hh=10.1230, mm=-10.3450, ss=1.0400)
+        verify(t, 1949.62080170)
+
 
     
 if __name__ == '__main__':
