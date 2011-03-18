@@ -171,6 +171,17 @@ class TestDMSStructure(unittest.TestCase):
         t_norm = {'dd': 350.0, 'mm': 0.0, 'ss': 0.0}
         verify(t,t_norm)
 
+    def testToD(self):
+        """Must given decimal degrees of angle in DMS."""
+        def verify(t):
+            self.assertAlmostEqual(tpm.DMS(**t).to_d(),
+                                   t['dd']+(t['mm']/60.0)+(t['ss']/3600.0))
+
+        t = dict(dd=12.0, mm=10.0, ss=100.0)
+        verify(t)
+        t = dict(dd=-2.0, mm=-0.0, ss=-0.3)
+        verify(t)
+        
 class TestHMSStructure(unittest.TestCase):
     """Test if the methods in the HMS class work."""
     def testCreate(self):
@@ -318,6 +329,18 @@ class TestHMSStructure(unittest.TestCase):
         t = dict(hh=-1.0, mm=-1.0, ss=-1.0)
         t_norm = dict(hh=-2.0, mm=58.0, ss=59.0)
         verify(t, t_norm)
+
+    def testToH(self):
+        """Must convert HMS into decimal hours."""
+        def verify(t):
+            self.assertAlmostEqual(tpm.HMS(**t).to_h(),
+                                   t['hh']+(t['mm']/60.0)+(t['ss']/3600.0))
+
+        t = dict(hh=24.0, mm=0.0, ss=0.0)
+        verify(t)
+
+        t = dict(hh=-2.23456, mm=123456.78, ss=0.0)
+        verify(t)
 
         
 class TestYMDStructure(unittest.TestCase):
@@ -679,6 +702,19 @@ class TestJDStructure(unittest.TestCase):
         t_norm = dict(y=1984,m=1,dd=1.0,hh=0.0,mm=0.0,ss=0.0)
         verify(t, t_norm)
 
-        
+    def testToJ(self):
+        """Must convert JD into equivalent Julian date."""
+        def verify(t, t_norm):
+            jd = tpm.JD(**t)
+            self.assertAlmostEqual(jd.to_j(), t_norm)
+
+        # See pytpm/tests/c_tests/jd2j_test.c.
+        t = dict(dd=2451545.0, hh=10.0, mm=0.0, ss=0.0)
+        verify(t, 2451545.41666667)
+
+        t = dict(dd=2433142.678, hh=10.1230, mm=-10.3450, ss=1.0400)
+        verify(t, 2433143.09261968)
+
+    
 if __name__ == '__main__':
     unittest.main()

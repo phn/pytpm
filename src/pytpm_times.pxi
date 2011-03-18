@@ -97,7 +97,11 @@ cdef class DMS(object):
         """Normalize components."""
         self._dms = _tpm_times.dms2dms(self._dms)
 
-        
+    def to_d(self):
+        """Return angle in decimal degrees."""
+        return _tpm_times.dms2d(self._dms)
+
+    
 cdef class HMS(object):
     cdef _tpm_times.HMS _hms
     def __cinit__(self):
@@ -177,7 +181,11 @@ cdef class HMS(object):
     def normalize(self):
         """Normalize components."""
         self._hms = _tpm_times.hms2hms(self._hms)
-     
+
+    def to_h(self):
+        """Convert time into hours."""
+        return _tpm_times.hms2h(self._hms)
+
     
 cdef class YMD(object):
     cdef _tpm_times.YMD _ymd
@@ -373,6 +381,9 @@ cdef class JD(object):
         ymd._ymd = _ymd
         return ymd
 
+    def to_j(self):
+        """Convert JD to a Julian date."""
+        return _tpm_times.jd2j(self._jd)
 
     
 #double BYEAR2JD(double x)
