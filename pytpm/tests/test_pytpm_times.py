@@ -171,16 +171,17 @@ class TestDMSStructure(unittest.TestCase):
         t_norm = {'dd': 350.0, 'mm': 0.0, 'ss': 0.0}
         verify(t,t_norm)
 
-    def testToD(self):
+    def testToDegrees(self):
         """Must given decimal degrees of angle in DMS."""
-        def verify(t):
-            self.assertAlmostEqual(tpm.DMS(**t).to_d(),
-                                   t['dd']+(t['mm']/60.0)+(t['ss']/3600.0))
+        def verify(t, t_norm):
+            self.assertAlmostEqual(tpm.DMS(**t).to_degrees(), t_norm)
 
         t = dict(dd=12.0, mm=10.0, ss=100.0)
-        verify(t)
+        verify(t, t['dd']+(t['mm']/60.0)+(t['ss']/3600.0))
+        
         t = dict(dd=-2.0, mm=-0.0, ss=-0.3)
-        verify(t)
+        verify(t, t['dd']+(t['mm']/60.0)+(t['ss']/3600.0))
+
         
 class TestHMSStructure(unittest.TestCase):
     """Test if the methods in the HMS class work."""
@@ -330,17 +331,17 @@ class TestHMSStructure(unittest.TestCase):
         t_norm = dict(hh=-2.0, mm=58.0, ss=59.0)
         verify(t, t_norm)
 
-    def testToH(self):
+    def testToHours(self):
         """Must convert HMS into decimal hours."""
-        def verify(t):
-            self.assertAlmostEqual(tpm.HMS(**t).to_h(),
-                                   t['hh']+(t['mm']/60.0)+(t['ss']/3600.0))
+        def verify(t, t_norm):
+            self.assertAlmostEqual(tpm.HMS(**t).to_hours(), t_norm)
+                                   
 
         t = dict(hh=24.0, mm=0.0, ss=0.0)
-        verify(t)
+        verify(t, t['hh']+(t['mm']/60.0)+(t['ss']/3600.0))
 
         t = dict(hh=-2.23456, mm=123456.78, ss=0.0)
-        verify(t)
+        verify(t, t['hh']+(t['mm']/60.0)+(t['ss']/3600.0))
 
         
 class TestYMDStructure(unittest.TestCase):

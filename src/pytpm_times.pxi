@@ -97,7 +97,7 @@ cdef class DMS(object):
         """Normalize components."""
         self._dms = _tpm_times.dms2dms(self._dms)
 
-    def to_d(self):
+    def to_degrees(self):
         """Return angle in decimal degrees."""
         return _tpm_times.dms2d(self._dms)
 
@@ -182,7 +182,7 @@ cdef class HMS(object):
         """Normalize components."""
         self._hms = _tpm_times.hms2hms(self._hms)
 
-    def to_h(self):
+    def to_hours(self):
         """Convert time into hours."""
         return _tpm_times.hms2h(self._hms)
 
