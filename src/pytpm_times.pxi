@@ -8,12 +8,12 @@ J2000 = _tpm_times.J2000
 J1984 = _tpm_times.J1984
 CB = _tpm_times.CB
 CJ = _tpm_times.CJ
-SUNDAY	= _tpm_times.SUNDAY 
-MONDAY	= _tpm_times.MONDAY
-TUESDAY	= _tpm_times.TUESDAY
+SUNDAY  = _tpm_times.SUNDAY 
+MONDAY  = _tpm_times.MONDAY
+TUESDAY = _tpm_times.TUESDAY
 WEDNESDAY = _tpm_times.WEDNESDAY
 THURSDAY =  _tpm_times.THURSDAY
-FRIDAY	=   _tpm_times.FRIDAY
+FRIDAY  =   _tpm_times.FRIDAY
 SATURDAY =  _tpm_times.SATURDAY 
 
 cdef class DMS(object):
@@ -23,10 +23,10 @@ cdef class DMS(object):
         self._dms.mm = 0.0
         self._dms.ss = 0.0
 
-    def __init__(self,dms={'dd':0.0,'mm':0.0,'ss':0.0}):
-        self._dms.dd = dms.get('dd',0.0)
-        self._dms.mm = dms.get('mm',0.0) 
-        self._dms.ss = dms.get('ss',0.0) 
+    def __init__(self, **kwargs):
+        self._dms.dd = kwargs.get('dd',0.0)
+        self._dms.mm = kwargs.get('mm',0.0) 
+        self._dms.ss = kwargs.get('ss',0.0) 
         
     def __getdd(self):
         return self._dms.dd
@@ -105,10 +105,10 @@ cdef class HMS(object):
         self._hms.mm = 0.0
         self._hms.ss = 0.0
 
-    def __init__(self,hms={'hh':0.0,'mm':0.0,'ss':0.0}):
-        self._hms.hh = hms.get('hh',0.0)
-        self._hms.mm = hms.get('mm',0.0) 
-        self._hms.ss = hms.get('ss',0.0) 
+    def __init__(self,**kwargs):
+        self._hms.hh = kwargs.get('hh',0.0)
+        self._hms.mm = kwargs.get('mm',0.0) 
+        self._hms.ss = kwargs.get('ss',0.0) 
         
     def __gethh(self):
         return self._hms.hh
@@ -182,20 +182,20 @@ cdef class HMS(object):
 cdef class YMD(object):
     cdef _tpm_times.YMD _ymd
     def __cinit__(self):
-        self._ymd.y = 0
-        self._ymd.m = 0
+        self._ymd.y = 2000
+        self._ymd.m = 1
         self._ymd.dd = 0.0
         self._ymd.hms.hh = 0.0
         self._ymd.hms.mm = 0.0
         self._ymd.hms.ss = 0.0
         
-    def __init__(self,ymd={'y':0,'m':0,'dd':0.0,'hh':0.0,'mm':0.0,'ss':0.0}):
-        self._ymd.y = ymd.get('y',0)
-        self._ymd.m = ymd.get('m',0)
-        self._ymd.dd = ymd.get('dd',0)
-        self._ymd.hms.hh = ymd.get('hh',0.0) 
-        self._ymd.hms.mm = ymd.get('mm',0.0) 
-        self._ymd.hms.ss = ymd.get('ss',0.0)
+    def __init__(self,**kwarg):
+        self._ymd.y = kwarg.get('y',2000)
+        self._ymd.m = kwarg.get('m',1)
+        self._ymd.dd = kwarg.get('dd',0)
+        self._ymd.hms.hh = kwarg.get('hh',0.0) 
+        self._ymd.hms.mm = kwarg.get('mm',0.0) 
+        self._ymd.hms.ss = kwarg.get('ss',0.0)
         
     def __gety(self):
         return self._ymd.y
@@ -281,16 +281,16 @@ cdef class YMD(object):
 cdef class JD(object):
     cdef _tpm_times.JD _jd
     def __cinit__(self):
-        self._jd.dd = 0.0
+        self._jd.dd = 2451545.5
         self._jd.hms.hh = 0.0
         self._jd.hms.mm = 0.0
         self._jd.hms.ss = 0.0
 
-    def __init__(self, jd={'dd':0.0,'hh':0.0,'mm':0.0,'ss':0.0}):
-        self._jd.dd = jd.get('dd',0.0)
-        self._jd.hms.hh = jd.get('hh', 0.0)
-        self._jd.hms.mm = jd.get('mm', 0.0)
-        self._jd.hms.ss = jd.get('ss', 0.0)
+    def __init__(self, **kwargs):
+        self._jd.dd = kwargs.get('dd',0.0)
+        self._jd.hms.hh = kwargs.get('hh', 0.0)
+        self._jd.hms.mm = kwargs.get('mm', 0.0)
+        self._jd.hms.ss = kwargs.get('ss', 0.0)
 
     def __getdd(self):
         return self._jd.dd
@@ -403,7 +403,6 @@ cdef class JD(object):
 #JD jd_sum(JD jd1, JD jd2)
 #JD ymd2jd(YMD ymd)
 #YMD jd2ymd(JD jd)
-#YMD rdb2ymd(double rdb)
 #YMD y2ymd(double y)
 #YMD ydd2ymd(int y, double dd)
 #YMD ymd2ymd(YMD ymd)

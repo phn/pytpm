@@ -19,7 +19,8 @@ class TestDMSStructure(unittest.TestCase):
 
     def testSetFieldValuesAtInit(self):
         """Must be able to set values to fields at creation."""
-        dms = tpm.DMS(dms={'dd':1.0,'mm':1.0,'ss':1.34})
+        t={'dd':1.0,'mm':1.0,'ss':1.34}
+        dms = tpm.DMS(**t)
         self.assertAlmostEqual(dms.dd, 1.0)
         self.assertAlmostEqual(dms.mm, 1.0)
         self.assertAlmostEqual(dms.ss, 1.34)
@@ -102,7 +103,7 @@ class TestDMSStructure(unittest.TestCase):
         """Must return a tpm.HMS object with appropriate field values."""
         t = {'dd': 180.0, 'mm':450.0, 'ss':0.0 }
         t_hms = {'hh': 12.0, 'mm':30.0, 'ss': 0.0}
-        dms = tpm.DMS(t)
+        dms = tpm.DMS(**t)
         hms = dms.to_hms()
         self.assertEqual(type(hms), tpm.HMS)
         self.assertEqual(hms.hh, t_hms['hh'])
@@ -112,7 +113,7 @@ class TestDMSStructure(unittest.TestCase):
     def testNormalize(self):
         """Must properly normalize degrees, arc-minutes and arc-seconds."""
         def verify(t,t_norm):
-            dms = tpm.DMS(t)
+            dms = tpm.DMS(**t)
             dms.normalize()
             self.assertAlmostEqual(dms.dd, t_norm['dd'])
             self.assertAlmostEqual(dms.mm, t_norm['mm'])
@@ -186,7 +187,8 @@ class TestHMSStructure(unittest.TestCase):
 
     def testSetFieldValuesAtInit(self):
         """Must be able to set values to fields at creation."""
-        hms = tpm.HMS(hms={'hh':1.0,'mm':1.0,'ss':1.34})
+        t = {'hh':1.0,'mm':1.0,'ss':1.34}
+        hms = tpm.HMS(**t)
         self.assertAlmostEqual(hms.hh, 1.0)
         self.assertAlmostEqual(hms.mm, 1.0)
         self.assertAlmostEqual(hms.ss, 1.34)
@@ -269,7 +271,7 @@ class TestHMSStructure(unittest.TestCase):
         """Must return a tpm.DMS object with appropriate field values."""
         t = {'hh': 12.0, 'mm':30.0, 'ss': 0.0}
         t_dms = {'dd': 180.0, 'mm':450.0, 'ss':0.0 }
-        hms = tpm.HMS(t)
+        hms = tpm.HMS(**t)
         dms = hms.to_dms()
         self.assertEqual(type(dms), tpm.DMS)
         self.assertEqual(dms.dd, t_dms['dd'])
@@ -287,7 +289,7 @@ class TestHMSStructure(unittest.TestCase):
         # normalizes them into the range 0-60 and incorporates the
         # necessary change into the hours part. 
         def verify(t,t_norm):
-            hms = tpm.HMS(t)
+            hms = tpm.HMS(**t)
             hms.normalize()
             self.assertAlmostEqual(hms.hh, t_norm['hh'])
             self.assertAlmostEqual(hms.mm, t_norm['mm'])
@@ -327,8 +329,8 @@ class TestYMDStructure(unittest.TestCase):
     def testGetFields(self):
         """Must be able to retrieve field values."""
         ymd = tpm.YMD()
-        self.assertAlmostEqual(ymd.y, 0)
-        self.assertAlmostEqual(ymd.m, 0)
+        self.assertAlmostEqual(ymd.y, 2000)
+        self.assertAlmostEqual(ymd.m, 1)
         self.assertAlmostEqual(ymd.dd, 0.0)
         self.assertAlmostEqual(ymd.hh, 0.0)
         self.assertAlmostEqual(ymd.mm, 0.0)
@@ -337,7 +339,7 @@ class TestYMDStructure(unittest.TestCase):
     def testSetFieldValuesAtInit(self):
         """Must be able to initialize field values."""
         t = dict(y=2000, m=10, dd=16.789, hh=15.654, mm=1.345, ss=9.45)
-        ymd = tpm.YMD(ymd=t)
+        ymd = tpm.YMD(**t)
         self.assertAlmostEqual(ymd.y, t['y'])
         self.assertAlmostEqual(ymd.m, t['m'])
         self.assertAlmostEqual(ymd.dd, t['dd'])
@@ -435,7 +437,7 @@ class TestYMDStructure(unittest.TestCase):
     def testNormalize(self):
         """Must properly normalize a YMD value."""
         def verify(t, t_norm):
-            ymd = tpm.YMD(t)
+            ymd = tpm.YMD(**t)
             ymd.normalize()
             self.assertAlmostEqual(ymd.y, t_norm['y'])
             self.assertAlmostEqual(ymd.m, t_norm['m'])
@@ -467,7 +469,7 @@ class TestYMDStructure(unittest.TestCase):
     def testToJD(self):
         """Must convert to an equivalent JD."""
         def verify(t, t_norm):
-            ymd = tpm.YMD(t)
+            ymd = tpm.YMD(**t)
             jd = ymd.to_jd()
             self.assertAlmostEqual(jd.dd, t_norm['dd'])
             self.assertAlmostEqual(jd.hh, t_norm['hh'])
@@ -511,7 +513,7 @@ class TestJDStructure(unittest.TestCase):
     def testSetFieldValuesAtInit(self):
         """Must be able to set fields of JD at initialization."""
         j = dict(dd=2451445.0, hh=12.0, mm=0.0, ss=0.0)
-        jd = tpm.JD(j)
+        jd = tpm.JD(**j)
         self.assertEqual(jd.dd, j['dd'])
         self.assertEqual(jd.hh, j['hh'])
         self.assertEqual(jd.mm, j['mm'])
@@ -621,7 +623,7 @@ class TestJDStructure(unittest.TestCase):
     def testNormalize(self):
         """Must properly normalize JD value."""
         def verify(t, t_norm):
-            jd = tpm.JD(t)
+            jd = tpm.JD(**t)
             jd.normalize()
             self.assertAlmostEqual(jd.dd, t_norm['dd']) 
             self.assertAlmostEqual(jd.hh, t_norm['hh']) 
@@ -644,7 +646,7 @@ class TestJDStructure(unittest.TestCase):
     def testToYMD(self):
         """Must convert properly from JD to YMD."""
         def verify(t,t_norm):
-            jd = tpm.JD(t)
+            jd = tpm.JD(**t)
             ymd = jd.to_ymd()
             self.assertAlmostEqual(ymd.y, t_norm['y'])
             self.assertAlmostEqual(ymd.m, t_norm['m'])
