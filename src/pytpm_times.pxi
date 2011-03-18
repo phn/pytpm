@@ -194,6 +194,14 @@ cdef class HMS(object):
         """Convert time into hours."""
         return _tpm_times.hms2h(self._hms)
 
+    def to_degrees(self):
+        """Convert HMS into decimal degrees."""
+        return _tpm_times.hms2d(self._hms)
+
+    def to_radians(self):
+        """Convert HMS into radians."""
+        return _tpm_times.hms2r(self._hms)
+    
     
 cdef class YMD(object):
     cdef _tpm_times.YMD _ymd

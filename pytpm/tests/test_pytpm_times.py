@@ -373,6 +373,35 @@ class TestHMSStructure(unittest.TestCase):
         t = dict(hh=-2.23456, mm=123456.78, ss=0.0)
         verify(t, t['hh']+(t['mm']/60.0)+(t['ss']/3600.0))
 
+    def testToDegrees(self):
+        """Must convert HMS into degrees."""
+        def verify(t, t_norm):
+            self.assertAlmostEqual(tpm.HMS(**t).to_degrees(), t_norm)
+
+        def d(t):
+            return (t['hh']+t['mm']/60.0+t['ss']/3600.0)*15.0 
+
+        t = dict(hh=12.0, mm=10.0, ss=100.0)
+        verify(t, d(t))
+            
+        t = dict(hh=-2.0, mm=-0.0, ss=-0.3)
+        verify(t, d(t))
+        
+    def testToRadians(self):
+        """Must convert HMS into radians."""
+        def verify(t, t_norm):
+            self.assertAlmostEqual(tpm.HMS(**t).to_radians(), t_norm)
+
+        def r(t):
+            import math
+            return (t['hh']+t['mm']/60.0+t['ss']/3600.0)*15.0*(math.pi/180.0)        
+
+        t = dict(hh=12.0, mm=10.0, ss=100.0)
+        verify(t, r(t))
+            
+        t = dict(hh=-2.0, mm=-0.0, ss=-0.3)
+        verify(t, r(t))
+
         
 class TestYMDStructure(unittest.TestCase):
     def testCreate(self):
