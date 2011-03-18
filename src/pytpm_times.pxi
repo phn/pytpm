@@ -214,12 +214,15 @@ cdef class YMD(object):
         self._ymd.hms.ss = 0.0
         
     def __init__(self,**kwarg):
-        self._ymd.y = kwarg.get('y',2000)
-        self._ymd.m = kwarg.get('m',1)
-        self._ymd.dd = kwarg.get('dd',0)
-        self._ymd.hms.hh = kwarg.get('hh',0.0) 
-        self._ymd.hms.mm = kwarg.get('mm',0.0) 
-        self._ymd.hms.ss = kwarg.get('ss',0.0)
+        if "year" in kwarg:
+            self._ymd = _tpm_times.y2ymd(kwarg['year'])
+        else:
+            self._ymd.y = kwarg.get('y',2000)
+            self._ymd.m = kwarg.get('m',1)
+            self._ymd.dd = kwarg.get('dd',0)
+            self._ymd.hms.hh = kwarg.get('hh',0.0) 
+            self._ymd.hms.mm = kwarg.get('mm',0.0) 
+            self._ymd.hms.ss = kwarg.get('ss',0.0)
         
     def __gety(self):
         return self._ymd.y
@@ -317,7 +320,7 @@ cdef class YMD(object):
         """Convert YMD into a year number."""
         return _tpm_times.ymd2y(self._ymd)
 
-
+    
     
 cdef class JD(object):
     cdef _tpm_times.JD _jd
@@ -499,6 +502,9 @@ cpdef char *fmt_hms (HMS hms):
 #double hms2r(HMS hms)
 #double j2j(double j)
 #double j2y(double j)
+cpdef double j2y(double j):
+    return _tpm_times.j2y(j)
+
 #double j2ymd(double j)
 #double jd2y(JD jd)
 #DMS r2dms(double r)

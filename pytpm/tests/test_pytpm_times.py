@@ -421,14 +421,26 @@ class TestYMDStructure(unittest.TestCase):
 
     def testSetFieldValuesAtInit(self):
         """Must be able to initialize field values."""
+        def verify(t, t_norm):
+            ymd = tpm.YMD(**t)
+            self.assertAlmostEqual(ymd.y, t_norm['y'])
+            self.assertAlmostEqual(ymd.m, t_norm['m'])
+            self.assertAlmostEqual(ymd.dd, t_norm['dd'])
+            self.assertAlmostEqual(ymd.hh, t_norm['hh'])
+            self.assertAlmostEqual(ymd.mm, t_norm['mm'])
+            self.assertAlmostEqual(ymd.ss, t_norm['ss'])
+            
         t = dict(y=2000, m=10, dd=16.789, hh=15.654, mm=1.345, ss=9.45)
-        ymd = tpm.YMD(**t)
-        self.assertAlmostEqual(ymd.y, t['y'])
-        self.assertAlmostEqual(ymd.m, t['m'])
-        self.assertAlmostEqual(ymd.dd, t['dd'])
-        self.assertAlmostEqual(ymd.hh, t['hh'])
-        self.assertAlmostEqual(ymd.mm, t['mm'])
-        self.assertAlmostEqual(ymd.ss, t['ss'])
+        verify(t, t)
+
+        # For initialization with year see
+        # pytpm/tests/c_tests/y2ymd_test.c
+        t_norm = dict(y=1858, m=1.0, dd=321.0, hh =0.0, mm=0.0, ss=0.0)
+        verify(dict(year=1858.879452054794), t_norm)
+        
+        t_norm = dict(y=1950, m=1, dd=0.923459,    hh =0.0, mm=0.0, ss=0.0)
+        verify(dict(year=1950.002530024794), t_norm)
+        
 
     def testSetFieldValues(self):
         """Must be able to set field values."""
@@ -639,6 +651,12 @@ class TestYMDStructure(unittest.TestCase):
         t = dict(y=1985, m=12, dd=31.0, hh =23.0, mm=59.0, ss=60.0)
         verify(t, 1986.00273973)
 
+        # To and from year; this test was added after the
+        # initialization with "year=value" was defined.
+        self.assertAlmostEqual(tpm.YMD(year= 1986.00273973).to_year(),
+                               1986.00273973)
+
+        
     def testToJ(self):
         """Must Convert YMD into a scalar Julian date."""
         def verify(t, t_norm):
@@ -864,6 +882,16 @@ class TestJDStructure(unittest.TestCase):
         verify(t, 1949.62080170)
 
 
-    
+class TestScalarValueConversions(unittest.TestCase):
+    """Test conversions between scalar values."""
+    def testJ2Y(self):
+        """Must convert properly between scalar Julian date and year."""
+        # See pytpm/tests/c_test/j2y_test.c
+        self.assertAlmostEqual(tpm.j2y(2400000.5), 1858.879452054794, 12)
+        self.assertAlmostEqual(tpm.j2y(2433282.42345905), 1950.002530024794, 12)
+        self.assertAlmostEqual(tpm.j2y(2451545.0), 2000.004098360656, 12)
+        self.assertAlmostEqual(tpm.j2y(2445700.5), 1984.002732240437, 12)
+
+        
 if __name__ == '__main__':
     unittest.main()
