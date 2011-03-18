@@ -182,6 +182,36 @@ class TestDMSStructure(unittest.TestCase):
         t = dict(dd=-2.0, mm=-0.0, ss=-0.3)
         verify(t, t['dd']+(t['mm']/60.0)+(t['ss']/3600.0))
 
+
+    def testToHours(self):
+        """Must convert DMS into hours."""
+        def verify(t, t_norm):
+            self.assertAlmostEqual(tpm.DMS(**t).to_hours(), t_norm)
+
+        def d(t):
+            return (t['dd']+t['mm']/60.0+t['ss']/3600.0)/15.0
+        
+        t = dict(dd=12.0, mm=10.0, ss=100.0)
+        verify(t, d(t))
+            
+        t = dict(dd=-2.0, mm=-0.0, ss=-0.3)
+        verify(t, d(t))
+
+    def testToRadians(self):
+        """Must convert DMS into radians."""
+        def verify(t, t_norm):
+            self.assertAlmostEqual(tpm.DMS(**t).to_radians(), t_norm)
+
+        def r(t):
+            import math
+            return (t['dd']+t['mm']/60.0+t['ss']/3600.0)*(math.pi/180.0)        
+
+        t = dict(dd=12.0, mm=10.0, ss=100.0)
+        verify(t, r(t))
+            
+        t = dict(dd=-2.0, mm=-0.0, ss=-0.3)
+        verify(t, r(t))
+
         
 class TestHMSStructure(unittest.TestCase):
     """Test if the methods in the HMS class work."""

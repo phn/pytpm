@@ -101,6 +101,14 @@ cdef class DMS(object):
         """Return angle in decimal degrees."""
         return _tpm_times.dms2d(self._dms)
 
+    def to_hours(self):
+        """Return angle in decimal hours."""
+        return _tpm_times.dms2h(self._dms)
+
+    def to_radians(self):
+        """Return angle in radians."""
+        return _tpm_times.dms2r(self._dms)
+
     
 cdef class HMS(object):
     cdef _tpm_times.HMS _hms
