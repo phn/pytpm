@@ -289,6 +289,15 @@ cdef class YMD(object):
         """YMD string in the 'raw' format."""
         return _tpm_times.fmt_ymd_raw(self._ymd)
 
+    def doy(self):
+        """Day of the year corresponding to date in the YMD."""
+        return _tpm_times.ymd2dd(self._ymd)
+
+    def to_year(self):
+        """Convert YMD into a year number."""
+        return _tpm_times.ymd2y(self._ymd)
+
+
     
 cdef class JD(object):
     cdef _tpm_times.JD _jd

@@ -526,7 +526,61 @@ class TestYMDStructure(unittest.TestCase):
         ymd = tpm.YMD(**t)
         self.assertEqual(ymd.raw_str(), "-1 10 1 23.9999 54 9.45")
         
+    def testDOY(self):
+        """Must convert YMD into day of the year."""
+        def verify(t, t_norm):
+            ymd = tpm.YMD(**t)
+            self.assertAlmostEqual(ymd.doy(), t_norm)
 
+        # See pytpm/tests/c_tests/ymd2dd_test.c
+        t = dict(y=1858, m=11, dd=17.0, hh=0.0, mm=0.0, ss=0.0)
+        verify(t, 321.0)
+
+        t = dict(y=1949, m=12, dd=31.923459, hh=0.0, mm=0.0, ss=0.0)
+        verify(t, 365.9234590)
+
+        t = dict(y=2000, m=1, dd=1.5, hh=0.0, mm=0.0, ss=0.0)
+        verify(t, 1.50)
+
+        t = dict(y=1984, m=1, dd=1.0, hh=0.0, mm=0.0, ss=0.0)
+        verify(t, 1.0)
+        
+    def testToY(self):
+        """Must convert YMD into a year number."""
+        def verify(t, t_norm):
+            ymd = tpm.YMD(**t)
+            self.assertAlmostEqual(ymd.to_year(), t_norm)
+
+        # See pytpm/tests/c_tests/ymd2y_test.c.
+        t = dict(y=1858, m=11.0, dd=17.0, hh =0.0, mm=0.0, ss=0.0)
+        verify(t, 1858.87945205)
+        
+        t = dict(y=1949, m=12, dd=31.923459,    hh =0.0, mm=0.0, ss=0.0)
+        verify(t, 1950.00253002)
+        
+        t = dict(y=2000, m=1,  dd=1.0, hh =0.0, mm=0.0, ss=0.0)
+        verify(t, 2000.00273224)
+        
+        t = dict(y=1984, m=1,  dd=1.0, hh =0.0, mm=0.0, ss=0.0)
+        verify(t, 1984.00273224)
+        
+        t = dict(y=1984, m=1,  dd=0.0, hh =0.0, mm=0.0, ss=0.0)
+        verify(t, 1984.0)
+        
+        t = dict(y=1984, m=12, dd=31.0, hh =23.0, mm=59.0, ss=60.0)
+        verify(t, 1985.00273973)
+        
+        t = dict(y=1985, m=1,  dd=1.0, hh =0.0, mm=0.0, ss=0.0)
+        verify(t, 1985.00273973)
+        
+        t = dict(y=1985, m=1,  dd=0.0, hh =0.0, mm=0.0, ss=0.0)
+        verify(t, 1985.0)
+        
+        t = dict(y=1985, m=12, dd=31.0, hh =23.0, mm=59.0, ss=60.0)
+        verify(t, 1986.00273973)
+
+
+        
 class TestJDStructure(unittest.TestCase):
     def testCreate(self):
         """Must be able to create a JD object."""
