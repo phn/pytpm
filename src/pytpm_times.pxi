@@ -473,6 +473,10 @@ cdef class JD(object):
 #char *fmt_ymd(YMD ymd)
 #char *fmt_ymd_raw(YMD ymd)
 #double d2d(double d)
+cpdef double d2d(double d):
+    """Normalize angle in degrees into (-360, 360)."""
+    return _tpm_times.d2d(d)
+
 #double dms2d(DMS dms)
 #double gcal2j(int y, int m, int d)
 #double h2h(double h)

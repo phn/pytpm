@@ -932,6 +932,21 @@ class TestScalarValueConversions(unittest.TestCase):
         self.assertAlmostEqual(2451545.0, tpm.y2j(2000.004098360656), 12)
         self.assertAlmostEqual(2445700.5, tpm.y2j(1984.002732240437), 12)
 
+    def testD2D(self):
+        """tpm.d2d must properly normalize degrees."""
+        # See pytpm/tests/c_tests/d2d_test.c.
+        self.assertAlmostEqual(tpm.d2d(0.0), 0.0)
+        self.assertAlmostEqual(tpm.d2d(-0.0), -0.0)
+        self.assertAlmostEqual(tpm.d2d(360.0), 0.0)
+        self.assertAlmostEqual(tpm.d2d(-360.0), 0.0)
+        self.assertAlmostEqual(tpm.d2d(12.3), 12.3)
+        self.assertAlmostEqual(tpm.d2d(-12.3), -12.3)
+        self.assertAlmostEqual(tpm.d2d(361),   1.0)
+        self.assertAlmostEqual(tpm.d2d(-361.0),359.0)
+        self.assertAlmostEqual(tpm.d2d(710.0), 350.0)
+        self.assertAlmostEqual(tpm.d2d(-710.0),10.0)
+        self.assertAlmostEqual(tpm.d2d(730.0), 10.0)
+        self.assertAlmostEqual(tpm.d2d(-730.0),350.0)
         
 if __name__ == '__main__':
     unittest.main()
