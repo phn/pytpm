@@ -480,10 +480,16 @@ cpdef double d2d(double d):
 #double dms2d(DMS dms)
 #double gcal2j(int y, int m, int d)
 #double h2h(double h)
+cpdef double h2h(double h):
+    return _tpm_times.h2h(h)
+
 #double hms2h(HMS hms)
 #double jcal2j(int y, int m, int d)
 #double jd2j(JD jd)
 #double r2r(double r)
+cpdef double r2r(double r):
+    return _tpm_times.r2r(r)
+
 #double utc_now(void)
 #double ymd2dd(YMD ymd)
 #double ymd2rdb(YMD ymd)
@@ -529,3 +535,42 @@ cpdef double y2j(double y):
 #double ymd2j(YMD ymd)
 #YMD ymd_diff(YMD ymd1, YMD ymd2)
 
+# In TPM the following are in vec.h and then redefined in
+# times.h. I am including all of these in _tpm_times for
+# convenience.
+#define d2h(d)	
+cpdef double d2h(double d):
+    return _tpm_times.d2h(d)
+#define h2d(h)	
+cpdef double h2d(double h):
+    return _tpm_times.h2d(h)
+#define d2r(d)	
+cpdef double d2r(double d):
+    return _tpm_times.d2r(d)
+#define r2d(r)	
+cpdef double r2d(double r):
+    return _tpm_times.r2d(r)
+#define h2r(h)	
+cpdef double h2r(double h):
+    return _tpm_times.h2r(h)
+#define r2h(r)	
+cpdef double r2h(double r):
+    return _tpm_times.r2h(r)
+#define d2as(d)	
+cpdef double d2as(double d):
+    return _tpm_times.d2as(d)
+#define as2d(x)	
+cpdef double as2d(double x):
+    return _tpm_times.as2d(x)
+#define as2h(x)	
+cpdef double as2h(double x):
+    return _tpm_times.as2h(x)
+#define h2as(h)	
+cpdef double h2as(double h):
+    return _tpm_times.h2as(h)
+#define r2as(r)	
+cpdef double r2as(double r):
+    return _tpm_times.r2as(r)
+#define as2r(x)	
+cpdef double as2r(double x):
+    return _tpm_times.as2r(x)

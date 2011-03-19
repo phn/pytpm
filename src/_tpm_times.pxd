@@ -53,6 +53,22 @@ cdef extern from "tpm/times.h":
     double JD2BYEAR(double x)
     double JYEAR2JD(double x)
     double JD2JYEAR(double x)
+
+    # In TPM the following are in vec.h and then redefined in
+    # times.h. I am including these in _tpm_times for convenience.
+    double d2h(double d)	
+    double h2d(double h)	
+    double d2r(double d)	
+    double r2d(double r)	
+    double h2r(double h)	
+    double r2h(double r)	
+    double d2as(double d)	
+    double as2d(double x)	
+    double as2h(double x)	
+    double h2as(double h)	
+    double r2as(double r)	
+    double as2r(double x)	
+
     DMS d2dms(double d)
     DMS dms2dms(DMS dms)
     DMS hms2dms(HMS hms)

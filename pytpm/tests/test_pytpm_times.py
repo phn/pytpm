@@ -948,6 +948,120 @@ class TestScalarValueConversions(unittest.TestCase):
         self.assertAlmostEqual(tpm.d2d(-710.0),10.0)
         self.assertAlmostEqual(tpm.d2d(730.0), 10.0)
         self.assertAlmostEqual(tpm.d2d(-730.0),350.0)
+
+    def testH2H(self):
+        """tpm.h2h must properly normalize hours."""
+        # See pytpm/tests/c_tests/h2h_test.c.
+        self.assertAlmostEqual(tpm.h2h(  0.0000),   0.0000)
+        self.assertAlmostEqual(tpm.h2h( -0.0000),  -0.0000) 
+        self.assertAlmostEqual(tpm.h2h( 13.4500),  13.4500) 
+        self.assertAlmostEqual(tpm.h2h(-13.4500),  10.5500) 
+        self.assertAlmostEqual(tpm.h2h( 24.0000),   0.0000) 
+        self.assertAlmostEqual(tpm.h2h(-24.0000),   0.0000) 
+        self.assertAlmostEqual(tpm.h2h( 25.0000),   1.0000) 
+        self.assertAlmostEqual(tpm.h2h(-25.0000),  23.0000) 
+        self.assertAlmostEqual(tpm.h2h( 50.0000),   2.0000) 
+        self.assertAlmostEqual(tpm.h2h(-50.0000),  22.0000) 
+        self.assertAlmostEqual(tpm.h2h( 64.1230),  16.1230) 
+        self.assertAlmostEqual(tpm.h2h(-64.1230),   7.8770) 
+
+    def testR2R(self):
+        """tpm.r2r must properly normalize radians."""
+        import math
+        self.assertAlmostEqual(tpm.r2r(  0.00000000),   0.00000000) 
+        self.assertAlmostEqual(tpm.r2r( -0.00000000),  -0.00000000) 
+        self.assertAlmostEqual(tpm.r2r(  math.pi/2.0),   1.57079633) 
+        self.assertAlmostEqual(tpm.r2r( -math.pi/2.0),   4.71238898) 
+        self.assertAlmostEqual(tpm.r2r(  2*math.pi),   0.00000000) 
+        self.assertAlmostEqual(tpm.r2r( -2*math.pi),   0.00000000) 
+        self.assertAlmostEqual(tpm.r2r( -3*math.pi),   3.14159265) 
+        self.assertAlmostEqual(tpm.r2r(  3*math.pi),   3.14159265) 
+        self.assertAlmostEqual(tpm.r2r( 4*math.pi),   0.00000000) 
+        self.assertAlmostEqual(tpm.r2r(-4*math.pi),   0.00000000) 
+        self.assertAlmostEqual(tpm.r2r( 4.2*math.pi),   0.62831853) 
+        self.assertAlmostEqual(tpm.r2r(-4.2*math.pi),   5.65486678) 
+
+    def testD2H(self):
+        """"tpm.d2h must convert degrees into hours."""
+        self.assertAlmostEqual(tpm.d2h(180.0), 12.0)
+        self.assertAlmostEqual(tpm.d2h(-180.0), -12.0)
+        self.assertAlmostEqual(tpm.d2h(360.0), 24.0)
+        self.assertAlmostEqual(tpm.d2h(-360.0), -24.0)
+        self.assertAlmostEqual(tpm.d2h(720.0), 48.0)
+
+    def testH2D(self):
+        """tpm.h2d must convert hours into degrees."""
+        self.assertAlmostEqual(tpm.h2d(12.0), 180.0)
+        self.assertAlmostEqual(tpm.h2d(-12.0), -180.0)
+        self.assertAlmostEqual(tpm.h2d(24.0), 360.0)
+        self.assertAlmostEqual(tpm.h2d(-24.0), -360.0)
+        self.assertAlmostEqual(tpm.h2d(48.0), 720.0)
+        self.assertAlmostEqual(tpm.h2d(-48.0), -720.0)
+        self.assertAlmostEqual(tpm.h2d(12.5), 180.0+7.5)
+        
+    def testD2R(self):
+        """tpm.d2r must convert degrees into radians."""
+        import math
+        self.assertAlmostEqual(tpm.d2r(180.0), math.pi)
+        self.assertAlmostEqual(tpm.d2r(360.0), 2*math.pi)
+        self.assertAlmostEqual(tpm.d2r(-360.0), -2*math.pi)
+        self.assertAlmostEqual(tpm.d2r(720.0), 4*math.pi)
+        self.assertAlmostEqual(tpm.d2r(-720.0), -4*math.pi)
+
+    def testR2D(self):
+       """tpm.r2d must convert radians into degrees."""
+       import math
+       self.assertAlmostEqual(tpm.r2d(math.pi), 180.0)
+       self.assertAlmostEqual(tpm.r2d(4*math.pi), 720.0)
+       self.assertAlmostEqual(tpm.r2d(-4*math.pi), -720.0)
+       self.assertAlmostEqual(tpm.r2d(-2.5*math.pi), -450.0)
+       
+    def testH2R(self):
+        """tpm.h2r must convert hours into radians."""
+        import math
+        self.assertAlmostEqual(tpm.h2r(12.0), math.pi)
+        self.assertAlmostEqual(tpm.h2r(24.0), 2*math.pi)
+        self.assertAlmostEqual(tpm.h2r(-12.5), -(12.5/12.0)*math.pi)
+
+    def testR2H(self):
+        """tpm.r2h must convert radians into hours."""
+        import math
+        self.assertAlmostEqual(tpm.r2h(math.pi), 12.0)
+        self.assertAlmostEqual(tpm.r2h(2*math.pi), 24.0)
+        self.assertAlmostEqual(tpm.r2h(-(12.5/12.0)*math.pi), -12.5)
+        
+    def testD2AS(self):
+        """tpm.d2as must comvert degrees into arcseconds."""
+        self.assertAlmostEqual(tpm.d2as(1.0), 3600.0)
+        self.assertAlmostEqual(tpm.d2as(-12.45), -12.45*3600.0)
+        
+    def testAS2D(self):
+        """tpm.as2d must convert arcseconds into degrees."""
+        self.assertAlmostEqual(tpm.as2d(3600.0), 1.0)
+        self.assertAlmostEqual(tpm.as2d(-12.45*3600.0), -12.45)
+
+    def testAS2H(self):
+        """tpm.as2h must convert arcseconds into hours."""
+        self.assertAlmostEqual(tpm.as2h(3600.0), 1/15.0)
+        self.assertAlmostEqual(tpm.as2h(-12.45*3600), -12.45/15.0)
+
+    def testH2AS(self):
+        """tpm.h2as must convert hours into arcseconds."""
+        self.assertAlmostEqual(tpm.h2as(1/15.0), 3600.0)
+        self.assertAlmostEqual(tpm.h2as(-12.45/15.0), -12.45*3600.0)
+
+    def testR2AS(self):
+        """tpm.r2as must convert radians into arcseconds."""
+        import math
+        self.assertAlmostEqual(tpm.r2as(math.pi), 180.0*3600.0)
+        self.assertAlmostEqual(tpm.r2as(-math.pi), -180.0*3600.0)
+
+    def testAS2R(self):
+        """tpm.as2r must convert arcseconds into radians."""
+        import math
+        self.assertAlmostEqual(tpm.as2r(180.0*3600), math.pi)
+        self.assertAlmostEqual(tpm.as2r(-180.0*3600), -math.pi)
+
         
 if __name__ == '__main__':
     unittest.main()
