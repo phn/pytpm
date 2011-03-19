@@ -926,6 +926,7 @@ class TestScalarValueConversions(unittest.TestCase):
         self.assertAlmostEqual(tpm.j2y(2445700.5), 1984.002732240437, 12)
 
     def testY2J(self):
+        """tpm.y2j must properly convert year into Julian date."""
         # This is just the inverse of testJ2Y.
         self.assertAlmostEqual(2400000.5, tpm.y2j(1858.879452054794), 12)
         self.assertAlmostEqual(2433282.42345905, tpm.y2j(1950.002530024794), 12)
