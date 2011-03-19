@@ -517,6 +517,9 @@ cpdef double j2y(double j):
 #DMS r2dms(double r)
 #HMS r2hms(double r)
 #double y2j(double y)
+cpdef double y2j(double y):
+    return _tpm_times.y2j(y)
+
 #JD y2jd(double y)
 #double y2y(double y)
 #double ymd2j(YMD ymd)
