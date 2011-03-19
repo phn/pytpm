@@ -707,13 +707,26 @@ class TestJDStructure(unittest.TestCase):
 
     def testSetFieldValuesAtInit(self):
         """Must be able to set fields of JD at initialization."""
-        j = dict(dd=2451445.0, hh=12.0, mm=0.0, ss=0.0)
-        jd = tpm.JD(**j)
-        self.assertEqual(jd.dd, j['dd'])
-        self.assertEqual(jd.hh, j['hh'])
-        self.assertEqual(jd.mm, j['mm'])
-        self.assertEqual(jd.ss, j['ss'])
+        def verify(t, t_norm):
+             jd = tpm.JD(**t)
+             self.assertEqual(jd.dd, t_norm['dd'])
+             self.assertEqual(jd.hh, t_norm['hh'])
+             self.assertEqual(jd.mm, t_norm['mm'])
+             self.assertEqual(jd.ss, t_norm['ss'])
 
+        t = dict(dd=2451445.0, hh=12.0, mm=0.0, ss=0.0)
+        verify(t, t)
+
+        # Verify if passing a Julian date will result in proper
+        # initialization.
+        t = dict(j=2451545.0)
+        verify(t, dict(dd=t['j'], hh=0.0, mm=0.0, ss=0.0))
+
+        # Verify that a year passed at initialization will result in
+        # proper initialization.
+        t = dict(year=2000.004098360656)
+        verify(t, dict(dd=2451545.5,hh=-12.0, mm=0.0, ss=0.0))
+        
     def testSetFieldValues(self):
         """Must be able to set fields of a JD object."""
         j = dict(dd=2451445.0, hh=12.0, mm=0.0, ss=0.0)
@@ -879,6 +892,11 @@ class TestJDStructure(unittest.TestCase):
         t = dict(dd=2433142.678, hh=10.1230, mm=-10.3450, ss=1.0400)
         verify(t, 2433143.09261968)
 
+        # See if initializing with j=value and then calculating to_j
+        # will give the same result.
+        t = dict(j= 2451545.123456)
+        verify(t, t['j'])
+        
     def testToYear(self):
         """Must convert JD into equivalent year (Gregorian calendar)."""
         def verify(t, t_norm):
@@ -892,6 +910,10 @@ class TestJDStructure(unittest.TestCase):
         t = dict(dd=2433142.678, hh=10.1230, mm=-10.3450, ss=1.0400)
         verify(t, 1949.62080170)
 
+        # See that initializing with a year and hen converting back
+        # into a year gives the same value.
+        t = dict(year=2000.004098360656)
+        verify(t, t['year'])
 
 class TestScalarValueConversions(unittest.TestCase):
     """Test conversions between scalar values."""

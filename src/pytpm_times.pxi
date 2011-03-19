@@ -333,10 +333,15 @@ cdef class JD(object):
         self._jd.hms.ss = 0.0
 
     def __init__(self, **kwargs):
-        self._jd.dd = kwargs.get('dd',0.0)
-        self._jd.hms.hh = kwargs.get('hh', 0.0)
-        self._jd.hms.mm = kwargs.get('mm', 0.0)
-        self._jd.hms.ss = kwargs.get('ss', 0.0)
+        if "j" in kwargs:
+            self._jd = _tpm_times.j2jd(kwargs['j'])
+        elif "year" in kwargs:
+            self._jd = _tpm_times.y2jd(kwargs['year'])
+        else:
+            self._jd.dd = kwargs.get('dd',0.0)
+            self._jd.hms.hh = kwargs.get('hh', 0.0)
+            self._jd.hms.mm = kwargs.get('mm', 0.0)
+            self._jd.hms.ss = kwargs.get('ss', 0.0)
 
     def __getdd(self):
         return self._jd.dd
