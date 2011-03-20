@@ -1227,6 +1227,51 @@ class CalendarCalculations(unittest.TestCase):
         """tpm.y2doy must return the number of days in the Gregorian year."""
         self.assertEqual(tpm.y2doy(2000), 366)
         self.assertEqual(tpm.y2doy(1900), 365)
+
+    def testJ2Gcal(self):
+        """tpm.j2gcal gives Gregorian calendar date for given Julian date"""
+        def verify(t, t_norm):
+            g = tpm.j2gcal(t)
+            self.assertEqual(g['y'], t_norm['y'])
+            self.assertEqual(g['m'], t_norm['m'])
+            self.assertEqual(g['dd'], t_norm['dd'])
+
+        verify(tpm.J2000, dict(y=2000, m=1, dd=1))
+        verify(2400000.5, dict(y=1858, m=11, dd=17))
+        verify(2446431.50, dict(y=1986, m=1, dd=1))
         
+    def testJ2Jcal(self):
+        """tpm.j2jcal gives Julian calendar date for the given Julian date"""
+        def verify(t, t_norm):
+            g = tpm.j2jcal(t)
+            self.assertEqual(g['y'], t_norm['y'])
+            self.assertEqual(g['m'], t_norm['m'])
+            self.assertEqual(g['dd'], t_norm['dd'])
+
+        verify(t=2299160.0, t_norm=dict(y=1582, m=10, dd=4))
+        verify(t=1143752.0, t_norm=dict(y=-1581, m=6, dd=4))
+        verify(t=0.0, t_norm=dict(y=-4712, m=1, dd=1))
+
+    def testGcal2j(self):
+        """tpm.gcal2j gives Julian day number for Gregorian calendar date"""
+        def verify(t, t_norm):
+            g = tpm.gcal2j(**t)
+            self.assertAlmostEqual(g, t_norm)
+
+        verify(dict(y=2000, m=1, dd=1), tpm.J2000)
+        verify(dict(y=1913, m=1, dd=1), 2419769.0)
+        verify(dict(y=1582, m=10, dd=15), 2299161.0)
+
+    def testJcal2J(self):
+        """tpm.jcal2j gives Julian day number for Julian calendar date """
+        def verify(t, t_norm):
+            g = tpm.jcal2j(**t)
+            self.assertAlmostEqual(g, t_norm)
+
+        verify(dict(y=-4712, m=1, dd=1), 0.0)
+        verify(dict(y=-1581, m=6, dd=4), 1143752.0)
+        verify(dict(y=1582, m=10, dd=4), 2299160.0)
+
+
 if __name__ == '__main__':
     unittest.main()

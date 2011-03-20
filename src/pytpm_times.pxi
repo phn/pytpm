@@ -508,12 +508,20 @@ cpdef double d2d(double d):
 
 #double dms2d(DMS dms)
 #double gcal2j(int y, int m, int d)
+cpdef gcal2j(int y, int m, int dd):
+    """Return Julian day number for the Gregorian calendar date."""
+    return _tpm_times.gcal2j(y, m, dd)
+
 #double h2h(double h)
 cpdef double h2h(double h):
     return _tpm_times.h2h(h)
 
 #double hms2h(HMS hms)
 #double jcal2j(int y, int m, int d)
+cpdef double jcal2j(int y, int m, int dd):
+    """Return Julian day number for the Julian calendar date."""
+    return _tpm_times.jcal2j(y, m, dd)
+
 #double jd2j(JD jd)
 #double r2r(double r)
 cpdef double r2r(double r):
@@ -538,8 +546,21 @@ cpdef int y2doy(int y):
     return _tpm_times.y2doy(y)
 
 #void j2gcal(int *y, int *m, int *d, double j)
+cpdef j2gcal(double j):
+    """Convert Julian date into Gregorian calendar date."""
+    cdef int y, m, d
+    y = m = d = 0;
+    _tpm_times.j2gcal(&y, &m, &d, j)
+    return dict(y=y, m=m, dd=d)
+
 #void j2jcal(int *y, int *m, int *d, double j)
-# 
+cpdef j2jcal(double j):
+    """Convert Julian date into Julian calendar date."""
+    cdef int y, m, d
+    y = m = d = 0;
+    _tpm_times.j2jcal(&y, &m, &d, j)
+    return dict(y=y, m=m, dd=d)
+
 #DMS d2hms(double d)
 #double dms2h(DMS dms)
 #double dms2r(DMS dms)
