@@ -24,9 +24,14 @@ cdef class DMS(object):
         self._dms.ss = 0.0
 
     def __init__(self, **kwargs):
-        self._dms.dd = kwargs.get('dd',0.0)
-        self._dms.mm = kwargs.get('mm',0.0) 
-        self._dms.ss = kwargs.get('ss',0.0) 
+        if "r" in kwargs:
+            self._dms = _tpm_times.r2dms(kwargs['r'])
+        elif "h" in kwargs:
+            self._dms = _tpm_times.h2dms(kwargs['h'])
+        else:
+            self._dms.dd = kwargs.get('dd',0.0)
+            self._dms.mm = kwargs.get('mm',0.0) 
+            self._dms.ss = kwargs.get('ss',0.0) 
         
     def __getdd(self):
         return self._dms.dd
