@@ -472,8 +472,6 @@ cpdef JD jd_now():
     jd._jd = _tpm_times.jd_now()
     return jd
 
-#YMD ydd2ymd(int y, double dd)
-#YMD ymd2ymd(YMD ymd)
 #char *fmt_alpha(double alpha)
 cpdef char *fmt_alpha(double alpha):
     """Format angle as Right Ascension."""
@@ -499,14 +497,11 @@ cpdef char *fmt_j(double j):
     """Format Julian date into a string."""
     return _tpm_times.fmt_j(j)
 
-#char *fmt_ymd(YMD ymd)
-#char *fmt_ymd_raw(YMD ymd)
 #double d2d(double d)
 cpdef double d2d(double d):
     """Normalize angle in degrees into (-360, 360)."""
     return _tpm_times.d2d(d)
 
-#double dms2d(DMS dms)
 #double gcal2j(int y, int m, int d)
 cpdef gcal2j(int y, int m, int dd):
     """Return Julian day number for the Gregorian calendar date."""
@@ -516,13 +511,11 @@ cpdef gcal2j(int y, int m, int dd):
 cpdef double h2h(double h):
     return _tpm_times.h2h(h)
 
-#double hms2h(HMS hms)
 #double jcal2j(int y, int m, int d)
 cpdef double jcal2j(int y, int m, int dd):
     """Return Julian day number for the Julian calendar date."""
     return _tpm_times.jcal2j(y, m, dd)
 
-#double jd2j(JD jd)
 #double r2r(double r)
 cpdef double r2r(double r):
     return _tpm_times.r2r(r)
@@ -561,16 +554,6 @@ cpdef j2jcal(double j):
     _tpm_times.j2jcal(&y, &m, &d, j)
     return dict(y=y, m=m, dd=d)
 
-#DMS d2hms(double d)
-#double dms2h(DMS dms)
-#double dms2r(DMS dms)
-#char *fmt_dms(DMS dms)
-#cpdef char* fmt_dms(DMS dms):
-#    return _tpm_times.fmt_dms(dms._dms)
-#char *fmt_hms(HMS hms)
-#cpdef char *fmt_hms (HMS hms):
-#    return _tpm_times.fmt_hms(hms._hms)
-#char *fmt_jd(JD jd)
 #char *fmt_r(double r)
 cpdef char* fmt_r(double r):
     """Format radians into a string with angle in degrees."""
@@ -581,26 +564,13 @@ cpdef char* fmt_y(double y):
     """Format years into a string."""
     return _tpm_times.fmt_y(y)
 
-#DMS h2dms(double h)
-#double hms2d(HMS hms)
-#double hms2r(HMS hms)
-#double j2j(double j)
 #double j2y(double j)
 cpdef double j2y(double j):
     return _tpm_times.j2y(j)
 
-#double j2ymd(double j)
-#double jd2y(JD jd)
-#DMS r2dms(double r)
-#HMS r2hms(double r)
 #double y2j(double y)
 cpdef double y2j(double y):
     return _tpm_times.y2j(y)
-
-#JD y2jd(double y)
-#double y2y(double y)
-#double ymd2j(YMD ymd)
-#YMD ymd_diff(YMD ymd1, YMD ymd2)
 
 # In TPM the following are in vec.h and then redefined in
 # times.h. I am including all of these in _tpm_times for
@@ -608,36 +578,47 @@ cpdef double y2j(double y):
 #define d2h(d)	
 cpdef double d2h(double d):
     return _tpm_times.d2h(d)
+
 #define h2d(h)	
 cpdef double h2d(double h):
     return _tpm_times.h2d(h)
+
 #define d2r(d)	
 cpdef double d2r(double d):
     return _tpm_times.d2r(d)
+
 #define r2d(r)	
 cpdef double r2d(double r):
     return _tpm_times.r2d(r)
+
 #define h2r(h)	
 cpdef double h2r(double h):
     return _tpm_times.h2r(h)
+
 #define r2h(r)	
 cpdef double r2h(double r):
     return _tpm_times.r2h(r)
+
 #define d2as(d)	
 cpdef double d2as(double d):
     return _tpm_times.d2as(d)
+
 #define as2d(x)	
 cpdef double as2d(double x):
     return _tpm_times.as2d(x)
+
 #define as2h(x)	
 cpdef double as2h(double x):
     return _tpm_times.as2h(x)
+
 #define h2as(h)	
 cpdef double h2as(double h):
     return _tpm_times.h2as(h)
+
 #define r2as(r)	
 cpdef double r2as(double r):
     return _tpm_times.r2as(r)
+
 #define as2r(x)	
 cpdef double as2r(double x):
     return _tpm_times.as2r(x)
