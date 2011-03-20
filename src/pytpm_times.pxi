@@ -548,6 +548,10 @@ cpdef char* fmt_r(double r):
     return _tpm_times.fmt_r(r)
 
 #char *fmt_y(double y)
+cpdef char* fmt_y(double y):
+    """Format years into a string."""
+    return _tpm_times.fmt_y(y)
+
 #DMS h2dms(double h)
 #double hms2d(HMS hms)
 #double hms2r(HMS hms)

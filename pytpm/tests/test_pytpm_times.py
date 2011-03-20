@@ -1142,6 +1142,12 @@ class TestFormattedStringFunction(unittest.TestCase):
         self.assertEqual(tpm.fmt_r(1.230000), "+70D 28' 25.711\"")
         self.assertEqual(tpm.fmt_r(-1.230000), "-70D 28' 25.711\"")
 
+    def testFmtY(self):
+        """tpm.fmt_y must properly format year into a string."""
+        self.assertEqual(tpm.fmt_y(2000.000000), "Fri Dec 31 00:00:00.000 1999") 
+        self.assertEqual(tpm.fmt_y(1984.000000), "Sat Dec 31 00:00:00.000 1983") 
+        self.assertEqual(tpm.fmt_y(1950.000000), "Sat Dec 31 00:00:00.000 1949") 
+
 
 if __name__ == '__main__':
     unittest.main()
