@@ -1116,6 +1116,11 @@ class TestFormattedStringFunction(unittest.TestCase):
         assert tpm.fmt_alpha(tpm.M_PI/3.0).strip() == "03H 59M 59.999S"
         assert tpm.fmt_alpha(tpm.M_PI*1.234).strip() == "14H 48M 28.799S"
 
+    def testFmtD(self):
+        """tpm.fmt_d must give a formatted string of angle in radians."""
+        assert tpm.fmt_d(180.0).strip() == "+180D 00\' 00.000\""
+        assert tpm.fmt_d(45.12345).strip() == "+45D 07\' 24.419\""
 
+    
 if __name__ == '__main__':
     unittest.main()

@@ -481,6 +481,10 @@ cpdef char *fmt_alpha(double alpha):
     return _tpm_times.fmt_alpha(alpha)
 
 #char *fmt_d(double d)
+cpdef char *fmt_d(double d):
+    """Format degrees into a string."""
+    return _tpm_times.fmt_d(d)
+
 #char *fmt_delta(double delta)
 #char *fmt_h(double h)
 #char *fmt_j(double j)
