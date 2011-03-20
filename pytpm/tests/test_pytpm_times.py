@@ -111,8 +111,8 @@ class TestDMSStructure(unittest.TestCase):
         dms.dd = 1.0
         dms.mm = 2.0
         dms.ss = 3.0
-        self.assertEqual(str(dms),"+01\xc2\xb0 02' 03.000\"")
-        self.assertEqual(dms.__unicode__(),u"+01\u00B0 02' 03.000\"")
+        self.assertEqual(str(dms), "+01D 02' 03.000\"")
+        self.assertEqual(dms.__unicode__(), u"+01D 02' 03.000\"")
 
     def testToHMS(self):
         """Must return a tpm.HMS object with appropriate field values."""

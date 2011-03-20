@@ -61,9 +61,7 @@ cdef class DMS(object):
     
     def __unicode__(self):
         cdef _tpm_times.DMS dms
-        dms = _tpm_times.dms2dms(self._dms)
-        return u"{0:+03.0f}\u00B0 {1:02.0f}' {2:06.3f}\"".format(
-            dms.dd, dms.mm, dms.ss)
+        return unicode(_tpm_times.fmt_dms(self._dms))
 
     def __add__(self, other):
         # Cython does not have __radd__ and the first parameter may not
