@@ -2,7 +2,7 @@
 cdef extern from "tpm/times.h":
 
     # Constants
-    cdef double MJD_0
+    cdef double M_PI
     cdef double MJD_0
     cdef double B1950
     cdef double J2000

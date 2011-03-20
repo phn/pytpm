@@ -2,6 +2,7 @@
 # The following line must be present in the pytpm.pyx file.
 # cimport _tpm_times 
 
+M_PI = _tpm_times.M_PI
 MJD_0 = _tpm_times.MJD_0
 B1950 = _tpm_times.B1950
 J2000 = _tpm_times.J2000
@@ -475,6 +476,10 @@ cdef class JD(object):
 #YMD ydd2ymd(int y, double dd)
 #YMD ymd2ymd(YMD ymd)
 #char *fmt_alpha(double alpha)
+cpdef char *fmt_alpha(double alpha):
+    """Format angle as Right Ascension."""
+    return _tpm_times.fmt_alpha(alpha)
+
 #char *fmt_d(double d)
 #char *fmt_delta(double delta)
 #char *fmt_h(double h)

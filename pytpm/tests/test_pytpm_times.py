@@ -1109,6 +1109,13 @@ class TestScalarValueConversions(unittest.TestCase):
         self.assertAlmostEqual(tpm.as2r(180.0*3600), math.pi)
         self.assertAlmostEqual(tpm.as2r(-180.0*3600), -math.pi)
 
-        
+class TestFormattedStringFunction(unittest.TestCase):
+    """Test all functions that return formatted string."""
+    def testFmtAlpha(self):
+        """Must correctly convert radians into right ascension format."""
+        assert tpm.fmt_alpha(tpm.M_PI/3.0).strip() == "03H 59M 59.999S"
+        assert tpm.fmt_alpha(tpm.M_PI*1.234).strip() == "14H 48M 28.799S"
+
+
 if __name__ == '__main__':
     unittest.main()
