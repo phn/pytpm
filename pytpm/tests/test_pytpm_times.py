@@ -1137,6 +1137,11 @@ class TestFormattedStringFunction(unittest.TestCase):
         assert tpm.fmt_j(2451545.0).strip() == "2451545  00H 00M 00.000S"
         assert tpm.fmt_j(1111111.1234).strip() == "1111111  02H 57M 41.759S"
 
-        
+    def testFmtR(self):
+        """tpm.fmt_r must convert radians into a string with degrees."""
+        self.assertEqual(tpm.fmt_r(1.230000), "+70D 28' 25.711\"")
+        self.assertEqual(tpm.fmt_r(-1.230000), "-70D 28' 25.711\"")
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -543,6 +543,10 @@ cpdef double r2r(double r):
 #    return _tpm_times.fmt_hms(hms._hms)
 #char *fmt_jd(JD jd)
 #char *fmt_r(double r)
+cpdef char* fmt_r(double r):
+    """Format radians into a string with angle in degrees."""
+    return _tpm_times.fmt_r(r)
+
 #char *fmt_y(double y)
 #DMS h2dms(double h)
 #double hms2d(HMS hms)
