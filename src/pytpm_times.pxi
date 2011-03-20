@@ -439,18 +439,25 @@ cdef class JD(object):
 
     
 #double BYEAR2JD(double x)
-#cpdef double BYEAR2JD(double byear):
-#    """Convert Besselian year into a Julian date."""
-#    return _tpm_times.BYEAR2JD(byear)
-# 
-##double JD2BYEAR(double x)
-#cpdef double JD2BYEAR(double jd):
-#    """Convert Julian date into a Julian year."""
-#    return _tpm_times.JD2BYEAR(jd)
-# 
-##double JYEAR2JD(double x)
-##double JD2JYEAR(double x)
-# 
+cpdef double byear2jd(double byear):
+    """Convert Besselian year into a Julian date."""
+    return _tpm_times.BYEAR2JD(byear)
+ 
+#double JD2BYEAR(double x)
+cpdef double jd2byear(double jd):
+    """Convert Julian date into a Julian year."""
+    return _tpm_times.JD2BYEAR(jd)
+ 
+#double JYEAR2JD(double x)
+cpdef double jyear2jd(double x):
+    """Convert Julian year into a Julian date."""
+    return _tpm_times.JYEAR2JD(x)
+
+#double JD2JYEAR(double x)
+cpdef double jd2jyear(double x):
+    """Convert Julian date into Julian year."""
+    return _tpm_times.JD2JYEAR(x)
+
 ##DMS d2dms(double d)
 #cpdef DMS d2dms(double d):
 #    return _tpm_times.d2dms(d)

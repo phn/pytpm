@@ -1149,5 +1149,25 @@ class TestFormattedStringFunction(unittest.TestCase):
         self.assertEqual(tpm.fmt_y(1950.000000), "Sat Dec 31 00:00:00.000 1949") 
 
 
+class TestYearJulianDateConversion(unittest.TestCase):
+    """Test the functions for convertion years into Julian dates."""
+    def testByear2jd(self):
+        """tpm.byear2jd must convert Besselian year into Julian date."""
+        self.assertAlmostEqual(tpm.byear2jd(1950.0), tpm.B1950)
+        
+    def testJd2byear(self):
+        """tpm.jd2byear must convert Julian date into Besselian year."""
+        self.assertAlmostEqual(tpm.jd2byear(tpm.B1950), 1950.0)
+        
+    def testJyear2Jd(self):
+        """tpm.jyear2jd must convert Julian year into Julian date."""
+        self.assertAlmostEqual(tpm.jyear2jd(2000.0), tpm.J2000)
+                
+    def testJd2Jyear(self):
+        """tpm.jd2jyear must convert Julian date into Julian year."""
+        self.assertAlmostEqual(tpm.jd2jyear(tpm.J2000), 2000.0)
+
+
+
 if __name__ == '__main__':
     unittest.main()
