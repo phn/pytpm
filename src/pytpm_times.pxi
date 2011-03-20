@@ -227,6 +227,10 @@ cdef class YMD(object):
             self._ymd = _tpm_times.j2ymd(kwarg['j'])
         elif "year" in kwarg:
             self._ymd = _tpm_times.y2ymd(kwarg['year'])
+        elif "ydd" in kwarg:
+            # Must be tuple (integer year, double day)
+            y,d = kwarg['ydd']
+            self._ymd = _tpm_times.ydd2ymd(y,d)
         else:
             self._ymd.y = kwarg.get('y',2000)
             self._ymd.m = kwarg.get('m',1)
@@ -458,21 +462,6 @@ cpdef double jd2jyear(double x):
     """Convert Julian date into Julian year."""
     return _tpm_times.JD2JYEAR(x)
 
-##DMS d2dms(double d)
-#cpdef DMS d2dms(double d):
-#    return _tpm_times.d2dms(d)
-# 
-##DMS dms2dms(DMS dms)
-#cpdef DMS dms2dms(DMS dms):
-#    return DMS(_tpm_times.dms2dms(dms._dms))
-
-#DMS hms2dms(HMS hms)
-#HMS dms2hms(DMS dms)
-#HMS h2hms(double h)
-#HMS hms2hms(HMS hms)
-#JD j2jd(double j)
-#JD jd2jd(JD jd)
-#JD jd_diff(JD jd1, JD jd2)
 #JD jd_now(void)
 cpdef JD jd_now():
     """Current Julian date as a JD.
@@ -483,10 +472,6 @@ cpdef JD jd_now():
     jd._jd = _tpm_times.jd_now()
     return jd
 
-#JD jd_sum(JD jd1, JD jd2)
-#JD ymd2jd(YMD ymd)
-#YMD jd2ymd(JD jd)
-#YMD y2ymd(double y)
 #YMD ydd2ymd(int y, double dd)
 #YMD ymd2ymd(YMD ymd)
 #char *fmt_alpha(double alpha)

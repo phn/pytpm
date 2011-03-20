@@ -494,6 +494,19 @@ class TestYMDStructure(unittest.TestCase):
         
         t_norm = dict(y=2000, m=1,  dd=1.0, hh =0.0, mm=0.0, ss=0.0)
         verify(dict(j=2451544.5), t_norm)
+
+        # Check to see if initialization with year and day number gives
+        # correct results.
+        # See pytpm/tests/c_tests/ydd2ymd_test.c.
+        t_norm = dict(y=2000, m=1, dd=1.5, hh=0.0, mm=0.0, ss=0.0)
+        verify(dict(ydd=(2000, 1.5)), t_norm)
+        
+        t_norm = dict(y=1858, m=1, dd=321.0, hh=0.0, mm=0.0, ss=0.0)
+        verify(dict(ydd=(1858, 321.0)), t_norm)
+
+        t_norm = dict(y=1949, m=1, dd=365.923459, hh=0.0, mm=0.0, ss=0.0)
+        verify(dict(ydd=(1949, 365.9234590)), t_norm)
+
         
     def testSetFieldValues(self):
         """Must be able to set field values."""
@@ -669,6 +682,11 @@ class TestYMDStructure(unittest.TestCase):
 
         t = dict(y=1984, m=1, dd=1.0, hh=0.0, mm=0.0, ss=0.0)
         verify(t, 1.0)
+
+        # See if initializing with year and day of year and then
+        # calculating day of year gives the same value.
+        t = dict(ydd=(2000, 321.9))
+        verify(t, 321.9)
         
     def testToYear(self):
         """Must convert YMD into a year number."""
