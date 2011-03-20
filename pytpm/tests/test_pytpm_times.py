@@ -1215,6 +1215,18 @@ class CurrentTime(unittest.TestCase):
         self.assertAlmostEqual(ymd.mm, d.minute)
         self.assertAlmostEqual(ymd.ss, d.second, 1)
 
-            
+class CalendarCalculations(unittest.TestCase):
+    """Test calendar calculation functions."""
+    def testJ2DOW(self):
+        """tpm.j2dow must return the day of week for the Julian date."""
+        self.assertEqual(tpm.j2dow(tpm.J2000), 6)
+        self.assertEqual(tpm.j2dow(tpm.YMD(y=2010,m=11,dd=13).to_j()), 6)
+        self.assertEqual(tpm.j2dow(tpm.YMD(y=2010,m=11,dd=12).to_j()), 5)
+
+    def testY2DOY(self):
+        """tpm.y2doy must return the number of days in the Gregorian year."""
+        self.assertEqual(tpm.y2doy(2000), 366)
+        self.assertEqual(tpm.y2doy(1900), 365)
+        
 if __name__ == '__main__':
     unittest.main()

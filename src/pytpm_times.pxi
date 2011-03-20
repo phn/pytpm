@@ -527,14 +527,16 @@ cpdef double utc_now():
     """
     return _tpm_times.utc_now()
 
-#double ymd2dd(YMD ymd)
-#double ymd2rdb(YMD ymd)
-#double ymd2y(YMD ymd)
-#int argv2dms(DMS *dms, char *argv[], int argnum, int cooked)
-#int argv2hms(HMS *hms, char *argv[], int argnum, int cooked)
-#int argv2ymd(YMD *ymd, char *argv[], int argnum, int cooked)
 #int j2dow(double j)
+cpdef int j2dow(double j):
+    """Return day of week of the given Julian date."""
+    return _tpm_times.j2dow(j)
+
 #int y2doy(int y)
+cpdef int y2doy(int y):
+    """Return number of days in the given Gregorian calendar year."""
+    return _tpm_times.y2doy(y)
+
 #void j2gcal(int *y, int *m, int *d, double j)
 #void j2jcal(int *y, int *m, int *d, double j)
 # 
