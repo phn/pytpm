@@ -118,9 +118,14 @@ cdef class HMS(object):
         self._hms.ss = 0.0
 
     def __init__(self,**kwargs):
-        self._hms.hh = kwargs.get('hh',0.0)
-        self._hms.mm = kwargs.get('mm',0.0) 
-        self._hms.ss = kwargs.get('ss',0.0) 
+        if "r" in kwargs:
+            self._hms = _tpm_times.r2hms(kwargs['r'])
+        elif "d" in kwargs:
+            self._hms = _tpm_times.d2hms(kwargs['d'])
+        else:
+            self._hms.hh = kwargs.get('hh',0.0)
+            self._hms.mm = kwargs.get('mm',0.0) 
+            self._hms.ss = kwargs.get('ss',0.0) 
         
     def __gethh(self):
         return self._hms.hh

@@ -229,11 +229,25 @@ class TestHMSStructure(unittest.TestCase):
 
     def testSetFieldValuesAtInit(self):
         """Must be able to set values to fields at creation."""
+        import math
+        def verify(t, t_norm):
+            hms = tpm.HMS(**t)
+            self.assertAlmostEqual(hms.hh, t_norm['hh'])
+            self.assertAlmostEqual(hms.mm, t_norm['mm'])
+            self.assertAlmostEqual(hms.ss, t_norm['ss'])
+
         t = {'hh':1.0,'mm':1.0,'ss':1.34}
-        hms = tpm.HMS(**t)
-        self.assertAlmostEqual(hms.hh, 1.0)
-        self.assertAlmostEqual(hms.mm, 1.0)
-        self.assertAlmostEqual(hms.ss, 1.34)
+        verify(t, t)
+
+        # See if initializing with radians work.
+        t = dict(r=1.0)
+        t_norm = dict(hh= 12/math.pi, mm=0.0, ss=0.0)
+        verify(t, t_norm)
+
+        # See if initializing with degrees work.
+        t = dict(d=12.5)
+        t_norm = dict(hh=12.5*(12/180.0), mm=0.0, ss=0.0)
+        verify(t, t_norm)
         
     def testSetFieldValues(self):
         """Must be able to set values after creation."""
@@ -386,6 +400,11 @@ class TestHMSStructure(unittest.TestCase):
             
         t = dict(hh=-2.0, mm=-0.0, ss=-0.3)
         verify(t, d(t))
+
+        # Verify that initializing with degrees and then converting
+        # back gives the same answer.
+        t = dict(d=12.5)
+        verify(t, t['d'])
         
     def testToRadians(self):
         """Must convert HMS into radians."""
@@ -402,6 +421,10 @@ class TestHMSStructure(unittest.TestCase):
         t = dict(hh=-2.0, mm=-0.0, ss=-0.3)
         verify(t, r(t))
 
+        # Verify the initializing with radians and then converting back
+        # gives the same answer.
+        t = dict(r=1.0)
+        verify(t, t['r'])
         
 class TestYMDStructure(unittest.TestCase):
     def testCreate(self):

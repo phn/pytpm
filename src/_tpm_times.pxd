@@ -107,7 +107,7 @@ cdef extern from "tpm/times.h":
     void j2gcal(int *y, int *m, int *d, double j)
     void j2jcal(int *y, int *m, int *d, double j)
 
-    DMS d2hms(double d)
+    HMS d2hms(double d)
     double dms2h(DMS dms)
     double dms2r(DMS dms)
     char *fmt_dms(DMS dms)
