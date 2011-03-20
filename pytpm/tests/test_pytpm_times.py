@@ -1121,6 +1121,22 @@ class TestFormattedStringFunction(unittest.TestCase):
         assert tpm.fmt_d(180.0).strip() == "+180D 00\' 00.000\""
         assert tpm.fmt_d(45.12345).strip() == "+45D 07\' 24.419\""
 
-    
+    def testFmtDelta(self):
+        """tpm.fmt_detla must correct convert radians into declination."""
+        assert tpm.fmt_delta(tpm.M_PI).strip() == "+00D 00\' 00.000\""
+        assert tpm.fmt_delta(tpm.M_PI/2.0).strip() == "+90D 00\' 00.000\""
+        assert tpm.fmt_delta(tpm.M_PI*1.2345).strip() == "-42D 12\' 35.999\""
+
+    def testFmtH(self):
+        """tpm.fmt_h must properly convert hours into a string."""
+        assert tpm.fmt_h(12.0).strip() == "12H 00M 00.000S"
+        assert tpm.fmt_h(36.12345).strip() == "36H 07M 24.419S"
+
+    def testFmtJ(self):
+        """tpm.fmt_j must properly convert Julian date into a string."""
+        assert tpm.fmt_j(2451545.0).strip() == "2451545  00H 00M 00.000S"
+        assert tpm.fmt_j(1111111.1234).strip() == "1111111  02H 57M 41.759S"
+
+        
 if __name__ == '__main__':
     unittest.main()

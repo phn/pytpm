@@ -486,8 +486,20 @@ cpdef char *fmt_d(double d):
     return _tpm_times.fmt_d(d)
 
 #char *fmt_delta(double delta)
+cpdef char* fmt_delta(double delta):
+    """Format radians as declination."""
+    return _tpm_times.fmt_delta(delta)
+    
 #char *fmt_h(double h)
+cpdef char *fmt_h(double h):
+    """Format hours into a string."""
+    return _tpm_times.fmt_h(h)
+
 #char *fmt_j(double j)
+cpdef char *fmt_j(double j):
+    """Format Julian date into a string."""
+    return _tpm_times.fmt_j(j)
+
 #char *fmt_rdb(double rdb)
 #char *fmt_ymd(YMD ymd)
 #char *fmt_ymd_raw(YMD ymd)
