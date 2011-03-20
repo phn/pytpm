@@ -500,7 +500,6 @@ cpdef char *fmt_j(double j):
     """Format Julian date into a string."""
     return _tpm_times.fmt_j(j)
 
-#char *fmt_rdb(double rdb)
 #char *fmt_ymd(YMD ymd)
 #char *fmt_ymd_raw(YMD ymd)
 #double d2d(double d)
@@ -537,11 +536,11 @@ cpdef double r2r(double r):
 #double dms2h(DMS dms)
 #double dms2r(DMS dms)
 #char *fmt_dms(DMS dms)
-cpdef char* fmt_dms(DMS dms):
-    return _tpm_times.fmt_dms(dms._dms)
+#cpdef char* fmt_dms(DMS dms):
+#    return _tpm_times.fmt_dms(dms._dms)
 #char *fmt_hms(HMS hms)
-cpdef char *fmt_hms (HMS hms):
-    return _tpm_times.fmt_hms(hms._hms)
+#cpdef char *fmt_hms (HMS hms):
+#    return _tpm_times.fmt_hms(hms._hms)
 #char *fmt_jd(JD jd)
 #char *fmt_r(double r)
 #char *fmt_y(double y)
