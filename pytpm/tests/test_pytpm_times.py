@@ -1113,29 +1113,29 @@ class TestFormattedStringFunction(unittest.TestCase):
     """Test all functions that return formatted string."""
     def testFmtAlpha(self):
         """Must correctly convert radians into right ascension format."""
-        assert tpm.fmt_alpha(tpm.M_PI/3.0).strip() == "03H 59M 59.999S"
-        assert tpm.fmt_alpha(tpm.M_PI*1.234).strip() == "14H 48M 28.799S"
+        self.assertEqual(tpm.fmt_alpha(tpm.M_PI/3.0), " 03H 59M 59.999S")
+        self.assertEqual(tpm.fmt_alpha(tpm.M_PI*1.234), " 14H 48M 28.799S")
 
     def testFmtD(self):
         """tpm.fmt_d must give a formatted string of angle in radians."""
-        assert tpm.fmt_d(180.0).strip() == "+180D 00\' 00.000\""
-        assert tpm.fmt_d(45.12345).strip() == "+45D 07\' 24.419\""
+        self.assertEqual(tpm.fmt_d(180.0), "+180D 00\' 00.000\"")
+        self.assertEqual(tpm.fmt_d(45.12345), "+45D 07\' 24.419\"")
 
     def testFmtDelta(self):
         """tpm.fmt_detla must correct convert radians into declination."""
-        assert tpm.fmt_delta(tpm.M_PI).strip() == "+00D 00\' 00.000\""
-        assert tpm.fmt_delta(tpm.M_PI/2.0).strip() == "+90D 00\' 00.000\""
-        assert tpm.fmt_delta(tpm.M_PI*1.2345).strip() == "-42D 12\' 35.999\""
+        self.assertEqual(tpm.fmt_delta(tpm.M_PI), "+00D 00\' 00.000\"")
+        self.assertEqual(tpm.fmt_delta(tpm.M_PI/2.0), "+90D 00\' 00.000\"")
+        self.assertEqual(tpm.fmt_delta(tpm.M_PI*1.2345), "-42D 12\' 35.999\"")
 
     def testFmtH(self):
         """tpm.fmt_h must properly convert hours into a string."""
-        assert tpm.fmt_h(12.0).strip() == "12H 00M 00.000S"
-        assert tpm.fmt_h(36.12345).strip() == "36H 07M 24.419S"
+        self.assertEqual(tpm.fmt_h(12.0), " 12H 00M 00.000S")
+        self.assertEqual(tpm.fmt_h(36.12345), " 36H 07M 24.419S")
 
     def testFmtJ(self):
         """tpm.fmt_j must properly convert Julian date into a string."""
-        assert tpm.fmt_j(2451545.0).strip() == "2451545  00H 00M 00.000S"
-        assert tpm.fmt_j(1111111.1234).strip() == "1111111  02H 57M 41.759S"
+        self.assertEqual(tpm.fmt_j(2451545.0), " 2451545  00H 00M 00.000S")
+        self.assertEqual(tpm.fmt_j(1111111.1234), " 1111111  02H 57M 41.759S")
 
     def testFmtR(self):
         """tpm.fmt_r must convert radians into a string with degrees."""
