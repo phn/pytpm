@@ -964,22 +964,6 @@ class TestJDStructure(unittest.TestCase):
 
 class TestScalarValueConversions(unittest.TestCase):
     """Test conversions between scalar values."""
-    def testJ2Y(self):
-        """Must convert properly between scalar Julian date and year."""
-        # See pytpm/tests/c_test/j2y_test.c
-        self.assertAlmostEqual(tpm.j2y(2400000.5), 1858.879452054794, 12)
-        self.assertAlmostEqual(tpm.j2y(2433282.42345905), 1950.002530024794, 12)
-        self.assertAlmostEqual(tpm.j2y(2451545.0), 2000.004098360656, 12)
-        self.assertAlmostEqual(tpm.j2y(2445700.5), 1984.002732240437, 12)
-
-    def testY2J(self):
-        """tpm.y2j must properly convert year into Julian date."""
-        # This is just the inverse of testJ2Y.
-        self.assertAlmostEqual(2400000.5, tpm.y2j(1858.879452054794), 12)
-        self.assertAlmostEqual(2433282.42345905, tpm.y2j(1950.002530024794), 12)
-        self.assertAlmostEqual(2451545.0, tpm.y2j(2000.004098360656), 12)
-        self.assertAlmostEqual(2445700.5, tpm.y2j(1984.002732240437), 12)
-
     def testD2D(self):
         """tpm.d2d must properly normalize degrees."""
         # See pytpm/tests/c_tests/d2d_test.c.
@@ -1151,6 +1135,22 @@ class TestFormattedStringFunction(unittest.TestCase):
 
 class TestYearJulianDateConversion(unittest.TestCase):
     """Test the functions for convertion years into Julian dates."""
+    def testJ2Y(self):
+        """Must convert properly between scalar Julian date and year."""
+        # See pytpm/tests/c_test/j2y_test.c
+        self.assertAlmostEqual(tpm.j2y(2400000.5), 1858.879452054794, 12)
+        self.assertAlmostEqual(tpm.j2y(2433282.42345905), 1950.002530024794, 12)
+        self.assertAlmostEqual(tpm.j2y(2451545.0), 2000.004098360656, 12)
+        self.assertAlmostEqual(tpm.j2y(2445700.5), 1984.002732240437, 12)
+
+    def testY2J(self):
+        """tpm.y2j must properly convert year into Julian date."""
+        # This is just the inverse of testJ2Y.
+        self.assertAlmostEqual(2400000.5, tpm.y2j(1858.879452054794), 12)
+        self.assertAlmostEqual(2433282.42345905, tpm.y2j(1950.002530024794), 12)
+        self.assertAlmostEqual(2451545.0, tpm.y2j(2000.004098360656), 12)
+        self.assertAlmostEqual(2445700.5, tpm.y2j(1984.002732240437), 12)
+
     def testByear2jd(self):
         """tpm.byear2jd must convert Besselian year into Julian date."""
         self.assertAlmostEqual(tpm.byear2jd(1950.0), tpm.B1950)
@@ -1167,7 +1167,36 @@ class TestYearJulianDateConversion(unittest.TestCase):
         """tpm.jd2jyear must convert Julian date into Julian year."""
         self.assertAlmostEqual(tpm.jd2jyear(tpm.J2000), 2000.0)
 
+class CurrentTime(unittest.TestCase):
+    """Test the jd_now and utc_now functions."""
+    def testUTCNow(self):
+        """tpm.utc_now must return the current Julian date."""
+        from datetime import datetime
+        j = tpm.utc_now()
+        d = datetime.utcnow()
+        ymd = tpm.YMD(j=j)
+        ymd.normalize()
+        self.assertAlmostEqual(ymd.y, d.year)
+        self.assertAlmostEqual(ymd.m, d.month)
+        self.assertAlmostEqual(ymd.dd, d.day)
+        self.assertAlmostEqual(ymd.hh, d.hour)
+        self.assertAlmostEqual(ymd.mm, d.minute)
+        self.assertAlmostEqual(ymd.ss, d.second, 1)
 
+    def testJDNow(self):
+        """tpm.jd_now must return the current Julian date as a JD."""
+        from datetime import datetime
+        j = tpm.jd_now()
+        d = datetime.utcnow()
+        ymd = j.to_ymd()
+        ymd.normalize()
+        self.assertAlmostEqual(ymd.y, d.year)
+        self.assertAlmostEqual(ymd.m, d.month)
+        self.assertAlmostEqual(ymd.dd, d.day)
+        self.assertAlmostEqual(ymd.hh, d.hour)
+        self.assertAlmostEqual(ymd.mm, d.minute)
+        self.assertAlmostEqual(ymd.ss, d.second, 1)
 
+            
 if __name__ == '__main__':
     unittest.main()

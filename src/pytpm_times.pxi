@@ -474,6 +474,15 @@ cpdef double jd2jyear(double x):
 #JD jd2jd(JD jd)
 #JD jd_diff(JD jd1, JD jd2)
 #JD jd_now(void)
+cpdef JD jd_now():
+    """Current Julian date as a JD.
+
+    Only accurate to the nearest second.
+    """
+    jd = JD()
+    jd._jd = _tpm_times.jd_now()
+    return jd
+
 #JD jd_sum(JD jd1, JD jd2)
 #JD ymd2jd(YMD ymd)
 #YMD jd2ymd(JD jd)
@@ -526,6 +535,13 @@ cpdef double r2r(double r):
     return _tpm_times.r2r(r)
 
 #double utc_now(void)
+cpdef double utc_now():
+    """Current UTC as a Julian date.
+
+    Only accurate to the nearest second.
+    """
+    return _tpm_times.utc_now()
+
 #double ymd2dd(YMD ymd)
 #double ymd2rdb(YMD ymd)
 #double ymd2y(YMD ymd)
