@@ -64,3 +64,20 @@ cdef class V3(object):
         if key == 'ctype': return self._v3.type
         if key == 'vtype': return self._vtype
     
+    def __setattr__(self, key, value):
+        if key not in self._get_valid_keys():
+            raise AttributeError, "No such property: {0}".format(key)
+        if key == 'ctype' or key == 'vtype':
+            raise TypeError, "Cannot change {0}".format(key)
+        if key == 'x' or key == 'xdot' or key == 'r' or key == 'rdot':
+            self._v3.v[0] = value
+        if key == 'y' or key == 'ydot' or key== 'alpha' or \
+                key == 'alphadot':
+            self._v3.v[1] = value
+        if key == 'z' or key == 'zdot' or key == 'delta' or \
+                key == 'deltadot':
+            self._v3.v[2] = value
+
+    def __delattr__(self, key):
+        raise TypeError, "Fields cannot be deleted."
+        

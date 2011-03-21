@@ -140,6 +140,40 @@ class TestV3Structure(unittest.TestCase, Checker):
         self.spherical_veltest(v3, t)
         self.spherical_velraise(v3)
 
-        
+    def testSetFieldValues(self):
+        """Must be able to set V3 fields after creation."""
+        v3 = tpm.V3()
+        t = dict(x=1.0, y=-1.0, z=200.0, ctype=tpm.CARTESIAN, vtype=tpm.POS)
+        v3.x = t['x']
+        v3.y = t['y']
+        v3.z = t['z']
+        self.cartesian_postest(v3, t)
+
+        # Must raise AttributeError for invalid property.
+        def f(x):
+            x.b = 0.0
+        self.assertRaises(AttributeError,  f, v3)
+
+        v3 = tpm.V3(ctype=tpm.SPHERICAL, vtype=tpm.VEL)
+        t = dict(rdot=1.0, alphadot=-1.0, deltadot=200.0,
+                 ctype=tpm.SPHERICAL, vtype=tpm.VEL)
+        v3.rdot = t['rdot']
+        v3.alphadot = t['alphadot']
+        v3.deltadot = t['deltadot']
+        self.spherical_veltest(v3, t)
+
+    def testDeleteAttribute(self):
+        """Must raise TypeError when deleting V3 attributes."""
+        v3 = tpm.V3()
+        def f(x):
+            del x.x
+        self.assertRaises(TypeError, f, v3)
+
+        v3 = tpm.V3(ctype=tpm.SPHERICAL, vtype=tpm.VEL)
+        def f(x):
+            del x.rdot
+        self.assertRaises(TypeError, f, v3)
+
+
 if __name__ == '__main__':
     unittest.main()
