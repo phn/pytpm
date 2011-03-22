@@ -51,3 +51,31 @@ cdef class V3(object):
     cdef setV3(self, _tpm_vec.V3 _v3):
         self._v3 = _v3
 
+
+cdef class V3CP(V3):
+    """A V3 Cartesian position vector."""
+    # The following are read only.
+    ctype = CARTESIAN
+    vtype = POS
+    def __init__(self, x=0.0, y=0.0, z=0.0):
+        self.x = x
+        self.y = y
+        self.z = z
+
+    def __getx(self):
+        return self.getX()
+    def __setx(self, x):
+        self.setX(x)
+    x = property(__getx, __setx, doc="X coordinate.")
+
+    def __gety(self):
+        return self.getY()
+    def __sety(self, y):
+        self.setY(y)
+    y = property(__gety, __sety, doc="Y coordinate.")
+
+    def __getz(self):
+        return self.getZ()
+    def __setz(self, z):
+        self.setZ(z)
+    z = property(__getz, __setz, doc="Z coordinate.")
