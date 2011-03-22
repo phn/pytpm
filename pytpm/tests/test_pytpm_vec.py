@@ -4,6 +4,27 @@ import unittest
 from pytpm import tpm
 
 class Checker(object):
+    def setup(self, v3, t):
+        """Initialize a V3 object."""
+        if v3.ctype == tpm.CARTESIAN and v3.vtype == tpm.POS:
+            v3.x = t['x']
+            v3.y = t['y']
+            v3.z = t['z']
+        if v3.ctype == tpm.CARTESIAN and v3.vtype == tpm.VEL:
+            v3.xdot = t['xdot']
+            v3.ydot = t['ydot']
+            v3.zdot = t['zdot']
+        if v3.ctype == tpm.SPHERICAL and v3.vtype == tpm.POS:
+            v3.r = t['r']
+            v3.alpha = t['alpha']
+            v3.delta = t['delta']
+        if v3.ctype == tpm.SPHERICAL and v3.vtype == tpm.VEL:
+            v3.rdot = t['rdot']
+            v3.alphadot = t['alphadot']
+            v3.deltadot = t['deltadot']
+
+        return v3
+        
     def cartesian_postest(self, v3, t_norm):
         """Check that Cartesian v3 POS fields have value given in dict."""
         self.assertAlmostEqual(v3.ctype, t_norm['ctype'])
@@ -25,8 +46,8 @@ class Checker(object):
         self.assertAlmostEqual(v3.ctype, t_norm['ctype'])
         self.assertAlmostEqual(v3.vtype, t_norm['vtype'])
         self.assertAlmostEqual(v3.r, t_norm['r'])
-        self.assertAlmostEqual(v3.alpha, t_norm['alpha'])
-        self.assertAlmostEqual(v3.delta, t_norm['delta'])
+        self.assertAlmostEqual(v3.alpha, t_norm['alpha'], 9)
+        self.assertAlmostEqual(v3.delta, t_norm['delta'], 9)
 
     def spherical_veltest(self, v3, t_norm):
         """Check that spherical v3 VEL fields have value given in dict."""
@@ -173,6 +194,37 @@ class TestV3Structure(unittest.TestCase, Checker):
         def f(x):
             del x.rdot
         self.assertRaises(TypeError, f, v3)
+
+    def testV3C2S(self):
+        """Must properly convert V3 Cartesian POS into Spherical"""
+        # See pytpm/tests/c_tests/v3c2s_test.c.
+        v3 = tpm.V3(ctype=tpm.CARTESIAN, vtype=tpm.POS)
+        t = dict(ctype = tpm.CARTESIAN, vtype=tpm.POS, x=1123.4556,
+                 y=4556.1123, z=9876.1267)
+        t_norm = dict(ctype=tpm.SPHERICAL, vtype=tpm.POS,
+                      r=10934.26679617, alpha=1.3290371174, delta=1.1272306580)
+        v3 = self.setup(v3, t)
+        v3_s = v3.c2s()
+        self.spherical_postest(v3_s, t_norm)
+
+        # Must raise exception on CARTESIAN VEL to SPHERICAL convertion.
+        v3 = tpm.V3(ctype=tpm.CARTESIAN, vtype=tpm.VEL)
+        def f(x):
+            x.c2s()
+        self.assertRaises(NotImplementedError, f, v3)
+
+        # Must return the same V3 if SPHERICAL POS.
+        v3 = tpm.V3(ctype=tpm.SPHERICAL, vtype=tpm.POS)
+        t = dict(ctype=tpm.SPHERICAL, vtype=tpm.POS,
+                      r=10934.26679617, alpha=1.3290371174, delta=1.1272306580)
+        v3 = self.setup(v3, t)
+        v3_s = v3.c2s()
+        self.spherical_postest(v3_s, t)
+
+        
+
+
+
 
 
 if __name__ == '__main__':

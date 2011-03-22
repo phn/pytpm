@@ -77,7 +77,25 @@ cdef class V3(object):
         if key == 'z' or key == 'zdot' or key == 'delta' or \
                 key == 'deltadot':
             self._v3.v[2] = value
-
+ 
     def __delattr__(self, key):
         raise TypeError, "Fields cannot be deleted."
+        
+    def c2s(self):
+        """Return V3 CARTESIAN POS converted into SPHERICAL POS."""
+        if self._vtype == VEL:
+            raise NotImplementedError, "Cartesian velocity to spherical\
+        conversion not implemented yet."
+        
+        if self._v3.type == SPHERICAL:
+            return self
+        
+        # For now, only CARTESIAN POS to SPHERICAL POS.
+        cdef _tpm_vec.V3 _v3 
+        _v3 = _tpm_vec.v3c2s(self._v3)
+        v3 = self.__class__(ctype=SPHERICAL, vtype=POS)
+        v3.r = _v3.v[0]
+        v3.alpha = _v3.v[1]
+        v3.delta = _v3.v[2]
+        return v3
         
