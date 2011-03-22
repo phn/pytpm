@@ -26,6 +26,9 @@ cdef class V3(object):
 
     cdef int getType(self):
         return self._v3.type
+
+    cdef setType(self, int t):
+        self._v3.type = t
     
     cdef setX(self, double X):
         self._v3.v[0] = X
@@ -61,6 +64,7 @@ cdef class V3CP(V3):
         self.x = x
         self.y = y
         self.z = z
+        self.setType(self.ctype)
 
     def __getx(self):
         return self.getX()

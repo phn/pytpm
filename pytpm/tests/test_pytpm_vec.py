@@ -15,7 +15,7 @@ class TestV3Structure(unittest.TestCase):
         self.assertRaises(AttributeError, lambda v: v.x, v3)
         self.assertRaises(AttributeError, lambda v: v.getX(), v3)
         
-class testV3CP(unittest.TestCase):
+class TestV3CP(unittest.TestCase):
     """Test the V3CP class."""
     def testCreate(self):
         """Must be able to create a V3CP class."""
