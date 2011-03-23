@@ -139,3 +139,13 @@ cdef class V3SP(V3):
         v3cp = V3CP()
         v3cp.setV3(_v3)
         return v3cp
+        
+    def __sub__(V3SP self, V3SP other):
+        """Return V3SP that holds difference between two V3SPs."""
+        if isinstance(self, V3SP) and isinstance(other, V3SP):
+            v3cp = V3CP()
+            v3cp.setV3(_tpm_vec.v3diff(self.getV3(), other.getV3()))
+            return v3cp.c2s()
+        else:
+            raise TypeError, "Can only subtract two V3SP values."
+

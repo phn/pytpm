@@ -149,3 +149,33 @@ class TestV3SP(unittest.TestCase):
         t = dict(r=10934.26679617, alpha=1.3290371174,
                       delta=1.1272306580)
         verify(t, t_norm, n=4)
+
+    def testV3SSubtract(self):
+        """Must be able to subtract one V3SP from another."""
+        import math
+        def verify(t, t_norm, res):
+            v3sp1 = tpm.V3SP(**t)
+            v3sp2 = tpm.V3SP(**t_norm)
+            v3sp = v3sp2 - v3sp1
+            self.assertEqual(type(v3sp), tpm.V3SP)
+            self.assertEqual(v3sp.ctype, tpm.SPHERICAL)
+            self.assertEqual(v3sp.vtype, tpm.POS)
+            self.assertAlmostEqual(v3sp.r, res['r'])
+            self.assertAlmostEqual(v3sp.alpha, res['alpha'])
+            self.assertAlmostEqual(v3sp.delta, res['delta'])
+
+        # see pytpm/tests/c_tests/v3diff_test.c
+        t = dict(r=1.0, alpha=2.0, delta=3.0)
+        t_norm = dict(r=10.0, alpha=0.2, delta=-0.234)
+        res = dict(r=9.86298456, alpha=0.30111131, delta=-0.25206013)
+        # t_norm - t
+        verify(t, t_norm, res)
+
+        t = dict(r=-1.0, alpha=2.0, delta=3.0)
+        t_norm = dict(r=1.0, alpha=-2.0, delta=-0.234)
+        res = dict(r=1.78703389, alpha=-1.56677510, delta=-0.05080452)
+        # t_norm - t 
+        verify(t, t_norm, res)
+
+        # TypeError must be rasied if one of the values is not V3SP.
+        self.assertRaises(TypeError, lambda v1: v1 - 1.0, tpm.V3SP(**t))
