@@ -123,4 +123,10 @@ cdef class V3SP(V3):
         self.setZ(delta)
     delta = property(__getdelta, __setdelta, doc="Delta coordinate.")
 
-
+    def s2c(self):
+        """Convert spherical position vector into Cartesian vector."""
+        cdef _tpm_vec.V3 _v3
+        _v3 = _tpm_vec.v3s2c(self.getV3())
+        v3cp = V3CP()
+        v3cp.setV3(_v3)
+        return v3cp
