@@ -84,6 +84,15 @@ cdef class V3CP(V3):
         self.setZ(z)
     z = property(__getz, __setz, doc="Z coordinate.")
 
+    def c2s(self):
+        """Convert Cartesian position vector into spherical vector."""
+        cdef _tpm_vec.V3 _v3
+        _v3 = _tpm_vec.v3c2s(self.getV3())
+        #v3 = V3SP(r=_v3.v[0], alpha=_v3.v[1], delta=_v3[2])
+        v3sp = V3SP()
+        v3sp.setV3(_v3)
+        return v3sp
+
 
 cdef class V3SP(V3):
     """A V3 spherical position vector."""

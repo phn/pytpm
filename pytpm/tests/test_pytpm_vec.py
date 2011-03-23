@@ -46,7 +46,30 @@ class TestV3CP(unittest.TestCase):
         self.assertAlmostEqual(v3cp.y, t['y'])
         self.assertAlmostEqual(v3cp.z, t['z'])
 
+    def testV3C2S(self):
+        """V3CP.c2s must return a correct V3SP object."""
+        import math
+        def verify(t, t_norm):
+            v3cp = tpm.V3CP(**t)
+            v3sp = v3cp.c2s()
+            self.assertEqual(type(v3sp), tpm.V3SP)
+            self.assertEqual(v3sp.ctype, tpm.SPHERICAL)
+            self.assertEqual(v3sp.vtype, tpm.POS)
+            self.assertAlmostEqual(v3sp.r, t_norm['r'])
+            self.assertAlmostEqual(v3sp.alpha, t_norm['alpha'])
+            self.assertAlmostEqual(v3sp.delta, t_norm['delta'])
+
+        t = dict(x=1.0, y=1.0, z=1.0)
+        t_norm = dict(r=math.sqrt(3.0), alpha=math.atan2(1.0,1.0),
+                      delta=math.atan2(1.0,math.sqrt(2.0)))
+        verify(t, t_norm)
         
+        t = dict(x=1123.4556, y=4556.1123, z=9876.1267)
+        t_norm = dict(r=10934.26679617, alpha=1.3290371174,
+                      delta=1.1272306580)
+        verify(t, t_norm)
+
+
 class TestV3SP(unittest.TestCase):
     """Test the V3CP class."""
     def testCreate(self):
