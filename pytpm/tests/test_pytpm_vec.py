@@ -69,6 +69,31 @@ class TestV3CP(unittest.TestCase):
                       delta=1.1272306580)
         verify(t, t_norm)
 
+    def testV3CSubtract(self):
+        """Must be able to subtract one V3CP from another."""
+        import math
+        def verify(t, t_norm):
+            v3cp1 = tpm.V3CP(**t)
+            v3cp2 = tpm.V3CP(**t_norm)
+            v3cp = v3cp2 - v3cp1
+            self.assertEqual(type(v3cp), tpm.V3CP)
+            self.assertEqual(v3cp.ctype, tpm.CARTESIAN)
+            self.assertEqual(v3cp.vtype, tpm.POS)
+            self.assertAlmostEqual(v3cp.x, t_norm['x'] - t['x'])
+            self.assertAlmostEqual(v3cp.y, t_norm['y'] - t['y'])
+            self.assertAlmostEqual(v3cp.z, t_norm['z'] - t['z'])
+
+        t = dict(x=1.0, y=2.0, z=3.0)
+        t_norm = dict(x=10.0, y=20.0, z=-0.234)
+        verify(t, t_norm)
+
+        t = dict(x=1.0, y=2.0, z=3.0)
+        t_norm = dict(x=10.0, y=20.0, z=-0.234)
+        verify(t_norm, t)
+
+        # TypeError must be rasied if one of the values is not V3CP.
+        self.assertRaises(TypeError, lambda v1: v1 - 1.0, tpm.V3CP(**t))
+        
 
 class TestV3SP(unittest.TestCase):
     """Test the V3CP class."""

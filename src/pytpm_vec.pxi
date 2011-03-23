@@ -93,6 +93,15 @@ cdef class V3CP(V3):
         v3sp.setV3(_v3)
         return v3sp
 
+    def __sub__(V3CP self, V3CP other):
+        """Return V3CP that holds difference between two V3CPs."""
+        if isinstance(self, V3CP) and isinstance(other, V3CP):
+            v3cp = V3CP()
+            v3cp.setV3(_tpm_vec.v3diff(self.getV3(), other.getV3()))
+            return v3cp
+        else:
+            raise TypeError, "Can only subtract two V3CP values."
+
 
 cdef class V3SP(V3):
     """A V3 spherical position vector."""
