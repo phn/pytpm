@@ -47,3 +47,35 @@ class TestV3CP(unittest.TestCase):
         self.assertAlmostEqual(v3cp.z, t['z'])
 
         
+class TestV3SP(unittest.TestCase):
+    """Test the V3CP class."""
+    def testCreate(self):
+        """Must be able to create a V3CP class."""
+        v3sp = tpm.V3SP()
+        self.assertEqual(type(v3sp), tpm.V3SP)
+
+        # Access default init values.
+        self.assertAlmostEqual(v3sp.ctype, tpm.SPHERICAL)
+        self.assertAlmostEqual(v3sp.vtype, tpm.POS)
+        self.assertAlmostEqual(v3sp.r, 0.0)
+        self.assertAlmostEqual(v3sp.alpha, 0.0)
+        self.assertAlmostEqual(v3sp.delta, 0.0)
+
+        # ctype and vtype are read only values.
+        def f1(x):
+            x.ctype = tpm.SPHERICAL
+        def f2(x):
+            x.vtype = tpm.VEL            
+        self.assertRaises(AttributeError, f1, v3sp)
+        self.assertRaises(AttributeError, f2, v3sp)
+        
+        
+    def testSetGetInitValues(self):
+        """Must be able to set V3SP fields at init and get them back."""
+        t = dict(r=2.0, alpha=-0.12, delta=2*3.14)
+        v3sp = tpm.V3SP(**t)
+        self.assertAlmostEqual(v3sp.r, t['r'])
+        self.assertAlmostEqual(v3sp.alpha, t['alpha'])
+        self.assertAlmostEqual(v3sp.delta, t['delta'])
+
+        

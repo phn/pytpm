@@ -83,3 +83,35 @@ cdef class V3CP(V3):
     def __setz(self, z):
         self.setZ(z)
     z = property(__getz, __setz, doc="Z coordinate.")
+
+
+cdef class V3SP(V3):
+    """A V3 spherical position vector."""
+    # The following are read only.
+    ctype = SPHERICAL
+    vtype = POS
+    def __init__(self, r=0.0, alpha=0.0, delta=0.0):
+        self.r = r
+        self.alpha = alpha
+        self.delta = delta
+        self.setType(self.ctype)
+
+    def __getr(self):
+        return self.getX()
+    def __setr(self, r):
+        self.setX(r)
+    r = property(__getr, __setr, doc="Radial coordinate.")
+
+    def __getalpha(self):
+        return self.getY()
+    def __setalpha(self, alpha):
+        self.setY(alpha)
+    alpha = property(__getalpha, __setalpha, doc="Alpha coordinate.")
+
+    def __getdelta(self):
+        return self.getZ()
+    def __setdelta(self, delta):
+        self.setZ(delta)
+    delta = property(__getdelta, __setdelta, doc="Delta coordinate.")
+
+
