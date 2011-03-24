@@ -366,3 +366,21 @@ class TestV3SP(unittest.TestCase):
         t2 = dict(r=178.50000000, alpha=-0.2340000000, delta=-5.4320000000)
         res = -247.35416601
         verify(t1, t2, res)
+
+    def testV3SCross(self):
+        """Must be able to take cross product of two V3SP vectors."""
+        def verify(t, t_norm, res):
+            v3sp1 = tpm.V3SP(**t)
+            v3sp2 = tpm.V3SP(**t_norm)
+            v3sp = v3sp1.cross(v3sp2)
+            self.assertEqual(v3sp.ctype, tpm.SPHERICAL)
+            self.assertEqual(v3sp.vtype, tpm.POS)
+            self.assertAlmostEqual(v3sp.r, res['r'])
+            self.assertAlmostEqual(v3sp.alpha, res['alpha'])
+            self.assertAlmostEqual(v3sp.delta, res['delta'])
+
+        # See pytpm/tests/c_tests/v3cross_test.c.
+        t1 = dict(r=123.456, alpha=0.1123, delta=-6.1267)
+        t2 = dict(r=2.3456, alpha=-0.7891, delta=1.8912)
+        res = dict(r=289.283397536, alpha=-1.498240701, delta=0.246708418)
+        verify(t1, t2, res)

@@ -207,3 +207,9 @@ cdef class V3SP(V3):
         """Return the dot product of two V3SP vectors."""
         return _tpm_vec.v3dot(self.getV3(), other.getV3())
     
+    def cross(V3SP self, V3SP other):
+        """Return the cross product of two V3SP vectors."""
+        v3cp = V3CP()
+        v3cp.setV3(_tpm_vec.v3cross(self.getV3(), other.getV3()))
+        return v3cp.c2s()
+    
