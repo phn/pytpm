@@ -309,3 +309,19 @@ class TestV3SP(unittest.TestCase):
         # called. But then the types of self and n in __mul__ become
         # incompatible and TypeError is raised.
         self.assertRaises(TypeError, lambda v1: 3 * v1, tpm.V3SP(**t))
+
+    def testV3SMod(self):
+        """Must return the modulus of V3SP; just the magnitude of R."""
+        def verify(t, t_norm):
+            v3sp = tpm.V3SP(**t)
+            d = v3sp.to_mod()
+            self.assertAlmostEqual(d, t_norm)
+
+        t = dict(r=12345.678, alpha=0.23, delta=-1.2)
+        verify(t, t['r'])
+
+        t = dict(r=-12345.678, alpha=0.23, delta=-1.2)
+        verify(t, -t['r'])
+
+        
+            

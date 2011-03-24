@@ -188,3 +188,9 @@ cdef class V3SP(V3):
         v3sp = V3SP()
         v3sp.setV3(_tpm_vec.v3scale(self.getV3(), n))
         return v3sp
+
+    def to_mod(self):
+        """Return modulus of the V3SP vector; magnitude of R component."""
+        return _tpm_vec.v3mod(self.getV3())
+
+    
