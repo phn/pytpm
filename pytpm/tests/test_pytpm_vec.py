@@ -334,6 +334,17 @@ class TestV3SP(unittest.TestCase):
 
         t = dict(r=-12345.678, alpha=0.23, delta=-1.2)
         verify(t, -t['r'])
-
-        
             
+    def testV3SDot(self):
+        """Must be able to take dot product of two V3SP vectors."""
+        import math
+        def verify(t, t_norm, res):
+            v3sp1 = tpm.V3SP(**t)
+            v3sp2 = tpm.V3SP(**t_norm)
+            d = v3sp1.to_dot(v3sp2)
+            self.assertAlmostEqual(d, res)
+
+        t1 = dict(r=1.67000000, alpha=-1.2340000000, delta=4.3450000000)
+        t2 = dict(r=178.50000000, alpha=-0.2340000000, delta=-5.4320000000)
+        res = -247.35416601
+        verify(t1, t2, res)

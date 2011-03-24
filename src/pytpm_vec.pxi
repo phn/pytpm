@@ -197,4 +197,7 @@ cdef class V3SP(V3):
         """Return modulus of the V3SP vector; magnitude of R component."""
         return _tpm_vec.v3mod(self.getV3())
 
+    def to_dot(V3SP self, V3SP other):
+        """Return the dot product of two V3SP vectors."""
+        return _tpm_vec.v3dot(self.getV3(), other.getV3())
     
