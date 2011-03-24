@@ -173,3 +173,8 @@ cdef class V3SP(V3):
         else:
             raise TypeError, "Can only add two V3SP values."
 
+    def __mul__(V3SP self, double n):
+        """Scale R with the scalar number."""
+        v3sp = V3SP()
+        v3sp.setV3(_tpm_vec.v3scale(self.getV3(), n))
+        return v3sp
