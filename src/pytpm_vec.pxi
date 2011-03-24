@@ -117,6 +117,12 @@ cdef class V3CP(V3):
         v3cp.setV3(_tpm_vec.v3scale(self.getV3(), n))
         return v3cp
     
+    def to_unit(self):
+        """Return unit V3CP vector."""
+        v3cp = V3CP()
+        v3cp.setV3(_tpm_vec.v3unit(self.getV3()))
+        return v3cp
+
     
 cdef class V3SP(V3):
     """A V3 spherical position vector."""

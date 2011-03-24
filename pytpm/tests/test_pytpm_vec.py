@@ -140,7 +140,26 @@ class TestV3CP(unittest.TestCase):
         # incompatible and TypeError is raised.
         self.assertRaises(TypeError, lambda v1: 3 * v1, tpm.V3CP(**t))
 
+    def testV3Unit(self):
+        """Must be able to convert V3CP into a unit vector."""
+        import math
+        def verify(t, t_norm):
+            v3cp1 = tpm.V3CP(**t)
+            v3cp = v3cp1.to_unit()
+            self.assertEqual(type(v3cp), tpm.V3CP)
+            self.assertEqual(v3cp.ctype, tpm.CARTESIAN)
+            self.assertEqual(v3cp.vtype, tpm.POS)
+            self.assertAlmostEqual(v3cp.x, t_norm['x'])
+            self.assertAlmostEqual(v3cp.y, t_norm['y'])
+            self.assertAlmostEqual(v3cp.z, t_norm['z'])
+            r = math.sqrt(v3cp.x**2 + v3cp.y**2 + v3cp.z**2)
+            self.assertAlmostEqual(r, 1.0)
 
+        t = dict(x=12.34567, y=34.56712, z=56.71234)
+        t_norm = dict(x=0.18275165, y=0.51169344, z= 0.83950680)
+        verify(t, t_norm)
+
+        
 class TestV3SP(unittest.TestCase):
     """Test the V3CP class."""
     def testCreate(self):
