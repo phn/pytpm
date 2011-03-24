@@ -171,6 +171,10 @@ cdef class V3SP(V3):
         return _tpm_vec.v3alpha(self.getV3())
     nalpha = property(__getnalpha, doc="Normalized alpha coordinate.")
 
+    def __getndelta(self):
+        return _tpm_vec.v3delta(self.getV3())
+    ndelta = property(__getndelta, doc="Normalized alpha coordinate.")
+
     def s2c(self):
         """Convert spherical position vector into Cartesian vector."""
         cdef _tpm_vec.V3 _v3

@@ -408,3 +408,27 @@ class TestV3SP(unittest.TestCase):
         t = dict(r=1.0, alpha=-2.0, delta=-0.234)
         t_norm = 4.28318531
         verify(t, t_norm)
+
+    def testNDelta(self):
+        """Must give properly normalized delta i.e., DEC."""
+        def verify(t, t_norm):
+            v3sp = tpm.V3SP(**t)
+            a = v3sp.ndelta
+            self.assertAlmostEqual(a, t_norm)
+
+        # See pytpm/tests/c_tests/v3delta_test.c.
+        t = dict(r=-1.0, alpha=-2.0, delta=3.0)
+        t_norm = -0.14159265
+        verify(t, t_norm)
+
+        t = dict(r=10.0, alpha=0.2, delta=-0.234)
+        t_norm = -0.234000
+        verify(t, t_norm)
+
+        t = dict(r=-1.0, alpha=2.0, delta=3.0)
+        t_norm = -0.14159265
+        verify(t, t_norm)
+
+        t = dict(r=1.0, alpha=-2.0, delta=-0.234)
+        t_norm = -0.23400
+        verify(t, t_norm)
