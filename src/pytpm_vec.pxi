@@ -158,3 +158,12 @@ cdef class V3SP(V3):
         else:
             raise TypeError, "Can only subtract two V3SP values."
 
+    def __add__(V3SP self, V3SP other):
+        """Return V3SP that holds the sum of two V3SPs."""
+        if isinstance(self, V3SP) and isinstance(other, V3SP):
+            v3cp = V3CP()
+            v3cp.setV3(_tpm_vec.v3sum(self.getV3(), other.getV3()))
+            return v3cp.c2s()
+        else:
+            raise TypeError, "Can only add two V3SP values."
+
