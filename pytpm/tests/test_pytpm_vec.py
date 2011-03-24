@@ -384,3 +384,27 @@ class TestV3SP(unittest.TestCase):
         t2 = dict(r=2.3456, alpha=-0.7891, delta=1.8912)
         res = dict(r=289.283397536, alpha=-1.498240701, delta=0.246708418)
         verify(t1, t2, res)
+
+    def testNAlpha(self):
+        """Must give properly normalized alpha i.e., RA."""
+        def verify(t, t_norm):
+            v3sp = tpm.V3SP(**t)
+            a = v3sp.nalpha
+            self.assertAlmostEqual(a, t_norm)
+
+        # See pytpm/tests/c_tests/v3alpha_test.c.
+        t = dict(r=-1.0, alpha=-2.0, delta=3.0)
+        t_norm = 1.14159265
+        verify(t, t_norm)
+
+        t = dict(r=10.0, alpha=0.2, delta=-0.234)
+        t_norm = 0.20
+        verify(t, t_norm)
+
+        t = dict(r=-1.0, alpha=2.0, delta=3.0)
+        t_norm = 5.14159265
+        verify(t, t_norm)
+
+        t = dict(r=1.0, alpha=-2.0, delta=-0.234)
+        t_norm = 4.28318531
+        verify(t, t_norm)
