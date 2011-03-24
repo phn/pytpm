@@ -159,6 +159,21 @@ class TestV3CP(unittest.TestCase):
         t_norm = dict(x=0.18275165, y=0.51169344, z= 0.83950680)
         verify(t, t_norm)
 
+    def testV3Mod(self):
+        """Must be able to get the modulus of V3CP."""
+        import math
+        def verify(t, t_norm):
+            v3cp = tpm.V3CP(**t)
+            d = v3cp.to_mod()
+            self.assertAlmostEqual(d, t_norm)
+        
+        t = dict(x=0.18275165, y=0.51169344, z= 0.83950680)
+        verify(t, 1.0)
+
+        t = dict(x=12.34567, y=34.56712, z=56.71234)
+        verify(t, math.sqrt(t['x']**2+t['y']**2+t['z']**2))
+
+
         
 class TestV3SP(unittest.TestCase):
     """Test the V3CP class."""

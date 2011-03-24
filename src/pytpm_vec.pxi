@@ -123,6 +123,10 @@ cdef class V3CP(V3):
         v3cp.setV3(_tpm_vec.v3unit(self.getV3()))
         return v3cp
 
+    def to_mod(self):
+        """Return modulus of the V3CP vector."""
+        return _tpm_vec.v3mod(self.getV3())
+
     
 cdef class V3SP(V3):
     """A V3 spherical position vector."""
