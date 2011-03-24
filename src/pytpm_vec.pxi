@@ -117,17 +117,17 @@ cdef class V3CP(V3):
         v3cp.setV3(_tpm_vec.v3scale(self.getV3(), n))
         return v3cp
     
-    def to_unit(self):
+    def unit(self):
         """Return unit V3CP vector."""
         v3cp = V3CP()
         v3cp.setV3(_tpm_vec.v3unit(self.getV3()))
         return v3cp
 
-    def to_mod(self):
+    def mod(self):
         """Return modulus of the V3CP vector."""
         return _tpm_vec.v3mod(self.getV3())
 
-    def to_dot(V3CP self, V3CP other):
+    def dot(V3CP self, V3CP other):
         """Return the dot product of two V3CP vectors."""
         return _tpm_vec.v3dot(self.getV3(), other.getV3())
     
@@ -193,11 +193,11 @@ cdef class V3SP(V3):
         v3sp.setV3(_tpm_vec.v3scale(self.getV3(), n))
         return v3sp
 
-    def to_mod(self):
+    def mod(self):
         """Return modulus of the V3SP vector; magnitude of R component."""
         return _tpm_vec.v3mod(self.getV3())
 
-    def to_dot(V3SP self, V3SP other):
+    def dot(V3SP self, V3SP other):
         """Return the dot product of two V3SP vectors."""
         return _tpm_vec.v3dot(self.getV3(), other.getV3())
     

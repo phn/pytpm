@@ -145,7 +145,7 @@ class TestV3CP(unittest.TestCase):
         import math
         def verify(t, t_norm):
             v3cp1 = tpm.V3CP(**t)
-            v3cp = v3cp1.to_unit()
+            v3cp = v3cp1.unit()
             self.assertEqual(type(v3cp), tpm.V3CP)
             self.assertEqual(v3cp.ctype, tpm.CARTESIAN)
             self.assertEqual(v3cp.vtype, tpm.POS)
@@ -164,7 +164,7 @@ class TestV3CP(unittest.TestCase):
         import math
         def verify(t, t_norm):
             v3cp = tpm.V3CP(**t)
-            d = v3cp.to_mod()
+            d = v3cp.mod()
             self.assertAlmostEqual(d, t_norm)
         
         t = dict(x=0.18275165, y=0.51169344, z= 0.83950680)
@@ -178,7 +178,7 @@ class TestV3CP(unittest.TestCase):
         def verify(t, t_norm, res):
             v3cp1 = tpm.V3CP(**t)
             v3cp2 = tpm.V3CP(**t_norm)
-            d = v3cp1.to_dot(v3cp2)
+            d = v3cp1.dot(v3cp2)
             self.assertAlmostEqual(d, res)
 
         t = dict(x=0.18275165, y=0.51169344, z= 0.83950680)
@@ -326,7 +326,7 @@ class TestV3SP(unittest.TestCase):
         """Must return the modulus of V3SP; just the magnitude of R."""
         def verify(t, t_norm):
             v3sp = tpm.V3SP(**t)
-            d = v3sp.to_mod()
+            d = v3sp.mod()
             self.assertAlmostEqual(d, t_norm)
 
         t = dict(r=12345.678, alpha=0.23, delta=-1.2)
@@ -341,7 +341,7 @@ class TestV3SP(unittest.TestCase):
         def verify(t, t_norm, res):
             v3sp1 = tpm.V3SP(**t)
             v3sp2 = tpm.V3SP(**t_norm)
-            d = v3sp1.to_dot(v3sp2)
+            d = v3sp1.dot(v3sp2)
             self.assertAlmostEqual(d, res)
 
         t1 = dict(r=1.67000000, alpha=-1.2340000000, delta=4.3450000000)
