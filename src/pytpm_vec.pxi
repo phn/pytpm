@@ -136,7 +136,16 @@ cdef class V3CP(V3):
         v3cp = V3CP()
         v3cp.setV3(_tpm_vec.v3cross(self.getV3(), other.getV3()))
         return v3cp
-    
+
+    def __str__(self):
+        """Return string representation of V3CP."""
+        return self.__unicode__().encode("utf-8")
+
+    def __unicode__(self):
+        """Return unicode representation of V3CP."""
+        s = _tpm_vec.v3fmt(self.getV3())
+        return unicode(s)
+
     
 cdef class V3SP(V3):
     """A V3 spherical position vector."""
@@ -220,4 +229,12 @@ cdef class V3SP(V3):
         v3cp = V3CP()
         v3cp.setV3(_tpm_vec.v3cross(self.getV3(), other.getV3()))
         return v3cp.c2s()
-        
+
+    def __str__(self):
+        """Return string representation of V3SP"""
+        return self.__unicode__().encode("utf-8")
+
+    def __unicode__(self):
+        """Return unicode representation of V3SP"""
+        s = _tpm_vec.v3fmt(self.getV3())
+        return unicode(s)

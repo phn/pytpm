@@ -204,6 +204,21 @@ class TestV3CP(unittest.TestCase):
         res = dict(x=-31096.818397210, y=14300.029956800, z=-3059.564596920)
         verify(t1, t2, res)
 
+    def testStrUnicode(self):
+        """Must give proper string representation of V3CP."""
+        def verify(t, t_norm, f):
+            v3cp = tpm.V3CP(**t)
+            s = f(v3cp)
+            self.assertEqual(s, t_norm)
+
+        t = dict(x=112.4, y=2234.0, z=322.0)
+        t_norm = " 1.124000000000000e+02  2.234000000000000e+03  3.220000000000000e+02"
+        verify(t, t_norm, str)
+
+        t = dict(x=112.4, y=2234.0, z=322.0)
+        t_norm = " 1.124000000000000e+02  2.234000000000000e+03  3.220000000000000e+02"
+        verify(t, t_norm, unicode)
+
         
 class TestV3SP(unittest.TestCase):
     """Test the V3CP class."""
@@ -432,3 +447,20 @@ class TestV3SP(unittest.TestCase):
         t = dict(r=1.0, alpha=-2.0, delta=-0.234)
         t_norm = -0.23400
         verify(t, t_norm)
+
+    def testStrUnicode(self):
+        """Must give proper string representation of V3SP."""
+        def verify(t, t_norm, f):
+            v3sp = tpm.V3SP(**t)
+            s = f(v3sp)
+            self.assertEqual(s, t_norm)
+
+        t = dict(r=1.0, alpha=2.0, delta=3.0)
+        t_norm = " 1.000000000000000e+00  2.000000000000000e+00  3.000000000000000e+00"
+        verify(t, t_norm, str)
+
+        t = dict(r=1.0, alpha=2.0, delta=3.0)
+        t_norm = " 1.000000000000000e+00  2.000000000000000e+00  3.000000000000000e+00"
+        verify(t, t_norm, unicode)
+
+        
