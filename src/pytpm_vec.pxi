@@ -102,6 +102,15 @@ cdef class V3CP(V3):
         else:
             raise TypeError, "Can only subtract two V3CP values."
 
+    def __add__(V3CP self, V3CP other):
+        """Return V3CP that holds the sum of two V3CPs."""
+        if isinstance(self, V3CP) and isinstance(other, V3CP):
+            v3cp = V3CP()
+            v3cp.setV3(_tpm_vec.v3sum(self.getV3(), other.getV3()))
+            return v3cp
+        else:
+            raise TypeError, "Can only add two V3CP values."
+
 
 cdef class V3SP(V3):
     """A V3 spherical position vector."""
