@@ -127,6 +127,10 @@ cdef class V3CP(V3):
         """Return modulus of the V3CP vector."""
         return _tpm_vec.v3mod(self.getV3())
 
+    def to_dot(V3CP self, V3CP other):
+        """Return the dot product of two V3CP vectors."""
+        return _tpm_vec.v3dot(self.getV3(), other.getV3())
+    
     
 cdef class V3SP(V3):
     """A V3 spherical position vector."""

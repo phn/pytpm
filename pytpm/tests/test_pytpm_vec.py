@@ -173,6 +173,18 @@ class TestV3CP(unittest.TestCase):
         t = dict(x=12.34567, y=34.56712, z=56.71234)
         verify(t, math.sqrt(t['x']**2+t['y']**2+t['z']**2))
 
+    def testV3CDot(self):
+        """Must be able to take dot product of two V3CP vectors."""
+        def verify(t, t_norm, res):
+            v3cp1 = tpm.V3CP(**t)
+            v3cp2 = tpm.V3CP(**t_norm)
+            d = v3cp1.to_dot(v3cp2)
+            self.assertAlmostEqual(d, res)
+
+        t = dict(x=0.18275165, y=0.51169344, z= 0.83950680)
+        t_norm = dict(x=12.34567, y=34.56712, z=56.71234)
+        verify(t,t_norm, t['x']*t_norm['x'] + t['y']*t_norm['y'] +
+               t['z']*t_norm['z'])
 
         
 class TestV3SP(unittest.TestCase):
