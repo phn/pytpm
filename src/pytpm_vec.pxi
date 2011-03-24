@@ -130,6 +130,12 @@ cdef class V3CP(V3):
     def dot(V3CP self, V3CP other):
         """Return the dot product of two V3CP vectors."""
         return _tpm_vec.v3dot(self.getV3(), other.getV3())
+
+    def cross(V3CP self, V3CP other):
+        """Return the cross product of two V3CP vectors."""
+        v3cp = V3CP()
+        v3cp.setV3(_tpm_vec.v3cross(self.getV3(), other.getV3()))
+        return v3cp
     
     
 cdef class V3SP(V3):

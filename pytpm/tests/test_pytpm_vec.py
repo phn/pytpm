@@ -186,6 +186,24 @@ class TestV3CP(unittest.TestCase):
         verify(t,t_norm, t['x']*t_norm['x'] + t['y']*t_norm['y'] +
                t['z']*t_norm['z'])
 
+    def testV3CCross(self):
+        """Must be able to take cross product of two V3CP vectors."""
+        def verify(t, t_norm, res):
+            v3cp1 = tpm.V3CP(**t)
+            v3cp2 = tpm.V3CP(**t_norm)
+            v3cp = v3cp1.cross(v3cp2)
+            self.assertEqual(v3cp.ctype, tpm.CARTESIAN)
+            self.assertEqual(v3cp.vtype, tpm.POS)
+            self.assertAlmostEqual(v3cp.x, res['x'])
+            self.assertAlmostEqual(v3cp.y, res['y'])
+            self.assertAlmostEqual(v3cp.z, res['z'])
+
+        # See pytpm/tests/c_tests/v3cross_test.c.
+        t1 = dict(x=1123.4556, y=4556.1123, z=9876.1267)
+        t2 = dict(x=2.3456, y=6.7891, z=7.8912)
+        res = dict(x=-31096.818397210, y=14300.029956800, z=-3059.564596920)
+        verify(t1, t2, res)
+
         
 class TestV3SP(unittest.TestCase):
     """Test the V3CP class."""
