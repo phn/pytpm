@@ -119,6 +119,27 @@ class TestV3CP(unittest.TestCase):
         # TypeError must be rasied if one of the values is not V3CP.
         self.assertRaises(TypeError, lambda v1: v1 + 1.0, tpm.V3CP(**t))
 
+    def testV3CMultiply(self):
+        """Must be able to scale a V3CP with a scalar."""
+        def verify(t, n):
+            v3cp1 = tpm.V3CP(**t)
+            v3cp = v3cp1 * n
+            self.assertEqual(type(v3cp), tpm.V3CP)
+            self.assertEqual(v3cp.ctype, tpm.CARTESIAN)
+            self.assertEqual(v3cp.vtype, tpm.POS)
+            self.assertAlmostEqual(v3cp.x, t['x'] * n)
+            self.assertAlmostEqual(v3cp.y, t['y'] * n)
+            self.assertAlmostEqual(v3cp.z, t['z'] * n)
+
+        t = dict(x=1.0, y=2.0, z=3.0)
+        verify(t, 2.0)
+
+        # This TypeError is raised by Cython. Cython doesn't have a
+        # __rmul__ and hence the __mul__ of the right hand V3CP is
+        # called. But then the types of self and n in __mul__ become
+        # incompatible and TypeError is raised.
+        self.assertRaises(TypeError, lambda v1: 3 * v1, tpm.V3CP(**t))
+
 
 class TestV3SP(unittest.TestCase):
     """Test the V3CP class."""

@@ -111,7 +111,13 @@ cdef class V3CP(V3):
         else:
             raise TypeError, "Can only add two V3CP values."
 
-
+    def __mul__(V3CP self, double n):
+        """Scale X,Y and Z components with the scalar number."""
+        v3cp = V3CP()
+        v3cp.setV3(_tpm_vec.v3scale(self.getV3(), n))
+        return v3cp
+    
+    
 cdef class V3SP(V3):
     """A V3 spherical position vector."""
     # The following are read only.
