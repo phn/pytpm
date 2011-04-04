@@ -464,3 +464,38 @@ class TestV3SP(unittest.TestCase):
         verify(t, t_norm, unicode)
 
         
+class TestV6C(unittest.TestCase):
+    """Test V6 cartesian vector."""
+    def testCreate(self):
+        """Must be able to create a V6C class."""
+        v6c = tpm.V6C()
+        self.assertEqual(type(v6c), tpm.V6C)
+
+        # Access default init values.
+        self.assertAlmostEqual(v6c.ctype, tpm.CARTESIAN)
+        self.assertAlmostEqual(v6c.x, 0.0)
+        self.assertAlmostEqual(v6c.y, 0.0)
+        self.assertAlmostEqual(v6c.z, 0.0)
+        self.assertAlmostEqual(v6c.xdot, 0.0)
+        self.assertAlmostEqual(v6c.ydot, 0.0)
+        self.assertAlmostEqual(v6c.zdot, 0.0)
+
+        # ctype is read only.
+        def f(x):
+            x.ctype = tpm.SPHERICAL
+        self.assertRaises(AttributeError, f, v6c)
+
+    def checkv6(self, v6c, t):
+        """Compare V6 fields with the values in t."""
+        self.assertAlmostEqual(v6c.x, t['x'])
+        self.assertAlmostEqual(v6c.y, t['y'])
+        self.assertAlmostEqual(v6c.z, t['z'])
+        self.assertAlmostEqual(v6c.xdot, t['xdot'])
+        self.assertAlmostEqual(v6c.ydot, t['ydot'])
+        self.assertAlmostEqual(v6c.zdot, t['zdot'])
+        
+    def testSetGetInitValues(self):
+        """Must be able to set V6C fields at init and get them back."""
+        t = dict(x=-12.34, y=21345.0, z=0.01, xdot=1.23, ydot=3.21, zdot=0.0)
+        v6c = tpm.V6C(**t)
+        self.checkv6(v6c, t)

@@ -238,3 +238,143 @@ cdef class V3SP(V3):
         """Return unicode representation of V3SP"""
         s = _tpm_vec.v3fmt(self.getV3())
         return unicode(s)
+
+cdef class V6(object):
+    """Class that wraps _tpm_vec.V6; for use from Cython only."""
+    cdef _tpm_vec.V6 _v6
+
+    def __cinit__(self):
+        self._v6.v[POS].type = CARTESIAN
+        self._v6.v[POS].v[0] = 0.0
+        self._v6.v[POS].v[1] = 0.0
+        self._v6.v[POS].v[2] = 0.0
+        self._v6.v[VEL].type = CARTESIAN
+        self._v6.v[VEL].v[0] = 0.0
+        self._v6.v[VEL].v[1] = 0.0
+        self._v6.v[VEL].v[2] = 0.0
+
+    def __init__(self, ctype=CARTESIAN, X=0.0, Y=0.0, Z=0.0,
+                 Xdot=0.0, Ydot=0.0, Zdot=0.0):
+        self._v6.v[POS].type = ctype
+        self._v6.v[POS].v[0] = X
+        self._v6.v[POS].v[1] = Y
+        self._v6.v[POS].v[2] = Z
+        self._v6.v[VEL].type = ctype
+        self._v6.v[VEL].v[0] = Xdot
+        self._v6.v[VEL].v[1] = Ydot
+        self._v6.v[VEL].v[2] = Zdot
+
+    cdef int getType(self):
+        return self._v6.v[POS].type
+
+    cdef setType(self, int t):
+        self._v6.v[POS].type = t
+        self._v6.v[VEL].type = t
+
+    cdef getX(self):
+        return self._v6.v[POS].v[0]
+
+    cdef setX(self, double X):
+        self._v6.v[POS].v[0] = X
+
+    cdef getY(self):
+        return self._v6.v[POS].v[1]
+
+    cdef setY(self, double Y):
+        self._v6.v[POS].v[1] = Y
+
+    cdef getZ(self):
+        return self._v6.v[POS].v[2]
+
+    cdef setZ(self, double Z):
+        self._v6.v[POS].v[2] = Z
+
+    cdef getXdot(self):
+        return self._v6.v[VEL].v[0]
+
+    cdef setXdot(self, double Xdot):
+        self._v6.v[VEL].v[0] = Xdot
+
+    cdef getYdot(self):
+        return self._v6.v[VEL].v[1]
+
+    cdef setYdot(self, double Ydot):
+        self._v6.v[VEL].v[1] = Ydot
+
+    cdef getZdot(self):
+        return self._v6.v[VEL].v[2]
+
+    cdef setZdot(self, double Zdot):
+        self._v6.v[VEL].v[2] = Zdot
+
+    cdef _tpm_vec.V6 getV6(self):
+        return self._v6
+
+    cdef setV6(self, _tpm_vec.V6 _v6):
+        self._v6 = _v6
+
+    cdef _tpm_vec.V3 getPOS(self):
+        return self._v6.v[POS]
+
+    cdef setPOS(self, _tpm_vec.V3 _v3):
+        if (_v3.type != self.getType()):
+            raise ValueError, "Type of V3 must be the same as that of V6."
+        self._v6.v[POS] = _v3
+
+    cdef _tpm_vec.V3 getVEL(self):
+        return self._v6.v[VEL]
+
+    cdef setVEL(self, _tpm_vec.V3 _v3):
+        if (_v3.type != self.getType()):
+            raise ValueError, "Type of V3 must be the same as that of V6."
+        self._v6.v[VEL] = _v3
+
+
+cdef class V6C(V6):
+    """Class for Cartesian V6 vector"""
+    # The following is read only.
+    ctype = CARTESIAN
+    def __init__(self, x=0.0, y=0.0, z=0.0, xdot=0.0, ydot=0.0, zdot=0.0):
+        self.x = x
+        self.y = y
+        self.z = z
+        self.xdot = xdot
+        self.ydot = ydot
+        self.zdot = zdot
+
+    def __getx(self):
+        return self.getX()
+    def __setx(self, x):
+        self.setX(x)
+    x = property(__getx, __setx, doc="X coordinate.")
+
+    def __gety(self):
+        return self.getY()
+    def __sety(self, y):
+        self.setY(y)
+    y = property(__gety, __sety, doc="Y coordinate.")
+
+    def __getz(self):
+        return self.getZ()
+    def __setz(self, z):
+        self.setZ(z)
+    z = property(__getz, __setz, doc="Z coordinate.")
+
+    def __getxdot(self):
+        return self.getXdot()
+    def __setxdot(self, xdot):
+        self.setXdot(xdot)
+    xdot = property(__getxdot, __setxdot, doc="XDOT coordinate.")
+
+    def __getydot(self):
+        return self.getYdot()
+    def __setydot(self, ydot):
+        self.setYdot(ydot)
+    ydot = property(__getydot, __setydot, doc="YDOT coordinate.")
+
+    def __getzdot(self):
+        return self.getZdot()
+    def __setzdot(self, zdot):
+        self.setZdot(zdot)
+    zdot = property(__getzdot, __setzdot, doc="ZDOT coordinate.")
+
