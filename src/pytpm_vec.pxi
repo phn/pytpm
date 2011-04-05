@@ -387,4 +387,15 @@ cdef class V6C(V6):
         else:
             raise TypeError, "Can only subtract two V6C values."
 
-    
+    def __add__(V6C self, V6C other):
+        """Return V6C that holds the sum of two V6C vectors."""
+        if isinstance(self, V6C) and isinstance(other, V6C):
+            v6c = V6C()
+            v6c.setV6(_tpm_vec.v6sum(self.getV6(), other.getV6()))
+            return v6c
+        else:
+            raise TypeError, "Can only add two V6C values."
+
+    def mod(self):
+        """Return modulus, i.e., length, of position component of V6C vector."""
+        return _tpm_vec.v6mod(self.getV6())

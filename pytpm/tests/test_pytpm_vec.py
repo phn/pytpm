@@ -511,3 +511,22 @@ class TestV6C(unittest.TestCase):
         v6c2 = tpm.V6C(**t2)
         v6cdiff = v6c1 - v6c2
         self.checkv6(v6cdiff, tdiff)
+
+    def testV6Add(self):
+        """Must be able to add two V6C vectors."""
+        t1 = dict(x=-12.34, y=21345.0, z=0.01, xdot=1.23, ydot=3.21, zdot=0.0)
+        t2 = dict(x=23.5, y=12.3, z=1234.5, xdot=-1.23, ydot=-123.4, zdot=100.0)
+        tsum = dict(x=t1['x']+t2['x'], y=t1['y']+t2['y'], z=t1['z']+t2['z'],
+                     xdot=t1['xdot']+t2['xdot'], ydot=t1['ydot']+t2['ydot'],
+                     zdot=t1['zdot']+t2['zdot'])
+        v6c1 = tpm.V6C(**t1)
+        v6c2 = tpm.V6C(**t2)
+        v6csum = v6c1 + v6c2
+        self.checkv6(v6csum, tsum)
+
+    def testV6Mod(self):
+        """Must return modulus of V6C vector."""
+        t = dict(x=-12.34, y=21345.0, z=0.01, xdot=1.23, ydot=3.21, zdot=0.0)
+        v6c = tpm.V6C(**t)
+        tm = (t['x']**2 + t['y']**2 + t['z']**2)**(0.5)
+        self.assertAlmostEqual(v6c.mod(), tm)
