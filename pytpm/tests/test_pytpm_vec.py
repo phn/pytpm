@@ -530,3 +530,16 @@ class TestV6C(unittest.TestCase):
         v6c = tpm.V6C(**t)
         tm = (t['x']**2 + t['y']**2 + t['z']**2)**(0.5)
         self.assertAlmostEqual(v6c.mod(), tm)
+
+    def testV6Unit(self):
+        """Must return V6C with unit POS and scaled VEL."""
+        t = dict(x=-12.34, y=21345.0, z=0.01, xdot=1.23, ydot=3.21, zdot=0.0)
+        v6c = tpm.V6C(**t)
+        v6c = v6c.unit()
+        tm = (t['x']**2 + t['y']**2 + t['z']**2)**(0.5)
+        t1 = t.copy()
+        for key in t1:
+            t1[key] *= 1/tm
+        self.checkv6(v6c, t1)
+        
+        

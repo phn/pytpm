@@ -399,3 +399,9 @@ cdef class V6C(V6):
     def mod(self):
         """Return modulus, i.e., length, of position component of V6C vector."""
         return _tpm_vec.v6mod(self.getV6())
+
+    def unit(self):
+        """Return V6C with unit POS vector and scaled VEL."""
+        v6c = V6C()
+        v6c.setV6(_tpm_vec.v6unit(self.getV6()))
+        return v6c
