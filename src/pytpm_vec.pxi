@@ -405,3 +405,18 @@ cdef class V6C(V6):
         v6c = V6C()
         v6c.setV6(_tpm_vec.v6unit(self.getV6()))
         return v6c
+
+    def scale(self, x):
+        """Return V6C with components scaled by the given factor."""
+        v6c = V6C()
+        v6c.setV6(_tpm_vec.v6scale(self.getV6(), x))
+        return v6c
+
+    def v62v3(self, dt):
+        """Convert V6C into V3CP by addding space motion.
+
+        Space motion is applied for the given number of days, dt.
+        """
+        v3cp = V3CP()
+        v3cp.setV3(_tpm_vec.v62v3(self.getV6(), dt))
+        return v3cp

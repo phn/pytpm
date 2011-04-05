@@ -542,4 +542,24 @@ class TestV6C(unittest.TestCase):
             t1[key] *= 1/tm
         self.checkv6(v6c, t1)
         
+    def testV6Scale(self):
+        """Must scale components of V6C with the given factor."""
+        t = dict(x=-12.34, y=21345.0, z=0.01, xdot=1.23, ydot=3.21, zdot=0.0)
+        v6c = tpm.V6C(**t)
+        v6c = v6c.scale(1.234)
+        t1 = t.copy()
+        for key in t1:
+            t1[key] *= 1.234
+        self.checkv6(v6c, t1)
         
+    def testV62V3(self):
+        """Must convert V6C to V3CP by applying space motion."""
+        t = dict(x=-12.34, y=21345.0, z=0.01, xdot=1.23, ydot=3.21, zdot=0.0)
+        v6c = tpm.V6C(**t)
+        dt = 1200.345
+        v3cp = v6c.v62v3(dt)
+        self.assertEqual(v3cp.ctype, tpm.CARTESIAN)
+        self.assertEqual(v3cp.vtype, tpm.POS)
+        self.assertAlmostEqual(v3cp.x, t['x']+t['xdot']*dt)
+        self.assertAlmostEqual(v3cp.y, t['y']+t['ydot']*dt)
+        self.assertAlmostEqual(v3cp.z, t['z']+t['zdot']*dt)
