@@ -420,3 +420,23 @@ cdef class V6C(V6):
         v3cp = V3CP()
         v3cp.setV3(_tpm_vec.v62v3(self.getV6(), dt))
         return v3cp
+
+    def dot(V6C self, V6C other):
+        """Dot product of the POS vector of V6C vectors."""
+        if isinstance(self, V6C) and isinstance(other, V6C):
+            return _tpm_vec.v6dot(self.getV6(), other.getV6())
+        else:
+            raise TypeError, "Can only take dot product of two V6C values."
+
+    def cross(V6C self, V6C other):
+        """Cross product of POS components of two V6C vectors.
+
+        VEL component of the resulting V6 vector is set to 0.
+        """
+        if isinstance(self, V6C) and isinstance(other, V6C):
+            v6c = V6C()
+            v6c.setV6(_tpm_vec.v6cross(self.getV6(), other.getV6()))
+            return v6c
+        else:
+            raise TypeError, "Can only take cross product of two V6C values."
+

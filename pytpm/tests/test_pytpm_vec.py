@@ -563,3 +563,29 @@ class TestV6C(unittest.TestCase):
         self.assertAlmostEqual(v3cp.x, t['x']+t['xdot']*dt)
         self.assertAlmostEqual(v3cp.y, t['y']+t['ydot']*dt)
         self.assertAlmostEqual(v3cp.z, t['z']+t['zdot']*dt)
+
+    def testV6Dot(self):
+        """Must return the dot product of V6C vector with another V6C."""
+        t = dict(x=-12.34, y=21345.0, z=0.01, xdot=1.23, ydot=3.21, zdot=0.0)
+        v6c = tpm.V6C(**t)
+        t1 = dict(x=100.34, y=-0.230, z=0.0, xdot=-1234.5, ydot=-43.5, zdot=123.9)
+        v6c1 = tpm.V6C(**t1)
+        x = t['x']*t1['x']+ t['y']*t1['y']+t['z']*t1['z']
+        self.assertEqual(v6c.dot(v6c1), x)
+        self.assertEqual(v6c1.dot(v6c), x)
+
+    def testV6Cross(self):
+        """Must return cross product of two V6C vectors."""
+        t1 = dict(x=-12.34, y=21345.0, z=0.01, xdot=1.23, ydot=3.21, zdot=0.0)
+        v6c = tpm.V6C(**t1)
+        t2 = dict(x=100.34, y=-0.230, z=0.0, xdot=-1234.5, ydot=-43.5, zdot=123.9)
+        v6c1 = tpm.V6C(**t2)
+        t = dict(x=t1['y']*t2['z']-t1['z']*t2['y'],
+                 y=t1['z']*t2['x']-t1['x']*t2['z'],
+                 z=t1['x']*t2['y']-t1['y']*t2['x'],
+                 xdot=0.0, ydot=0.0, zdot=0.0)
+
+        self.checkv6(v6c.cross(v6c1), t)
+        self.checkv6(v6c1.cross(v6c), dict(x=-t['x'], y=-t['y'],
+                                           z=-t['z'], xdot=0.0,
+                                           ydot=0.0, zdot=0.0))
