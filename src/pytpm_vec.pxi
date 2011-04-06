@@ -440,3 +440,53 @@ cdef class V6C(V6):
         else:
             raise TypeError, "Can only take cross product of two V6C values."
 
+
+cdef class V6S(V6):
+    """Class for spherical V6 vector"""
+    # The following is read only.
+    ctype = SPHERICAL
+    def __init__(self, r=0.0, alpha=0.0, delta=0.0, rdot=0.0, alphadot=0.0, deltadot=0.0):
+        self.setType(SPHERICAL) # Set type of the underlying V6. Why
+                                # can't I call the inherited V6.__init__()?
+        self.r = r
+        self.alpha = alpha
+        self.delta = delta
+        self.rdot = rdot
+        self.alphadot = alphadot
+        self.deltadot = deltadot
+
+    def __getr(self):
+        return self.getX()
+    def __setr(self, r):
+        self.setX(r)
+    r = property(__getr, __setr, doc="R coordinate.")
+
+    def __getalpha(self):
+        return self.getY()
+    def __setalpha(self, alpha):
+        self.setY(alpha)
+    alpha = property(__getalpha, __setalpha, doc="ALPHA coordinate.")
+
+    def __getdelta(self):
+        return self.getZ()
+    def __setdelta(self, delta):
+        self.setZ(delta)
+    delta = property(__getdelta, __setdelta, doc="DELTA coordinate.")
+
+    def __getrdot(self):
+        return self.getXdot()
+    def __setrdot(self, rdot):
+        self.setXdot(rdot)
+    rdot = property(__getrdot, __setrdot, doc="RDOT coordinate.")
+
+    def __getalphadot(self):
+        return self.getYdot()
+    def __setalphadot(self, alphadot):
+        self.setYdot(alphadot)
+    alphadot = property(__getalphadot, __setalphadot, doc="ALPHADOT coordinate.")
+
+    def __getdeltadot(self):
+        return self.getZdot()
+    def __setdeltadot(self, deltadot):
+        self.setZdot(deltadot)
+    deltadot = property(__getdeltadot, __setdeltadot, doc="DELTADOT coordinate.")

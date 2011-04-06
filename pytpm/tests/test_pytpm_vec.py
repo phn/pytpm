@@ -589,3 +589,41 @@ class TestV6C(unittest.TestCase):
         self.checkv6(v6c1.cross(v6c), dict(x=-t['x'], y=-t['y'],
                                            z=-t['z'], xdot=0.0,
                                            ydot=0.0, zdot=0.0))
+
+
+class TestV6S(unittest.TestCase):
+    """Test V6 spherical vector."""
+    def testCreate(self):
+        """Must be able to create a V6S class."""
+        v6s = tpm.V6S()
+        self.assertEqual(type(v6s), tpm.V6S)
+
+        # Access default init values.
+        self.assertAlmostEqual(v6s.ctype, tpm.SPHERICAL)
+        self.assertAlmostEqual(v6s.r, 0.0)
+        self.assertAlmostEqual(v6s.alpha, 0.0)
+        self.assertAlmostEqual(v6s.delta, 0.0)
+        self.assertAlmostEqual(v6s.rdot, 0.0)
+        self.assertAlmostEqual(v6s.alphadot, 0.0)
+        self.assertAlmostEqual(v6s.deltadot, 0.0)
+
+        # ctype is read only.
+        def f(x):
+            x.ctype = tpm.CARTESIAN
+        self.assertRaises(AttributeError, f, v6s)
+
+    def checkv6(self, v6s, t):
+        """Compare V6 fields with the values in t."""
+        self.assertAlmostEqual(v6s.r, t['r'])
+        self.assertAlmostEqual(v6s.alpha, t['alpha'])
+        self.assertAlmostEqual(v6s.delta, t['delta'])
+        self.assertAlmostEqual(v6s.rdot, t['rdot'])
+        self.assertAlmostEqual(v6s.alphadot, t['alphadot'])
+        self.assertAlmostEqual(v6s.deltadot, t['deltadot'])
+        
+    def testSetGetInitValues(self):
+        """Must be able to set V6S fields at init and get them back."""
+        t = dict(r=1234.56, alpha=2.345, delta=-6.456,
+                 rdot=-123.89, alphadot=0.123, deltadot=-0.54)
+        v6s = tpm.V6S(**t)
+        self.checkv6(v6s, t)
