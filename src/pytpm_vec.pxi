@@ -440,7 +440,13 @@ cdef class V6C(V6):
         else:
             raise TypeError, "Can only take cross product of two V6C values."
 
+    def c2s(self):
+        """Convert V6C to V6S i.e., Cartesian to spherical."""
+        v6s = V6S()
+        v6s.setV6(_tpm_vec.v6c2s(self.getV6()))
+        return v6s
 
+    
 cdef class V6S(V6):
     """Class for spherical V6 vector"""
     # The following is read only.
@@ -490,3 +496,9 @@ cdef class V6S(V6):
     def __setdeltadot(self, deltadot):
         self.setZdot(deltadot)
     deltadot = property(__getdeltadot, __setdeltadot, doc="DELTADOT coordinate.")
+
+    def s2c(self):
+        """Convert V6S to V6C i.e., spherical to Cartesian."""
+        v6c = V6C()
+        v6c.setV6(_tpm_vec.v6s2c(self.getV6()))
+        return v6c

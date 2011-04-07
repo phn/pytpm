@@ -590,7 +590,24 @@ class TestV6C(unittest.TestCase):
                                            z=-t['z'], xdot=0.0,
                                            ydot=0.0, zdot=0.0))
 
+    def testV6C2S(self):
+        """Must convert V6C to V6S i.e., Cartesian to spherical."""
+        t = dict(x=1123.4556, y=4556.1123, z=9876.1267, xdot=2.3456,
+                 ydot=6.7891, zdot=7.8912)
+        tn = dict(r=10934.26679617, alpha=1.32903712, delta=1.12723066,
+                  rdot=10.19744374, alphadot=-0.00013894, deltadot=
+                  -0.00028117)
+        v6c = tpm.V6C(**t)
+        v6s = v6c.c2s()
+        self.assertEqual(v6s.ctype, tpm.SPHERICAL)
+        self.assertAlmostEqual(v6s.r, tn['r'])
+        self.assertAlmostEqual(v6s.alpha, tn['alpha'])
+        self.assertAlmostEqual(v6s.delta, tn['delta'])
+        self.assertAlmostEqual(v6s.rdot, tn['rdot'])
+        self.assertAlmostEqual(v6s.alphadot, tn['alphadot'])
+        self.assertAlmostEqual(v6s.deltadot, tn['deltadot'])
 
+        
 class TestV6S(unittest.TestCase):
     """Test V6 spherical vector."""
     def testCreate(self):
@@ -627,3 +644,34 @@ class TestV6S(unittest.TestCase):
                  rdot=-123.89, alphadot=0.123, deltadot=-0.54)
         v6s = tpm.V6S(**t)
         self.checkv6(v6s, t)
+
+    def testV6S2C(self):
+        """Must convert V6S to V6C i.e., spherical to Cartesian."""
+        tn = dict(x=1123.4556, y=4556.1123, z=9876.1267, xdot=2.3456,
+                 ydot=6.7891, zdot=7.8912)
+        t = dict(r=10934.26679617, alpha=1.32903712, delta=1.12723066,
+                  rdot=10.19744374, alphadot=-0.00013894, deltadot=
+                  -0.00028117)
+        v6s = tpm.V6S(**t)
+        v6c = v6s.s2c()
+        self.assertEqual(v6c.ctype, tpm.CARTESIAN)
+        self.assertAlmostEqual(v6c.x, tn['x'], 4)
+        self.assertAlmostEqual(v6c.y, tn['y'], 4)
+        self.assertAlmostEqual(v6c.z, tn['z'], 4)
+        self.assertAlmostEqual(v6c.xdot, tn['xdot'], 4)
+        self.assertAlmostEqual(v6c.ydot, tn['ydot'], 4)
+        self.assertAlmostEqual(v6c.zdot, tn['zdot'], 4)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
