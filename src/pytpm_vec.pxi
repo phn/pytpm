@@ -505,6 +505,14 @@ cdef class V6S(V6):
         self.setZdot(deltadot)
     deltadot = property(__getdeltadot, __setdeltadot, doc="DELTADOT coordinate.")
 
+    def __getnalpha(self):
+        return _tpm_vec.v6alpha(self.getV6())
+    nalpha = property(__getnalpha, doc="Normalized alpha coordinate.")
+    
+    def __getndelta(self):
+        return _tpm_vec.v6delta(self.getV6())
+    ndelta = property(__getndelta, doc="Normalized alpha coordinate.")
+    
     def s2c(self):
         """Convert V6S to V6C i.e., spherical to Cartesian."""
         v6c = V6C()

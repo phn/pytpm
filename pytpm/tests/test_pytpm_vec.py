@@ -687,6 +687,55 @@ class TestV6S(unittest.TestCase):
         self.assertAlmostEqual(v6c.ydot, tn['ydot'], 4)
         self.assertAlmostEqual(v6c.zdot, tn['zdot'], 4)
 
+    def testNAlpha(self):
+        """V6S.nalpha => properly normalized alpha i.e., RA."""
+        def verify(t, t_norm):
+            v6s = tpm.V6S(**t)
+            a = v6s.nalpha
+            self.assertAlmostEqual(a, t_norm)
+
+        # The velocity components get default value i.e., 0.
+        # See pytpm/tests/c_tests/v3alpha_test.c.
+        t = dict(r=-1.0, alpha=-2.0, delta=3.0)
+        t_norm = 1.14159265
+        verify(t, t_norm)
+
+        t = dict(r=10.0, alpha=0.2, delta=-0.234)
+        t_norm = 0.20
+        verify(t, t_norm)
+
+        t = dict(r=-1.0, alpha=2.0, delta=3.0)
+        t_norm = 5.14159265
+        verify(t, t_norm)
+
+        t = dict(r=1.0, alpha=-2.0, delta=-0.234)
+        t_norm = 4.28318531
+        verify(t, t_norm)
+
+    def testNDelta(self):
+        """V6S.ndelta => properly normalized delta i.e., DEC."""
+        def verify(t, t_norm):
+            v6s = tpm.V6S(**t)
+            a = v6s.ndelta
+            self.assertAlmostEqual(a, t_norm)
+
+        # The velocity components get default value i.e., 0.
+        # See pytpm/tests/c_tests/v3delta_test.c.
+        t = dict(r=-1.0, alpha=-2.0, delta=3.0)
+        t_norm = -0.14159265
+        verify(t, t_norm)
+
+        t = dict(r=10.0, alpha=0.2, delta=-0.234)
+        t_norm = -0.234000
+        verify(t, t_norm)
+
+        t = dict(r=-1.0, alpha=2.0, delta=3.0)
+        t_norm = -0.14159265
+        verify(t, t_norm)
+
+        t = dict(r=1.0, alpha=-2.0, delta=-0.234)
+        t_norm = -0.23400
+        verify(t, t_norm)
 
 
 
