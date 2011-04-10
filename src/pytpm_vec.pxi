@@ -378,6 +378,14 @@ cdef class V6C(V6):
         self.setZdot(zdot)
     zdot = property(__getzdot, __setzdot, doc="ZDOT coordinate.")
 
+    def __getPOS(self):
+        v3p = V3CP()
+        v3p.setV3(self.getPOS())
+        return v3p
+    def __setPOS(self, V3CP v3cp):
+        self.setPOS(v3cp.getV3())
+    pos = property(__getPOS, __setPOS, doc="POS component.")
+        
     def __sub__(V6C self, V6C other):
         """Return V6C that holds difference between two V6C vectors."""
         if isinstance(self, V6C) and isinstance(other, V6C):

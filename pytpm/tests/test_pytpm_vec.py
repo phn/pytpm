@@ -607,6 +607,31 @@ class TestV6C(unittest.TestCase):
         self.assertAlmostEqual(v6s.alphadot, tn['alphadot'])
         self.assertAlmostEqual(v6s.deltadot, tn['deltadot'])
 
+    def testV6GetPOS(self):
+        """Must be able to get POS components of V6C, as V3CP."""
+        t = dict(x=1123.4556, y=4556.1123, z=9876.1267, xdot=2.3456,
+                 ydot=6.7891, zdot=7.8912)
+        v6c = tpm.V6C(**t)
+        v6pos = v6c.pos
+        self.assertEqual(v6pos.vtype, tpm.POS)
+        self.assertEqual(v6pos.ctype, tpm.CARTESIAN)
+        self.assertAlmostEqual(v6pos.x, t['x'])
+        self.assertAlmostEqual(v6pos.y, t['y'])
+        self.assertAlmostEqual(v6pos.z, t['z'])
+
+    def testV6SetPOS(self):
+        """Must be able to set POS components of V6C, using V3CP."""
+        t = dict(x=1123.4556, y=4556.1123, z=9876.1267)
+        v3cp = tpm.V3CP(**t)
+        v6cp = tpm.V6C()
+        v6cp.pos = v3cp
+        self.assertAlmostEqual(v6cp.x, t['x'])
+        self.assertAlmostEqual(v6cp.x, v3cp.x)
+        self.assertAlmostEqual(v6cp.y, t['y'])
+        self.assertAlmostEqual(v6cp.y, v3cp.y)
+        self.assertAlmostEqual(v6cp.z, t['z'])
+        self.assertAlmostEqual(v6cp.z, v3cp.z)
+
         
 class TestV6S(unittest.TestCase):
     """Test V6 spherical vector."""
