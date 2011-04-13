@@ -6,19 +6,19 @@ from pytpm import tpm
 class TestDMSStructure(unittest.TestCase):
     """Test if the methods in the DMS class work."""
     def testCreate(self):
-        """Must be able to create an DMS object."""
+        """DMS() => create an DMS object."""
         dms = tpm.DMS()
         self.assertEqual(type(dms), tpm.DMS)
         
     def testGetFields(self):
-        """Must be able to retrieve default values of fields."""
+        """DMS.x => Retrieve default values of fields."""
         dms = tpm.DMS()
         self.assertAlmostEqual(dms.dd, 0.0)
         self.assertAlmostEqual(dms.mm, 0.0)
         self.assertAlmostEqual(dms.ss, 0.0)
 
     def testSetFieldValuesAtInit(self):
-        """Must be able to set values to fields at creation."""
+        """DMS(**t) => set values to fields at creation."""
         
         def verify(t, t_norm):
             dms = tpm.DMS(**t)
@@ -41,7 +41,7 @@ class TestDMSStructure(unittest.TestCase):
         verify(t, t_norm)
         
     def testSetFieldValues(self):
-        """Must be able to set values after creation."""
+        """DMS.x = val => set values after creation."""
         dms = tpm.DMS()
         dms.dd = 1.0
         dms.mm = 1.0
@@ -51,7 +51,7 @@ class TestDMSStructure(unittest.TestCase):
         self.assertAlmostEqual(dms.ss, 1.34)
         
     def testAddition(self):
-        """Must perform addition of two DMS values."""
+        """DMS.__add__ => DMS + DMS."""
         dms1 = tpm.DMS()
         dms2 = tpm.DMS()
         dms1.dd = 1.1
@@ -66,14 +66,14 @@ class TestDMSStructure(unittest.TestCase):
         self.assertAlmostEqual(dms.ss, dms1.ss+dms2.ss)
 
     def testAdditionNonHMS(self):
-        """Must raise exception if addition involves non DMS value."""
+        """DMS + x => Exception when addition involves non DMS value."""
         dms = tpm.DMS() # All zeros.
         def add_dms(dms,x):
             return dms + x
         self.assertRaises(TypeError,add_dms, dms, 1)
 
     def testSubtraction(self):
-        """Must perform subtraction of two DMS values."""
+        """DMS.__sub__ => DMS - DMS."""
         dms1 = tpm.DMS()
         dms2 = tpm.DMS()
         dms1.dd = 1.1
@@ -88,14 +88,14 @@ class TestDMSStructure(unittest.TestCase):
         self.assertAlmostEqual(dms.ss, dms1.ss-dms2.ss)
 
     def testSubtractionNonDMS(self):
-        """Must raise exception if subtraction involves non DMS value."""
+        """DMS - x => exception when subtraction involves non DMS value."""
         dms = tpm.DMS() # All zeros.
         def sub_dms(dms,x):
             return dms - x
         self.assertRaises(TypeError,sub_dms, dms, 1)
 
     def testRepr(self):
-        """The __repr__ method must give proper output."""
+        """DMS.__repr__ => dictionary as a string."""
         dms = tpm.DMS()
         dms.dd = 1.1
         dms.mm = 1.2
@@ -106,7 +106,7 @@ class TestDMSStructure(unittest.TestCase):
         self.assertAlmostEqual(d['ss'], dms.ss) 
         
     def testUnicodeAndStr(self):
-        """Test string representation."""
+        """DMS.__unciode__, __str__ => string representation."""
         dms = tpm.DMS()
         dms.dd = 1.0
         dms.mm = 2.0
@@ -115,7 +115,7 @@ class TestDMSStructure(unittest.TestCase):
         self.assertEqual(dms.__unicode__(), u"+01D 02' 03.000\"")
 
     def testToHMS(self):
-        """Must return a tpm.HMS object with appropriate field values."""
+        """DMS.to_hms => DMS to HMS object."""
         t = {'dd': 180.0, 'mm':450.0, 'ss':0.0 }
         t_hms = {'hh': 12.0, 'mm':30.0, 'ss': 0.0}
         dms = tpm.DMS(**t)
@@ -126,7 +126,7 @@ class TestDMSStructure(unittest.TestCase):
         self.assertEqual(hms.ss, t_hms['ss'])
 
     def testNormalize(self):
-        """Must properly normalize degrees, arc-minutes and arc-seconds."""
+        """DMS.normalize() => normalize degrees, arc-minutes and arc-seconds."""
         def verify(t,t_norm):
             dms = tpm.DMS(**t)
             dms.normalize()
@@ -187,7 +187,7 @@ class TestDMSStructure(unittest.TestCase):
         verify(t,t_norm)
 
     def testToDegrees(self):
-        """Must given decimal degrees of angle in DMS."""
+        """DMS.to_degrees() => decimal degrees of angle in DMS."""
         def verify(t, t_norm):
             self.assertAlmostEqual(tpm.DMS(**t).to_degrees(), t_norm)
 
@@ -199,7 +199,7 @@ class TestDMSStructure(unittest.TestCase):
 
 
     def testToHours(self):
-        """Must convert DMS into hours."""
+        """DMS.to_hours() => angle in DMS into hours."""
         def verify(t, t_norm):
             self.assertAlmostEqual(tpm.DMS(**t).to_hours(), t_norm)
 
@@ -218,7 +218,7 @@ class TestDMSStructure(unittest.TestCase):
         verify(t, t['h'])
 
     def testToRadians(self):
-        """Must convert DMS into radians."""
+        """DMS.to_radians() => angle in DMS into radians."""
         def verify(t, t_norm):
             self.assertAlmostEqual(tpm.DMS(**t).to_radians(), t_norm)
 
@@ -240,19 +240,19 @@ class TestDMSStructure(unittest.TestCase):
 class TestHMSStructure(unittest.TestCase):
     """Test if the methods in the HMS class work."""
     def testCreate(self):
-        """Must be able to create an HMS object."""
+        """HMS() => create an HMS object."""
         hms = tpm.HMS()
         self.assertEqual(type(hms), tpm.HMS)
         
     def testGetFields(self):
-        """Must be able to retrieve default values of fields."""
+        """HMS.x => retrieve values of fields."""
         hms = tpm.HMS()
         self.assertAlmostEqual(hms.hh, 0.0)
         self.assertAlmostEqual(hms.mm, 0.0)
         self.assertAlmostEqual(hms.ss, 0.0)
 
     def testSetFieldValuesAtInit(self):
-        """Must be able to set values to fields at creation."""
+        """HMS(**vals) => set values to fields at creation."""
         import math
         def verify(t, t_norm):
             hms = tpm.HMS(**t)
@@ -274,7 +274,7 @@ class TestHMSStructure(unittest.TestCase):
         verify(t, t_norm)
         
     def testSetFieldValues(self):
-        """Must be able to set values after creation."""
+        """DMS.x => set values after creation."""
         hms = tpm.HMS()
         hms.hh = 1.0
         hms.mm = 1.0
@@ -284,7 +284,7 @@ class TestHMSStructure(unittest.TestCase):
         self.assertAlmostEqual(hms.ss, 1.34)
         
     def testAddition(self):
-        """Must perform addition of two HMS values."""
+        """HMS.__add__ => HMS + HMS."""
         hms1 = tpm.HMS()
         hms2 = tpm.HMS()
         hms1.hh = 1.1
@@ -299,14 +299,14 @@ class TestHMSStructure(unittest.TestCase):
         self.assertAlmostEqual(hms.ss, hms1.ss+hms2.ss)
         
     def testAdditionNonHMS(self):
-        """Must raise exception if addition involves non HMS value."""
+        """HMS + x => Exception when addition involves non HMS value."""
         hms = tpm.HMS() # All zeros.
         def add_hms(hms,x):
             return hms + x
         self.assertRaises(TypeError, add_hms, hms, 1)
 
     def testSubtraction(self):
-        """Must perform subtraction of two HMS values."""
+        """HMS.__sub__ => HMS - HMS."""
         hms1 = tpm.HMS()
         hms2 = tpm.HMS()
         hms1.hh = 1.1
@@ -321,14 +321,14 @@ class TestHMSStructure(unittest.TestCase):
         self.assertAlmostEqual(hms.ss, hms1.ss-hms2.ss)
 
     def testSubtractNonHMS(self):
-        """Must raise exception if subtraction involves non HMS value."""
+        """HMS - x => Exception if subtraction involves non HMS value."""
         hms = tpm.HMS() # All zeros.
         def sub_hms(hms,x):
             return hms - x
         self.assertRaises(TypeError,sub_hms, hms, 1)
 
     def testRepr(self):
-        """The __repr__ method must give proper output."""
+        """HMS.__repr__ => dictionary as a string."""
         hms = tpm.HMS()
         hms.hh = 1.1
         hms.mm = 1.2
@@ -339,7 +339,7 @@ class TestHMSStructure(unittest.TestCase):
         self.assertAlmostEqual(h['ss'], hms.ss) 
         
     def testUnicodeAndStr(self):
-        """Test string representation."""
+        """HMS.__unicode__, __str__ => string representation."""
         hms = tpm.HMS()
         hms.hh = 1.0
         hms.mm = 2.0
@@ -348,7 +348,7 @@ class TestHMSStructure(unittest.TestCase):
         self.assertEqual(hms.__unicode__(),u" 01H 02M 03.000S")
 
     def testToDMS(self):
-        """Must return a tpm.DMS object with appropriate field values."""
+        """HMS.to_dms() => HMS to DMS."""
         t = {'hh': 12.0, 'mm':30.0, 'ss': 0.0}
         t_dms = {'dd': 180.0, 'mm':450.0, 'ss':0.0 }
         hms = tpm.HMS(**t)
@@ -359,7 +359,7 @@ class TestHMSStructure(unittest.TestCase):
         self.assertEqual(dms.ss, t_dms['ss'])
 
     def testNormalize(self):
-        """Must properly normalize degrees, arc-minutes and arc-seconds."""
+        """HMS.normalize => normalize hours, minutes and seconds."""
         # See tests/c_tests/hms2hms_test.c
         # Note:
         # h = (hms.dd) + (hms.mm/60.0) + (hms.ss/3600.0) i.e., each
@@ -400,11 +400,10 @@ class TestHMSStructure(unittest.TestCase):
         verify(t, t_norm)
 
     def testToHours(self):
-        """Must convert HMS into decimal hours."""
+        """HMS.to_hours() => HMS into decimal hours."""
         def verify(t, t_norm):
             self.assertAlmostEqual(tpm.HMS(**t).to_hours(), t_norm)
                                    
-
         t = dict(hh=24.0, mm=0.0, ss=0.0)
         verify(t, t['hh']+(t['mm']/60.0)+(t['ss']/3600.0))
 
@@ -412,7 +411,7 @@ class TestHMSStructure(unittest.TestCase):
         verify(t, t['hh']+(t['mm']/60.0)+(t['ss']/3600.0))
 
     def testToDegrees(self):
-        """Must convert HMS into degrees."""
+        """HMS.to_degrees() => HMS into degrees."""
         def verify(t, t_norm):
             self.assertAlmostEqual(tpm.HMS(**t).to_degrees(), t_norm)
 
@@ -431,7 +430,7 @@ class TestHMSStructure(unittest.TestCase):
         verify(t, t['d'])
         
     def testToRadians(self):
-        """Must convert HMS into radians."""
+        """HMS.to_radians() => HMS into radians."""
         def verify(t, t_norm):
             self.assertAlmostEqual(tpm.HMS(**t).to_radians(), t_norm)
 
@@ -452,12 +451,12 @@ class TestHMSStructure(unittest.TestCase):
         
 class TestYMDStructure(unittest.TestCase):
     def testCreate(self):
-        """Must be able to create a YMD object."""
+        """YMD() => create YMD object."""
         ymd = tpm.YMD()
         self.assertEqual(type(ymd), tpm.YMD)
 
     def testGetFields(self):
-        """Must be able to retrieve field values."""
+        """YMD.x => retrieve field values."""
         ymd = tpm.YMD()
         self.assertAlmostEqual(ymd.y, 2000)
         self.assertAlmostEqual(ymd.m, 1)
@@ -467,7 +466,7 @@ class TestYMDStructure(unittest.TestCase):
         self.assertAlmostEqual(ymd.ss, 0.0)
 
     def testSetFieldValuesAtInit(self):
-        """Must be able to initialize field values."""
+        """YMD(**vals) => initialize field values."""
         def verify(t, t_norm):
             ymd = tpm.YMD(**t)
             self.assertAlmostEqual(ymd.y, t_norm['y'])
@@ -509,7 +508,7 @@ class TestYMDStructure(unittest.TestCase):
 
         
     def testSetFieldValues(self):
-        """Must be able to set field values."""
+        """YMD.x => set field values."""
         t = dict(y=2010, m=11, dd=19.34, hh=29.3, mm=1.345, ss=10.8)
         ymd = tpm.YMD()
         ymd.y = t['y']
@@ -526,7 +525,7 @@ class TestYMDStructure(unittest.TestCase):
         self.assertAlmostEqual(ymd.ss, t['ss'])
 
     def testNonIntegerYearMonth(self):
-        """Must raise exception for non-integer year and month."""
+        """YMD.x => Exception for non-integer year and month."""
         ymd = tpm.YMD()
         def non_int(ymd,y,m):
             ymd.y = y
@@ -534,7 +533,7 @@ class TestYMDStructure(unittest.TestCase):
         self.assertRaises(AssertionError, non_int, ymd, 1.0, 1.0)
 
     def testSubtract(self):
-        """Must be able to subtract two YMD values."""
+        """YMD.__sub__ => YMD - YMD."""
         t1 = dict(y=2000, m=10, dd=16.789, hh=15.654, mm=1.345, ss=9.45)
         t2 = dict(y=2010, m=11, dd=19.34, hh=29.3, mm=1.345, ss=10.8)
         ymd1 = tpm.YMD()
@@ -560,14 +559,14 @@ class TestYMDStructure(unittest.TestCase):
         self.assertAlmostEqual(ymd.ss, t1['ss'] - t2['ss'])
 
     def testSubtractNonYMD(self):
-        """Must raise exception if subtraction involves non YMD value."""
+        """YMD - x => Exception if subtraction involves non YMD value."""
         ymd = tpm.YMD() # All zeros.
         def sub_ymd(ymd,x):
             return ymd - x
         self.assertRaises(TypeError,sub_ymd, ymd, 1)
         
     def testUnicodeAndStr(self):
-        """Must be able to get proper string represenations."""
+        """YMD.__unicode__, __str__ => string representations."""
         # The ouput strings were obtained from
         # pytpm/tests/c_tests/fmt_ymd_test.c
         t = dict(y=2010, m=10, dd=16.789, hh=15.654, mm=1.345, ss=9.45)
@@ -596,7 +595,7 @@ class TestYMDStructure(unittest.TestCase):
         self.assertEqual(s, u"Sat Oct  2 00:54:09.090    2 BC")
 
     def testNormalize(self):
-        """Must properly normalize a YMD value."""
+        """YMD.normalize() => normalize a YMD value."""
         def verify(t, t_norm):
             ymd = tpm.YMD(**t)
             ymd.normalize()
@@ -628,7 +627,7 @@ class TestYMDStructure(unittest.TestCase):
 
         
     def testToJD(self):
-        """Must convert to an equivalent JD."""
+        """YMD.to_jd() => convert YMD to an equivalent JD."""
         def verify(t, t_norm):
             ymd = tpm.YMD(**t)
             jd = ymd.to_jd()
@@ -655,7 +654,7 @@ class TestYMDStructure(unittest.TestCase):
         verify(t, t_norm)
 
     def testRawStr(self):
-        """Proper 'raw' representation of YMD."""
+        """ymd.raw_str() => 'raw' representation of YMD."""
         t = dict(y=2010, m=10, dd=16.789, hh=15.654, mm=1.345, ss=9.45)
         ymd = tpm.YMD(**t)
         self.assertEqual(ymd.raw_str(), "2010 10 16.789 15.654 1.345 9.45")
@@ -665,7 +664,7 @@ class TestYMDStructure(unittest.TestCase):
         self.assertEqual(ymd.raw_str(), "-1 10 1 23.9999 54 9.45")
         
     def testDOY(self):
-        """Must convert YMD into day of the year."""
+        """YMD.doy() => day of the year, for the YMD."""
         def verify(t, t_norm):
             ymd = tpm.YMD(**t)
             self.assertAlmostEqual(ymd.doy(), t_norm)
@@ -689,7 +688,7 @@ class TestYMDStructure(unittest.TestCase):
         verify(t, 321.9)
         
     def testToYear(self):
-        """Must convert YMD into a year number."""
+        """YMD.to_year() => YMD into a year number."""
         def verify(t, t_norm):
             ymd = tpm.YMD(**t)
             self.assertAlmostEqual(ymd.to_year(), t_norm)
@@ -727,9 +726,8 @@ class TestYMDStructure(unittest.TestCase):
         self.assertAlmostEqual(tpm.YMD(year= 1986.00273973).to_year(),
                                1986.00273973)
 
-        
     def testToJ(self):
-        """Must Convert YMD into a scalar Julian date."""
+        """YMD.to_j() => Convert YMD into a scalar Julian date."""
         def verify(t, t_norm):
             ymd = tpm.YMD(**t)
             self.assertAlmostEqual(ymd.to_j(), t_norm)
@@ -758,12 +756,12 @@ class TestYMDStructure(unittest.TestCase):
         
 class TestJDStructure(unittest.TestCase):
     def testCreate(self):
-        """Must be able to create a JD object."""
+        """JD() => create a JD object."""
         jd = tpm.JD()
         self.assertEqual(type(jd), tpm.JD)
 
     def testGetFields(self):
-        """Must be able to retrieve values of fields."""
+        """JD.x => retrieve values of fields."""
         jd = tpm.JD()
         self.assertEqual(jd.dd, 0.0)
         self.assertEqual(jd.hh, 0.0)
@@ -771,7 +769,7 @@ class TestJDStructure(unittest.TestCase):
         self.assertEqual(jd.ss, 0.0)
 
     def testSetFieldValuesAtInit(self):
-        """Must be able to set fields of JD at initialization."""
+        """JD(**vals) => set fields of JD at initialization."""
         def verify(t, t_norm):
              jd = tpm.JD(**t)
              self.assertEqual(jd.dd, t_norm['dd'])
@@ -793,7 +791,7 @@ class TestJDStructure(unittest.TestCase):
         verify(t, dict(dd=2451545.5,hh=-12.0, mm=0.0, ss=0.0))
         
     def testSetFieldValues(self):
-        """Must be able to set fields of a JD object."""
+        """JD.x = val => Set fields of a JD object."""
         j = dict(dd=2451445.0, hh=12.0, mm=0.0, ss=0.0)
         jd = tpm.JD()
         jd.dd = j['dd']
@@ -806,7 +804,7 @@ class TestJDStructure(unittest.TestCase):
         self.assertEqual(jd.ss, j['ss'])
 
     def testAddition(self):
-        """Must be able to add two JD values."""
+        """JD.__add__ => JD + JD."""
         j1 = dict(dd=2451445.0, hh=12.0, mm=0.0, ss=0.0)
         j2 = dict(dd=1.0, hh=2.3, mm=23.4, ss=2.0)
         jd1 = tpm.JD()
@@ -826,14 +824,14 @@ class TestJDStructure(unittest.TestCase):
         self.assertEqual(jd.ss, jd1.ss + jd2.ss)
 
     def testAddNonJD(self):
-        """Must raise exception if subtraction involves non JD value."""
+        """JD + x => Exception if addition involves non JD value."""
         jd = tpm.JD() # All zeros.
         def add_jd(jd,x):
             return jd - x
         self.assertRaises(TypeError,add_jd, jd, 1)
                         
     def testSubtraction(self):
-        """Must be able to subtract two JD values."""
+        """JD.__sub__ => JD - JD."""
         j1 = dict(dd=2451445.0, hh=12.0, mm=0.0, ss=0.0)
         j2 = dict(dd=1.0, hh=2.3, mm=23.4, ss=2.0)
         jd1 = tpm.JD()
@@ -853,14 +851,14 @@ class TestJDStructure(unittest.TestCase):
         self.assertEqual(jd.ss, jd1.ss - jd2.ss)
 
     def testSubtractNonJD(self):
-        """Must raise exception if subtraction involves non JD value."""
+        """JD - x => Exception if subtraction involves non JD value."""
         jd = tpm.JD() # All zeros.
         def sub_jd(jd,x):
             return jd - x
         self.assertRaises(TypeError,sub_jd, jd, 1)
     
     def testRepr(self):
-        """Must give proper repr string."""
+        """JD__repr__ => dictionary as a string."""
         j = dict(dd=2451445.0, hh=12.0, mm=0.0, ss=0.0)
         jd = tpm.JD()
         jd.dd = j['dd']
@@ -870,7 +868,7 @@ class TestJDStructure(unittest.TestCase):
         self.assertEqual(j, eval(repr(jd)))
 
     def testUnicodeAndStr(self):
-        """Must give proper string representations."""
+        """JD.__unciode__, __str__ => string representations."""
         # Output strings used as checks are from the file pytpm/tests
         # /c_tests/fmt_jd_test.c.
         s1 = " 2451545  12H 00M 00.000S"
@@ -894,7 +892,7 @@ class TestJDStructure(unittest.TestCase):
         self.assertEqual(unicode(jd2), unicode(s2))
 
     def testNormalize(self):
-        """Must properly normalize JD value."""
+        """JD.normalize() => normalize JD value."""
         def verify(t, t_norm):
             jd = tpm.JD(**t)
             jd.normalize()
@@ -917,7 +915,7 @@ class TestJDStructure(unittest.TestCase):
         verify(t, t_norm)
 
     def testToYMD(self):
-        """Must convert properly from JD to YMD."""
+        """JD.to_ymd() => convert JD to YMD."""
         def verify(t,t_norm):
             jd = tpm.JD(**t)
             ymd = jd.to_ymd()
@@ -945,7 +943,7 @@ class TestJDStructure(unittest.TestCase):
         verify(t, t_norm)
 
     def testToJ(self):
-        """Must convert JD into equivalent Julian date."""
+        """JD.to_J() => convert JD into equivalent Julian date."""
         def verify(t, t_norm):
             jd = tpm.JD(**t)
             self.assertAlmostEqual(jd.to_j(), t_norm)
@@ -963,7 +961,7 @@ class TestJDStructure(unittest.TestCase):
         verify(t, t['j'])
         
     def testToYear(self):
-        """Must convert JD into equivalent year (Gregorian calendar)."""
+        """JD.to_year() => convert JD into equivalent year (Gregorian calendar)."""
         def verify(t, t_norm):
             jd = tpm.JD(**t)
             self.assertAlmostEqual(jd.to_year(), t_norm)
@@ -983,7 +981,7 @@ class TestJDStructure(unittest.TestCase):
 class TestScalarValueConversions(unittest.TestCase):
     """Test conversions between scalar values."""
     def testD2D(self):
-        """tpm.d2d must properly normalize degrees."""
+        """tpm.d2d() => normalize degrees."""
         # See pytpm/tests/c_tests/d2d_test.c.
         self.assertAlmostEqual(tpm.d2d(0.0), 0.0)
         self.assertAlmostEqual(tpm.d2d(-0.0), -0.0)
@@ -999,7 +997,7 @@ class TestScalarValueConversions(unittest.TestCase):
         self.assertAlmostEqual(tpm.d2d(-730.0),350.0)
 
     def testH2H(self):
-        """tpm.h2h must properly normalize hours."""
+        """tpm.h2h() => normalize hours."""
         # See pytpm/tests/c_tests/h2h_test.c.
         self.assertAlmostEqual(tpm.h2h(  0.0000),   0.0000)
         self.assertAlmostEqual(tpm.h2h( -0.0000),  -0.0000) 
@@ -1015,7 +1013,7 @@ class TestScalarValueConversions(unittest.TestCase):
         self.assertAlmostEqual(tpm.h2h(-64.1230),   7.8770) 
 
     def testR2R(self):
-        """tpm.r2r must properly normalize radians."""
+        """tpm.r2r() => properly normalize radians."""
         import math
         self.assertAlmostEqual(tpm.r2r(  0.00000000),   0.00000000) 
         self.assertAlmostEqual(tpm.r2r( -0.00000000),  -0.00000000) 
@@ -1031,7 +1029,7 @@ class TestScalarValueConversions(unittest.TestCase):
         self.assertAlmostEqual(tpm.r2r(-4.2*math.pi),   5.65486678) 
 
     def testD2H(self):
-        """"tpm.d2h must convert degrees into hours."""
+        """"tpm.d2h() => convert degrees into hours."""
         self.assertAlmostEqual(tpm.d2h(180.0), 12.0)
         self.assertAlmostEqual(tpm.d2h(-180.0), -12.0)
         self.assertAlmostEqual(tpm.d2h(360.0), 24.0)
@@ -1039,7 +1037,7 @@ class TestScalarValueConversions(unittest.TestCase):
         self.assertAlmostEqual(tpm.d2h(720.0), 48.0)
 
     def testH2D(self):
-        """tpm.h2d must convert hours into degrees."""
+        """tpm.h2d() => convert hours into degrees."""
         self.assertAlmostEqual(tpm.h2d(12.0), 180.0)
         self.assertAlmostEqual(tpm.h2d(-12.0), -180.0)
         self.assertAlmostEqual(tpm.h2d(24.0), 360.0)
@@ -1049,7 +1047,7 @@ class TestScalarValueConversions(unittest.TestCase):
         self.assertAlmostEqual(tpm.h2d(12.5), 180.0+7.5)
         
     def testD2R(self):
-        """tpm.d2r must convert degrees into radians."""
+        """tpm.d2r() => convert degrees into radians."""
         import math
         self.assertAlmostEqual(tpm.d2r(180.0), math.pi)
         self.assertAlmostEqual(tpm.d2r(360.0), 2*math.pi)
@@ -1058,7 +1056,7 @@ class TestScalarValueConversions(unittest.TestCase):
         self.assertAlmostEqual(tpm.d2r(-720.0), -4*math.pi)
 
     def testR2D(self):
-       """tpm.r2d must convert radians into degrees."""
+       """tpm.r2d() => convert radians into degrees."""
        import math
        self.assertAlmostEqual(tpm.r2d(math.pi), 180.0)
        self.assertAlmostEqual(tpm.r2d(4*math.pi), 720.0)
@@ -1066,47 +1064,47 @@ class TestScalarValueConversions(unittest.TestCase):
        self.assertAlmostEqual(tpm.r2d(-2.5*math.pi), -450.0)
        
     def testH2R(self):
-        """tpm.h2r must convert hours into radians."""
+        """tpm.h2r() => convert hours into radians."""
         import math
         self.assertAlmostEqual(tpm.h2r(12.0), math.pi)
         self.assertAlmostEqual(tpm.h2r(24.0), 2*math.pi)
         self.assertAlmostEqual(tpm.h2r(-12.5), -(12.5/12.0)*math.pi)
 
     def testR2H(self):
-        """tpm.r2h must convert radians into hours."""
+        """tpm.r2h() => convert radians into hours."""
         import math
         self.assertAlmostEqual(tpm.r2h(math.pi), 12.0)
         self.assertAlmostEqual(tpm.r2h(2*math.pi), 24.0)
         self.assertAlmostEqual(tpm.r2h(-(12.5/12.0)*math.pi), -12.5)
         
     def testD2AS(self):
-        """tpm.d2as must comvert degrees into arcseconds."""
+        """tpm.d2as() => convert degrees into arcseconds."""
         self.assertAlmostEqual(tpm.d2as(1.0), 3600.0)
         self.assertAlmostEqual(tpm.d2as(-12.45), -12.45*3600.0)
         
     def testAS2D(self):
-        """tpm.as2d must convert arcseconds into degrees."""
+        """tpm.as2d() => convert arcseconds into degrees."""
         self.assertAlmostEqual(tpm.as2d(3600.0), 1.0)
         self.assertAlmostEqual(tpm.as2d(-12.45*3600.0), -12.45)
 
     def testAS2H(self):
-        """tpm.as2h must convert arcseconds into hours."""
+        """tpm.as2h() => convert arcseconds into hours."""
         self.assertAlmostEqual(tpm.as2h(3600.0), 1/15.0)
         self.assertAlmostEqual(tpm.as2h(-12.45*3600), -12.45/15.0)
 
     def testH2AS(self):
-        """tpm.h2as must convert hours into arcseconds."""
+        """tpm.h2as() => convert hours into arcseconds."""
         self.assertAlmostEqual(tpm.h2as(1/15.0), 3600.0)
         self.assertAlmostEqual(tpm.h2as(-12.45/15.0), -12.45*3600.0)
 
     def testR2AS(self):
-        """tpm.r2as must convert radians into arcseconds."""
+        """tpm.r2as() => convert radians into arcseconds."""
         import math
         self.assertAlmostEqual(tpm.r2as(math.pi), 180.0*3600.0)
         self.assertAlmostEqual(tpm.r2as(-math.pi), -180.0*3600.0)
 
     def testAS2R(self):
-        """tpm.as2r must convert arcseconds into radians."""
+        """tpm.as2r() => convert arcseconds into radians."""
         import math
         self.assertAlmostEqual(tpm.as2r(180.0*3600), math.pi)
         self.assertAlmostEqual(tpm.as2r(-180.0*3600), -math.pi)
@@ -1114,38 +1112,38 @@ class TestScalarValueConversions(unittest.TestCase):
 class TestFormattedStringFunction(unittest.TestCase):
     """Test all functions that return formatted string."""
     def testFmtAlpha(self):
-        """Must correctly convert radians into right ascension format."""
+        """tpm.fmt_alpha() => radians into right ascension string."""
         self.assertEqual(tpm.fmt_alpha(tpm.M_PI/3.0), " 03H 59M 59.999S")
         self.assertEqual(tpm.fmt_alpha(tpm.M_PI*1.234), " 14H 48M 28.799S")
 
     def testFmtD(self):
-        """tpm.fmt_d must give a formatted string of angle in radians."""
+        """tpm.fmt_d() => a formatted string of the angle in radians."""
         self.assertEqual(tpm.fmt_d(180.0), "+180D 00\' 00.000\"")
         self.assertEqual(tpm.fmt_d(45.12345), "+45D 07\' 24.419\"")
 
     def testFmtDelta(self):
-        """tpm.fmt_detla must correct convert radians into declination."""
+        """tpm.fmt_delta() => convert radians into declination string."""
         self.assertEqual(tpm.fmt_delta(tpm.M_PI), "+00D 00\' 00.000\"")
         self.assertEqual(tpm.fmt_delta(tpm.M_PI/2.0), "+90D 00\' 00.000\"")
         self.assertEqual(tpm.fmt_delta(tpm.M_PI*1.2345), "-42D 12\' 35.999\"")
 
     def testFmtH(self):
-        """tpm.fmt_h must properly convert hours into a string."""
+        """tpm.fmt_h() => convert hours into a formatted string."""
         self.assertEqual(tpm.fmt_h(12.0), " 12H 00M 00.000S")
         self.assertEqual(tpm.fmt_h(36.12345), " 36H 07M 24.419S")
 
     def testFmtJ(self):
-        """tpm.fmt_j must properly convert Julian date into a string."""
+        """tpm.fmt_j() => convert Julian date into a formatted string."""
         self.assertEqual(tpm.fmt_j(2451545.0), " 2451545  00H 00M 00.000S")
         self.assertEqual(tpm.fmt_j(1111111.1234), " 1111111  02H 57M 41.759S")
 
     def testFmtR(self):
-        """tpm.fmt_r must convert radians into a string with degrees."""
+        """tpm.fmt_r() => radians into degrees, as a formatted string."""
         self.assertEqual(tpm.fmt_r(1.230000), "+70D 28' 25.711\"")
         self.assertEqual(tpm.fmt_r(-1.230000), "-70D 28' 25.711\"")
 
     def testFmtY(self):
-        """tpm.fmt_y must properly format year into a string."""
+        """tpm.fmt_y() => year with fractional part into a formatted string."""
         self.assertEqual(tpm.fmt_y(2000.000000), "Fri Dec 31 00:00:00.000 1999") 
         self.assertEqual(tpm.fmt_y(1984.000000), "Sat Dec 31 00:00:00.000 1983") 
         self.assertEqual(tpm.fmt_y(1950.000000), "Sat Dec 31 00:00:00.000 1949") 
@@ -1154,7 +1152,7 @@ class TestFormattedStringFunction(unittest.TestCase):
 class TestYearJulianDateConversion(unittest.TestCase):
     """Test the functions for convertion years into Julian dates."""
     def testJ2Y(self):
-        """Must convert properly between scalar Julian date and year."""
+        """tpm.j2y() => scalar Julian date into a year number."""
         # See pytpm/tests/c_test/j2y_test.c
         self.assertAlmostEqual(tpm.j2y(2400000.5), 1858.879452054794, 12)
         self.assertAlmostEqual(tpm.j2y(2433282.42345905), 1950.002530024794, 12)
@@ -1162,7 +1160,7 @@ class TestYearJulianDateConversion(unittest.TestCase):
         self.assertAlmostEqual(tpm.j2y(2445700.5), 1984.002732240437, 12)
 
     def testY2J(self):
-        """tpm.y2j must properly convert year into Julian date."""
+        """tpm.y2j() => year number into a scalar Julian date."""
         # This is just the inverse of testJ2Y.
         self.assertAlmostEqual(2400000.5, tpm.y2j(1858.879452054794), 12)
         self.assertAlmostEqual(2433282.42345905, tpm.y2j(1950.002530024794), 12)
@@ -1170,25 +1168,25 @@ class TestYearJulianDateConversion(unittest.TestCase):
         self.assertAlmostEqual(2445700.5, tpm.y2j(1984.002732240437), 12)
 
     def testByear2jd(self):
-        """tpm.byear2jd must convert Besselian year into Julian date."""
+        """tpm.byear2jd() => convert Besselian year into Julian date."""
         self.assertAlmostEqual(tpm.byear2jd(1950.0), tpm.B1950)
         
     def testJd2byear(self):
-        """tpm.jd2byear must convert Julian date into Besselian year."""
+        """tpm.jd2byear() => convert Julian date into Besselian year."""
         self.assertAlmostEqual(tpm.jd2byear(tpm.B1950), 1950.0)
         
     def testJyear2Jd(self):
-        """tpm.jyear2jd must convert Julian year into Julian date."""
+        """tpm.jyear2jd() => convert Julian year into Julian date."""
         self.assertAlmostEqual(tpm.jyear2jd(2000.0), tpm.J2000)
                 
     def testJd2Jyear(self):
-        """tpm.jd2jyear must convert Julian date into Julian year."""
+        """tpm.jd2jyear() => convert Julian date into Julian year."""
         self.assertAlmostEqual(tpm.jd2jyear(tpm.J2000), 2000.0)
 
 class CurrentTime(unittest.TestCase):
     """Test the jd_now and utc_now functions."""
     def testUTCNow(self):
-        """tpm.utc_now must return the current Julian date."""
+        """tpm.utc_now() => the current Julian date; nearest second."""
         from datetime import datetime
         j = tpm.utc_now()
         d = datetime.utcnow()
@@ -1202,7 +1200,7 @@ class CurrentTime(unittest.TestCase):
         self.assertAlmostEqual(ymd.ss, d.second, 1)
 
     def testJDNow(self):
-        """tpm.jd_now must return the current Julian date as a JD."""
+        """tpm.jd_now() => return the current Julian date as a JD."""
         from datetime import datetime
         j = tpm.jd_now()
         d = datetime.utcnow()
@@ -1218,18 +1216,18 @@ class CurrentTime(unittest.TestCase):
 class CalendarCalculations(unittest.TestCase):
     """Test calendar calculation functions."""
     def testJ2DOW(self):
-        """tpm.j2dow must return the day of week for the Julian date."""
+        """tpm.j2dow() => day of the week for the Julian date."""
         self.assertEqual(tpm.j2dow(tpm.J2000), 6)
         self.assertEqual(tpm.j2dow(tpm.YMD(y=2010,m=11,dd=13).to_j()), 6)
         self.assertEqual(tpm.j2dow(tpm.YMD(y=2010,m=11,dd=12).to_j()), 5)
 
     def testY2DOY(self):
-        """tpm.y2doy must return the number of days in the Gregorian year."""
+        """tpm.y2doy() => number of days in the Gregorian year."""
         self.assertEqual(tpm.y2doy(2000), 366)
         self.assertEqual(tpm.y2doy(1900), 365)
 
     def testJ2Gcal(self):
-        """tpm.j2gcal gives Gregorian calendar date for given Julian date"""
+        """tpm.j2gcal() => Gregorian calendar date for given Julian date"""
         def verify(t, t_norm):
             g = tpm.j2gcal(t)
             self.assertEqual(g['y'], t_norm['y'])
@@ -1241,7 +1239,7 @@ class CalendarCalculations(unittest.TestCase):
         verify(2446431.50, dict(y=1986, m=1, dd=1))
         
     def testJ2Jcal(self):
-        """tpm.j2jcal gives Julian calendar date for the given Julian date"""
+        """tpm.j2jcal() => Julian calendar date for the given Julian date"""
         def verify(t, t_norm):
             g = tpm.j2jcal(t)
             self.assertEqual(g['y'], t_norm['y'])
@@ -1253,7 +1251,7 @@ class CalendarCalculations(unittest.TestCase):
         verify(t=0.0, t_norm=dict(y=-4712, m=1, dd=1))
 
     def testGcal2j(self):
-        """tpm.gcal2j gives Julian day number for Gregorian calendar date"""
+        """tpm.gcal2j() => Julian day number for Gregorian calendar date"""
         def verify(t, t_norm):
             g = tpm.gcal2j(**t)
             self.assertAlmostEqual(g, t_norm)
@@ -1263,7 +1261,7 @@ class CalendarCalculations(unittest.TestCase):
         verify(dict(y=1582, m=10, dd=15), 2299161.0)
 
     def testJcal2J(self):
-        """tpm.jcal2j gives Julian day number for Julian calendar date """
+        """tpm.jcal2j() => Julian day number for Julian calendar date """
         def verify(t, t_norm):
             g = tpm.jcal2j(**t)
             self.assertAlmostEqual(g, t_norm)

@@ -7,7 +7,7 @@ from pytpm import tpm
 class TestV3Structure(unittest.TestCase):
     """Test the V3 wrapper for _tpm_vec.V3"""
     def testCreate(self):
-        """Must be able to create a V3 object."""
+        """V3.init => create V3 object."""
         v3 = tpm.V3()
         self.assertEqual(type(v3), tpm.V3)
 
@@ -18,7 +18,7 @@ class TestV3Structure(unittest.TestCase):
 class TestV3CP(unittest.TestCase):
     """Test the V3CP class."""
     def testCreate(self):
-        """Must be able to create a V3CP class."""
+        """V3CP() => create V3CP class."""
         v3cp = tpm.V3CP()
         self.assertEqual(type(v3cp), tpm.V3CP)
 
@@ -39,7 +39,7 @@ class TestV3CP(unittest.TestCase):
         
         
     def testSetGetInitValues(self):
-        """Must be able to set V3CP fields at init and get them back."""
+        """V3CP(**vals) => set V3CP fields at init."""
         t = dict(x=-12.34, y=21345.0, z=-0.00001)
         v3cp = tpm.V3CP(**t)
         self.assertAlmostEqual(v3cp.x, t['x'])
@@ -47,7 +47,7 @@ class TestV3CP(unittest.TestCase):
         self.assertAlmostEqual(v3cp.z, t['z'])
 
     def testV3C2S(self):
-        """V3CP.c2s must return a correct V3SP object."""
+        """V3CP.c2s() => convert V3CP to V3SP object."""
         import math
         def verify(t, t_norm):
             v3cp = tpm.V3CP(**t)
@@ -70,7 +70,7 @@ class TestV3CP(unittest.TestCase):
         verify(t, t_norm)
 
     def testV3CSubtract(self):
-        """Must be able to subtract one V3CP from another."""
+        """V3CP.__sub__ => V3CP - V3CP."""
         import math
         def verify(t, t_norm):
             v3cp1 = tpm.V3CP(**t)
@@ -95,7 +95,7 @@ class TestV3CP(unittest.TestCase):
         self.assertRaises(TypeError, lambda v1: v1 - 1.0, tpm.V3CP(**t))
 
     def testV3CAdd(self):
-        """Must be able to add two V3CP vectors."""
+        """V3CP.__add__ => V3CP + V3CP."""
         import math
         def verify(t, t_norm):
             v3cp1 = tpm.V3CP(**t)
@@ -120,7 +120,7 @@ class TestV3CP(unittest.TestCase):
         self.assertRaises(TypeError, lambda v1: v1 + 1.0, tpm.V3CP(**t))
 
     def testV3CMultiply(self):
-        """Must be able to scale a V3CP with a scalar."""
+        """V3CP.__mul__ => V3CP * x; scale with a scalar."""
         def verify(t, n):
             v3cp1 = tpm.V3CP(**t)
             v3cp = v3cp1 * n
@@ -141,7 +141,7 @@ class TestV3CP(unittest.TestCase):
         self.assertRaises(TypeError, lambda v1: 3 * v1, tpm.V3CP(**t))
 
     def testV3Unit(self):
-        """Must be able to convert V3CP into a unit vector."""
+        """V3CP.unit() => return a unit vector."""
         import math
         def verify(t, t_norm):
             v3cp1 = tpm.V3CP(**t)
@@ -160,7 +160,7 @@ class TestV3CP(unittest.TestCase):
         verify(t, t_norm)
 
     def testV3Mod(self):
-        """Must be able to get the modulus of V3CP."""
+        """V3CP.mod() => modulus/length of V3CP."""
         import math
         def verify(t, t_norm):
             v3cp = tpm.V3CP(**t)
@@ -174,7 +174,7 @@ class TestV3CP(unittest.TestCase):
         verify(t, math.sqrt(t['x']**2+t['y']**2+t['z']**2))
 
     def testV3CDot(self):
-        """Must be able to take dot product of two V3CP vectors."""
+        """V3CP.dot(V3CP) => dot product of two V3CP vectors."""
         def verify(t, t_norm, res):
             v3cp1 = tpm.V3CP(**t)
             v3cp2 = tpm.V3CP(**t_norm)
@@ -187,7 +187,7 @@ class TestV3CP(unittest.TestCase):
                t['z']*t_norm['z'])
 
     def testV3CCross(self):
-        """Must be able to take cross product of two V3CP vectors."""
+        """V3CP.cross(V3CP) => cross product of two V3CP vectors."""
         def verify(t, t_norm, res):
             v3cp1 = tpm.V3CP(**t)
             v3cp2 = tpm.V3CP(**t_norm)
@@ -205,7 +205,7 @@ class TestV3CP(unittest.TestCase):
         verify(t1, t2, res)
 
     def testStrUnicode(self):
-        """Must give proper string representation of V3CP."""
+        """V3CP.__unicode__ and __str__ => string representation."""
         def verify(t, t_norm, f):
             v3cp = tpm.V3CP(**t)
             s = f(v3cp)
@@ -223,7 +223,7 @@ class TestV3CP(unittest.TestCase):
 class TestV3SP(unittest.TestCase):
     """Test the V3CP class."""
     def testCreate(self):
-        """Must be able to create a V3CP class."""
+        """V3CP() => create V3CP class."""
         v3sp = tpm.V3SP()
         self.assertEqual(type(v3sp), tpm.V3SP)
 
@@ -244,7 +244,7 @@ class TestV3SP(unittest.TestCase):
         
         
     def testSetGetInitValues(self):
-        """Must be able to set V3SP fields at init and get them back."""
+        """V3SP(**vals) => set fields at init."""
         t = dict(r=2.0, alpha=-0.12, delta=2*3.14)
         v3sp = tpm.V3SP(**t)
         self.assertAlmostEqual(v3sp.r, t['r'])
@@ -253,7 +253,7 @@ class TestV3SP(unittest.TestCase):
 
         
     def testV3S2C(self):
-        """V3SP.s2c must return a correct V3CP object."""
+        """V3SP.s2c() => convert V3CP into a V3CP object."""
         import math
         def verify(t, t_norm, n=7):
             v3sp = tpm.V3SP(**t)
@@ -276,7 +276,7 @@ class TestV3SP(unittest.TestCase):
         verify(t, t_norm, n=4)
 
     def testV3SSubtract(self):
-        """Must be able to subtract one V3SP from another."""
+        """V3SP.__sub__ => V3SP - V3SP."""
         import math
         def verify(t, t_norm, res):
             v3sp1 = tpm.V3SP(**t)
@@ -306,7 +306,7 @@ class TestV3SP(unittest.TestCase):
         self.assertRaises(TypeError, lambda v1: v1 - 1.0, tpm.V3SP(**t))
 
     def testV3SAdd(self):
-        """Must be able to add two V3SP values."""
+        """V3SP.__add__ => V3SP + V3SP."""
         def verify(t, t_norm, res):
             v3sp1 = tpm.V3SP(**t)
             v3sp2 = tpm.V3SP(**t_norm)
@@ -335,7 +335,7 @@ class TestV3SP(unittest.TestCase):
         self.assertRaises(TypeError, lambda v1: v1 + 1.0, tpm.V3SP(**t))
 
     def testV3SMultiply(self):
-        """Must be able to scale a V3SP with a scalar."""
+        """V3SP.__mul__ => V3SP * x; scale with a scalar."""
         def verify(t, n):
             v3sp1 = tpm.V3SP(**t)
             v3sp = v3sp1 * n
@@ -356,7 +356,7 @@ class TestV3SP(unittest.TestCase):
         self.assertRaises(TypeError, lambda v1: 3 * v1, tpm.V3SP(**t))
 
     def testV3SMod(self):
-        """Must return the modulus of V3SP; just the magnitude of R."""
+        """V3SP.mod() => return the magnitude of R."""
         def verify(t, t_norm):
             v3sp = tpm.V3SP(**t)
             d = v3sp.mod()
@@ -369,7 +369,7 @@ class TestV3SP(unittest.TestCase):
         verify(t, -t['r'])
             
     def testV3SDot(self):
-        """Must be able to take dot product of two V3SP vectors."""
+        """V3SP.dot(V3SP) => dot product of two V3SP vectors."""
         import math
         def verify(t, t_norm, res):
             v3sp1 = tpm.V3SP(**t)
@@ -383,7 +383,7 @@ class TestV3SP(unittest.TestCase):
         verify(t1, t2, res)
 
     def testV3SCross(self):
-        """Must be able to take cross product of two V3SP vectors."""
+        """V3SP.cross(V3SP) => cross product of two V3SP vectors."""
         def verify(t, t_norm, res):
             v3sp1 = tpm.V3SP(**t)
             v3sp2 = tpm.V3SP(**t_norm)
@@ -401,7 +401,7 @@ class TestV3SP(unittest.TestCase):
         verify(t1, t2, res)
 
     def testNAlpha(self):
-        """Must give properly normalized alpha i.e., RA."""
+        """V3SP.nalpha => normalized alpha i.e., RA."""
         def verify(t, t_norm):
             v3sp = tpm.V3SP(**t)
             a = v3sp.nalpha
@@ -425,7 +425,7 @@ class TestV3SP(unittest.TestCase):
         verify(t, t_norm)
 
     def testNDelta(self):
-        """Must give properly normalized delta i.e., DEC."""
+        """V3SP.ndelta => normalized delta i.e., DEC."""
         def verify(t, t_norm):
             v3sp = tpm.V3SP(**t)
             a = v3sp.ndelta
@@ -449,7 +449,7 @@ class TestV3SP(unittest.TestCase):
         verify(t, t_norm)
 
     def testStrUnicode(self):
-        """Must give proper string representation of V3SP."""
+        """V3SP.__unicode__, __str__ => string representation of V3SP."""
         def verify(t, t_norm, f):
             v3sp = tpm.V3SP(**t)
             s = f(v3sp)
@@ -467,7 +467,7 @@ class TestV3SP(unittest.TestCase):
 class TestV6C(unittest.TestCase):
     """Test V6 cartesian vector."""
     def testCreate(self):
-        """Must be able to create a V6C class."""
+        """V6C() => creat a V6C class."""
         v6c = tpm.V6C()
         self.assertEqual(type(v6c), tpm.V6C)
 
@@ -495,13 +495,13 @@ class TestV6C(unittest.TestCase):
         self.assertAlmostEqual(v6c.zdot, t['zdot'])
         
     def testSetGetInitValues(self):
-        """Must be able to set V6C fields at init and get them back."""
+        """V6C(**vals) => set fields at init."""
         t = dict(x=-12.34, y=21345.0, z=0.01, xdot=1.23, ydot=3.21, zdot=0.0)
         v6c = tpm.V6C(**t)
         self.checkv6(v6c, t)
 
     def testV6Sub(self):
-        """Must be able to subtract two V6C vectors."""
+        """V6C.__sub__ => V6C - V6C."""
         t1 = dict(x=-12.34, y=21345.0, z=0.01, xdot=1.23, ydot=3.21, zdot=0.0)
         t2 = dict(x=23.5, y=12.3, z=1234.5, xdot=-1.23, ydot=-123.4, zdot=100.0)
         tdiff = dict(x=t1['x']-t2['x'], y=t1['y']-t2['y'], z=t1['z']-t2['z'],
@@ -513,7 +513,7 @@ class TestV6C(unittest.TestCase):
         self.checkv6(v6cdiff, tdiff)
 
     def testV6Add(self):
-        """Must be able to add two V6C vectors."""
+        """V6C.__add__ => V3C + V3C."""
         t1 = dict(x=-12.34, y=21345.0, z=0.01, xdot=1.23, ydot=3.21, zdot=0.0)
         t2 = dict(x=23.5, y=12.3, z=1234.5, xdot=-1.23, ydot=-123.4, zdot=100.0)
         tsum = dict(x=t1['x']+t2['x'], y=t1['y']+t2['y'], z=t1['z']+t2['z'],
@@ -525,14 +525,14 @@ class TestV6C(unittest.TestCase):
         self.checkv6(v6csum, tsum)
 
     def testV6Mod(self):
-        """Must return modulus of V6C vector."""
+        """V6C.mod() => modulus/length of a V6C vector."""
         t = dict(x=-12.34, y=21345.0, z=0.01, xdot=1.23, ydot=3.21, zdot=0.0)
         v6c = tpm.V6C(**t)
         tm = (t['x']**2 + t['y']**2 + t['z']**2)**(0.5)
         self.assertAlmostEqual(v6c.mod(), tm)
 
     def testV6Unit(self):
-        """Must return V6C with unit POS and scaled VEL."""
+        """V6C.unit() =>  unit POS vector and scaled VEL vector."""
         t = dict(x=-12.34, y=21345.0, z=0.01, xdot=1.23, ydot=3.21, zdot=0.0)
         v6c = tpm.V6C(**t)
         v6c = v6c.unit()
@@ -543,7 +543,7 @@ class TestV6C(unittest.TestCase):
         self.checkv6(v6c, t1)
         
     def testV6Scale(self):
-        """Must scale components of V6C with the given factor."""
+        """V6C.scale() => scale with a scalar."""
         t = dict(x=-12.34, y=21345.0, z=0.01, xdot=1.23, ydot=3.21, zdot=0.0)
         v6c = tpm.V6C(**t)
         v6c = v6c.scale(1.234)
@@ -553,7 +553,7 @@ class TestV6C(unittest.TestCase):
         self.checkv6(v6c, t1)
         
     def testV62V3(self):
-        """Must convert V6C to V3CP by applying space motion."""
+        """V6C.v62v3() => apply space motion and return resulting V3CP."""
         t = dict(x=-12.34, y=21345.0, z=0.01, xdot=1.23, ydot=3.21, zdot=0.0)
         v6c = tpm.V6C(**t)
         dt = 1200.345
@@ -565,7 +565,7 @@ class TestV6C(unittest.TestCase):
         self.assertAlmostEqual(v3cp.z, t['z']+t['zdot']*dt)
 
     def testV6Dot(self):
-        """Must return the dot product of V6C vector with another V6C."""
+        """V6C.dot(V6C) => dot product of two V6C vector withs."""
         t = dict(x=-12.34, y=21345.0, z=0.01, xdot=1.23, ydot=3.21, zdot=0.0)
         v6c = tpm.V6C(**t)
         t1 = dict(x=100.34, y=-0.230, z=0.0, xdot=-1234.5, ydot=-43.5, zdot=123.9)
@@ -575,7 +575,7 @@ class TestV6C(unittest.TestCase):
         self.assertEqual(v6c1.dot(v6c), x)
 
     def testV6Cross(self):
-        """Must return cross product of two V6C vectors."""
+        """V6C.cross(V6C) => cross product V6C vectors."""
         t1 = dict(x=-12.34, y=21345.0, z=0.01, xdot=1.23, ydot=3.21, zdot=0.0)
         v6c = tpm.V6C(**t1)
         t2 = dict(x=100.34, y=-0.230, z=0.0, xdot=-1234.5, ydot=-43.5, zdot=123.9)
@@ -591,7 +591,7 @@ class TestV6C(unittest.TestCase):
                                            ydot=0.0, zdot=0.0))
 
     def testV6C2S(self):
-        """Must convert V6C to V6S i.e., Cartesian to spherical."""
+        """V6C.c2s() => V6C to V6S i.e., Cartesian to spherical."""
         t = dict(x=1123.4556, y=4556.1123, z=9876.1267, xdot=2.3456,
                  ydot=6.7891, zdot=7.8912)
         tn = dict(r=10934.26679617, alpha=1.32903712, delta=1.12723066,
@@ -608,7 +608,7 @@ class TestV6C(unittest.TestCase):
         self.assertAlmostEqual(v6s.deltadot, tn['deltadot'])
 
     def testV6GetPOS(self):
-        """Must be able to get POS components of V6C, as V3CP."""
+        """V6C.pos => POS components of V6C, as V3CP."""
         t = dict(x=1123.4556, y=4556.1123, z=9876.1267, xdot=2.3456,
                  ydot=6.7891, zdot=7.8912)
         v6c = tpm.V6C(**t)
@@ -620,7 +620,7 @@ class TestV6C(unittest.TestCase):
         self.assertAlmostEqual(v6pos.z, t['z'])
 
     def testV6SetPOS(self):
-        """Must be able to set POS components of V6C, using V3CP."""
+        """V6C.pos = V3CP => set POS components of V6C, using V3CP."""
         t = dict(x=1123.4556, y=4556.1123, z=9876.1267)
         v3cp = tpm.V3CP(**t)
         v6cp = tpm.V6C()
@@ -636,7 +636,7 @@ class TestV6C(unittest.TestCase):
 class TestV6S(unittest.TestCase):
     """Test V6 spherical vector."""
     def testCreate(self):
-        """Must be able to create a V6S class."""
+        """V6S() => create a V6S class."""
         v6s = tpm.V6S()
         self.assertEqual(type(v6s), tpm.V6S)
 
@@ -664,14 +664,14 @@ class TestV6S(unittest.TestCase):
         self.assertAlmostEqual(v6s.deltadot, t['deltadot'])
         
     def testSetGetInitValues(self):
-        """Must be able to set V6S fields at init and get them back."""
+        """V6S(**vals) => set V6S fields at init."""
         t = dict(r=1234.56, alpha=2.345, delta=-6.456,
                  rdot=-123.89, alphadot=0.123, deltadot=-0.54)
         v6s = tpm.V6S(**t)
         self.checkv6(v6s, t)
 
     def testV6S2C(self):
-        """Must convert V6S to V6C i.e., spherical to Cartesian."""
+        """V6S.s2c() => V6C to V6C i.e., spherical to Cartesian."""
         tn = dict(x=1123.4556, y=4556.1123, z=9876.1267, xdot=2.3456,
                  ydot=6.7891, zdot=7.8912)
         t = dict(r=10934.26679617, alpha=1.32903712, delta=1.12723066,
@@ -736,16 +736,3 @@ class TestV6S(unittest.TestCase):
         t = dict(r=1.0, alpha=-2.0, delta=-0.234)
         t_norm = -0.23400
         verify(t, t_norm)
-
-
-
-
-
-
-
-
-
-
-
-
-
