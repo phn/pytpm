@@ -22,3 +22,7 @@ PRECESS_FK4        = _tpm_astro.PRECESS_FK4
 PRECESS_FK5        = _tpm_astro.PRECESS_FK5 
 PRECESS_INERTIAL   = _tpm_astro.PRECESS_INERTIAL 
 PRECESS_ROTATING   = _tpm_astro.PRECESS_ROTATING 
+
+def tpm_data(TSTATE tstate, int action):
+    """Compute and set dependent TSTATE data."""
+    _tpm_astro.tpm_data(&tstate._tstate, action)
