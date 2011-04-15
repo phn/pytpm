@@ -6,7 +6,7 @@ int print_tstate(TPM_TSTATE* tstate){
 
   printf("\n************ Independent parameters ************\n\n");
   printf("%-15s %.12f\n", "UTC", tstate->utc);
-  printf("%-15s %.12f\n", "Delta AT", tstate->delta_at);
+  printf("%-15s %d\n", "Delta AT", tstate->delta_at);
   printf("%-15s %.12f\n", "Detla UT", tstate->delta_ut);
   printf("%-15s %.12f\n", "Longitude", tstate->lon);
   printf("%-15s %.12f\n", "Latitude", tstate->lat);
