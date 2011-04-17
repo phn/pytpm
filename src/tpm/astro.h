@@ -147,7 +147,7 @@ typedef struct s_cons {
 #define utc2tdb(utc)	(tdt2tdb(tai2tdt(utc2tai(utc))))
 
 /* convenience time transformations */
-#define et2ut(ut)	(et2ut1(et))
+#define et2ut(et)	(et2ut1(et))
 #define ut2et(ut)	(ut12et(ut))
 #define ut2gmst(ut)	(ut12gmst(ut))
 
