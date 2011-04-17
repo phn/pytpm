@@ -188,3 +188,42 @@ class TestTimeFunctions(unittest.TestCase):
         for i,j in zip(self.utc, dtt):
             self.assertAlmostEqual(tpm.delta_TT(i), j, 12)
         
+class TestPVECClass(unittest.TestCase):
+    """Test facilities of the PVEC class: array of V6 vectors."""
+    def checkpvec(self, pvec, i, t):
+        """Check values of pvec with those in t"""
+        self.assertAlmostEqual(pvec[i].x, t['x'])
+        self.assertAlmostEqual(pvec[i].y, t['y'])
+        self.assertAlmostEqual(pvec[i].z, t['z'])
+        self.assertAlmostEqual(pvec[i].xdot, t['xdot'])
+        self.assertAlmostEqual(pvec[i].ydot, t['ydot'])
+        self.assertAlmostEqual(pvec[i].zdot, t['zdot'])            
+
+    
+    def testCreate(self):
+        """PVEC() => a PVEC object."""
+        pvec = tpm.PVEC()
+        self.assertEqual(type(pvec), tpm.PVEC)
+        
+    def testInit(self):
+        """PVEC() => pvec with default values for all V6C."""
+        pvec = tpm.PVEC()
+        # The following also tests getting an item.
+        for i in range(tpm.N_TPM_STATES):
+            self.checkpvec(pvec, i, dict(x=0.0, y=0.0, z=0.0,
+                                      xdot=0.0, ydot=0.0, zdot=0.0))
+
+    def testGetSet(self):
+        """PVEC[X] = V6C => assign a V6C to a position in PVEC."""
+        pvec = tpm.PVEC()
+        t = dict(x=100.0, y=234.156, z=346.5,
+                 xdot=-12.3, ydot=0.2, zdot=-9.4)
+        pvec[tpm.TPM_S06] = tpm.V6C(**t)
+        self.checkpvec(pvec, tpm.TPM_S06, t)
+
+        self.assertRaises(IndexError, lambda x: x[34], pvec)
+        self.assertRaises(IndexError, lambda x: x[-4], pvec)
+
+        def f(pvec):
+            pvec[tpm.TPM_S03] = tpm.V6S()
+        self.assertRaises(TypeError, f, pvec)

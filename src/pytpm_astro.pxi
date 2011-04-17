@@ -27,6 +27,78 @@ def tpm_data(TSTATE tstate, int action):
     """Compute and set dependent TSTATE data."""
     _tpm_astro.tpm_data(&tstate._tstate, action)
 
+
+# If I use _tpm_tpm.N_TPM_STATES or N_TPM_STATES inplace of 22 then
+# Cython gives the following error: Not allowed in a constant
+# expression. Why?  In C code I can do V6 pvec[N_TPM_STATES].
+cdef struct s_pvec:
+    _tpm_vec.V6 pvec[22]
+ctypedef s_pvec S_PVEC
+
+cdef class PVEC(object):
+    """Class for holding N_TPM_STATES element array of V6 vectors."""
+    cdef S_PVEC _pvec
+
+    def __cinit__(self):
+        """Initialize the array of V6 vectors."""
+        cdef int i = 0
+        for i in range(N_TPM_STATES):
+            self._pvec.pvec[i].v[POS].type = CARTESIAN
+            self._pvec.pvec[i].v[POS].v[0] = 0.0
+            self._pvec.pvec[i].v[POS].v[1] = 0.0
+            self._pvec.pvec[i].v[POS].v[2] = 0.0
+            self._pvec.pvec[i].v[VEL].type = CARTESIAN
+            self._pvec.pvec[i].v[VEL].v[0] = 0.0
+            self._pvec.pvec[i].v[VEL].v[1] = 0.0
+            self._pvec.pvec[i].v[VEL].v[2] = 0.0
+
+    def __init__(self):
+        """Initialize the array of V6 vectors."""
+        # Repeating the __cinit__ code.
+        cdef int i = 0
+        for i in range(N_TPM_STATES):
+            self._pvec.pvec[i].v[POS].type = CARTESIAN
+            self._pvec.pvec[i].v[POS].v[0] = 0.0
+            self._pvec.pvec[i].v[POS].v[1] = 0.0
+            self._pvec.pvec[i].v[POS].v[2] = 0.0
+            self._pvec.pvec[i].v[VEL].type = CARTESIAN
+            self._pvec.pvec[i].v[VEL].v[0] = 0.0
+            self._pvec.pvec[i].v[VEL].v[1] = 0.0
+            self._pvec.pvec[i].v[VEL].v[2] = 0.0
+
+    cdef S_PVEC __get_pvec(self):
+        """Return the underlying C array; only for use from Cython."""
+        # No checks to see if all of the elements are Cartesian.
+        return self._pvec
+
+    cdef __set_pvec(self, S_PVEC spv):
+        """Set the underlying C array; only for use from Cython."""
+        # No checks to see if all of the elements are Cartesian.
+        self._pvec = spv
+        
+    def __getitem__(self, int index):
+        """Return V6 at given index; 0 <= index < N_TPM_STATES."""
+        if type(index) != type(1):
+            raise TypeError, "Index must be an integer."
+        if not (0 <= index < N_TPM_STATES):
+            raise IndexError, \
+                "Index must be in 0 <= index < N_TPM_STATES."
+        v6c = V6C()
+        v6c.setV6(self._pvec.pvec[index])
+        return v6c
+
+    def __setitem__(self, int index, V6C v6c):
+        """Set V6 at given index; 0 <= index < N_TPM_STATES."""
+        if type(index) != type(1):
+            raise TypeError, "Index must be an integer."
+        if not (0 <= index < N_TPM_STATES):
+            raise IndexError, \
+                "Index must be in 0 <= index < N_TPM_STATES."
+        if type(v6c) != type(V6C()):
+            raise TypeError, "Value must be a V6C object."
+        self._pvec.pvec[index] = v6c.getV6()
+        
+        
 def delta_AT(utc):
     """Return Delta AT = TAI - UTC for the given UTC.
 
