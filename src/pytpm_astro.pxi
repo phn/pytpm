@@ -26,3 +26,168 @@ PRECESS_ROTATING   = _tpm_astro.PRECESS_ROTATING
 def tpm_data(TSTATE tstate, int action):
     """Compute and set dependent TSTATE data."""
     _tpm_astro.tpm_data(&tstate._tstate, action)
+
+def delta_AT(utc):
+    """Return Delta AT = TAI - UTC for the given UTC.
+
+    The file src/tpm/delta_AT.c must be updated when Delta AT is
+    changed by IERS.
+    """
+    return _tpm_astro.delta_AT(utc)
+
+def delta_T(ut1):
+    """Return Delta T = TT - UT1 for the given UT1.
+
+    Delta T = ET - UT1 for dates before 1984.0 and Delta T = TDT - UT1
+    for dates on and after 1984.0. TDT was the name of TT between
+    1984.0 and 2000.0.
+
+    A built-in model is used for calculating this quantity.
+    """
+    return _tpm_astro.delta_T(ut1)
+
+def delta_UT(utc):
+    """Return Delta UT = UT1 - UTC for the given UTC.
+
+    This is calculated by taking the difference of delta_ET and
+    delta_T. The later is calculated using a built-in model. For the
+    latter the input time argument must be UT1, but the error in using
+    UTC should be small.
+    """
+    return _tpm_astro.delta_UT(utc)
+
+def delta_ET(utc):
+    """Return Delta ET = ET - UTC for the given UTC."""
+    return _tpm_astro.delta_ET(utc)
+
+def delta_TT(utc):
+    """Return Delta TT = TDT - UTC for the given UTC."""
+    return _tpm_astro.delta_TT(utc)
+
+def tdt2tdb(tdt):
+    """Return TDB for the given TDT."""
+    return _tpm_astro.tdt2tdb(tdt)
+
+def ut12gmst(ut1):
+    """Return GMST for the given UT1."""
+    return _tpm_astro.ut12gmst(ut1)
+    
+def et2tdt(et):
+    """Return TDT for the given ET."""
+    return _tpm_astro.et2tdt(et)
+
+def tai2tdt(tai):
+    """Return TDT for the given TAI."""
+    return _tpm_astro.tai2tdt(tai)
+
+def tdt2et(tdt):
+    """Return ET for the given TDT."""
+    return _tpm_astro.tdt2et(tdt)
+
+def ut12et(ut1):
+    """Return ET for the given UT1."""
+    return _tpm_astro.ut12et(ut1)
+
+def utc2et(utc):
+    """Return ET for the given UTC."""
+    return _tpm_astro.utc2et(utc)
+
+def utc2tdt(utc):
+    """Return TDT for the given UTC."""
+    return _tpm_astro.utc2tdt(utc)
+
+def utc2ut1(utc):
+    """Return UT1 for the given UTC."""
+    return _tpm_astro.utc2ut1(utc)
+    
+def et2ut1(et):
+    """Return UT1 for the given ET."""
+    return _tpm_astro.et2ut1(et)
+
+def et2utc(et):
+    """Return UTC for the given ET."""
+    return _tpm_astro.et2utc(et)
+
+def tai2utc(tai):
+    """Return UTC for the given TAI."""
+    return _tpm_astro.tai2utc(tai)
+
+def tdt2tai(tdt):
+    """Return TAI for the given TDT."""
+    return _tpm_astro.tdt2tai(tdt)
+
+def tdt2utc(tdt):
+    """Return UTC for the given TDT."""
+    return _tpm_astro.tdt2utc(tdt)
+
+def ut12utc(ut1):
+    """Return UTC for the given UT1."""
+    return _tpm_astro.ut12utc(ut1)
+
+def et2tai(et):
+    """Return TAI for the given ET."""
+    return _tpm_astro.et2tai(et)
+
+def et2tdb(et):
+    """Return TDB for the given ET."""
+    return _tpm_astro.et2tdb(et)
+
+def tai2et(tai):
+    """Return ET for the given TAI."""
+    return _tpm_astro.tai2et(tai)
+
+def tai2tdb(tai):
+    """Return TDB for the given TAI."""
+    return _tpm_astro.tai2tdb(tai)
+
+def tai2ut1(tai):
+    """Return UT1 for the given TAI."""
+    return _tpm_astro.tai2ut1(tai)
+
+#def tdb2et(tdb):
+#    """Return ET for the given TDB."""
+#    return _tpm_astro.tdb2et(tdb)
+# 
+#def tdb2tai(tdb):
+#    """Return TAI for the given TDB."""
+#    return _tpm_astro.tdb2tai(tdb)
+# 
+#def tdb2ut1(tdb):
+#    """Return UT1 for the given TDB."""
+#    return _tpm_astro.tdb2ut1(tdb)
+# 
+#def tdb2utc(tdb):
+#    """Return UTC for the given TDB."""
+#    return _tpm_astro.tdb2utc(tdb)
+
+def tdt2ut1(tdt):
+    """Return UT1 for the given TDT."""
+    return _tpm_astro.tdt2ut1(tdt)
+
+def ut12tai(ut1):
+    """Return TAI for the given UT1."""
+    return _tpm_astro.ut12tai(ut1)
+
+def ut12tdb(ut1):
+    """Return TDB for the given UT1."""
+    return _tpm_astro.ut12tdb(ut1)
+
+def ut12tdt(ut1):
+    """Return TDT for the given UT1."""
+    return _tpm_astro.ut12tdt(ut1)
+
+def utc2tdb(utc):
+    """Return TDB for the given UTC."""
+    return _tpm_astro.utc2tdb(utc)
+
+def et2ut(et):
+    """Return UT for the given ET; same as et2ut1(et)"""
+    return _tpm_astro.et2ut(et)
+
+def ut2et(ut):
+    """Return ET for the given UT; same as ut12et(ut)."""
+    return _tpm_astro.ut2et(ut)
+
+def ut2gmst(ut):
+    """Return GMST for the given UT; same as ut12gmst(ut)"""
+    return _tpm_astro.ut2gmst(ut)

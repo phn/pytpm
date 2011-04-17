@@ -150,3 +150,41 @@ class TestTPMData(unittest.TestCase, CheckTSTATE):
                 ))
 
 
+class TestTimeFunctions(unittest.TestCase):
+    """Test functions that calculate time in various time scales."""
+    utc = [tpm.MJD_0, tpm.B1950, tpm.J2000, tpm.J1984,
+           2455667.9002314815]
+    def testDeltaAT(self):
+        """delta_AT(utc): TAI - UTC for the given UTC."""
+        dat = [10.0, 10.0, 32.0, 22.0, 34.0]
+        for i,j in zip(self.utc, dat):
+            self.assertAlmostEqual(tpm.delta_AT(i), j)
+
+    def testDeltaUT(self):
+        """delta_UT(utc): UT1 - UTC for the given UTC."""
+        dut = [34.384, 13.032937389587, 3.482360655738, 0.392497267760,
+               0.967397006595]
+        for i,j in zip(self.utc, dut):
+            self.assertAlmostEqual(tpm.delta_UT(i), j, 12)
+
+    def testDeltaT(self):
+        """delta_T(ut1): TT - UT1 for the given UT1."""
+        dt = [7.8, 29.166059415081, 60.705445202903, 53.792092550539,
+              65.217663154508]
+        ut1 = [x+tpm.delta_UT(x) for x in self.utc]
+        print ut1
+        for i,j in zip(ut1, dt):
+            self.assertAlmostEqual(tpm.delta_T(i), j, 12)
+
+    def testDeltaET(self):
+        """delta_ET(utc): ET - UTC for the given UTC."""
+        det = [42.184, 42.184, 64.184, 54.184, 66.184]
+        for i,j in zip(self.utc, det):
+            self.assertAlmostEqual(tpm.delta_ET(i), j, 12)
+
+    def testDeltaTT(self):
+        """delta_TT(utc): TT - UTC for the given UTC."""
+        dtt = [42.184, 42.184, 64.184, 54.184, 66.184]
+        for i,j in zip(self.utc, dtt):
+            self.assertAlmostEqual(tpm.delta_TT(i), j, 12)
+        
