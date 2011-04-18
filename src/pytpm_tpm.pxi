@@ -92,6 +92,15 @@ cdef class TSTATE(object):
         self._tstate.H = H
         self._tstate.wavelength = wavelength
 
+    cdef _tpm_tpm.TPM_TSTATE __get_tstate(self):
+        """Return underlying TSTATE; only for use from Cython."""
+        return self._tstate
+
+    cdef __set_tstate(self, _tpm_tpm.TPM_TSTATE t):
+        """Set underlying TSTATE; only for use from Cython."""
+        # No checking is done on the given tstate.
+        self._tstate = t
+        
     def __getutc(self):
         return self._tstate.utc
     def __setutc(self, utc):

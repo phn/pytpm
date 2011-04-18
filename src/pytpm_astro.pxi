@@ -27,7 +27,6 @@ def tpm_data(TSTATE tstate, int action):
     """Compute and set dependent TSTATE data."""
     _tpm_astro.tpm_data(&tstate._tstate, action)
 
-
 # If I use _tpm_tpm.N_TPM_STATES or N_TPM_STATES inplace of 22 then
 # Cython gives the following error: Not allowed in a constant
 # expression. Why?  In C code I can do V6 pvec[N_TPM_STATES].
@@ -98,7 +97,40 @@ cdef class PVEC(object):
             raise TypeError, "Value must be a V6C object."
         self._pvec.pvec[index] = v6c.getV6()
         
-        
+
+def tpm(PVEC pvec, int s1, int s2, double ep, double eq, TSTATE tstate):
+    """Apply transition from state s1 to state s2.
+    
+    :param pvec: a PVEC object with appropriate V6 members.
+    :type pvec: PVEC
+    :param s1: starting state
+    :type s1: integer (0 <= s1 < N_TPM_STATES)
+    :param s2: end state
+    :type s2: integer (0 <= s2 < N_TPM_STATES)
+    :param ep: epoch of the postion and velocity of s1
+    :type ep: float
+    :param eq: equinox (of s1 and or s2)
+    :type eq: float
+    :tstate: a TSTATE object with appropriate initial values.
+    """
+    if not 0 <= s1 < N_TPM_STATES:
+        raise ValueError, "S1 must be in 0 <= S1 < N_TPM_STATES"
+    if not 0 <= s2 < N_TPM_STATES:
+        raise ValueError, "S2 must be in 0 <= S2 < N_TPM_STATES"
+    cdef S_PVEC spvec
+    cdef _tpm_tpm.TPM_TSTATE ststate
+    
+    spvec = pvec.__get_pvec()
+    ststate = tstate.__get_tstate()
+    t = _tpm_astro.tpm(spvec.pvec, s1, s2, ep, eq, &ststate)
+    pvec.__set_pvec(spvec)
+    tstate.__set_tstate(ststate)
+    return t
+
+def tpm_state(int s):
+    """Return state name given state id."""
+    return _tpm_astro.tpm_state(s)
+
 def delta_AT(utc):
     """Return Delta AT = TAI - UTC for the given UTC.
 

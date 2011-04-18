@@ -60,8 +60,8 @@ class TestTPMData(unittest.TestCase, CheckTSTATE):
                 gmst=2.889510699245, gmstp=12,
                 gast=2.889448823451, gastp=12,
                 last=4.388451352684, lastp=12,
-                refa=0.000292752467, refap=12,
-                refb=-0.000000308573, refbp=12
+                refa=0.000292752467, refap=11,
+                refb=-0.000000308573, refbp=11
                 ))
 
         t_m3 = dict(
@@ -172,7 +172,6 @@ class TestTimeFunctions(unittest.TestCase):
         dt = [7.8, 29.166059415081, 60.705445202903, 53.792092550539,
               65.217663154508]
         ut1 = [x+tpm.delta_UT(x) for x in self.utc]
-        print ut1
         for i,j in zip(ut1, dt):
             self.assertAlmostEqual(tpm.delta_T(i), j, 12)
 
@@ -199,7 +198,6 @@ class TestPVECClass(unittest.TestCase):
         self.assertAlmostEqual(pvec[i].ydot, t['ydot'])
         self.assertAlmostEqual(pvec[i].zdot, t['zdot'])            
 
-    
     def testCreate(self):
         """PVEC() => a PVEC object."""
         pvec = tpm.PVEC()
@@ -227,3 +225,113 @@ class TestPVECClass(unittest.TestCase):
         def f(pvec):
             pvec[tpm.TPM_S03] = tpm.V6S()
         self.assertRaises(TypeError, f, pvec)
+
+
+class TestTpmState(unittest.TestCase):
+    """Test the tpm_state function."""
+    def testtpmstate(self):
+        """tpm_state(x) => name of state."""
+        self.assertEqual(tpm.tpm_state(1).strip(), "Helio. mean FK4")
+        self.assertEqual(tpm.tpm_state(tpm.TPM_S20).strip(),
+                         "Topo. obs. HA/Dec")
+
+        
+class TestTPM(unittest.TestCase):
+    """Test the tpm function."""
+    def testTPM(self):
+        """tpm.tpm() => coordinate conversion."""
+        # M100 FK5 J2000 from SIMBAD.
+        # See pytpm/tests/c_tests/test_conversion.c.
+        results = [
+            dict(ra_dd=-175.00, ra_mm=43.0, ra_ss=43.4850,
+                 de_dd=15.00, de_mm=49.00, de_ss=20.5700),
+            dict(ra_dd=-175.00, ra_mm=43.00, ra_ss=42.3616,
+                 de_dd=15.00, de_mm=49.00, de_ss=20.4480),
+            dict(ra_dd=-175.00, ra_mm=43.00, ra_ss=43.4850,
+                 de_dd=15.00, de_mm=49.00, de_ss=20.5700),
+            dict(ra_dd=178.00, ra_mm=46.00, ra_ss=57.2326,
+                 de_dd=16.00, de_mm=45.00, de_ss=34.9209),
+            dict(ra_dd=-89.00, ra_mm=8.00, ra_ss=10.1024,
+                 de_dd=76.00, de_mm=53.00, de_ss=55.9283),
+            dict(ra_dd=-175.00, ra_mm=5.00, ra_ss=44.0262,
+                 de_dd=16.00, de_mm=5.00, de_ss=58.0246 ),
+            dict(ra_dd=-175.00, ra_mm=43.00, ra_ss=43.4850,
+                 de_dd=15.00, de_mm=49.00, de_ss=20.5700 ),
+            dict(ra_dd=-175.00, ra_mm=43.00, ra_ss=43.4852,
+                 de_dd=15.00, de_mm=49.00, de_ss=20.5699 ),
+            dict(ra_dd=-175.00, ra_mm=43.00, ra_ss=43.4819,
+                 de_dd=15.00, de_mm=49.00, de_ss=20.5712 ),
+            dict(ra_dd=-175.00, ra_mm=43.00, ra_ss=44.9349,
+                 de_dd=15.00, de_mm=49.00, de_ss=13.4744 ),
+            dict(ra_dd=-175.00, ra_mm=43.00, ra_ss=44.9350,
+                 de_dd=15.00, de_mm=49.00, de_ss=13.4743 ),
+            dict(ra_dd=-175.00, ra_mm=43.00, ra_ss=30.6891,
+                 de_dd=15.00, de_mm=49.00, de_ss=19.5611 ),
+            dict(ra_dd=-175.00, ra_mm=43.00, ra_ss=43.4852,
+                 de_dd=15.00, de_mm=49.00, de_ss=20.5699 ),
+            dict(ra_dd=-175.00, ra_mm=43.00, ra_ss=43.4819,
+                 de_dd=15.00, de_mm=49.00, de_ss=20.5712 ),
+            dict(ra_dd=-175.00, ra_mm=43.00, ra_ss=45.2053,
+                 de_dd=15.00, de_mm=49.00, de_ss=13.4529 ),
+            dict(ra_dd=-175.00, ra_mm=43.00, ra_ss=45.2054,
+                 de_dd=15.00, de_mm=49.00, de_ss=13.4528 ),
+            dict(ra_dd=-175.00, ra_mm=43.00, ra_ss=30.9595,
+                 de_dd=15.00, de_mm=49.00, de_ss=19.5396 ),
+            dict(ra_dd=-17.00, ra_mm=8.00, ra_ss=52.8721,
+                 de_dd=15.00, de_mm=49.00, de_ss=19.5396 ),
+            dict(ra_dd=132.00, ra_mm=32.00, ra_ss=57.5676,
+                 de_dd=67.00, de_mm=45.00, de_ss=9.6836 ),
+            dict(ra_dd=132.00, ra_mm=32.00, ra_ss=57.5676,
+                 de_dd=67.00, de_mm=45.00, de_ss=34.3714 ),
+            dict(ra_dd=-17.00, ra_mm=9.00, ra_ss=9.5430,
+                 de_dd=15.00, de_mm=49.00, de_ss=38.3077 ),
+            dict(ra_dd=-17.00, ra_mm=14.00, ra_ss=6.8699,
+                 de_dd=-15.00, de_mm=10.00, de_ss=13.0062 )
+            ]
+        
+        ra = tpm.h2r(12+22/60.0+54.899/3600.0)
+        de = tpm.d2r(15+49/60.0+20.57/3600.0)
+        ep = tpm.J2000
+        eq = tpm.J2000
+        s1 = tpm.TPM_S06
+        s2 = tpm.TPM_S00
+        tstate = tpm.TSTATE()
+        pvec = tpm.PVEC()
+         
+        for i in range(tpm.N_TPM_STATES):
+            tpm.tpm_data(tstate, tpm.TPM_INIT)
+            tstate.utc = tpm.J2000
+            tstate.lon = tpm.d2r(-111.598333)
+            tstate.lat = tpm.d2r(31.956389)
+            tstate.alt = 2093.093
+            tstate.delta_ut = tpm.delta_UT(tstate.utc)
+            tpm.tpm_data(tstate, tpm.TPM_ALL)
+         
+            v6 = tpm.V6S()
+            v6.r = 1e9
+            v6.alpha = ra
+            v6.delta = de
+            
+            pvec[s1] = v6.s2c()
+            s2 = i
+            tpm.tpm(pvec, s1, s2, ep, eq, tstate)
+            v6 = pvec[s2].c2s()
+         
+            ra1 = v6.alpha
+            de1 = v6.delta
+
+            ra_dms = tpm.DMS(r=ra1)
+            de_dms = tpm.DMS(r=de1)
+            ra_dms.normalize()
+            de_dms.normalize()
+            self.assertAlmostEqual(ra_dms.dd, results[i]['ra_dd'], 4)
+            self.assertAlmostEqual(ra_dms.mm, results[i]['ra_mm'], 4)
+            self.assertAlmostEqual(ra_dms.ss, results[i]['ra_ss'], 4)
+            self.assertAlmostEqual(de_dms.dd, results[i]['de_dd'], 4)
+            self.assertAlmostEqual(de_dms.mm, results[i]['de_mm'], 4)
+            self.assertAlmostEqual(de_dms.ss, results[i]['de_ss'], 4)
+
+            
+            
+            
+            
