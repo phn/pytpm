@@ -388,6 +388,35 @@ class TestCatV6(unittest.TestCase):
         self.assertAlmostEqual(p['px'], px)
         self.assertAlmostEqual(p['rv'], rv)
 
+class TestProperMotion(unittest.TestCase):
+    """Test function proper_motion."""
+    def testpm(self):
+        """Proper motion => apply PM to position."""
+        import math
+        ra = tpm.d2r(269.45402305)
+        de = tpm.d2r(4.66828815)
+        px = 549.01 / 1000.0 # To Arc seconds
+        rv = 0.0
+        # pmra * cos(de) into pmra
+        pmra = (-797.84 / 1000.0 ) / math.cos(de) 
+        pmra *= 100.0 # To Arcseconds per century.
+        pmde = (10326.93 / 1000.0) 
+        pmde *= 100.0 # To Arcseconds per century.
+        C = tpm.CJ
+
+        v6 = tpm.cat2v6(ra, de, pmra, pmde, px, rv, C)
         
-            
-            
+        v6 = tpm.proper_motion(v6, tpm.J2000, tpm.jyear2jd(1991.25))
+        v6 = v6.c2s()
+        hms = tpm.HMS(r=v6.alpha)
+        dms = tpm.DMS(r=v6.delta)
+        hms.normalize()
+        dms.normalize() 
+
+        self.assertAlmostEqual(hms.hh, -7.0)
+        self.assertAlmostEqual(hms.mm, 57.0)
+        self.assertAlmostEqual(hms.ss, 48.4986, 3)
+        self.assertAlmostEqual(dms.dd, 4.0)
+        self.assertAlmostEqual(dms.mm, 41.0)
+        self.assertAlmostEqual(dms.ss, 36.1980, 3)
+        

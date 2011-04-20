@@ -330,4 +330,10 @@ def v62cat(V6C v6, C=36525.0):
     _tpm_astro.v62cat(&ra, &de, &pmra, &pmde, &px, &rv, v6.getV6(), C)
     return dict(ra=ra, de=de, pmra=pmra, pmde=pmde, px=px, rv=rv)
     
-    
+def proper_motion(V6C v6, start, end):
+    """Apply proper motion to the given V6C vector."""
+    cdef _tpm_astro.V6 _v6
+    v61 = V6C()
+    _v6 = _tpm_astro.proper_motion(v6.getV6(), start, end)
+    v61.setV6(_v6)
+    return v61
