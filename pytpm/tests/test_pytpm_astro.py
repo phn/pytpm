@@ -332,6 +332,62 @@ class TestTPM(unittest.TestCase):
             self.assertAlmostEqual(de_dms.ss, results[i]['de_ss'], 4)
 
             
-            
+class TestCatV6(unittest.TestCase):
+    """Test cat2v6 and v62cat."""
+    def testcat2v6(self):
+        """cat2v6 => catalog to Cartesian."""
+        # See pytpm/tests/c_tests/cat2v6_v62cat_test.c.
+        # Barnard's star from Hipparcos catalog. 
+        # ICRS Epoch J1991.25
+        import math
+        ra = tpm.d2r(269.45402305)
+        de = tpm.d2r(4.66828815)
+        px = 549.01 / 1000.0 # To Arc seconds
+        rv = 0.0
+        # pmra * cos(de) into pmra
+        pmra = (-797.84 / 1000.0 ) / math.cos(de) 
+        pmra *= 100.0 # To Arcseconds per century.
+        pmde = (10326.93 / 1000.0) 
+        pmde *= 100.0 # To Arcseconds per century.
+        C = tpm.CJ
+
+        v6 = tpm.cat2v6(ra, de, pmra, pmde, px, rv, C)
+
+        self.assertAlmostEqual(v6.x, -3568.1807935995)
+        self.assertAlmostEqual(v6.y, -374439.8219691383)
+        self.assertAlmostEqual(v6.z, 30577.3105202634)
+        self.assertAlmostEqual(v6.xdot, -0.0039386179)
+        self.assertAlmostEqual(v6.ydot, 0.0042290848)
+        self.assertAlmostEqual(v6.zdot, 0.0513283878)
+
+    def testv62cat(self):
+        """v62cat => Cartesian to catalog; testing cat2v6 <-> v62cat."""
+                # See pytpm/tests/c_tests/cat2v6_v62cat_test.c.
+        # Barnard's star from Hipparcos catalog. 
+        # ICRS Epoch J1991.25
+        import math
+        ra = tpm.d2r(269.45402305)
+        de = tpm.d2r(4.66828815)
+        px = 549.01 / 1000.0 # To Arc seconds
+        rv = 0.0
+        # pmra * cos(de) into pmra
+        pmra = (-797.84 / 1000.0 ) / math.cos(de) 
+        pmra *= 100.0 # To Arcseconds per century.
+        pmde = (10326.93 / 1000.0) 
+        pmde *= 100.0 # To Arcseconds per century.
+        C = tpm.CJ
+
+        v6 = tpm.cat2v6(ra, de, pmra, pmde, px, rv, C)
+        
+        p = tpm.v62cat(v6, C)
+
+        self.assertAlmostEqual(tpm.r2r(p['ra']), ra)
+        self.assertAlmostEqual(p['de'], de)
+        self.assertAlmostEqual(p['pmra'], pmra)
+        self.assertAlmostEqual(p['pmde'], pmde)
+        self.assertAlmostEqual(p['px'], px)
+        self.assertAlmostEqual(p['rv'], rv)
+
+        
             
             

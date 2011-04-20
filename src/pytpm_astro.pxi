@@ -295,3 +295,39 @@ def ut2et(ut):
 def ut2gmst(ut):
     """Return GMST for the given UT; same as ut12gmst(ut)"""
     return _tpm_astro.ut2gmst(ut)
+
+def cat2v6(ra, de, pmra, pmdec, px, rv, C=36525.0):
+    """Create a V6C vector from catalog entry.
+
+    :param ra: Right Ascension
+    :type ra: Float (radians)
+    :param de: Declination
+    :type de: Float (radians)
+    :param pmra: Proper motion in ra (not pmra*cos(de))
+    :type pmra: Float (arcseconds/century)
+    :param pmde: Proper motion in de
+    :type pmde: Float (arcseconds/century)
+    :param px: Parallax
+    :type px: Float (arcseconds)
+    :param rv: Radial velocity
+    :type rv: Float (km/s)
+    :param C: Days in a century
+    :type C: Float (days)
+
+    :return: V6C vector
+    :rtype: tpm.V6C
+    
+    A Julian century has 36525 days (tpm.CJ) and a tropical century has
+    36524.21987817305 days (tpm.CB).
+    """
+    v6 = V6C()
+    v6.setV6(_tpm_astro.cat2v6(ra, de, pmra, pmdec, px, rv, C))
+    return v6
+    
+def v62cat(V6C v6, C=36525.0):
+    """Return catalog quantites given a V6C vector."""
+    cdef double ra=0.0, de=0.0, pmra=0.0, pmde=0.0, px=0.0, rv=0.0
+    _tpm_astro.v62cat(&ra, &de, &pmra, &pmde, &px, &rv, v6.getV6(), C)
+    return dict(ra=ra, de=de, pmra=pmra, pmde=pmde, px=px, rv=rv)
+    
+    
