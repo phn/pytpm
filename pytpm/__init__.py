@@ -13,3 +13,4 @@ telescope.
 __version__ = "0.4dev"
 
 import tpm
+import convert

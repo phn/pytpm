@@ -32,6 +32,7 @@ from Cython.Distutils import build_ext
 
 # No C files.
 srcfiles = glob.glob("src/*.pyx")
+srcfiles.remove("src/convert.pyx")
 
 depends = glob.glob("src/*.pxd")
 depends.extend(glob.glob("src/*.pxi"))
@@ -48,6 +49,9 @@ ext_modules = [Extension("pytpm.tpm", srcfiles,
                          include_dirs = include_dirs,
                          library_dirs = library_dirs,
                          libraries = libraries)]
+ext_modules.append(
+        Extension("pytpm.convert", ["src/convert.pyx"],
+                  depends=["src/pytpm.pyx"]))
 
 # Package structure is
 # pytpm/__init__.py
