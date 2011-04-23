@@ -1,5 +1,7 @@
 # from distutils.core import setup
 # from distutils.extension import Extension
+from setuptools import setup, Extension
+
 import sys
 import glob
 import os
@@ -14,30 +16,36 @@ import os
 # lxml-2.3.tar.gz#md5=a245a015fd59b63e220005f263e1682a.
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "fake_pyrex"))
 
-from setuptools import setup, Extension
-from Cython.Distutils import build_ext
-
 srcfiles = glob.glob("src/tpm/*.c")
 # This is the command line TPM program.
 srcfiles.remove("src/tpm/tpm_main.c")
-srcfiles.extend(glob.glob("src/*.pyx"))
-
-depends = glob.glob("src/*.pxd")
-depends.extend(glob.glob("src/*.pxi"))
-depends.extend(glob.glob("src/tpm/*.h")) # Just in case.
-
+depends = glob.glob("src/tpm/*.h") # Just in case.
 include_dirs = [os.path.abspath("src/tpm")]
-ext_modules = [Extension("pytpm.tpm", srcfiles,
+try:
+    from Cython.Distutils import build_ext
+except ImportError, e:
+    from distutils.command.build_ext import build_ext
+    # No Cython; use the existing Cython generated code.
+    srcfiles.append("src/pytpm.c")
+    ext_modules = [Extension("pytpm.tpm", srcfiles,
                          include_dirs = include_dirs,
                          depends = depends)]
+    ext_modules.append(
+        Extension("pytpm.convert", ["src/convert.c"]))
 
-# Package structure is
-# pytpm/__init__.py
-# pytpm/tpm.so
-# pytpm/*.py
-# pytpm/tests/
-# pytpm/doc/
-# and so on.
+else:
+    # Re-build Cython C file, if *.pyx, *.pxi or *.pxd have changed.
+    srcfiles.extend(glob.glob("src/*.pyx"))
+    depends = glob.glob("src/*.pxd")
+    depends.extend(glob.glob("src/*.pxi"))
+    ext_modules = [Extension("pytpm.tpm", srcfiles,
+                             include_dirs = include_dirs,
+                             depends = depends)]
+    ext_modules.append(
+        Extension("pytpm.convert", ["src/convert.pyx"],
+                  depends=["src/pytpm.pyx"]))
+
+# pytpm, pytpm.tpm, pytpm.convert, pytpm.tests.
 setup(
     name = "pytpm",
     version = "0.4dev",
