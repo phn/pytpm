@@ -9,3 +9,6 @@ doc/_build/
 *_exe
 pytpm-ghpages.rst
 .ropeproject/
+setup.cfg
+*.egg-info
+.coverage

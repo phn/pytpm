@@ -147,7 +147,7 @@ typedef struct s_cons {
 #define utc2tdb(utc)	(tdt2tdb(tai2tdt(utc2tai(utc))))
 
 /* convenience time transformations */
-#define et2ut(ut)	(et2ut1(et))
+#define et2ut(et)	(et2ut1(et))
 #define ut2et(ut)	(ut12et(ut))
 #define ut2gmst(ut)	(ut12gmst(ut))
 
@@ -159,12 +159,12 @@ extern M6 precess_m(double j1, double j2, int pflag, int sflag);
 extern V6 aberrate(V6 p, V6 e, int flag);
 /*extern V6 altaz(V6 object, V6 zenith);*/
 extern V6 azel2hadec(V6 v6, double latitude);
-/*extern V6 barvel(double tdb);
+extern V6 barvel(double tdb);
 extern V6 cat2v6r1(double r, double d, double rd, double dd, double px, double rv, double C);
 extern V6 cat2v6r2(double r, double d, double rd, double dd, double px, double rv, double C);
 extern V6 cat2v6u1(double r, double d, double rd, double dd, double px, double rv, double C);
 extern V6 cat2v6u2(double r, double d, double rd, double dd, double px, double rv, double C);
-extern V6 com2cof(double et, V6 moon);*/
+/*extern V6 com2cof(double et, V6 moon);*/
 extern V6 ecl2equ(V6 v6, double obl);
 extern V6 ellab(double tdt, V6 star, int flag);
 extern V6 equ2ecl(V6 v6, double obl);
@@ -192,10 +192,10 @@ extern char *tpm_state(int state);
 extern double ae2ha(double az, double el, double lat);
 extern double ae2pa(double az, double el, double lat);*/
 extern double delta_AT(double utc);
-/*extern double delta_ET(double utc);
-  extern double delta_T(double ut1);
-  extern double delta_TT(double utc);
-  extern double delta_UT(double utc);*/
+extern double delta_ET(double utc);
+extern double delta_T(double ut1);
+extern double delta_TT(double utc);
+extern double delta_UT(double utc);
 extern double eccentricity(double tdt);
 extern double eccentricity_dot(double tdt);
 /*extern double eq_equinox(double tdt);
@@ -232,9 +232,9 @@ extern void evp(double tdb, V6 *v6b, V6 *v6h);
 extern void nutations(double tdt, double *delta_phi, double *delta_eps);
 extern void refco(double lat, double alt, double T, double P, double rh, double lambda, double eps, double *refa, double *refb);
 extern void tpm_data(TPM_TSTATE *p, int flags);
-/*extern void tpm_status(FILE *fp, TPM_TSTATE *p);
+/*extern void tpm_status(FILE *fp, TPM_TSTATE *p);*/
 extern void v6r2cat(double *r, double *d, double *rd, double *dd, double *px, double *rv, V6 v6, double C);
-extern void v6u2cat(double *r, double *d, double *rd, double *dd, double *px, double *rv, V6 v6, double C);*/
+extern void v6u2cat(double *r, double *d, double *rd, double *dd, double *px, double *rv, V6 v6, double C);
 /* EXTERN_STOP */
 
 #endif

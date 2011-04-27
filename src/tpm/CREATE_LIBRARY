@@ -1,3 +1,0 @@
-gcc -c *.c 
-ar rcs libtpm.a *.o
-ranlib libtpm.a
