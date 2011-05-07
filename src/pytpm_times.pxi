@@ -18,6 +18,7 @@ FRIDAY  =   _tpm_times.FRIDAY
 SATURDAY =  _tpm_times.SATURDAY 
 
 cdef class DMS(object):
+    valid_keys = ('r', 'h', 'dd', 'mm', 'ss')
     cdef _tpm_times.DMS _dms
     def __cinit__(self):
         self._dms.dd = 0.0
@@ -25,6 +26,9 @@ cdef class DMS(object):
         self._dms.ss = 0.0
 
     def __init__(self, **kwargs):
+        for key in kwargs:
+            if key not in self.valid_keys:
+                raise TypeError, "Invalid keyword: {0}".format(key)
         if "r" in kwargs:
             self._dms = _tpm_times.r2dms(kwargs['r'])
         elif "h" in kwargs:
@@ -115,6 +119,7 @@ cdef class DMS(object):
 
     
 cdef class HMS(object):
+    valid_keys = ('r', 'd', 'hh', 'mm', 'ss')
     cdef _tpm_times.HMS _hms
     def __cinit__(self):
         self._hms.hh = 0.0
@@ -122,6 +127,9 @@ cdef class HMS(object):
         self._hms.ss = 0.0
 
     def __init__(self,**kwargs):
+        for key in kwargs:
+            if key not in self.valid_keys:
+                raise TypeError, "Invalid keyword: {0}".format(key)
         if "r" in kwargs:
             self._hms = _tpm_times.r2hms(kwargs['r'])
         elif "d" in kwargs:
@@ -213,6 +221,7 @@ cdef class HMS(object):
     
     
 cdef class YMD(object):
+    valid_keys = ('j','year','ydd','y','m','dd','hh','mm','ss')
     cdef _tpm_times.YMD _ymd
     def __cinit__(self):
         self._ymd.y = 2000
@@ -223,6 +232,9 @@ cdef class YMD(object):
         self._ymd.hms.ss = 0.0
         
     def __init__(self,**kwarg):
+        for key in kwarg:
+            if key not in self.valid_keys:
+                raise TypeError, "Invalid keyword: {0}".format(key)
         if "j" in kwarg:
             self._ymd = _tpm_times.j2ymd(kwarg['j'])
         elif "year" in kwarg:
@@ -338,6 +350,7 @@ cdef class YMD(object):
     
     
 cdef class JD(object):
+    valid_keys = ('j', 'year', 'dd', 'hh', 'mm', 'ss')
     cdef _tpm_times.JD _jd
     def __cinit__(self):
         self._jd.dd = 2451545.5
@@ -346,6 +359,9 @@ cdef class JD(object):
         self._jd.hms.ss = 0.0
 
     def __init__(self, **kwargs):
+        for key in kwargs:
+            if key not in self.valid_keys:
+                raise TypeError, "Invalid keyword: {0}".format(key)
         if "j" in kwargs:
             self._jd = _tpm_times.j2jd(kwargs['j'])
         elif "year" in kwargs:

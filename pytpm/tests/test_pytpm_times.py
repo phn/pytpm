@@ -39,6 +39,11 @@ class TestDMSStructure(unittest.TestCase):
         t = dict(h=12.5)
         t_norm = dict(dd=12.5*180.0/12.0, mm=0.0, ss=0.0)
         verify(t, t_norm)
+
+    def testInvalidKeywordAtInit(self):
+        """DMS(key=value) => raise TypeError if key is invalid."""
+        self.assertRaises(TypeError, lambda: tpm.DMS(d=12.0))
+        self.assertRaises(TypeError, lambda: tpm.DMS(radians=12.0))
         
     def testSetFieldValues(self):
         """DMS.x = val => set values after creation."""
@@ -283,6 +288,11 @@ class TestHMSStructure(unittest.TestCase):
         self.assertAlmostEqual(hms.mm, 1.0)
         self.assertAlmostEqual(hms.ss, 1.34)
         
+    def testInvalidKeywordAtInit(self):
+        """HMS(key=value) => raise TypeError if key is invalid."""
+        self.assertRaises(TypeError, lambda: tpm.HMS(h=12.0))
+        self.assertRaises(TypeError, lambda: tpm.HMS(hours=12.0))
+
     def testAddition(self):
         """HMS.__add__ => HMS + HMS."""
         hms1 = tpm.HMS()
@@ -523,6 +533,11 @@ class TestYMDStructure(unittest.TestCase):
         self.assertAlmostEqual(ymd.hh, t['hh'])
         self.assertAlmostEqual(ymd.mm, t['mm'])
         self.assertAlmostEqual(ymd.ss, t['ss'])
+
+    def testInvalidKeywordAtInit(self):
+        """YMD(key=value) => raise TypeError if key is invalid."""
+        self.assertRaises(TypeError, lambda: tpm.YMD(h=12.0))
+        self.assertRaises(TypeError, lambda: tpm.YMD(years=12.0))
 
     def testNonIntegerYearMonth(self):
         """YMD.x => Exception for non-integer year and month."""
@@ -802,6 +817,11 @@ class TestJDStructure(unittest.TestCase):
         self.assertEqual(jd.hh, j['hh'])
         self.assertEqual(jd.mm, j['mm'])
         self.assertEqual(jd.ss, j['ss'])
+
+    def testInvalidKeywordAtInit(self):
+        """JD(key=value) => raise TypeError if key is invalid."""
+        self.assertRaises(TypeError, lambda: tpm.JD(h=12.0))
+        self.assertRaises(TypeError, lambda: tpm.JD(hours=12.0))
 
     def testAddition(self):
         """JD.__add__ => JD + JD."""
