@@ -244,8 +244,12 @@ cdef class YMD(object):
             y,d = kwarg['ydd']
             self._ymd = _tpm_times.ydd2ymd(y,d)
         else:
-            self._ymd.y = kwarg.get('y',2000)
-            self._ymd.m = kwarg.get('m',1)
+            y = kwarg.get('y', 2000)
+            assert type(y) == type(1), "Year must be an integer."
+            self._ymd.y = y
+            m = kwarg.get('m', 1)
+            assert type(m) == type(1), "Month must be an integer."
+            self._ymd.m = m
             self._ymd.dd = kwarg.get('dd',0)
             self._ymd.hms.hh = kwarg.get('hh',0.0) 
             self._ymd.hms.mm = kwarg.get('mm',0.0) 

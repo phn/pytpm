@@ -491,7 +491,7 @@ class TestYMDStructure(unittest.TestCase):
 
         # For initialization with year see
         # pytpm/tests/c_tests/y2ymd_test.c
-        t_norm = dict(y=1858, m=1.0, dd=321.0, hh =0.0, mm=0.0, ss=0.0)
+        t_norm = dict(y=1858, m=1, dd=321.0, hh =0.0, mm=0.0, ss=0.0)
         verify(dict(year=1858.879452054794), t_norm)
         
         t_norm = dict(y=1950, m=1, dd=0.923459,    hh =0.0, mm=0.0, ss=0.0)
@@ -516,6 +516,11 @@ class TestYMDStructure(unittest.TestCase):
         t_norm = dict(y=1949, m=1, dd=365.923459, hh=0.0, mm=0.0, ss=0.0)
         verify(dict(ydd=(1949, 365.9234590)), t_norm)
 
+        # Verify that using non-integer year and month raises
+        # AssertionError. 
+        self.assertRaises(AssertionError, lambda: tpm.YMD(y=2000.12))
+        self.assertRaises(AssertionError, lambda: tpm.YMD(m=12.0))
+        
         
     def testSetFieldValues(self):
         """YMD.x => set field values."""
@@ -709,7 +714,7 @@ class TestYMDStructure(unittest.TestCase):
             self.assertAlmostEqual(ymd.to_year(), t_norm)
 
         # See pytpm/tests/c_tests/ymd2y_test.c.
-        t = dict(y=1858, m=11.0, dd=17.0, hh =0.0, mm=0.0, ss=0.0)
+        t = dict(y=1858, m=11, dd=17.0, hh =0.0, mm=0.0, ss=0.0)
         verify(t, 1858.87945205)
         
         t = dict(y=1949, m=12, dd=31.923459,    hh =0.0, mm=0.0, ss=0.0)
@@ -748,7 +753,7 @@ class TestYMDStructure(unittest.TestCase):
             self.assertAlmostEqual(ymd.to_j(), t_norm)
 
         # See pytpm/tests/c_tests/ymd2j_test.c.
-        t = dict(y=1858, m=11.0, dd=17.0, hh =0.0, mm=0.0, ss=0.0)
+        t = dict(y=1858, m=11, dd=17.0, hh =0.0, mm=0.0, ss=0.0)
         verify(t, 2400000.5)
         
         t = dict(y=1949, m=12, dd=31.923459,    hh =0.0, mm=0.0, ss=0.0)
