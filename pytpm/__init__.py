@@ -11,6 +11,7 @@ telescope.
 """
 
 __version__ = "0.5dev"
+__docformat__ = "restructuredtext en"
 
 import tpm
 import convert

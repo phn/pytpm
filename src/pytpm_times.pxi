@@ -352,7 +352,6 @@ cdef class YMD(object):
         return _tpm_times.ymd2y(self._ymd)
 
     
-    
 cdef class JD(object):
     valid_keys = ('j', 'year', 'dd', 'hh', 'mm', 'ss')
     cdef _tpm_times.JD _jd
@@ -464,103 +463,159 @@ cdef class JD(object):
     
 #double BYEAR2JD(double x)
 cpdef double byear2jd(double byear):
-    """Convert Besselian year into a Julian date."""
+    """Convert Besselian year into a Julian date.
+
+    :param byear: Besselian year.
+    :type byear: float
+
+    :return: Julian date corresponding to the given Besselian year.
+    :rtype: float
+
+    >>> tpm.byear2jd(1950.0)
+    2433282.4234590498
+    >>> tpm.byear2jd(2000.0)
+    2451544.5333981365
+    """
     return _tpm_times.BYEAR2JD(byear)
  
 #double JD2BYEAR(double x)
 cpdef double jd2byear(double jd):
-    """Convert Julian date into a Julian year."""
+    """Convert Julian date into a Besselian year.
+
+    :param jd: Julian date.
+    :type jd: float
+
+    :return: Besselian year corresponding to the given Julian date.
+    :rtype: float
+
+    >>> tpm.jd2byear(tpm.B1950)
+    1950.0
+    >>> tpm.jd2byear(tpm.J2000)
+    2000.0012775135656
+    """
     return _tpm_times.JD2BYEAR(jd)
  
 #double JYEAR2JD(double x)
-cpdef double jyear2jd(double x):
-    """Convert Julian year into a Julian date."""
-    return _tpm_times.JYEAR2JD(x)
+cpdef double jyear2jd(double jyear):
+    """Convert Julian year into a Julian date.
+
+    :param jyear: Julian year.
+    :type jyear: float
+
+    :return: Julian date corresponding to the given Julian year.
+    :rtype: float
+
+    >>> tpm.jyear2jd(2000.0)
+    2451545.0
+    >>> tpm.jyear2jd(1950.0)
+    2433282.5
+    """
+    return _tpm_times.JYEAR2JD(jyear)
 
 #double JD2JYEAR(double x)
-cpdef double jd2jyear(double x):
-    """Convert Julian date into Julian year."""
-    return _tpm_times.JD2JYEAR(x)
+cpdef double jd2jyear(double jd):
+    """Convert Julian date into Julian year.
+
+    :param jd: Julian date.
+    :type jd: float
+    :return: Julian year corresponding to the given Juilan date.
+    :rtype: float
+
+    >>> tpm.jd2jyear(tpm.J2000)
+    2000.0
+    >>> tpm.jd2jyear(tpm.B1950)
+    1949.9997904422992
+    """
+    return _tpm_times.JD2JYEAR(jd)
 
 #JD jd_now(void)
 cpdef JD jd_now():
-    """Current Julian date as a JD.
+    """Return current Julian date as a JD object.
 
-    Only accurate to the nearest second.
+    :return: Julian date as a ``JD`` object.
+    :rtype: ``JD``
+    
+    This function is only accurate to the nearest second.
     """
     jd = JD()
     jd._jd = _tpm_times.jd_now()
     return jd
 
-#char *fmt_alpha(double alpha)
-cpdef char *fmt_alpha(double alpha):
-    """Format angle as Right Ascension."""
-    return _tpm_times.fmt_alpha(alpha)
-
-#char *fmt_d(double d)
-cpdef char *fmt_d(double d):
-    """Format degrees into a string."""
-    return _tpm_times.fmt_d(d)
-
-#char *fmt_delta(double delta)
-cpdef char* fmt_delta(double delta):
-    """Format radians as declination."""
-    return _tpm_times.fmt_delta(delta)
-    
-#char *fmt_h(double h)
-cpdef char *fmt_h(double h):
-    """Format hours into a string."""
-    return _tpm_times.fmt_h(h)
-
-#char *fmt_j(double j)
-cpdef char *fmt_j(double j):
-    """Format Julian date into a string."""
-    return _tpm_times.fmt_j(j)
-
-#double d2d(double d)
-cpdef double d2d(double d):
-    """Normalize angle in degrees into (-360, 360)."""
-    return _tpm_times.d2d(d)
-
-#double gcal2j(int y, int m, int d)
-cpdef gcal2j(int y, int m, int dd):
-    """Return Julian day number for the Gregorian calendar date."""
-    return _tpm_times.gcal2j(y, m, dd)
-
-#double h2h(double h)
-cpdef double h2h(double h):
-    return _tpm_times.h2h(h)
-
-#double jcal2j(int y, int m, int d)
-cpdef double jcal2j(int y, int m, int dd):
-    """Return Julian day number for the Julian calendar date."""
-    return _tpm_times.jcal2j(y, m, dd)
-
-#double r2r(double r)
-cpdef double r2r(double r):
-    return _tpm_times.r2r(r)
-
 #double utc_now(void)
 cpdef double utc_now():
     """Current UTC as a Julian date.
 
-    Only accurate to the nearest second.
+    :return: Julian date.
+    :rtype: float
+    
+    This function is only accurate to the nearest second.
     """
     return _tpm_times.utc_now()
 
-#int j2dow(double j)
-cpdef int j2dow(double j):
-    """Return day of week of the given Julian date."""
-    return _tpm_times.j2dow(j)
+#double gcal2j(int y, int m, int d)
+cpdef gcal2j(int y, int m, int dd):
+    """Return Julian day number for the Gregorian calendar date.
 
-#int y2doy(int y)
-cpdef int y2doy(int y):
-    """Return number of days in the given Gregorian calendar year."""
-    return _tpm_times.y2doy(y)
+    :param y: Year in the Gregorian calendar.
+    :type y: integer
+    :param m: Month in the Gregorian calendar.
+    :type m: integer
+    :param dd: Day in the Gregorian calendar.
+    :type dd: integer
+
+    :return: Julian date corresponding to the given date.
+    :rtype: float
+
+    >>> tpm.gcal2j(2000,1,1)
+    2451545.0
+    >>> tpm.gcal2j(2010,1,1)
+    2455198.0
+    >>> tpm.gcal2j(1950,1,1)
+    2433283.0
+    """
+    return _tpm_times.gcal2j(y, m, dd)
+
+#double jcal2j(int y, int m, int d)
+cpdef double jcal2j(int y, int m, int dd):
+    """Return Julian day number for the Julian calendar date.
+
+    :param y: Year in the Julian calendar.
+    :type y: integer
+    :param m: Month in the Julian calendar.
+    :type m: integer
+    :param dd: Day in the Julian calendar.
+    :type dd: integer
+
+    :return: Julian date corresponding to the given date.
+    :rtype: float
+
+    >>> tpm.jcal2j(1950,1,1)
+    2433296.0
+    >>> tpm.jcal2j(2000,1,1)
+    2451558.0
+    >>> tpm.jcal2j(2010,1,1)
+    2455211.0
+    >>> tpm.jcal2j(1950,1,1)
+    2433296.0
+    """
+    return _tpm_times.jcal2j(y, m, dd)
 
 #void j2gcal(int *y, int *m, int *d, double j)
 cpdef j2gcal(double j):
-    """Convert Julian date into Gregorian calendar date."""
+    """Convert Julian date into Gregorian calendar date.
+
+    :param j: Julian date.
+    :type j: float
+
+    :return: A dictionary for the date in the Gregorian calendar. The
+            keys in the dictionary are: 'y'=year, 'm'=month, 'dd'=day.
+    :rtype: dict
+
+    >>> tpm.j2gcal(tpm.J2000)
+    {'dd': 1, 'm': 1, 'y': 2000}
+    >>> tpm.j2gcal(tpm.B1950)
+    {'dd': 31, 'm': 12, 'y': 1949}
+    """
     cdef int y, m, d
     y = m = d = 0;
     _tpm_times.j2gcal(&y, &m, &d, j)
@@ -568,77 +623,591 @@ cpdef j2gcal(double j):
 
 #void j2jcal(int *y, int *m, int *d, double j)
 cpdef j2jcal(double j):
-    """Convert Julian date into Julian calendar date."""
+    """Convert Julian date into Julian calendar date.
+
+    :param j: Julian date.
+    :type j: float
+
+    :return: A dictionary for the date in the Julian calendar. The
+            keys in the dictionary are: 'y'=year, 'm'=month, 'dd'=day.
+    :rtype: dict
+
+    >>> tpm.j2gcal(tpm.J2000)
+    {'dd': 1, 'm': 1, 'y': 2000}
+    >>> tpm.j2gcal(tpm.B1950)
+    {'dd': 31, 'm': 12, 'y': 1949}
+    """
     cdef int y, m, d
     y = m = d = 0;
     _tpm_times.j2jcal(&y, &m, &d, j)
     return dict(y=y, m=m, dd=d)
 
-#char *fmt_r(double r)
-cpdef char* fmt_r(double r):
-    """Format radians into a string with angle in degrees."""
-    return _tpm_times.fmt_r(r)
-
-#char *fmt_y(double y)
-cpdef char* fmt_y(double y):
-    """Format years into a string."""
-    return _tpm_times.fmt_y(y)
-
 #double j2y(double j)
 cpdef double j2y(double j):
+    """Convert Julian date into Gregorian calendar year with fractional part.
+
+    :param j: Julian date.
+    :type j: float
+
+    :return: Year, including fractional part, in the Gregorian calendar.
+    :rtype: float
+
+    >>> tpm.j2y(tpm.J2000)
+    2000.0040983606557
+    >>> tpm.j2y(tpm.J2000+366)
+    2001.004109589041
+    """
     return _tpm_times.j2y(j)
 
 #double y2j(double y)
 cpdef double y2j(double y):
+    """Convert Gregorian calendar year with fractional part into Julian date.
+
+    :param y: Gregorian calendar year with fractional part.
+    :type y: float
+
+    :return: Julian date.
+    :rtype: float
+
+    >>> tpm.y2j(2000.0040983606557)
+    2451545.0
+    >>> tpm.y2j(2001.004109589041)
+    2451911.0
+    >>> tpm.j2gcal(tpm.y2j(2001.004109589041))
+    {'dd': 1, 'm': 1, 'y': 2001}
+    """
     return _tpm_times.y2j(y)
+
+#int j2dow(double j)
+cpdef int j2dow(double j):
+    """Return day of week for the given Gregorian calendar Julian date.
+
+    :param j: Julian date (Gregorian calendar).
+    :type j: float
+
+    :return: Day of the week: 0 - Sunday, 6 - Saturday.
+    :rtype: integer
+
+    >>> j = tpm.gcal2j(2010,1,1)
+    >>> tpm.fmt_y(tpm.j2y(j))
+    'Fri Jan  1 12:00:00.000 2010'
+    >>> tpm.j2dow(j)
+    5
+    """
+    return _tpm_times.j2dow(j)
+
+#int y2doy(int y)
+cpdef int y2doy(int y):
+    """Return number of days in the given Gregorian calendar year.
+
+    :param y: Year in the Gregorian calendar.
+    :type y: integer
+
+    :return: Number of days in the year.
+    :rtype: integer
+
+    >>> tpm.y2doy(2000)
+    366
+    >>> tpm.y2doy(2001)
+    365
+    >>> tpm.y2doy(2002)
+    365
+    >>> tpm.y2doy(2003)
+    365
+    >>> tpm.y2doy(2004)
+    366    
+    """
+    return _tpm_times.y2doy(y)
+
+#char *fmt_alpha(double alpha)
+cpdef char *fmt_alpha(double alpha):
+    """Normalize and format angle in radians into a string: ' ##H ##M ##.###S'.
+
+    :param alpha: Angle in radians.
+    :type alpha: float
+
+    :return: String of the form ' ##H ##M ##.###S'.
+    :rtype: string
+
+    This function normalizes the given angle in radians into the range
+    [0,360) and then converts it into a string that represents
+    angle/time in the 24-hour format. The angle is properly divided
+    into hours, minutes and seconds.
+
+    This is useful for formatting "longitudinal" angles, such as right
+    ascension.
+
+    >>> tpm.fmt_alpha(tpm.M_PI)
+    ' 12H 00M 00.000S'
+    >>> tpm.fmt_alpha(-tpm.M_PI)
+    ' 12H 00M 00.000S'
+    >>> tpm.fmt_alpha(2*tpm.M_PI)
+    ' 00H 00M 00.000S'
+    >>> tpm.fmt_alpha(tpm.M_PI/2.0)
+    ' 06H 00M 00.000S'
+    >>> tpm.fmt_alpha(-tpm.M_PI/2.0)
+    ' 18H 00M 00.000S'
+    >>> tpm.fmt_alpha(2*tpm.M_PI+(tpm.M_PI/12.0))
+    ' 00H 59M 59.999S'
+    >>> tpm.fmt_alpha(-(2*tpm.M_PI+(tpm.M_PI/12.0)))
+    ' 23H 00M 00.000S'    
+    """
+    return _tpm_times.fmt_alpha(alpha)
+
+#char *fmt_delta(double delta)
+cpdef char* fmt_delta(double delta):
+    """Normalize and format angle in radians into a string: ±###D ##' ##.###".
+
+    :param alpha: Angle in radians.
+    :type alpha: float
+
+    :return: String of the form ±###D ##' ##.###".
+    :rtype: string
+    
+    This function normalizes the given angle in radians into the range
+    [-π/2, π/2] and then formats it into a string of the form
+    ±###D ##\' ##.###", where each part of the string corresponds to
+    degrees, arc-minutes and arc-seconds.
+
+    This is useful for formatted output of "latitudinal" angles, such
+    as declination.
+
+    >>> tpm.fmt_delta(tpm.M_PI/2.0)
+    '+90D 00\' 00.000"'
+    >>> tpm.fmt_delta(-tpm.M_PI/2.0)
+    '-90D 00\' 00.000"'
+    >>> tpm.fmt_delta(tpm.M_PI/4.0)
+    '+45D 00\' 00.000"'
+    >>> tpm.fmt_delta(tpm.M_PI)
+    '+00D 00\' 00.000"'
+    >>> tpm.fmt_delta(-tpm.M_PI)
+    '+00D 00\' 00.000"'
+    """
+    return _tpm_times.fmt_delta(delta)
+
+#char *fmt_d(double d)
+cpdef char *fmt_d(double d):
+    """Format angle in degrees into a string: ±###D ##' ##.###".
+
+    :param d: Angle in degrees.
+    :type d: float
+
+    :return: String of the form ±###D ##' ##.###".
+    :rtype: string
+
+    This function will format the given angle in degrees, into a string
+    containing degrees, arc-minutes and arc-seconds. The angle is not
+    normalized into any range, but is used as such.
+
+    The degrees part can be two or three digits long.
+
+    >>> tpm.fmt_d(1.234567)
+    '+01D 14\' 04.441"'
+    >>> tpm.fmt_d(256.9)
+    '+256D 53\' 59.999"'
+    >>> tpm.fmt_d(-256.9)
+    '-256D 53\' 59.999"'
+    >>> tpm.fmt_d(6.9)
+    '+06D 54\' 00.000"'
+    >>> tpm.fmt_d(-361)
+    '-361D 00\' 00.000"'
+    >>> tpm.fmt_d(720)
+    '+720D 00\' 00.000"'
+    """
+    return _tpm_times.fmt_d(d)
+    
+#char *fmt_h(double h)
+cpdef char *fmt_h(double h):
+    """Format hours into a string: ±##H ##M ##.###S".
+
+    :param d: Angle in hours.
+    :type d: float
+
+    :return: String of the form ±##H ##M ##.###S.
+    :rtype: string
+
+    This function will format the given angle in hours, into a string
+    containing hours, minutes and seconds. The angle is not normalized
+    into any range, but is used as such.
+
+    >>> tpm.fmt_h(1.23456)
+    ' 01H 14M 04.416S'
+    >>> tpm.fmt_h(13.456)
+    ' 13H 27M 21.599S'
+    >>> tpm.fmt_h(-13.456)
+    '-13H 27M 21.599S'
+    >>> tpm.fmt_h(-133.456)
+    '-133H 27M 21.599S'
+    """
+    return _tpm_times.fmt_h(h)
+
+#char *fmt_j(double j)
+cpdef char *fmt_j(double j):
+    """Format Julian date into a string.
+
+    :param j: Julian date.
+    :type j: float
+
+    :return: String of the form: JD ##H ##M ##.###S.
+    :rtype: string
+
+    This function takes a Julian date and returns a string that has a
+    whole number Julian date and the fraction of the day expressed as
+    hours, minutes and seconds in the 24-hour format.
+
+    >>> tpm.fmt_j(tpm.J2000)
+    ' 2451545  00H 00M 00.000S'
+    >>> tpm.fmt_j(tpm.J2000+0.5)
+    ' 2451545  12H 00M 00.000S'
+    >>> tpm.fmt_j(tpm.J2000+0.75)
+    ' 2451545  18H 00M 00.000S'
+    >>> tpm.fmt_j(tpm.J2000+0.7)
+    ' 2451545  16H 48M 00.000S'
+    >>> tpm.fmt_j(tpm.J2000-0.7)
+    ' 2451544  07H 11M 59.999S'
+    """
+    return _tpm_times.fmt_j(j)
+
+#char *fmt_r(double r)
+cpdef char* fmt_r(double r):
+    """Format radians into a string with angle expressed as degrees.
+    
+    :param r: Angle in radians.
+    :type r: float
+
+    :return: String of the form: ±###D ##' ##.###".
+    :rtype: string
+
+    The function converts the angle given in radians into degrees and
+    then return a string of the format ±###D ##' ##.###". The
+    fractional part of the angle is converted into arc-minutes and
+    arc-seconds, but otherwise no normalization is done.
+
+    >>> tpm.fmt_r(1.0)
+    '+57D 17\' 44.806"'
+    >>> tpm.fmt_r(1.2345)
+    '+70D 43\' 53.903"'
+    >>> tpm.fmt_r(-2*tpm.M_PI)
+    '-360D 00\' 00.000"'
+    >>> tpm.fmt_r(-3*tpm.M_PI)
+    '-540D 00\' 00.000"'
+    >>> tpm.fmt_r(3*tpm.M_PI)
+    '+540D 00\' 00.000"'
+    """
+    return _tpm_times.fmt_r(r)
+
+#char *fmt_y(double y)
+cpdef char* fmt_y(double y):
+    """Format years, including fractional part, into a string.
+
+    :param y: Year, including fractional part.
+    :type y: float
+
+    :return: String of the form: AAA BBB DD HH:MM:SS.SSS YYYY,
+             where AAA is the week day, BBB is the month and then the
+             numbers that follow are indicate the day, the time in
+             24-hour format and the year.
+    :rtype: string
+
+    >>> tpm.fmt_y(2000.0)
+    'Fri Dec 31 00:00:00.000 1999'
+    >>> tpm.fmt_y(2000.0+1.0/366)
+    'Sat Jan  1 00:00:00.000 2000'
+    >>> tpm.fmt_y(2000.0+1.25/366)
+    'Sat Jan  1 06:00:00.000 2000'
+    >>> tpm.fmt_y(2000.0+1.7/366)
+    'Sat Jan  1 16:48:00.000 2000'
+    >>> tpm.fmt_y(2001.0+32/365.0)
+    'Thu Feb  1 00:00:00.000 2001'
+    """
+    return _tpm_times.fmt_y(y)
+
+#double d2d(double d)
+cpdef double d2d(double d):
+    """Normalize angle in degrees into (-360, 360).
+
+    :param d: Angle in degrees.
+    :type d: float
+
+    :return: Angle in degrees normalized into (-360, 360).
+    :rtype: float
+    
+    >>> tpm.d2d(0.0)
+    0.0
+    >>> tpm.d2d(-360.0)
+    0.0
+    >>> tpm.d2d(360.0)
+    0.0
+    >>> tpm.d2d(361.0)
+    1.0
+    >>> tpm.d2d(-361.0)
+    359.0
+    """
+    return _tpm_times.d2d(d)
+
+#double h2h(double h)
+cpdef double h2h(double h):
+    """Normalize angle in hours into [0, 24).
+
+    :param h: Angle in hours.
+    :type h: float
+
+    :return: Angle in hours normalized into [0, 24).
+    :rtype: float
+
+    >>> tpm.h2h(0.0)
+    0.0
+    >>> tpm.h2h(24.0)
+    0.0
+    >>> tpm.h2h(25.0)
+    1.0
+    >>> tpm.h2h(-25.0)
+    23.0
+    >>> tpm.h2h(-1)
+    23.0
+    >>> tpm.h2h(1)
+    1.0
+    """
+    return _tpm_times.h2h(h)
+
+#double r2r(double r)
+cpdef double r2r(double r):
+    """Normalize angle in radians into [0, 2π).
+
+    :param r: Angle in radians.
+    :type r: float
+
+    :return: Angle in radians normalized into [0, 2π).
+    :rtype: float
+
+    >>> tpm.r2r(0.0)
+    0.0
+    >>> tpm.r2r(2*tpm.M_PI)
+    0.0
+    >>> tpm.r2r(tpm.M_PI)
+    3.1415926535897931
+    >>> tpm.r2r(-tpm.M_PI)
+    3.1415926535897931
+    >>> tpm.r2r(-2*tpm.M_PI)
+    0.0
+    >>> tpm.r2r(-tpm.M_PI/2.0)
+    4.7123889803846897
+    """
+    return _tpm_times.r2r(r)
 
 # In TPM the following are in vec.h and then redefined in
 # times.h. I am including all of these in _tpm_times for
 # convenience.
 #define d2h(d)	
 cpdef double d2h(double d):
+    """Convert angle in degrees into hours.
+
+    :param d: Angle in degrees.
+    :type d: float
+
+    :return: Angle in hours.
+    :rtype: float
+
+    >>> tpm.d2h(180.0)
+    12.0
+    >>> tpm.d2h(-180.0)
+    -12.0
+    >>> tpm.d2h(12.3456)
+    0.82303999999999999
+    """
     return _tpm_times.d2h(d)
 
 #define h2d(h)	
 cpdef double h2d(double h):
+    """Convert angle in hours into degrees.
+
+    :param h: Angle in hours.
+    :type h: float
+
+    :return: Angle in degrees.
+    :rtype: float
+
+    >>> tpm.h2d(12.0)
+    180.0
+    >>> tpm.h2d(-12.0)
+    -180.0
+    >>> tpm.h2d(-25)
+    -375.0
+    """
     return _tpm_times.h2d(h)
 
 #define d2r(d)	
 cpdef double d2r(double d):
+    """Convert angle in degrees into degrees.
+
+    :param d: Angle in degrees.
+    :type d: float
+
+    :return: Angle in radians.
+    :rtype: float
+
+    >>> tpm.d2r(180.0)
+    3.1415926535897931
+    >>> tpm.d2r(-180.0)
+    -3.1415926535897931
+    >>> tpm.d2r(361.0)
+    6.3006385996995293
+    """
     return _tpm_times.d2r(d)
 
 #define r2d(r)	
 cpdef double r2d(double r):
+    """Convert angle in radians into degrees.
+
+    :param r: Angle in radians.
+    :type r: float
+
+    :return: Angle in degrees.
+    :rtype: float
+
+    >>> tpm.r2d(tpm.M_PI)
+    180.0
+    >>> tpm.r2d(tpm.M_PI/4.0)
+    45.0
+    >>> tpm.r2d(-tpm.M_PI/4.0)
+    -45.0
+    >>> tpm.r2d(-2*tpm.M_PI)
+    -360.0
+    """
     return _tpm_times.r2d(r)
 
 #define h2r(h)	
 cpdef double h2r(double h):
+    """Convert angle in hours into radians.
+
+    :param h: Angle in hours.
+    :type h: float
+
+    :return: Angle in radians.
+    :rtype: float
+
+    >>> tpm.h2r(12.0)
+    3.1415926535897931
+    >>> tpm.h2r(-12.0)
+    -3.1415926535897931
+    """
     return _tpm_times.h2r(h)
 
 #define r2h(r)	
 cpdef double r2h(double r):
+    """COnvert angle in radians into hours.
+
+    :param r: Angle in radians.
+    :type r: float
+
+    :return: Angle in hours.
+    :rtype: float
+
+    >>> tpm.r2h(tpm.M_PI)
+    12.0
+    >>> tpm.r2h(-tpm.M_PI)
+    -12.0
+    """
     return _tpm_times.r2h(r)
 
 #define d2as(d)	
 cpdef double d2as(double d):
+    """Convert angle in degrees into arc-seconds.
+
+    :param d: Angle in degrees.
+    :type d: float
+
+    :return: Angle in arc-seconds.
+    :rtype: float
+
+   >>> tpm.d2as(1.0)
+   3600.0
+   >>> tpm.d2as(-1.0)
+   -3600.0
+    """
     return _tpm_times.d2as(d)
 
 #define as2d(x)	
-cpdef double as2d(double x):
-    return _tpm_times.as2d(x)
+cpdef double as2d(double arcs):
+    """Convert angle in arc-seconds into degrees.
+
+    :param arcs: Angle in arc-seconds.
+    :type arcs: float
+
+    :return: Angle in degrees.
+    :rtype: float
+
+    >>> tpm.as2d(3600.0)
+    1.0
+    >>> tpm.as2d(-3600.0)
+    -1.0
+    """
+    return _tpm_times.as2d(arcs)
 
 #define as2h(x)	
-cpdef double as2h(double x):
-    return _tpm_times.as2h(x)
+cpdef double as2h(double arcs):
+    """Convert angle in arc-seconds into hours.
+
+    :param arcs: Angle in arc-seconds.
+    :type arcs: float
+
+    :return: Angle in hours.
+    :rtype: float
+
+    >>> tpm.as2h(3600.0*180.0)
+    12.0
+    >>> tpm.as2h(-3600.0*180.0)
+    -12.0
+    """
+    return _tpm_times.as2h(arcs)
 
 #define h2as(h)	
 cpdef double h2as(double h):
+    """Convert angle in hours into arc-seconds.
+
+    :param h: Angle in hours.
+    :type h: float
+
+    :return: Angle in arc-seconds.
+    :rtype: float
+
+    >>> tpm.h2as(12.0)
+    648000.0
+    >>> tpm.h2as(-12.0)
+    -648000.0
+    """
     return _tpm_times.h2as(h)
 
 #define r2as(r)	
 cpdef double r2as(double r):
+    """Convert angle in radians into arc-seconds.
+
+    :param r: Angle in radians.
+    :type r: float
+
+    :return: Angle in arc-seconds.
+    :rtype: float
+
+    >>> tpm.r2as(tpm.M_PI)
+    648000.0
+    >>> tpm.r2as(-tpm.M_PI)
+    -648000.0
+    """
     return _tpm_times.r2as(r)
 
 #define as2r(x)	
-cpdef double as2r(double x):
-    return _tpm_times.as2r(x)
+cpdef double as2r(double arcs):
+    """Convert angle in arc-seconds into radians.
+
+    :param arcs: Angle in arc-seconds.
+    :type arcs: float
+
+    :return: Angle in radians.
+    :rtype: float
+
+    >>> tpm.as2r(3600.0*180.0)
+    3.1415926535897931
+    >>> tpm.as2r(-3600.0*180.0)
+    -3.1415926535897931
+    """
+    return _tpm_times.as2r(arcs)

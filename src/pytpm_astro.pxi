@@ -24,7 +24,36 @@ PRECESS_INERTIAL   = _tpm_astro.PRECESS_INERTIAL
 PRECESS_ROTATING   = _tpm_astro.PRECESS_ROTATING 
 
 def tpm_data(TSTATE tstate, int action):
-    """Compute and set dependent TSTATE data."""
+    """Compute and set dependent TSTATE data.
+
+    :param tstate: A TSTATE object.
+    :type tstate: TSTATE
+    :param action: The action to perform.
+    :type action: integer
+
+    :return: None
+    :rtype: None
+
+    Given a TSTATE and an action, this function will perform the action
+    and set the various dependent properties of the TSTATE object.
+
+    The ``action`` can be one of
+
+    + ``TPM_INIT``
+        Perform initialization.
+    + ``TPM_FAST``
+        Calculate all fast changing properties.
+    + ``TPM_MEDIUM``
+        Calculate all properties that change at a medium rate.
+    + ``TPM_SLOW``
+        Calculate all properties that change slowly.
+    + ``TPM_REFRACTION``
+        Cacluate refraction coefficients.
+    + ``TPM_ALL``
+        Perform all calculations except ``TPM_REFRACTION``.
+
+    The TPM manual has more details on these quantities.
+    """
     _tpm_astro.tpm_data(&tstate._tstate, action)
 
 # If I use _tpm_tpm.N_TPM_STATES or N_TPM_STATES inplace of 22 then
@@ -101,17 +130,28 @@ cdef class PVEC(object):
 def tpm(PVEC pvec, int s1, int s2, double ep, double eq, TSTATE tstate):
     """Apply transition from state s1 to state s2.
     
-    :param pvec: a PVEC object with appropriate V6 members.
+    :param pvec: A PVEC object with appropriate V6 members.
     :type pvec: PVEC
-    :param s1: starting state
-    :type s1: integer (0 <= s1 < N_TPM_STATES)
-    :param s2: end state
-    :type s2: integer (0 <= s2 < N_TPM_STATES)
-    :param ep: epoch of the postion and velocity of s1
+    :param s1: Starting state (0 <= s1 < N_TPM_STATES).
+    :type s1: integer
+    :param s2: End state (0 <= s2 < N_TPM_STATES).
+    :type s2: integer
+    :param ep: Epoch of the postion and velocity of s1.
     :type ep: float
-    :param eq: equinox (of s1 and or s2)
+    :param eq: Equinox (of s1 and or s2, dependeing on transition).
     :type eq: float
-    :tstate: a TSTATE object with appropriate initial values.
+    :param tstate: A TSTATE object with appropriate initial values.
+    :type eq: TSTATE
+
+    :return: Final state (should be s2).
+    :rtype: integer
+    
+    This is the main TPM function, that call the looks up the state
+    tables and performs all required transformations to take the state
+    vector at ``pvec[s1]`` from state ``s1`` to state ``s2``. It stores
+    the resulting state vector in ``pvec[s2]``.
+
+    For more information see TPM manual and PyTPM reference.
     """
     if not 0 <= s1 < N_TPM_STATES:
         raise ValueError, "S1 must be in 0 <= S1 < N_TPM_STATES"
@@ -128,22 +168,56 @@ def tpm(PVEC pvec, int s1, int s2, double ep, double eq, TSTATE tstate):
     return t
 
 def tpm_state(int s):
-    """Return state name given state id."""
+    """Return state name given state id.
+
+    :param s: State id.
+    :type s: integer
+
+    :return: State name.
+    :rtype: string
+
+    Given an integer id for a state, this function returns a
+    descriptive name for the state.
+
+    >>> tpm.tpm_state(tpm.TPM_S06)
+    'Helio. mean FK5'
+    >>> tpm.tpm_state(tpm.TPM_S04)
+    'IAU 1958 Galactic'
+    >>> tpm.tpm_state(tpm.TPM_S20)
+    'Topo. obs. HA/Dec'
+    >>> tpm.tpm_state(tpm.TPM_S19)
+    'Topo. obs. Az/El'
+    """
     return _tpm_astro.tpm_state(s)
 
 def delta_AT(utc):
     """Return Delta AT = TAI - UTC for the given UTC.
 
+    :param utc: UTC as a Julian date.
+    :type utc: float
+
+    :return: Delta AT = TAI - UTC in seconds.
+    :rtype: float
+
+    **IMPORTANT**
+    
     The file src/tpm/delta_AT.c must be updated when Delta AT is
-    changed by IERS.
+    changed by the IERS and PyTPM Cython code must re-compiled.
     """
     return _tpm_astro.delta_AT(utc)
 
 def delta_T(ut1):
     """Return Delta T = TT - UT1 for the given UT1.
 
-    Delta T = ET - UT1 for dates before 1984.0 and Delta T = TDT - UT1
-    for dates on and after 1984.0. TDT was the name of TT between
+    :param ut1: UT1 as a Julian date.
+    :type ut1: float
+    
+    :return: Delta T = TT - UT1 in seconds.
+    :rtype: float
+
+    This function returns the ``TT - UT1`` value for the given UT1. The
+    value returned is ``ET - UT1`` for dates before 1984.0 and ``TDT -
+    UT1`` for dates on and after 1984.0. TDT was the name of TT between
     1984.0 and 2000.0.
 
     A built-in model is used for calculating this quantity.
@@ -153,99 +227,262 @@ def delta_T(ut1):
 def delta_UT(utc):
     """Return Delta UT = UT1 - UTC for the given UTC.
 
-    This is calculated by taking the difference of delta_ET and
-    delta_T. The later is calculated using a built-in model. For the
-    latter the input time argument must be UT1, but the error in using
-    UTC should be small.
+    :param utc: UTC as a Julian date.
+    :type utc: float
+
+    :return: UT1 - UTC for in seconds.
+    :rtype: float
+    
+    The value of ``UT1 - UTC`` is calculated by taking the difference
+    of delta_ET and delta_T. The later is calculated using a built-in
+    model. For the latter the input time argument must be UT1, but the
+    error in using UTC should be small.
     """
     return _tpm_astro.delta_UT(utc)
 
 def delta_ET(utc):
-    """Return Delta ET = ET - UTC for the given UTC."""
+    """Return Delta ET = ET - UTC for the given UTC.
+
+    :param utc: UTC as a Julian date.
+    :type utc: float
+
+    :return: Delta ET = ET - UTC in seconds.
+    :rtype: float
+    """
     return _tpm_astro.delta_ET(utc)
 
 def delta_TT(utc):
-    """Return Delta TT = TDT - UTC for the given UTC."""
+    """Return Delta TT = TDT - UTC for the given UTC.
+
+    :param utc: UTC as a Julian date.
+    :type utc: float
+
+    :return: Delta TT = TDT - UTC.
+    :rtype: float
+    """
     return _tpm_astro.delta_TT(utc)
 
 def tdt2tdb(tdt):
-    """Return TDB for the given TDT."""
+    """Return TDB for the given TDT.
+
+    :param tdt: TDT as a Julian date.
+    :type tdt: float
+
+    :return: TDB as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.tdt2tdb(tdt)
 
 def ut12gmst(ut1):
-    """Return GMST for the given UT1."""
+    """Return GMST for the given UT1.
+
+    :param ut1: UT1 as a Julian date.
+    :type ut1: float
+
+    :return: GMST as an angle in radians.
+    :rtype: float
+
+    Given a UT1 Julian date, this function returns the Greenwich Mean
+    Sidereal Time as an angle in radians in the range (0, 2π).
+    """
     return _tpm_astro.ut12gmst(ut1)
     
 def et2tdt(et):
-    """Return TDT for the given ET."""
+    """Return TDT for the given ET.
+
+    :param et: ET as a Julian date.
+    :type et: float
+
+    :return: TDT as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.et2tdt(et)
 
 def tai2tdt(tai):
-    """Return TDT for the given TAI."""
+    """Return TDT for the given TAI.
+
+    :param tai: TAI as a Julian date.
+    :type tai: float
+
+    :return: TDT as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.tai2tdt(tai)
 
 def tdt2et(tdt):
-    """Return ET for the given TDT."""
+    """Return ET for the given TDT.
+
+    :param tdt: TDT as a Julian date.
+    :type tdt: float
+
+    :return: ET as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.tdt2et(tdt)
 
 def ut12et(ut1):
-    """Return ET for the given UT1."""
+    """Return ET for the given UT1.
+
+    :param ut1: UT1 as a Julian date.
+    :type ut1: float
+
+    :return: ET as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.ut12et(ut1)
 
 def utc2et(utc):
-    """Return ET for the given UTC."""
+    """Return ET for the given UTC.
+    
+    :param utc: UTC as a Julian date.
+    :type utc: float
+
+    :return: ET as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.utc2et(utc)
 
 def utc2tdt(utc):
-    """Return TDT for the given UTC."""
+    """Return TDT for the given UTC.
+
+    :param utc: UTC as a Julian date.
+    :type utc: float
+
+    :return: TDT as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.utc2tdt(utc)
 
 def utc2ut1(utc):
-    """Return UT1 for the given UTC."""
+    """Return UT1 for the given UTC.
+
+    :param utc: UTC as a Julian date.
+    :type utc: float
+
+    :return: UT1 as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.utc2ut1(utc)
     
 def et2ut1(et):
-    """Return UT1 for the given ET."""
+    """Return UT1 for the given ET.
+
+    :param et: ET as a Julian date.
+    :type et: float
+
+    :return: UT1 as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.et2ut1(et)
 
 def et2utc(et):
-    """Return UTC for the given ET."""
+    """Return UTC for the given ET.
+
+    :param et: ET as a Julian date.
+    :type et: float
+
+    :return: UTC as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.et2utc(et)
 
 def tai2utc(tai):
-    """Return UTC for the given TAI."""
+    """Return UTC for the given TAI.
+
+    :param tai: TAI as a Julian date.
+    :type tai: float
+
+    :return: UTC as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.tai2utc(tai)
 
 def tdt2tai(tdt):
-    """Return TAI for the given TDT."""
+    """Return TAI for the given TDT.
+
+    :param tdt: TDT as a Julian date.
+    :type tdt: float
+
+    :return: TAI as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.tdt2tai(tdt)
 
 def tdt2utc(tdt):
-    """Return UTC for the given TDT."""
+    """Return UTC for the given TDT.
+
+    :param tdt: TDT as a Julian date.
+    :type tdt: float
+
+    :return: UTC as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.tdt2utc(tdt)
 
 def ut12utc(ut1):
-    """Return UTC for the given UT1."""
+    """Return UTC for the given UT1.
+
+    :param ut1: UT1 as a Julian date.
+    :type ut1: float
+
+    :return: UTC as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.ut12utc(ut1)
 
 def et2tai(et):
-    """Return TAI for the given ET."""
+    """Return TAI for the given ET.
+
+    :param et: ET as a Julian date.
+    :type et: float
+
+    :return: TAI as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.et2tai(et)
 
 def et2tdb(et):
-    """Return TDB for the given ET."""
+    """Return TDB for the given ET.
+
+    :param et: ET as a Julian date.
+    :type et: float
+
+    :return: TDB as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.et2tdb(et)
 
 def tai2et(tai):
-    """Return ET for the given TAI."""
+    """Return ET for the given TAI.
+
+    :param tai: TAI as a Julian date.
+    :type tai: float
+
+    :return: ET as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.tai2et(tai)
 
 def tai2tdb(tai):
-    """Return TDB for the given TAI."""
+    """Return TDB for the given TAI.
+
+    :param tai: TAI as a Julian date.
+    :type tai: float
+
+    :return: TDB as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.tai2tdb(tai)
 
 def tai2ut1(tai):
-    """Return UT1 for the given TAI."""
+    """Return UT1 for the given TAI.
+
+    :param tai: TAI as a Julian date.
+    :type tai: float
+
+    :return: UT1 as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.tai2ut1(tai)
 
 #def tdb2et(tdb):
@@ -265,27 +502,62 @@ def tai2ut1(tai):
 #    return _tpm_astro.tdb2utc(tdb)
 
 def tdt2ut1(tdt):
-    """Return UT1 for the given TDT."""
+    """Return UT1 for the given TDT.
+
+    :param tdt: TDT as a Julian date.
+    :type tdt: float
+
+    :return: UT1 as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.tdt2ut1(tdt)
 
 def ut12tai(ut1):
-    """Return TAI for the given UT1."""
+    """Return TAI for the given UT1.
+
+    :param ut1: UT1 as a Julian date.
+    :type ut1: float
+
+    :return: TAI as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.ut12tai(ut1)
 
 def ut12tdb(ut1):
-    """Return TDB for the given UT1."""
+    """Return TDB for the given UT1.
+
+    :param ut1: UT1 as a Julian date.
+    :type ut1: float
+
+    :return: TDB as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.ut12tdb(ut1)
 
 def ut12tdt(ut1):
-    """Return TDT for the given UT1."""
+    """Return TDT for the given UT1.
+
+    :param ut1: UT1 as a Julian date.
+    :type ut1: float
+
+    :return: TDT as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.ut12tdt(ut1)
 
 def utc2tdb(utc):
-    """Return TDB for the given UTC."""
+    """Return TDB for the given UTC.
+
+    :param utc: UTC as a Julian date.
+    :type utc: foat
+
+    :return: TDB as a Julian date.
+    :rtype: float
+    """
     return _tpm_astro.utc2tdb(utc)
 
 def et2ut(et):
-    """Return UT for the given ET; same as et2ut1(et)"""
+    """Return UT for the given ET; same as et2ut1(et)."""
     return _tpm_astro.et2ut(et)
 
 def ut2et(ut):
@@ -299,41 +571,83 @@ def ut2gmst(ut):
 def cat2v6(ra, de, pmra, pmdec, px, rv, C=36525.0):
     """Create a V6C vector from catalog entry.
 
-    :param ra: Right Ascension
-    :type ra: Float (radians)
-    :param de: Declination
-    :type de: Float (radians)
-    :param pmra: Proper motion in ra (not pmra*cos(de))
-    :type pmra: Float (arcseconds/century)
-    :param pmde: Proper motion in de
-    :type pmde: Float (arcseconds/century)
-    :param px: Parallax
-    :type px: Float (arcseconds)
-    :param rv: Radial velocity
-    :type rv: Float (km/s)
-    :param C: Days in a century
-    :type C: Float (days)
+    :param ra: Right Ascension in radians.
+    :type ra: float
+    :param de: Declination in radians.
+    :type de: float
+    :param pmra: Proper motion in ra (not pmra*cos(de)) as "/century.
+    :type pmra: float 
+    :param pmde: Proper motion in de as "/century.
+    :type pmde: float
+    :param px: Parallax in arc-seconds.
+    :type px: float
+    :param rv: Radial velocity in km/s.
+    :type rv: float
+    :param C: Days in a century, used in pmra and pmde.
+    :type C: float
 
     :return: V6C vector
-    :rtype: tpm.V6C
-    
-    A Julian century has 36525 days (tpm.CJ) and a tropical century has
-    36524.21987817305 days (tpm.CB).
+    :rtype: V6C
+
+    This function is used to convert a catalog entry for an object into
+    a ``V6C`` vector.
+
+    Internally TPM uses velocities in AU/day, and needs to know how
+    many days are in a century. The porper motions can be in
+    arc-seconds per Julian century or arc-seconds per tropical century.
+    A Julian century has 36525 days (``tpm.CJ``) and a tropical century
+    has 36524.21987817305 days (``tpm.CB``).
     """
     v6 = V6C()
     v6.setV6(_tpm_astro.cat2v6(ra, de, pmra, pmdec, px, rv, C))
     return v6
     
 def v62cat(V6C v6, C=36525.0):
-    """Return catalog quantites given a V6C vector."""
+    """Return catalog quantites given a V6C vector.
+    
+    :param v6: A V6C object.
+    :type v6: V6C
+    :param C: Number of days in a century.
+    :type C: float
+
+    :return: A dictionary containing catalog quantities for the
+             object. The keys are: ``ra`` for right ascension in
+             radians, ``de`` for declination in radians, ``pmra`` for
+             proper motion in ra (not pmra*cos(de)) in "/century,
+             ``pmde`` for proper motion in de in "/century, ``px`` for
+             parallax in arc-seconds and ``rv`` for radial velocity in
+             km/s.
+    :rtype: dict
+    """
     cdef double ra=0.0, de=0.0, pmra=0.0, pmde=0.0, px=0.0, rv=0.0
     _tpm_astro.v62cat(&ra, &de, &pmra, &pmde, &px, &rv, v6.getV6(), C)
     return dict(ra=ra, de=de, pmra=pmra, pmde=pmde, px=px, rv=rv)
     
-def proper_motion(V6C v6, start, end):
-    """Apply proper motion to the given V6C vector."""
+def proper_motion(V6C v6, end, start):
+    """Apply proper motion to the given V6C vector.
+
+    :param v6: A V6C object.
+    :type v6: V6C
+    :param end: End (to) time in days (can be Julian date).
+    :type end: float
+    :param start: Starting (from) time in days (can be Julian date).
+    :type start: float
+
+    :return: A V6C object containing the new position.
+    :rtype: V6C
+
+    Given starting time and end time, theis function applies proper
+    motion to the coordinates in the given V6C object. A simple linear
+    multiplication of velocity with time is performed, followed by 
+    addition of this increment to the position coordinates.
+
+    The difference, ``end - start``, should be the number of days in
+    the time interval. Hence Julian dates can be used. The velocities
+    in V6C are stored as AU/day and hence time interval must be in
+    days.
+    """
     cdef _tpm_astro.V6 _v6
     v61 = V6C()
-    _v6 = _tpm_astro.proper_motion(v6.getV6(), start, end)
+    _v6 = _tpm_astro.proper_motion(v6.getV6(), end, start)
     v61.setV6(_v6)
     return v61

@@ -239,6 +239,7 @@ cdef class V3SP(V3):
         s = _tpm_vec.v3fmt(self.getV3())
         return unicode(s)
 
+
 cdef class V6(object):
     """Class that wraps _tpm_vec.V6; for use from Cython only."""
     cdef _tpm_vec.V6 _v6

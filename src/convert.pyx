@@ -65,54 +65,73 @@ def convert(ra, de,
             double wavelength=0.550):
     """Utility function for performing coordinate conversions.
 
-    :param ra: Input angle, like Right Ascension, in degrees
-    :type ra: List of floats (degrees)
-    :param de: Input angle, like Declination, in degrees
-    :type de: List of floats (degrees)
-    :param s1: Initial state
-    :type s1: Integer
-    :param s2: Final state
-    :type s1: Integer
-    :param epoch: Epoch of input coordinates as a Julian date
-    :type epoch: Float (Julian date)
-    :param equniox: Equinox of input or output coordinates
-    :type equinox: Float (Julian date)
-    :param utc: "Current" UTC time as a Julian date
-    :type utc: Float (Julian date)
-    :param delta_at: TAI - UTC in seconds
-    :type delta_at: Float (seconds)
-    :param delta_ut: UT1 - UTC in seconds
-    :type delta_ut: Float (seconds)
-    :param lon: Geodetic longitude in degrees
-    :type lon: Float (degrees)
-    :param lat: Geodetic latitude in degrees
-    :type lat: Float (degrees)
-    :param alt: Altitude in meters
-    :type alt: Float (meters)
-    :param xpole: Polar motion in radians
-    :type xpole: Float (radians)
-    :param ypole: Ploar motion in radians
-    :type ypole: Float (radians)
-    :param T: Ambient temperature in Kelvin
-    :type T: Float (Kelvin)
-    :param P: Ambient pressure in millibars
-    :type P: Float (millibars)
-    :param H: Ambient humidity in the range 0-1
-    :type H: Float (fraction between 0-1)
-    :param wavelength: Wavelength of observation in microns
-    :type wavelength: Float (microns)
+    :param ra: Input longitudinal angle, like ra, in degrees.
+    :type ra: list of floats
+    :param de: Input latitudinal angle, like de, in degrees.
+    :type de: list of floats
+    :param s1: Initial state.
+    :type s1: integer
+    :param s2: Final state.
+    :type s2: integer
+    :param epoch: Epoch of input coordinates as a Julian date.
+    :type epoch: float
+    :param equniox: Equinox of input or output coordinates.
+    :type equinox: float
+    :param utc: "Current" UTC time as a Julian date.
+    :type utc: float
+    :param delta_at: TAI - UTC in seconds.
+    :type delta_at: float
+    :param delta_ut: UT1 - UTC in seconds.
+    :type delta_ut: float
+    :param lon: Geodetic longitude in degeres.
+    :type lon: float    
+    :param lat: Geodetic latitude in degrees.
+    :type lat: float
+    :param alt: Altitude in meters.
+    :type alt: float
+    :param xpole: Polar motion in radians.
+    :type xpole: float
+    :param ypole: Ploar motion in radians.
+    :type ypole: float
+    :param T: Ambient temperature in Kelvin.
+    :type T: float
+    :param P: Ambient pressure in millibars.
+    :type P: float
+    :param H: Ambient humidity in the range 0-1.
+    :type H: float
+    :param wavelength: Wavelength of observation in microns.
+    :type wavelength: float
 
     :return: List of output angles, (ra_like, de_like), in degrees
-    :rtype:  List of 2-element tuples containing floats
+    :rtype:  List of 2-element tuples containing floats.
 
-    This is a convienence function for perform corodinate
-    transformations. This function takes all independent arguments for
-    defining a a TPM STATE and then calculates all the dependent
-    quantities of the TPM STATE once and only once. Then it performs
-    the required conversion on the given list of coordinates, without
-    changing the TPM STATE. It returns a list of 2-element tuples, with
-    each tuple containing the ra like angle and the de like angles, in
-    degrees.
+    Most often we just want to convert two angles from one coordinate
+    system into another. We do not worry about proper motions and all
+    conversions happen at the same "current time". This simplies the
+    procedure a lot. Given a list of coordinates, most of the
+    calculations need to be performed only once.
+
+    This function performs such as coordinate conversion. It takes a
+    list of ra like longitudinal angles in degrees, a list of de like
+    latitudinal angles and all parameters needed for performing a
+    particular transformation. All of these parameters have defualts.
+
+    The default location is KPNO and the values are taken from the TPM
+    C code.
+
+    The TPM state data structure is initialized, the independent
+    parameters are set and all the dependent parameters are
+    calculated. That is using ``tpm_data(tstate, TPM_INIT)``. This
+    calculation is done only once. Then each of the coordinates are
+    converted, by creating a ``V6`` vector and calling ``tpm()``.
+
+    The returned result is a list of tuples, where each tuple has the
+    final ra like angle as the first element, and the final de like
+    angle as the second element.
+    
+    For details on the parameters see the PyTPM reference documentation
+    and the TPM manual. The latter gives an example for the usage of
+    this function.
     """
     try:
         len(ra)
@@ -127,7 +146,7 @@ def convert(ra, de,
 
     lon = tpm.d2r(lon)
     lat = tpm.d2r(lat)
-    
+
     ra_out, de_out = _convert(ra, de, s1,  s2, epoch,  equinox,
                               utc,  delta_ut, delta_at, lon, lat,
                               alt, xpole,  ypole, T,  P,  H,
