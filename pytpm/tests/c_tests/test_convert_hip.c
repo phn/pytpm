@@ -30,14 +30,14 @@ int main(){
   }
 
   for (i=0; i < NUMDATA; i++){
-    c = fscanf(fp,"%*lf %*lf %lf %lf %*lf %*lf %*lf %*lf %*lf %*lf",ra+i, de+i);
+    c = fscanf(fp,"%*lf %*lf %*lf %*lf %lf %lf %*lf %*lf %*lf %*lf",ra+i, de+i);
     if (c == EOF)
       break;
   }
   fclose(fp);
   
-  s1 = TPM_S06;
-  s2 = TPM_S05;
+  s1 = TPM_S05;
+  s2 = TPM_S03;
   ep = J2000;
   eq = J2000;
 
@@ -62,7 +62,7 @@ int main(){
     ra1_d = r2d(r2r(v6GetAlpha(v6)));
     de1_d = r2d(v6GetDelta(v6));
     
-    printf("%.8f %.8f\n", ra1_d, de1_d);
+    printf("%.9f %.9f\n", ra1_d, de1_d);
 
   }
 
