@@ -151,5 +151,6 @@ def convert(ra, de,
                               utc,  delta_ut, delta_at, lon, lat,
                               alt, xpole,  ypole, T,  P,  H,
                               wavelength)
-    
-    return [(tpm.r2d(i), tpm.r2d(j)) for i,j in zip(ra_out, de_out)]
+
+    x = [(tpm.r2d(tpm.r2r(i)), tpm.r2d(j)) for i,j in zip(ra_out, de_out)]
+    return x
