@@ -65,10 +65,10 @@ def convert(ra, de,
             double wavelength=0.550):
     """Utility function for performing coordinate conversions.
 
-    :param ra: Input longitudinal angle, like ra, in degrees.
-    :type ra: list of floats
-    :param de: Input latitudinal angle, like de, in degrees.
-    :type de: list of floats
+    :param ra: Input longitudinal angle or angles, like ra, in degrees.
+    :type ra: float
+    :param de: Input latitudinal angle or angles, like de, in degrees.
+    :type de: float
     :param s1: Initial state.
     :type s1: integer
     :param s2: Final state.
@@ -102,8 +102,8 @@ def convert(ra, de,
     :param wavelength: Wavelength of observation in microns.
     :type wavelength: float
 
-    :return: List of output angles, (ra_like, de_like), in degrees
-    :rtype:  List of 2-element tuples containing floats.
+    :return: Output angles, (ra_like, de_like), in degrees
+    :rtype:  One 2-element tuple, or a list of 2-element tuples, of floats
 
     Most often we just want to convert two angles from one coordinate
     system into another. We do not worry about proper motions and all
@@ -120,14 +120,15 @@ def convert(ra, de,
     C code.
 
     The TPM state data structure is initialized, the independent
-    parameters are set and all the dependent parameters are
-    calculated. That is using ``tpm_data(tstate, TPM_INIT)``. This
-    calculation is done only once. Then each of the coordinates are
-    converted, by creating a ``V6`` vector and calling ``tpm()``.
+    parameters are set, and all the dependent parameters are calculated
+    using ``tpm_data(tstate, TPM_INIT)``. This calculation is done only
+    once. Then each of the coordinates are converted, by creating a
+    ``V6`` vector and calling ``tpm()``.
 
     The returned result is a list of tuples, where each tuple has the
     final ra like angle as the first element, and the final de like
-    angle as the second element.
+    angle as the second element. If the input coordinates are single
+    values and not lists, then the output is a single 2-element tuple.
     
     For details on the parameters see the PyTPM reference documentation
     and the TPM manual. The latter gives an example for the usage of
@@ -153,4 +154,6 @@ def convert(ra, de,
                               wavelength)
 
     x = [(tpm.r2d(tpm.r2r(i)), tpm.r2d(j)) for i,j in zip(ra_out, de_out)]
+    if len(x) == 1:
+        return x[0]
     return x
