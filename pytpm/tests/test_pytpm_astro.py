@@ -491,5 +491,42 @@ class TestEvp(unittest.TestCase):
             v6b, v6h = tpm.evp(tpm.tdt2tdb(t))
             self.verify(v6b, v6b_c[i])
             self.verify(v6h, v6h_c[i])
-            
+
+class TestEcl2equ(unittest.TestCase):
+    """Test ecl2equ function."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.x, v62.x, 8)
+        self.assertAlmostEqual(v61.y, v62.y, 8)
+        self.assertAlmostEqual(v61.z, v62.z, 8)
+        self.assertAlmostEqual(v61.xdot, v62.xdot, 8) 
+        self.assertAlmostEqual(v61.ydot, v62.ydot, 8) 
+        self.assertAlmostEqual(v61.zdot, v62.zdot, 8) 
+
+    def testEcl2equ(self):
+        """tpm.ecl2equ => Ecliptic to FK5 equatorial."""
+        v6 = tpm.V6S(r=1.0,alpha=tpm.M_PI/4.0,delta=tpm.M_PI/4.0)
+        v6 = v6.s2c()
+        v6.xdot = -0.034
+        v6.ydot = -0.12
+        v6.zdot = -0.9
+
+        v6 = tpm.ecl2equ(v6, tpm.d2r(23.7))
+
+        self.verify(v6, tpm.V6C(x=0.5, y=0.173611298, z=0.848445117,
+                                xdot=-0.034000000, ydot=0.251873488,
+                                zdot=-0.872330067))
+
         
+class TestEllab(unittest.TestCase):
+    """Test ellab function."""
+    def testEllab(self):
+        """tpm.ellab => apply elliptic aberration."""
+        # pytpm/tests/c_tests/ellab_test.c
+        v6 = tpm.V6S(r=1e9, alpha=tpm.h2r(20), delta=tpm.d2r(40.0))
+        v6 = v6.s2c()
+        v6 = tpm.ellab(tpm.J2000, v6, -1)
+        v6 = v6.c2s()
+        self.assertAlmostEqual(v6.r, 1e9,5)
+        self.assertAlmostEqual(tpm.r2h(tpm.r2r(v6.alpha)), 20.000007838,8)
+        self.assertAlmostEqual(tpm.r2d(tpm.r2r(v6.delta)), 39.999987574,8)
+    

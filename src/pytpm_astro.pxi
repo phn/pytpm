@@ -730,3 +730,42 @@ def evp(double tdb):
     v6h = V6C()
     v6h.setV6(_vh)
     return v6b, v6h
+
+def ecl2equ(V6C v6, double obl):
+    """Convert V6 from Ecliptic to FK5 Equatorial coordinates.
+    
+    :param v6: A state vector in Ecliptic system.
+    :type v6: V6C
+    :param obl: Obliquity at the time of interest.
+    :type obl: float
+
+    :return: A state vector in FK5 equatorial coordinates.
+    :rtype: V6C
+
+    A simple rotation through ``obl`` is performed to convert Ecliptic
+    coordinates into FK5 equatorial coordinates.
+    """
+    v = V6C()
+    v.setV6(_tpm_astro.ecl2equ(v6.getV6(), obl))
+    return v
+
+def ellab(double tdt, V6C star, int flag):
+    """Add or remove elliptic aberration.
+
+    :param tdt: Terrestrial Time (same as Terrestrial Dynamic Time).
+    :type tdt: float
+    :param star: A state vector for the object.
+    :type star: V6C
+    :param flag: Add correction if flag > 0 else subtract.
+    :type flag: integer
+
+    :return: A state vector with elliptic aberration applied to input.
+    :rtype: V6C
+
+    This function applies elliptic aberration to the the given state
+    vector, and return the resulting state vector. If ``flag > 0``
+    then the correction is added else it is subtracted.
+    """
+    v = V6C()
+    v.setV6(_tpm_astro.ellab(tdt, star.getV6(), flag))
+    return v
