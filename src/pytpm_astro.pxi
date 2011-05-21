@@ -706,3 +706,27 @@ def azel2hadec(V6C v6, double latitude):
     v = V6C()
     v.setV6(_tpm_astro.azel2hadec(v6.getV6(), latitude))
     return v
+
+def evp(double tdb):
+    """J2000 Barycentric and Heliocentric state vectors for Earth.
+
+    :param tdb: Barycentric Dynamic Time as a Julian date.
+    :type tdb: float
+
+    :return: A tuple of Barycentric and Heliocentric state vectors.
+    :rtype: (V6C, V6C)
+
+    Calculates Earth's J2000 Barycentric and Heliocentric state
+    vectors, for the given Barycentric Dynamic Time ``tdb``. The state
+    vector is calculated using a built-in model.
+
+    The first element of the tuple is the Barycentric vector and the
+    second is the Heliocentric vector.
+    """
+    cdef _tpm_vec.V6 _vb, _vh
+    _tpm_astro.evp(tdb, &_vb, &_vh)
+    v6b = V6C()
+    v6b.setV6(_vb)
+    v6h = V6C()
+    v6h.setV6(_vh)
+    return v6b, v6h

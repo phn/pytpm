@@ -464,5 +464,32 @@ class TestAzel2hadec(unittest.TestCase):
             self.assertAlmostEqual(tpm.r2d(tpm.r2r(v6.alpha)), k, 8)
             self.assertAlmostEqual(tpm.r2d(tpm.r2r(v6.delta)), l, 8)
             
+
+class TestEvp(unittest.TestCase):
+    """Test evp function."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.x, v62.x, 8)
+        self.assertAlmostEqual(v61.y, v62.y, 8)
+        self.assertAlmostEqual(v61.z, v62.z, 8)
+        self.assertAlmostEqual(v61.xdot, v62.xdot, 8) 
+        self.assertAlmostEqual(v61.ydot, v62.ydot, 8) 
+        self.assertAlmostEqual(v61.zdot, v62.zdot, 8) 
+
+    def testEvp(self):
+        """tpm.evp => Barycentric and Heliocentric V6C."""
+        # See pytpm/tests/c_tests/evp_test.c
+        tdt = [tpm.J2000, tpm.J1984]
+        v6b_c = [tpm.V6C(x=-0.184273673, y=0.884790492, z=0.383823230,
+                       xdot=-0.017202342, ydot=-0.002904995, zdot=-0.001259484),
+                 tpm.V6C(x=-0.167332100, y=0.896946944, z=0.388718633,
+                        xdot=-0.017240508, ydot=-0.002790623, zdot=-0.001209123)]
+        v6h_c = [tpm.V6C(x=-0.177134378, y=0.887424942, z=0.384742891,
+                         xdot=-0.017207714, ydot=-0.002898199, zdot=-0.001256438),
+                 tpm.V6C(x=-0.170373080, y=0.888493845, z=0.385246878,
+                         xdot=-0.017232243, ydot=-0.002792198, zdot=-0.001210002)]
+        for i,t in enumerate(tdt):
+            v6b, v6h = tpm.evp(tpm.tdt2tdb(t))
+            self.verify(v6b, v6b_c[i])
+            self.verify(v6h, v6h_c[i])
             
         
