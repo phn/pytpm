@@ -419,4 +419,50 @@ class TestProperMotion(unittest.TestCase):
         self.assertAlmostEqual(dms.dd, 4.0)
         self.assertAlmostEqual(dms.mm, 41.0)
         self.assertAlmostEqual(dms.ss, 36.1980, 3)
+
+        
+class TestAberrate(unittest.TestCase):
+    """Test aberrate function."""
+    def testaberrate(self):
+        """tpm.aberrate => aberrate function."""
+        v61 = tpm.V6C(x=1.0,y=2.0,z=3.0)
+        v62 = tpm.V6C(xdot=-0.5,ydot=-0.6,zdot=-0.00345)
+
+        v6 = tpm.aberrate(v61, v62, 1)
+        self.assertAlmostEqual(v6.x, 0.989194995, 8)
+        self.assertAlmostEqual(v6.y, 1.987033994, 8)
+        self.assertAlmostEqual(v6.z, 2.999925445, 8)
+        self.assertAlmostEqual(v6.xdot, 0.0)
+        self.assertAlmostEqual(v6.ydot, 0.0)
+        self.assertAlmostEqual(v6.zdot, 0.0)
+
+        v6 = tpm.aberrate(v61, v62, -1)
+        self.assertAlmostEqual(v6.x, 1.010805005, 8)
+        self.assertAlmostEqual(v6.y, 2.012966006, 8)
+        self.assertAlmostEqual(v6.z, 3.000074555, 8)
+        self.assertAlmostEqual(v6.xdot, 0.0)
+        self.assertAlmostEqual(v6.ydot, 0.0)
+        self.assertAlmostEqual(v6.zdot, 0.0)
+
+
+class TestAzel2hadec(unittest.TestCase):
+    """Test the azel2hadec function."""
+    az = [0,90,133.30805555555557]
+    el = [90, -45.0, 59.086111111111116]
+    lat = 43.07833
+    # From pytpm/tests/c_tests/azel2hadec_test.c
+    ha_c = [0.000000000, 233.854836313, 336.682858247]
+    dec_c = [43.078330000, 331.121606194, 19.182450965]
+    def testazel2hadec(self):
+        """tpm.azel2hadec => (AZ,EL) to (HA,DEC)"""
+        v6 = tpm.V6S(r=1e9)
+        for i,j,k,l in zip(self.az,self.el,self.ha_c,self.dec_c):
+            v6.alpha = tpm.d2r(i)
+            v6.delta = tpm.d2r(j)
+            v61 = tpm.azel2hadec(v6.s2c(), tpm.d2r(self.lat))
+            v6 = v61.c2s()
+            self.assertAlmostEqual(tpm.r2d(tpm.r2r(v6.alpha)), k, 8)
+            self.assertAlmostEqual(tpm.r2d(tpm.r2r(v6.delta)), l, 8)
+            
+            
         

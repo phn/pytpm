@@ -651,3 +651,58 @@ def proper_motion(V6C v6, end, start):
     _v6 = _tpm_astro.proper_motion(v6.getV6(), end, start)
     v61.setV6(_v6)
     return v61
+
+def aberrate(V6C p, V6C e, int flag):
+    """Apply aberration of light to a state vector.
+
+    :param p: The vector to which aberration must be applied.
+    :type p: V6C
+    :param e: The vector with aberration causing velocity component.
+    :type e: V6C
+    :param flag: Add aberration to ``p`` if flag >0 else subtract it.
+    :type flag: intger
+    
+    :return: The result of applying aberration to ``p``.
+    :rtype: V6C
+
+    The velocity components in ``e`` is taken to be the oberver's
+    velocity and the aberration correction is applied to the position
+    components in ``p``. The aberration is added to ``p`` is ``flag >
+    0`` else it is subtracted from ``p``. The velocity component of
+    ``p`` is, of-course, unchanged.
+
+    If ``e`` is the barycentric state vector of the Earth's, center
+    then we have geocentric aberration. If it is the sum of the above
+    with the observer's geocentric space-fixed mean state vector, then
+    we have topocentric aberration.
+
+    The algorithm uses vectors and hence the ``e`` can be for any
+    observer, not just Earth based observers.
+    """
+    cdef _tpm_astro.V6 _v6
+    _v6 = _tpm_astro.aberrate(p.getV6(), e.getV6(), flag)
+    v6 = V6C()
+    v6.setV6(_v6)
+    return v6
+
+def azel2hadec(V6C v6, double latitude):
+    """Convert V6C from (AZ, EL) to (HA, DEC).
+
+    :param v6: A state vector.
+    :type v6: V6C
+    :param latitude: Latitude in radians.
+    :type latitude: float
+
+    :return: State vector converted into (HA, DEC) system.
+    :rtype: V6C
+
+    Two simple rotations are performed on ``v6`` to convert it from
+    (AZ, EL) system into (HA, DEC) system.
+
+    The conversion from (AZ, EL) to (HA, DEC) does not require the full
+    setup of TPM and hence this function can be directly used for the
+    above conversion.
+    """
+    v = V6C()
+    v.setV6(_tpm_astro.azel2hadec(v6.getV6(), latitude))
+    return v
