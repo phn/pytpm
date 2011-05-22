@@ -492,6 +492,7 @@ class TestEvp(unittest.TestCase):
             self.verify(v6b, v6b_c[i])
             self.verify(v6h, v6h_c[i])
 
+            
 class TestEcl2equ(unittest.TestCase):
     """Test ecl2equ function."""
     def verify(self, v61, v62):
@@ -517,6 +518,28 @@ class TestEcl2equ(unittest.TestCase):
                                 zdot=-0.872330067))
 
         
+class TestEqu2ecl(unittest.TestCase):
+    """Test equ2ecl function."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.x, v62.x, 5)
+        self.assertAlmostEqual(v61.y, v62.y, 5)
+        self.assertAlmostEqual(v61.z, v62.z, 5)
+        self.assertAlmostEqual(v61.xdot, v62.xdot, 5) 
+        self.assertAlmostEqual(v61.ydot, v62.ydot, 5) 
+        self.assertAlmostEqual(v61.zdot, v62.zdot, 5) 
+
+    def testEcl2equ(self):
+        """tpm.equ2ecl => FK5 Equatorial to Ecliptic."""
+        v6 = tpm.V6C(x=0.5, y=0.173611298, z=0.848445117,
+                xdot=-0.034000000, ydot=0.251873488,
+                zdot=-0.872330067)
+        
+        v6 = tpm.equ2ecl(v6, tpm.d2r(23.7))
+
+        self.verify(v6, tpm.V6C(x=0.5, y=0.499999997, z=0.707106774,
+                                 xdot=-0.0340, ydot=-0.120, zdot=-0.9))
+
+        
 class TestEllab(unittest.TestCase):
     """Test ellab function."""
     def testEllab(self):
@@ -530,3 +553,59 @@ class TestEllab(unittest.TestCase):
         self.assertAlmostEqual(tpm.r2h(tpm.r2r(v6.alpha)), 20.000007838,8)
         self.assertAlmostEqual(tpm.r2d(tpm.r2r(v6.delta)), 39.999987574,8)
     
+
+class TestEqu2gal(unittest.TestCase):
+    """Test equ2gal function."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.r, v62.r, 2)
+        self.assertAlmostEqual(tpm.r2r(v61.alpha), tpm.r2r(v62.alpha), 2)
+        self.assertAlmostEqual(tpm.r2r(v61.delta), tpm.r2r(v62.delta), 2)
+    
+    def testEqu2gal(self):
+        """tpm.equ2gal => convert FK4 equatorial to Galactic."""
+        v6 = tpm.V6S(r=1e9,alpha=tpm.d2r(192.25), delta=tpm.d2r(27.4))
+        v6 = v6.s2c()
+        v6 = tpm.equ2gal(v6)
+        v6 = v6.c2s()
+        self.verify(v6, tpm.V6S(r=1e9, alpha=tpm.d2r(120.866),
+                                delta=tpm.d2r(90.0)))
+
+        
+class TestGal2equ(unittest.TestCase):
+    """Test gal2equ function."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.r, v62.r, 2)
+        self.assertAlmostEqual(tpm.r2r(v61.alpha), v62.alpha, 2)
+        self.assertAlmostEqual(tpm.r2r(v61.delta), v62.delta, 2)
+    
+    def testEqu2gal(self):
+        """tpm.equ2gal => convert Galactic to FK4 equatorial."""
+        v6 = tpm.V6S(r=1e9,alpha=tpm.d2r(120.0), delta=tpm.d2r(90.0))
+        v6 = v6.s2c()
+        v6 = tpm.gal2equ(v6)
+        self.verify(v6.c2s(), tpm.V6S(r=1e9, alpha=tpm.d2r(192.25),
+                                      delta=tpm.d2r(27.4))) 
+                               
+
+class TestEterms(unittest.TestCase):
+    """Test eterms."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.x, v62.x, 9)
+        self.assertAlmostEqual(v61.y, v62.y, 9)
+        self.assertAlmostEqual(v61.z, v62.z, 9)
+        self.assertAlmostEqual(v61.xdot, v62.xdot, 9) 
+        self.assertAlmostEqual(v61.ydot, v62.ydot, 9) 
+        self.assertAlmostEqual(v61.zdot, v62.zdot, 9) 
+
+    def testEterms(self):
+        """tpm.eterms => return e-terms of aberration."""
+        ep = [tpm.J2000, tpm.J1984]
+        v6c = [tpm.V6C(x=-0.0000016181, y=-0.0000003411,
+                       z=-0.0000001479),
+               tpm.V6C(x=-0.0000016206, y=-0.0000003341,
+                       z=-0.0000001449)]
+        for i,e in enumerate(ep):
+            v6 = tpm.eterms(e)
+            self.verify(v6, v6c[i])
+            
+            

@@ -749,6 +749,25 @@ def ecl2equ(V6C v6, double obl):
     v.setV6(_tpm_astro.ecl2equ(v6.getV6(), obl))
     return v
 
+def equ2ecl(V6C v6, double obl):
+    """Convert FK5 equatorial coordinates into Ecliptic coordinates.
+
+    :param v6: State vector to be transformed.
+    :type v6: V6C
+    :param obl: Obliquity at the time of interest.
+    :type obl: float
+
+    :return: State vector in Ecliptics coordinates.
+    :rtype: V6C
+
+    A simple rotation is performed to convert the given state vector
+    from FK5 Equatorial system into Ecliptic system, using the given
+    obliquity. 
+    """
+    v = V6C()
+    v.setV6(_tpm_astro.equ2ecl(v6.getV6(), obl))
+    return v
+    
 def ellab(double tdt, V6C star, int flag):
     """Add or remove elliptic aberration.
 
@@ -769,3 +788,56 @@ def ellab(double tdt, V6C star, int flag):
     v = V6C()
     v.setV6(_tpm_astro.ellab(tdt, star.getV6(), flag))
     return v
+
+def equ2gal(V6C v6):
+    """Convert state vector from FK4 Equatorial to Galactic.
+
+    :param v6: State vector in FK4 Equatorial coordinates.
+    :type v6: V6C
+
+    :return: State vector in Galactic coordinates.
+    :rtype: V6C
+
+    Applies three rotations after subtracting E-terms of
+    aberration. Galactic pole is (192.25, 27.4) degrees and longitude
+    of ascending node of the Galactic plane on the equator is 33
+    degrees. 
+    """
+    v = V6C()
+    v.setV6(_tpm_astro.equ2gal(v6.getV6()))
+    return v
+    
+def gal2equ(V6C v6):
+    """Convert state vector from Galactic to FK4 Equatorial.
+
+    :param v6: State vector in Galactic coordinates.
+    :type v6: V6C
+
+    :return: State vector in FK4 Equatorial coordinates.
+    :rtype: V6C
+
+    Applies three rotations and then adds E-terms of
+    aberration. Galactic pole is (192.25, 27.4) degrees and longitude
+    of ascending node of the Galactic plane on the equator is 33
+    degrees.
+    """
+    v = V6C()
+    v.setV6(_tpm_astro.gal2equ(v6.getV6()))
+    return v
+    
+def eterms(double ep):
+    """Return state vector contaiing e-terms of aberration.
+
+    :param ep: Epoch, as a Julian date, for the calculations.
+    :type ep: float
+
+    :return: State vector containing the e-terms.
+    :rtype: V6C
+
+    The state vector returned can be used to add or subtract the
+    e-terms with another state vector.
+    """
+    v6 = V6C()
+    v6.setV6(_tpm_astro.eterms(ep))
+    return v6
+    
