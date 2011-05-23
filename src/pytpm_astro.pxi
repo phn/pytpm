@@ -708,6 +708,29 @@ def azel2hadec(V6C v6, double latitude):
     v.setV6(_tpm_astro.azel2hadec(v6.getV6(), latitude))
     return v
 
+def hadec2azel(V6C v6, double latitude):
+    """Convert V6C from (HA, DEC) to (AZ, EL).
+
+    :param v6: A state vector.
+    :type v6: V6C
+    :param latitude: Latitude in radians.
+    :type latitude: float
+
+    :return: State vector converted into (AZ, EL) system.
+    :rtype: V6C
+
+    Two simple rotations are performed on ``v6`` to convert it from
+    (HA, DEC) system into (AZ, EL) system.  Azimuth is measured
+    **Eastwards from North**. 
+
+    The conversion from (HA, DEC) to (AZ, EL) does not require the full
+    setup of TPM and hence this function can be directly used for the
+    above conversion.
+    """
+    v = V6C()
+    v.setV6(_tpm_astro.hadec2azel(v6.getV6(), latitude))
+    return v
+
 def evp(double tdb):
     """J2000 Barycentric and Heliocentric state vectors for Earth.
 

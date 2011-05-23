@@ -465,6 +465,28 @@ class TestAzel2hadec(unittest.TestCase):
             self.assertAlmostEqual(tpm.r2d(tpm.r2r(v6.delta)), l, 8)
             
 
+class TestAzel2hadec(unittest.TestCase):
+    """Test the hadec2azel function."""
+    az = [0,90,133.30805555555557]
+    el = [90, -45.0, 59.086111111111116]
+    lat = 43.07833
+    # From pytpm/tests/c_tests/azel2hadec_test.c
+    ha_c = [0.000000000, 233.854836313, 336.682858247]
+    dec_c = [43.078330000, 331.121606194, 19.182450965]
+    def testHadec2azel(self):
+        """tpm.hadec2azel => (HA,DEC) to (AZ,EL)"""
+        v6 = tpm.V6S(r=1e9)
+        for i,j,k,l in zip(self.az,self.el,self.ha_c,self.dec_c):
+            j = tpm.r2d(tpm.r2r(tpm.d2r(j)))
+            v6.alpha = tpm.d2r(k)
+            v6.delta = tpm.d2r(l)
+            v61 = tpm.hadec2azel(v6.s2c(), tpm.d2r(self.lat))
+            v6 = v61.c2s()
+            self.assertAlmostEqual(tpm.r2d(tpm.r2r(v6.alpha)),
+                                   i, 8)
+            self.assertAlmostEqual(tpm.r2d(tpm.r2r(v6.delta)), j, 8)
+
+
 class TestEvp(unittest.TestCase):
     """Test evp function."""
     def verify(self, v61, v62):
