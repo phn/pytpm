@@ -647,3 +647,23 @@ class TestFk524(unittest.TestCase):
         # Why does R change?
         self.verify(v6, tpm.V6S(r=1e9, alpha=tpm.d2r(23.15678), delta=
                      tpm.d2r(54.3892)))
+
+
+class TestGeod2geoc(unittest.TestCase):
+    """Test geod2geoc."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.x, v62.x, 5)
+        self.assertAlmostEqual(v61.y, v62.y, 5)
+        self.assertAlmostEqual(v61.z, v62.z, 5)
+        self.assertAlmostEqual(v61.xdot, v62.xdot, 5) 
+        self.assertAlmostEqual(v61.ydot, v62.ydot, 5) 
+        self.assertAlmostEqual(v61.zdot, v62.zdot, 5) 
+
+    def testGeod2geoc(self):
+        """tpm.geod2geoc => Geodetic to geocentric."""
+        v6 = tpm.geod2geoc(tpm.d2r(30.567), tpm.d2r(46.713), 1500.0)
+        self.verify(v6,tpm.V6C(x=3773051.892626300,y=2228444.491846553,
+                              z=4621039.023174386,xdot=-162.500738326,
+                              ydot=275.135288555,zdot=0.0))
+
+        

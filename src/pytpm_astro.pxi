@@ -872,3 +872,23 @@ def fk524(V6C v6):
     v = V6C()
     v.setV6(_tpm_astro.fk524(v6.getV6()))
     return v
+
+def geod2geoc(double lon, double lat, double alt):
+    """Convert geodetic position to geocentric position.
+
+    :param lon: Longitude in radians (east positive).
+    :type lon: float
+    :param lat: Longitude in radians (north positive).
+    :type lat: float
+    :param alt: Altitude in meters.
+    :type alt: float
+
+    :return: A V6C vector with geocentric position.
+    :rtype: V6C
+
+    Converts the given geodetic position to a geocentric one and
+    returns the results in a V6C state vector.
+    """
+    v6 = V6C()
+    v6.setV6(_tpm_astro.geod2geoc(lon, lat, alt))
+    return v6
