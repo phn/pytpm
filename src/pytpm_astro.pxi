@@ -840,4 +840,35 @@ def eterms(double ep):
     v6 = V6C()
     v6.setV6(_tpm_astro.eterms(ep))
     return v6
-    
+
+def fk425(V6C v6):
+    """Precess state vector from FK4 to FK5.
+
+    :param v6: FK4 State vector to be transformed.
+    :type v6: V6C
+
+    :return: FK5 state vector.
+    :rtype: V6C
+
+    Perform FK4 to FK5 transformation of the given state vector. See
+    TPM manual and src/tpm/fk425.c for more details.
+    """
+    v = V6C()
+    v.setV6(_tpm_astro.fk425(v6.getV6()))
+    return v
+
+def fk524(V6C v6):
+    """Precess state vector from FK5 to FK4.
+
+    :param v6: FK5 State vector to be transformed.
+    :type v6: V6C
+
+    :return: FK4 state vector.
+    :rtype: V6C
+
+    Perform FK4 to FK5 transformation of the given state vector. See
+    TPM manual and src/tpm/fk524.c for more details.
+    """
+    v = V6C()
+    v.setV6(_tpm_astro.fk524(v6.getV6()))
+    return v

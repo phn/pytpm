@@ -609,3 +609,41 @@ class TestEterms(unittest.TestCase):
             self.verify(v6, v6c[i])
             
             
+class TestFk425(unittest.TestCase):
+    """Test fk425."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.r, v62.r, 5)
+        self.assertAlmostEqual(v61.alpha, v62.alpha, 5)
+        self.assertAlmostEqual(v61.delta, v62.delta, 5)
+
+    def testFk425(self):
+        """tpm.fk425 => B1950 FK4 to J2000 FK5."""
+        v6 = tpm.V6S(r=1e9, alpha=tpm.d2r(23.15678), delta=
+                     tpm.d2r(54.3892))
+        v6 = v6.s2c()
+        v6 = tpm.fk425(v6)
+        v6 = v6.c2s()
+        # Why does R change?
+        self.verify(v6, tpm.V6S(r=1000000000.0008671284,
+                                alpha=tpm.d2r(23.9534903408),
+                                delta=tpm.d2r(54.6442824316)))
+
+        
+class TestFk524(unittest.TestCase):
+    """Test fk524."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.r, v62.r, 1)
+        self.assertAlmostEqual(v61.alpha, v62.alpha, 5)
+        self.assertAlmostEqual(v61.delta, v62.delta, 5)
+
+    def testFk524(self):
+        """tpm.fk524 => J2000 FK5 to B1950 FK4."""
+        v6 = tpm.V6S(r=1e9,
+                                alpha=tpm.d2r(23.9534903408),
+                                delta=tpm.d2r(54.6442824316))
+        v6 = v6.s2c()
+        v6 = tpm.fk524(v6)
+        v6 = v6.c2s()
+        # Why does R change?
+        self.verify(v6, tpm.V6S(r=1e9, alpha=tpm.d2r(23.15678), delta=
+                     tpm.d2r(54.3892)))
