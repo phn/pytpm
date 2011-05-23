@@ -697,7 +697,8 @@ def azel2hadec(V6C v6, double latitude):
     :rtype: V6C
 
     Two simple rotations are performed on ``v6`` to convert it from
-    (AZ, EL) system into (HA, DEC) system.
+    (AZ, EL) system into (HA, DEC) system.  Azimuth is measured
+    **Eastwards from North**. 
 
     The conversion from (AZ, EL) to (HA, DEC) does not require the full
     setup of TPM and hence this function can be directly used for the
