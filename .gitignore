@@ -12,3 +12,4 @@ pytpm-ghpages.rst
 setup.cfg
 *.egg-info
 .coverage
+*flymake*
