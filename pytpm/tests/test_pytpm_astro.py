@@ -689,3 +689,49 @@ class TestGeod2geoc(unittest.TestCase):
                               ydot=275.135288555,zdot=0.0))
 
         
+class TestLdeflect(unittest.TestCase):
+    """Test ldeflect."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.r, v62.r, 5)
+        self.assertAlmostEqual(v61.alpha, v62.alpha, 5)
+        self.assertAlmostEqual(v61.delta, v62.delta, 5)
+        self.assertAlmostEqual(v61.rdot, v62.rdot, 5)
+        self.assertAlmostEqual(v61.alphadot, v62.alphadot, 5)
+        self.assertAlmostEqual(v61.deltadot, v62.deltadot, 5)
+                
+    def testLdelfect(self):
+        """tpm.ldeflect => apply GR light deflection."""
+        v6h = tpm.evp(tpm.J2000)[1]
+        v6 = tpm.V6S(r=1, alpha=tpm.d2r(34.56), delta=tpm.d2r(46.19))
+        v6 = v6.s2c()
+
+        v6 = tpm.ldeflect(v6, v6h, 1)
+
+        self.verify(v6.c2s(), tpm.V6S(r=1.0, alpha=0.6031857970,
+                                delta=0.8061675815))
+
+
+class TestPrecess(unittest.TestCase):
+    """Test precess."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.r, v62.r, 1)
+        self.assertAlmostEqual(v61.alpha, v62.alpha, 5)
+        self.assertAlmostEqual(v61.delta, v62.delta, 5)
+        self.assertAlmostEqual(v61.rdot, v62.rdot, 5)
+        self.assertAlmostEqual(v61.alphadot, v62.alphadot, 5)
+        self.assertAlmostEqual(v61.deltadot, v62.deltadot, 5)
+
+    def testPrecess(self):
+        """tpm.precess => precess V6 in inertial frame."""
+        v6 = tpm.V6S(r=1e9, alpha=tpm.d2r(34.1592),
+                     delta=tpm.d2r(12.9638), rdot=-0.123,
+                     alphadot=0.382, deltadot=1.0)
+
+        v6 = v6.s2c()
+        v6 = tpm.precess(tpm.J2000, tpm.J1984, v6, tpm.PRECESS_FK5)
+        v6 = v6.c2s()
+
+        self.verify(v6,tpm.V6S(r=1e9, alpha=0.5924126644,
+                               delta=0.2249726697,rdot=-0.1229999560,
+                               alphadot=0.3809705204,
+                               deltadot=1.0003321415))

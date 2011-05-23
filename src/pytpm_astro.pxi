@@ -916,3 +916,56 @@ def geod2geoc(double lon, double lat, double alt):
     v6 = V6C()
     v6.setV6(_tpm_astro.geod2geoc(lon, lat, alt))
     return v6
+
+def ldeflect(V6C star, V6C earth, int flag):
+    """Apply General Relativity deflection of light.
+
+    :param star: State vector the object of interest.
+    :type star: V6C
+    :param earth: State vector for Earth.
+    :type earth: V6C
+    :param flag: Correction is added is flag > 0 else subtracted.
+    :type flag: integer
+
+    :return: Light deflection corrected state vector.
+    :rtype: V6C
+
+    Applies the relativisty light deflection due to the Sun, to the
+    state vector in ``star``.
+    """
+    v6 = V6C()
+    v6.setV6(_tpm_astro.ldeflect(star.getV6(), earth.getV6(), flag))
+    return v6
+
+def precess(double start, double end, V6C v6, int pflag):
+    """Precess a state vector within an inertial frame.
+
+    :param start: Initial epoch as a Julian date.
+    :type start: float
+    :param end: Final epoch as a Julian date.
+    :type end: float
+    :param v6: The state vector to be precessed.
+    :type v6: V6C
+    :param pflag: Precession model to use.
+    :type pflag: integer
+
+    :return: Precessed state vector.
+    :rtype: V6C
+
+    This function precesses the given state vector, ``v6`` from
+    ``start`` to ``end`` using the given precession model
+    ``pflag``. The precession is carried out within an inertial
+    frame. So this cannot do FK4 to FK5, for example.
+
+    The values for ``pflag`` can be::
+    
+      PRECESS_NEWCOMB, PRECESS_ANDOYER, PRECESS_KINOSHITA,
+      PRECESS_LIESKE and PRECESS_FK5.
+
+    See TPM manual for definition of these constants.
+    """
+    v = V6C()
+    v.setV6(_tpm_astro.precess(start, end, v6.getV6(), pflag))
+    return v
+
+    
