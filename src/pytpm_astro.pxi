@@ -1026,6 +1026,66 @@ def obliquity_dot(double tdt):
     """
     return _tpm_astro.obliquity_dot(tdt)
 
+def refco(double lat=0.557744205098, double alt=2093.093,
+          double T=273.15, double P=1013.25, double rh=0.0,
+          double wavelength=0.550, double eps=1e-8):
+    """Refractions coefficients for use with ``refract()``.
 
+    :param lat: Observer's astronomical latitude (radians).
+    :type lat: float
+    :param alt: Observer's altitude above sea level (meters).
+    :type alt: float
+    :param T: Ambient temperature (Kelvin).
+    :type T: float
+    :param rh: Relative humidity (0-1).
+    :type rh: integer
+    :param wavelength: Wavelength in microns.
+    :type wavelength: float
+    :param eps: Fractional accuracy.
+    :type eps: float
+
+    :return: Refraction coefficients, as a 2-element tuple.
+    :rtype: (float, float)
+
+    The values returned are used for calculating change in zenith
+    distance that must be applied to correct for refraction. These
+    values are passed to the function ``refract()`` for this
+    calculation.
+
+    The default location is KPNO.
+
+    See src/tpm/refco.c for more details.
+    """
+    cdef double refa
+    cdef double refb
+    refa = 0.0
+    refb = 0.0
+    _tpm_astro.refco( lat,  alt,  T,  P, rh,  wavelength,  eps,
+                      &refa,  &refb)
+    return (refa, refb)
+
+def refract(double zx, double refa, double refb, int flag):
+    """Returns change in zenith distance due to refraction.
+
+    :param zx: Raw zenith distance, apparent or observed (radians).
+    :type zx: float
+    :param refa: Refraction coefficient from ``refco``.
+    :type refa: float
+    :param refa: Refraction coefficient from ``refco``.
+    :type refa: float
+    :param flag: Apply refraction if flag > 0, else remove.
+    :type flag: integer
+
+    :return: Correction to zenith distance due to refraction.
+    :rtype: float
     
+    Given a zenith distance ``zx``, this function returns the amount of
+    change in this quantity due to refraction. If ``flag > 0`` then
+    ``zx`` is taken to be the apparent zenith distance and the
+    calculated value must be added to ``zx`` to get the observed zenith
+    distance. If ``flag <= 0`` then ``zx`` is taken to be the observed
+    zenith distance and then the returned value must be subtracted from
+    ``zx`` to get the apparent zenith distance.
+    """
+    return _tpm_astro.refract(zx, refa, refb, flag)
     

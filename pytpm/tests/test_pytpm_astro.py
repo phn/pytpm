@@ -762,3 +762,13 @@ class TestOODot(unittest.TestCase):
             self.assertAlmostEqual(self.edot_c[i],
                                    tpm.obliquity_dot(j), 8)
             
+
+class TestRefract(unittest.TestCase):
+    """Test refco and refract."""
+    def testRefract(self):
+        """tpm.refco, tom.refract => refraction."""
+        refa, refb = tpm.refco(tpm.M_PI/3.0)
+        z = tpm.refract(tpm.M_PI/6.0, refa, refb, 1)
+        self.assertAlmostEqual(refa, 0.0002927535)
+        self.assertAlmostEqual(refb, -0.0000003077)
+        self.assertAlmostEqual(z, -0.000168896)
