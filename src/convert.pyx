@@ -46,8 +46,8 @@ cdef _convert(list ra, list de, int s1, int s2,
         tpm.tpm(pvec, s1, s2, epoch, equinox, tstate)
         v6 = pvec[s2].c2s()
     
-        ra_out.append(v6.alpha)
-        de_out.append(v6.delta)
+        ra_out.append(v6.nalpha)
+        de_out.append(v6.ndelta)
 
     return ra_out, de_out
 
@@ -153,7 +153,7 @@ def convert(ra, de,
                               alt, xpole,  ypole, T,  P,  H,
                               wavelength)
 
-    x = [(tpm.r2d(tpm.r2r(i)), tpm.r2d(j)) for i,j in zip(ra_out, de_out)]
+    x = [(tpm.r2d(i), tpm.r2d(j)) for i,j in zip(ra_out, de_out)]
     if len(x) == 1:
         return x[0]
     return x
