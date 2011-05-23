@@ -968,4 +968,64 @@ def precess(double start, double end, V6C v6, int pflag):
     v.setV6(_tpm_astro.precess(start, end, v6.getV6(), pflag))
     return v
 
+def eccentricity(double tdt):
+    """Eccentricity of Earth's orbit.
+
+    :param tdt: Terrestrial Dynamic Time (same as TT) as Julian date.
+    :type tdt: float
+
+    :return: Eccentricity of Earth's orbit.
+    :rtype: float
+
+    Returns the eccentricity of Earth's orbit at the given time. Time
+    is a TDT (same as TT) as a Julian date.
+    """
+    return _tpm_astro.eccentricity(tdt)
+
+def eccentricity_dot(double tdt):
+    """Rate of change in the eccentricity of Earth's orbit.
+
+    :param tdt: Terrestrial Dynamic Time (same as TT) as Julian date.
+    :type tdt: float
+
+    :return: Rate of change in the eccentricity of Earth's orbit.
+    :rtype: float
+
+    Returns the rate of change (per Julian century) in the eccentricity
+    of Earth's orbit at the given time. Time is a TDT (same as TT) as a
+    Julian date.
+    """
+    return _tpm_astro.eccentricity_dot(tdt)
+
+def obliquity(double tdt):
+    """Mean obliquity of Ecliptic(epoch J2000).
+
+    :param tdt: Terrestrial Dynamic Time (same as TT) as a Julian date.
+    :type tdt: float
+
+    :return: Obliquity of the Ecliptic in radians.
+    :rtype: float
+
+    The obliquity of the mean Ecliptic of J2000, at the given TDT (same
+    as TT) is returned. The returned value is in radians.
+    """
+    return _tpm_astro.obliquity(tdt)
+
+def obliquity_dot(double tdt):
+    """Rate of change of mean obliquity of Ecliptic(epoch J2000).
+
+    :param tdt: Terrestrial Dynamic Time (same as TT) as a Julian date.
+    :type tdt: float
+
+    :return: Rate of change of obliquity of the Ecliptic in ra/jcen.
+    :rtype: float
+
+    Returns the rate of change (radians per Julian century) in the
+    obliquity of Ecliptic at the given time. Time is a TDT (same as TT)
+    as a Julian date.
+    """
+    return _tpm_astro.obliquity_dot(tdt)
+
+
+    
     

@@ -735,3 +735,30 @@ class TestPrecess(unittest.TestCase):
                                delta=0.2249726697,rdot=-0.1229999560,
                                alphadot=0.3809705204,
                                deltadot=1.0003321415))
+
+        
+class TestEEDot(unittest.TestCase):
+    """Test eccentricity and eccentricity_dot."""
+    ep = [tpm.J2000, tpm.J1984]
+    e_c = [0.0167091134, 0.0167158397]
+    edot_c = [-0.0000420560, -0.0000420157]
+    def testEccentricity(self):
+        """tpm.eccentricity => Earth's eccentricity."""
+        for i,j in enumerate(self.ep):
+            self.assertAlmostEqual(self.e_c[i], tpm.eccentricity(j), 8)
+            self.assertAlmostEqual(self.edot_c[i],
+                                   tpm.eccentricity_dot(j), 8)
+            
+
+class TestOODot(unittest.TestCase):
+    """Test obliquity and obliquity_dot."""
+    ep = [tpm.J2000, tpm.J1984]
+    e_c = [0.4090928042, 0.4091291217]
+    edot_c = [-0.0002269655, -0.0002269633]
+    def testObliquity(self):
+        """tpm.obliquity => Earth's obliquity."""
+        for i,j in enumerate(self.ep):
+            self.assertAlmostEqual(self.e_c[i], tpm.obliquity(j), 8)
+            self.assertAlmostEqual(self.edot_c[i],
+                                   tpm.obliquity_dot(j), 8)
+            

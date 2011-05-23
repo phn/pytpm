@@ -192,6 +192,8 @@ cdef extern from "tpm/astro.h":
     double delta_UT(double utc)
     double eccentricity(double tdt)
     double eccentricity_dot(double tdt)
+    double obliquity(double tdt)
+    double obliquity_dot(double tdt)    
     double refract(double zx, double refa, double refb, int flag)
     double refraction(double zobs, double lat, double alt, double T, double P, double rh, double wavelength, double eps)
     double solar_perigee(double tdt)
