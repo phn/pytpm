@@ -48,7 +48,7 @@ else:
 # pytpm, pytpm.tpm, pytpm.convert, pytpm.tests.
 setup(
     name = "pytpm",
-    version = "0.5",
+    version = "0.6dev",
     cmdclass = {'build_ext': build_ext},
     packages = ['pytpm','pytpm.tests'],
     test_suite = "pytpm.tests",

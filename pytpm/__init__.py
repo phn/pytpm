@@ -10,7 +10,7 @@ telescope.
 :Contact: prasanthhn@gmail.com
 """
 
-__version__ = "0.5"
+__version__ = "0.6dev"
 __docformat__ = "restructuredtext en"
 
 import tpm
