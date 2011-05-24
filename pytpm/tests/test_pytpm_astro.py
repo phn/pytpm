@@ -772,3 +772,52 @@ class TestRefract(unittest.TestCase):
         self.assertAlmostEqual(refa, 0.0002927535)
         self.assertAlmostEqual(refb, -0.0000003077)
         self.assertAlmostEqual(z, -0.000168896)
+
+
+class TestSolarPerigee(unittest.TestCase):
+    """Test solar perigee."""
+    def testSolarPerigee(self):
+        """tpm.solar_perigee, tpm.solar_perigee_dot => orbit."""
+        sp = tpm.solar_perigee(tpm.J2000)
+        spd = tpm.solar_perigee_dot(tpm.J2000)
+
+        self.assertAlmostEqual(sp, 4.9382428903, 8)
+        self.assertAlmostEqual(spd, 0.0300213018, 8)
+    
+    
+class TestPrecessionAngles(unittest.TestCase):
+    """Test theta, zee and zeta."""
+    def testPrecessionAngles(self):
+        """tpm.theta, thetadot, zee, zeedot, theta and thetadot."""
+        self.assertAlmostEqual(tpm.theta(tpm.J1984, tpm.J2000,
+                                         tpm.PRECESS_FK5),
+                               0.0015549329, 8)
+
+        self.assertAlmostEqual(tpm.thetadot(tpm.J1984, tpm.J2000,
+                                         tpm.PRECESS_FK5),
+                               0.0000002660, 9)
+
+        self.assertAlmostEqual(tpm.zee(tpm.J1984, tpm.J2000,
+                                         tpm.PRECESS_FK5),
+                               0.0017890537, 8)
+
+        self.assertAlmostEqual(tpm.zeedot(tpm.J1984, tpm.J2000,
+                                         tpm.PRECESS_FK5),
+                               0.0000003061, 9)
+        
+        self.assertAlmostEqual(tpm.zeta(tpm.J1984, tpm.J2000,
+                                         tpm.PRECESS_FK5),
+                               0.0017889553, 8)
+
+        self.assertAlmostEqual(tpm.zetadot(tpm.J1984, tpm.J2000,
+                                         tpm.PRECESS_FK5),
+                               0.0000003061, 9)
+
+
+class TestNutations(unittest.TestCase):
+    """Test nutations."""
+    def testNutations(self):
+        """tpm.nutations => nutation in longitude and obliquity."""
+        delta_phi, delta_eps = tpm.nutations(tpm.J2000)
+        self.assertAlmostEqual(delta_phi, -0.0000675025, 9)
+        self.assertAlmostEqual(delta_eps, -0.0000279922, 9)

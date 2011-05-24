@@ -1089,3 +1089,192 @@ def refract(double zx, double refa, double refb, int flag):
     """
     return _tpm_astro.refract(zx, refa, refb, flag)
     
+def solar_perigee(double tdt):
+    """Mean longitude of the perigee of solar orbit.
+
+    :param tdt: Terresttrial Dynamic Time (same as TT).
+    :type tdt: float
+
+    :return: Longitude in radians.
+    :rtype: float
+    """
+    return _tpm_astro.solar_perigee(tdt)
+
+def solar_perigee_dot(double tdt):
+    """Rate of change of solar perigee.
+
+    :param tdt: Terresttrial Dynamic Time (same as TT).
+    :type tdt: float
+
+    :return: Rate of change of longitude in radians/julian century.
+    :rtype: float
+    """
+    return _tpm_astro.solar_perigee_dot(tdt)
+
+def theta(double start, double end, int pflag):
+    """FK4 and FK5 precession angles.
+
+    :param start: Starting time as a Julian date.
+    :type start: float
+    :param end: Ending time as a Julian date.
+    :type end: float
+    :param pflag: The model to use.
+    :type pflag: integer
+
+    :return: Precession angle for the given time period.
+    :rtype: float
+
+    Returns the precession angle for the model indicated by ``pflag``
+    for the time ``end``, starting from the time ``start``.
+
+    The values for ``pflag`` can be::
+    
+      PRECESS_NEWCOMB, PRECESS_ANDOYER, PRECESS_KINOSHITA,
+      PRECESS_LIESKE and PRECESS_FK5.
+
+    See TPM manual for definition of these constants.
+    """
+    return _tpm_astro.theta(start, end, pflag)
+
+def thetadot(double start, double end, int pflag):
+    """Rate of change of FK4 and FK5 precession angles.
+
+    :param start: Starting time as a Julian date.
+    :type start: float
+    :param end: Ending time as a Julian date.
+    :type end: float
+    :param pflag: The model to use.
+    :type pflag: integer
+
+    :return: Rate of change of precession angle for the given time period.
+    :rtype: float
+
+    Returns the rate of change of precession angle for the model
+    indicated by ``pflag`` for the time ``end``, starting from the time
+    ``start``.
+
+    The values for ``pflag`` can be::
+    
+      PRECESS_NEWCOMB, PRECESS_ANDOYER, PRECESS_KINOSHITA,
+      PRECESS_LIESKE and PRECESS_FK5.
+
+    See TPM manual for definition of these constants.
+    """
+    return _tpm_astro.thetadot(start, end, pflag)
+
+def zee(double start, double end, int pflag):
+    """FK4 and FK5 precession angles.
+
+    :param start: Starting time as a Julian date.
+    :type start: float
+    :param end: Ending time as a Julian date.
+    :type end: float
+    :param pflag: The model to use.
+    :type pflag: integer
+
+    :return: Precession angle for the given time period.
+    :rtype: float
+
+    Returns the precession angle for the model indicated by ``pflag``
+    for the time ``end``, starting from the time ``start``.
+
+    The values for ``pflag`` can be::
+    
+      PRECESS_NEWCOMB, PRECESS_ANDOYER, PRECESS_KINOSHITA,
+      PRECESS_LIESKE and PRECESS_FK5.
+
+    See TPM manual for definition of these constants.
+    """
+    return _tpm_astro.zee(start, end, pflag)
+
+def zeedot(double start, double end, int pflag):
+    """Rate of change of FK4 and FK5 precession angles.
+
+    :param start: Starting time as a Julian date.
+    :type start: float
+    :param end: Ending time as a Julian date.
+    :type end: float
+    :param pflag: The model to use.
+    :type pflag: integer
+
+    :return: Rate of change of precession angle for the given time period.
+    :rtype: float
+
+    Returns the rate of change of precession angle for the model
+    indicated by ``pflag`` for the time ``end``, starting from the time
+    ``start``.
+
+    The values for ``pflag`` can be::
+    
+      PRECESS_NEWCOMB, PRECESS_ANDOYER, PRECESS_KINOSHITA,
+      PRECESS_LIESKE and PRECESS_FK5.
+
+    See TPM manual for definition of these constants.
+    """
+    return _tpm_astro.zeedot(start, end, pflag)
+
+def zeta(double start, double end, int pflag):
+    """FK4 and FK5 precession angles.
+
+    :param start: Starting time as a Julian date.
+    :type start: float
+    :param end: Ending time as a Julian date.
+    :type end: float
+    :param pflag: The model to use.
+    :type pflag: integer
+
+    :return: Precession angle for the given time period.
+    :rtype: float
+
+    Returns the precession angle for the model indicated by ``pflag``
+    for the time ``end``, starting from the time ``start``.
+
+    The values for ``pflag`` can be::
+    
+      PRECESS_NEWCOMB, PRECESS_ANDOYER, PRECESS_KINOSHITA,
+      PRECESS_LIESKE and PRECESS_FK5.
+
+    See TPM manual for definition of these constants.
+    """
+    return _tpm_astro.zeta(start, end, pflag)
+
+def zetadot(double start, double end, int pflag):
+    """Rate of change of FK4 and FK5 precession angles.
+
+    :param start: Starting time as a Julian date.
+    :type start: float
+    :param end: Ending time as a Julian date.
+    :type end: float
+    :param pflag: The model to use.
+    :type pflag: integer
+
+    :return: Rate of change of precession angle for the given time period.
+    :rtype: float
+
+    Returns the rate of change of precession angle for the model
+    indicated by ``pflag`` for the time ``end``, starting from the time
+    ``start``.
+
+    The values for ``pflag`` can be::
+    
+      PRECESS_NEWCOMB, PRECESS_ANDOYER, PRECESS_KINOSHITA,
+      PRECESS_LIESKE and PRECESS_FK5.
+
+    See TPM manual for definition of these constants.
+    """
+    return _tpm_astro.zetadot(start, end, pflag)
+
+def nutations(tdt):
+    """Nutations in longitude and obliquity.
+
+    :param tdt: Terrestrial Dynamic Time (same as TDT).
+    :type tdt: float
+
+    :return: Nutations in radians (delta_phi, delta_eps).
+    :rtype: (float, float)
+    """
+    cdef double delta_phi, delta_eps
+    delta_phi = 0.0
+    delta_eps = 0.0
+    _tpm_astro.nutations(tdt, &delta_phi, &delta_eps)
+    return (delta_phi, delta_eps)
