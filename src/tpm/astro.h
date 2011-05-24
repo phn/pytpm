@@ -159,7 +159,7 @@ extern M6 precess_m(double j1, double j2, int pflag, int sflag);
 extern V6 aberrate(V6 p, V6 e, int flag);
 /*extern V6 altaz(V6 object, V6 zenith);*/
 extern V6 azel2hadec(V6 v6, double latitude);
-extern V6 barvel(double tdb);
+/*extern V6 barvel(double tdb);*/
 extern V6 cat2v6r1(double r, double d, double rd, double dd, double px, double rv, double C);
 extern V6 cat2v6r2(double r, double d, double rd, double dd, double px, double rv, double C);
 extern V6 cat2v6u1(double r, double d, double rd, double dd, double px, double rv, double C);

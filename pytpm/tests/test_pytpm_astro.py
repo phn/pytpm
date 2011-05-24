@@ -419,4 +419,405 @@ class TestProperMotion(unittest.TestCase):
         self.assertAlmostEqual(dms.dd, 4.0)
         self.assertAlmostEqual(dms.mm, 41.0)
         self.assertAlmostEqual(dms.ss, 36.1980, 3)
+
         
+class TestAberrate(unittest.TestCase):
+    """Test aberrate function."""
+    def testaberrate(self):
+        """tpm.aberrate => aberrate function."""
+        v61 = tpm.V6C(x=1.0,y=2.0,z=3.0)
+        v62 = tpm.V6C(xdot=-0.5,ydot=-0.6,zdot=-0.00345)
+
+        v6 = tpm.aberrate(v61, v62, 1)
+        self.assertAlmostEqual(v6.x, 0.989194995, 8)
+        self.assertAlmostEqual(v6.y, 1.987033994, 8)
+        self.assertAlmostEqual(v6.z, 2.999925445, 8)
+        self.assertAlmostEqual(v6.xdot, 0.0)
+        self.assertAlmostEqual(v6.ydot, 0.0)
+        self.assertAlmostEqual(v6.zdot, 0.0)
+
+        v6 = tpm.aberrate(v61, v62, -1)
+        self.assertAlmostEqual(v6.x, 1.010805005, 8)
+        self.assertAlmostEqual(v6.y, 2.012966006, 8)
+        self.assertAlmostEqual(v6.z, 3.000074555, 8)
+        self.assertAlmostEqual(v6.xdot, 0.0)
+        self.assertAlmostEqual(v6.ydot, 0.0)
+        self.assertAlmostEqual(v6.zdot, 0.0)
+
+
+class TestAzel2hadec(unittest.TestCase):
+    """Test the azel2hadec function."""
+    az = [0,90,133.30805555555557]
+    el = [90, -45.0, 59.086111111111116]
+    lat = 43.07833
+    # From pytpm/tests/c_tests/azel2hadec_test.c
+    ha_c = [0.000000000, 233.854836313, 336.682858247]
+    dec_c = [43.078330000, 331.121606194, 19.182450965]
+    def testazel2hadec(self):
+        """tpm.azel2hadec => (AZ,EL) to (HA,DEC)"""
+        v6 = tpm.V6S(r=1e9)
+        for i,j,k,l in zip(self.az,self.el,self.ha_c,self.dec_c):
+            v6.alpha = tpm.d2r(i)
+            v6.delta = tpm.d2r(j)
+            v61 = tpm.azel2hadec(v6.s2c(), tpm.d2r(self.lat))
+            v6 = v61.c2s()
+            self.assertAlmostEqual(tpm.r2d(tpm.r2r(v6.alpha)), k, 8)
+            self.assertAlmostEqual(tpm.r2d(tpm.r2r(v6.delta)), l, 8)
+            
+
+class TestAzel2hadec(unittest.TestCase):
+    """Test the hadec2azel function."""
+    az = [0,90,133.30805555555557]
+    el = [90, -45.0, 59.086111111111116]
+    lat = 43.07833
+    # From pytpm/tests/c_tests/azel2hadec_test.c
+    ha_c = [0.000000000, 233.854836313, 336.682858247]
+    dec_c = [43.078330000, 331.121606194, 19.182450965]
+    def testHadec2azel(self):
+        """tpm.hadec2azel => (HA,DEC) to (AZ,EL)"""
+        v6 = tpm.V6S(r=1e9)
+        for i,j,k,l in zip(self.az,self.el,self.ha_c,self.dec_c):
+            j = tpm.r2d(tpm.r2r(tpm.d2r(j)))
+            v6.alpha = tpm.d2r(k)
+            v6.delta = tpm.d2r(l)
+            v61 = tpm.hadec2azel(v6.s2c(), tpm.d2r(self.lat))
+            v6 = v61.c2s()
+            self.assertAlmostEqual(tpm.r2d(tpm.r2r(v6.alpha)),
+                                   i, 8)
+            self.assertAlmostEqual(tpm.r2d(tpm.r2r(v6.delta)), j, 8)
+
+
+class TestEvp(unittest.TestCase):
+    """Test evp function."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.x, v62.x, 8)
+        self.assertAlmostEqual(v61.y, v62.y, 8)
+        self.assertAlmostEqual(v61.z, v62.z, 8)
+        self.assertAlmostEqual(v61.xdot, v62.xdot, 8) 
+        self.assertAlmostEqual(v61.ydot, v62.ydot, 8) 
+        self.assertAlmostEqual(v61.zdot, v62.zdot, 8) 
+
+    def testEvp(self):
+        """tpm.evp => Barycentric and Heliocentric V6C."""
+        # See pytpm/tests/c_tests/evp_test.c
+        tdt = [tpm.J2000, tpm.J1984]
+        v6b_c = [tpm.V6C(x=-0.184273673, y=0.884790492, z=0.383823230,
+                       xdot=-0.017202342, ydot=-0.002904995, zdot=-0.001259484),
+                 tpm.V6C(x=-0.167332100, y=0.896946944, z=0.388718633,
+                        xdot=-0.017240508, ydot=-0.002790623, zdot=-0.001209123)]
+        v6h_c = [tpm.V6C(x=-0.177134378, y=0.887424942, z=0.384742891,
+                         xdot=-0.017207714, ydot=-0.002898199, zdot=-0.001256438),
+                 tpm.V6C(x=-0.170373080, y=0.888493845, z=0.385246878,
+                         xdot=-0.017232243, ydot=-0.002792198, zdot=-0.001210002)]
+        for i,t in enumerate(tdt):
+            v6b, v6h = tpm.evp(tpm.tdt2tdb(t))
+            self.verify(v6b, v6b_c[i])
+            self.verify(v6h, v6h_c[i])
+
+            
+class TestEcl2equ(unittest.TestCase):
+    """Test ecl2equ function."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.x, v62.x, 8)
+        self.assertAlmostEqual(v61.y, v62.y, 8)
+        self.assertAlmostEqual(v61.z, v62.z, 8)
+        self.assertAlmostEqual(v61.xdot, v62.xdot, 8) 
+        self.assertAlmostEqual(v61.ydot, v62.ydot, 8) 
+        self.assertAlmostEqual(v61.zdot, v62.zdot, 8) 
+
+    def testEcl2equ(self):
+        """tpm.ecl2equ => Ecliptic to FK5 equatorial."""
+        v6 = tpm.V6S(r=1.0,alpha=tpm.M_PI/4.0,delta=tpm.M_PI/4.0)
+        v6 = v6.s2c()
+        v6.xdot = -0.034
+        v6.ydot = -0.12
+        v6.zdot = -0.9
+
+        v6 = tpm.ecl2equ(v6, tpm.d2r(23.7))
+
+        self.verify(v6, tpm.V6C(x=0.5, y=0.173611298, z=0.848445117,
+                                xdot=-0.034000000, ydot=0.251873488,
+                                zdot=-0.872330067))
+
+        
+class TestEqu2ecl(unittest.TestCase):
+    """Test equ2ecl function."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.x, v62.x, 5)
+        self.assertAlmostEqual(v61.y, v62.y, 5)
+        self.assertAlmostEqual(v61.z, v62.z, 5)
+        self.assertAlmostEqual(v61.xdot, v62.xdot, 5) 
+        self.assertAlmostEqual(v61.ydot, v62.ydot, 5) 
+        self.assertAlmostEqual(v61.zdot, v62.zdot, 5) 
+
+    def testEcl2equ(self):
+        """tpm.equ2ecl => FK5 Equatorial to Ecliptic."""
+        v6 = tpm.V6C(x=0.5, y=0.173611298, z=0.848445117,
+                xdot=-0.034000000, ydot=0.251873488,
+                zdot=-0.872330067)
+        
+        v6 = tpm.equ2ecl(v6, tpm.d2r(23.7))
+
+        self.verify(v6, tpm.V6C(x=0.5, y=0.499999997, z=0.707106774,
+                                 xdot=-0.0340, ydot=-0.120, zdot=-0.9))
+
+        
+class TestEllab(unittest.TestCase):
+    """Test ellab function."""
+    def testEllab(self):
+        """tpm.ellab => apply elliptic aberration."""
+        # pytpm/tests/c_tests/ellab_test.c
+        v6 = tpm.V6S(r=1e9, alpha=tpm.h2r(20), delta=tpm.d2r(40.0))
+        v6 = v6.s2c()
+        v6 = tpm.ellab(tpm.J2000, v6, -1)
+        v6 = v6.c2s()
+        self.assertAlmostEqual(v6.r, 1e9,5)
+        self.assertAlmostEqual(tpm.r2h(tpm.r2r(v6.alpha)), 20.000007838,8)
+        self.assertAlmostEqual(tpm.r2d(tpm.r2r(v6.delta)), 39.999987574,8)
+    
+
+class TestEqu2gal(unittest.TestCase):
+    """Test equ2gal function."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.r, v62.r, 2)
+        self.assertAlmostEqual(tpm.r2r(v61.alpha), tpm.r2r(v62.alpha), 2)
+        self.assertAlmostEqual(tpm.r2r(v61.delta), tpm.r2r(v62.delta), 2)
+    
+    def testEqu2gal(self):
+        """tpm.equ2gal => convert FK4 equatorial to Galactic."""
+        v6 = tpm.V6S(r=1e9,alpha=tpm.d2r(192.25), delta=tpm.d2r(27.4))
+        v6 = v6.s2c()
+        v6 = tpm.equ2gal(v6)
+        v6 = v6.c2s()
+        self.verify(v6, tpm.V6S(r=1e9, alpha=tpm.d2r(120.866),
+                                delta=tpm.d2r(90.0)))
+
+        
+class TestGal2equ(unittest.TestCase):
+    """Test gal2equ function."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.r, v62.r, 2)
+        self.assertAlmostEqual(tpm.r2r(v61.alpha), v62.alpha, 2)
+        self.assertAlmostEqual(tpm.r2r(v61.delta), v62.delta, 2)
+    
+    def testEqu2gal(self):
+        """tpm.equ2gal => convert Galactic to FK4 equatorial."""
+        v6 = tpm.V6S(r=1e9,alpha=tpm.d2r(120.0), delta=tpm.d2r(90.0))
+        v6 = v6.s2c()
+        v6 = tpm.gal2equ(v6)
+        self.verify(v6.c2s(), tpm.V6S(r=1e9, alpha=tpm.d2r(192.25),
+                                      delta=tpm.d2r(27.4))) 
+                               
+
+class TestEterms(unittest.TestCase):
+    """Test eterms."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.x, v62.x, 9)
+        self.assertAlmostEqual(v61.y, v62.y, 9)
+        self.assertAlmostEqual(v61.z, v62.z, 9)
+        self.assertAlmostEqual(v61.xdot, v62.xdot, 9) 
+        self.assertAlmostEqual(v61.ydot, v62.ydot, 9) 
+        self.assertAlmostEqual(v61.zdot, v62.zdot, 9) 
+
+    def testEterms(self):
+        """tpm.eterms => return e-terms of aberration."""
+        ep = [tpm.J2000, tpm.J1984]
+        v6c = [tpm.V6C(x=-0.0000016181, y=-0.0000003411,
+                       z=-0.0000001479),
+               tpm.V6C(x=-0.0000016206, y=-0.0000003341,
+                       z=-0.0000001449)]
+        for i,e in enumerate(ep):
+            v6 = tpm.eterms(e)
+            self.verify(v6, v6c[i])
+            
+            
+class TestFk425(unittest.TestCase):
+    """Test fk425."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.r, v62.r, 5)
+        self.assertAlmostEqual(v61.alpha, v62.alpha, 5)
+        self.assertAlmostEqual(v61.delta, v62.delta, 5)
+
+    def testFk425(self):
+        """tpm.fk425 => B1950 FK4 to J2000 FK5."""
+        v6 = tpm.V6S(r=1e9, alpha=tpm.d2r(23.15678), delta=
+                     tpm.d2r(54.3892))
+        v6 = v6.s2c()
+        v6 = tpm.fk425(v6)
+        v6 = v6.c2s()
+        # Why does R change?
+        self.verify(v6, tpm.V6S(r=1000000000.0008671284,
+                                alpha=tpm.d2r(23.9534903408),
+                                delta=tpm.d2r(54.6442824316)))
+
+        
+class TestFk524(unittest.TestCase):
+    """Test fk524."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.r, v62.r, 1)
+        self.assertAlmostEqual(v61.alpha, v62.alpha, 5)
+        self.assertAlmostEqual(v61.delta, v62.delta, 5)
+
+    def testFk524(self):
+        """tpm.fk524 => J2000 FK5 to B1950 FK4."""
+        v6 = tpm.V6S(r=1e9,
+                                alpha=tpm.d2r(23.9534903408),
+                                delta=tpm.d2r(54.6442824316))
+        v6 = v6.s2c()
+        v6 = tpm.fk524(v6)
+        v6 = v6.c2s()
+        # Why does R change?
+        self.verify(v6, tpm.V6S(r=1e9, alpha=tpm.d2r(23.15678), delta=
+                     tpm.d2r(54.3892)))
+
+
+class TestGeod2geoc(unittest.TestCase):
+    """Test geod2geoc."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.x, v62.x, 5)
+        self.assertAlmostEqual(v61.y, v62.y, 5)
+        self.assertAlmostEqual(v61.z, v62.z, 5)
+        self.assertAlmostEqual(v61.xdot, v62.xdot, 5) 
+        self.assertAlmostEqual(v61.ydot, v62.ydot, 5) 
+        self.assertAlmostEqual(v61.zdot, v62.zdot, 5) 
+
+    def testGeod2geoc(self):
+        """tpm.geod2geoc => Geodetic to geocentric."""
+        v6 = tpm.geod2geoc(tpm.d2r(30.567), tpm.d2r(46.713), 1500.0)
+        self.verify(v6,tpm.V6C(x=3773051.892626300,y=2228444.491846553,
+                              z=4621039.023174386,xdot=-162.500738326,
+                              ydot=275.135288555,zdot=0.0))
+
+        
+class TestLdeflect(unittest.TestCase):
+    """Test ldeflect."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.r, v62.r, 5)
+        self.assertAlmostEqual(v61.alpha, v62.alpha, 5)
+        self.assertAlmostEqual(v61.delta, v62.delta, 5)
+        self.assertAlmostEqual(v61.rdot, v62.rdot, 5)
+        self.assertAlmostEqual(v61.alphadot, v62.alphadot, 5)
+        self.assertAlmostEqual(v61.deltadot, v62.deltadot, 5)
+                
+    def testLdelfect(self):
+        """tpm.ldeflect => apply GR light deflection."""
+        v6h = tpm.evp(tpm.J2000)[1]
+        v6 = tpm.V6S(r=1, alpha=tpm.d2r(34.56), delta=tpm.d2r(46.19))
+        v6 = v6.s2c()
+
+        v6 = tpm.ldeflect(v6, v6h, 1)
+
+        self.verify(v6.c2s(), tpm.V6S(r=1.0, alpha=0.6031857970,
+                                delta=0.8061675815))
+
+
+class TestPrecess(unittest.TestCase):
+    """Test precess."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.r, v62.r, 1)
+        self.assertAlmostEqual(v61.alpha, v62.alpha, 5)
+        self.assertAlmostEqual(v61.delta, v62.delta, 5)
+        self.assertAlmostEqual(v61.rdot, v62.rdot, 5)
+        self.assertAlmostEqual(v61.alphadot, v62.alphadot, 5)
+        self.assertAlmostEqual(v61.deltadot, v62.deltadot, 5)
+
+    def testPrecess(self):
+        """tpm.precess => precess V6 in inertial frame."""
+        v6 = tpm.V6S(r=1e9, alpha=tpm.d2r(34.1592),
+                     delta=tpm.d2r(12.9638), rdot=-0.123,
+                     alphadot=0.382, deltadot=1.0)
+
+        v6 = v6.s2c()
+        v6 = tpm.precess(tpm.J2000, tpm.J1984, v6, tpm.PRECESS_FK5)
+        v6 = v6.c2s()
+
+        self.verify(v6,tpm.V6S(r=1e9, alpha=0.5924126644,
+                               delta=0.2249726697,rdot=-0.1229999560,
+                               alphadot=0.3809705204,
+                               deltadot=1.0003321415))
+
+        
+class TestEEDot(unittest.TestCase):
+    """Test eccentricity and eccentricity_dot."""
+    ep = [tpm.J2000, tpm.J1984]
+    e_c = [0.0167091134, 0.0167158397]
+    edot_c = [-0.0000420560, -0.0000420157]
+    def testEccentricity(self):
+        """tpm.eccentricity => Earth's eccentricity."""
+        for i,j in enumerate(self.ep):
+            self.assertAlmostEqual(self.e_c[i], tpm.eccentricity(j), 8)
+            self.assertAlmostEqual(self.edot_c[i],
+                                   tpm.eccentricity_dot(j), 8)
+            
+
+class TestOODot(unittest.TestCase):
+    """Test obliquity and obliquity_dot."""
+    ep = [tpm.J2000, tpm.J1984]
+    e_c = [0.4090928042, 0.4091291217]
+    edot_c = [-0.0002269655, -0.0002269633]
+    def testObliquity(self):
+        """tpm.obliquity => Earth's obliquity."""
+        for i,j in enumerate(self.ep):
+            self.assertAlmostEqual(self.e_c[i], tpm.obliquity(j), 8)
+            self.assertAlmostEqual(self.edot_c[i],
+                                   tpm.obliquity_dot(j), 8)
+            
+
+class TestRefract(unittest.TestCase):
+    """Test refco and refract."""
+    def testRefract(self):
+        """tpm.refco, tom.refract => refraction."""
+        refa, refb = tpm.refco(tpm.M_PI/3.0)
+        z = tpm.refract(tpm.M_PI/6.0, refa, refb, 1)
+        self.assertAlmostEqual(refa, 0.0002927535)
+        self.assertAlmostEqual(refb, -0.0000003077)
+        self.assertAlmostEqual(z, -0.000168896)
+
+
+class TestSolarPerigee(unittest.TestCase):
+    """Test solar perigee."""
+    def testSolarPerigee(self):
+        """tpm.solar_perigee, tpm.solar_perigee_dot => orbit."""
+        sp = tpm.solar_perigee(tpm.J2000)
+        spd = tpm.solar_perigee_dot(tpm.J2000)
+
+        self.assertAlmostEqual(sp, 4.9382428903, 8)
+        self.assertAlmostEqual(spd, 0.0300213018, 8)
+    
+    
+class TestPrecessionAngles(unittest.TestCase):
+    """Test theta, zee and zeta."""
+    def testPrecessionAngles(self):
+        """tpm.theta, thetadot, zee, zeedot, theta and thetadot."""
+        self.assertAlmostEqual(tpm.theta(tpm.J1984, tpm.J2000,
+                                         tpm.PRECESS_FK5),
+                               0.0015549329, 8)
+
+        self.assertAlmostEqual(tpm.thetadot(tpm.J1984, tpm.J2000,
+                                         tpm.PRECESS_FK5),
+                               0.0000002660, 9)
+
+        self.assertAlmostEqual(tpm.zee(tpm.J1984, tpm.J2000,
+                                         tpm.PRECESS_FK5),
+                               0.0017890537, 8)
+
+        self.assertAlmostEqual(tpm.zeedot(tpm.J1984, tpm.J2000,
+                                         tpm.PRECESS_FK5),
+                               0.0000003061, 9)
+        
+        self.assertAlmostEqual(tpm.zeta(tpm.J1984, tpm.J2000,
+                                         tpm.PRECESS_FK5),
+                               0.0017889553, 8)
+
+        self.assertAlmostEqual(tpm.zetadot(tpm.J1984, tpm.J2000,
+                                         tpm.PRECESS_FK5),
+                               0.0000003061, 9)
+
+
+class TestNutations(unittest.TestCase):
+    """Test nutations."""
+    def testNutations(self):
+        """tpm.nutations => nutation in longitude and obliquity."""
+        delta_phi, delta_eps = tpm.nutations(tpm.J2000)
+        self.assertAlmostEqual(delta_phi, -0.0000675025, 9)
+        self.assertAlmostEqual(delta_eps, -0.0000279922, 9)
