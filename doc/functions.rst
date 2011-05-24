@@ -111,6 +111,8 @@ The following functions are provided for converting angles between four
 different units: degrees, arc-seconds, radians and hours. Many of these
 conversions can also be performed by using ``DMS`` and ``HMS`` objects.
 
+.. autofunction:: ndelta(delta, degrees=True)
+.. autofunction:: nalpha(alpha, degrees=True)
 .. autofunction:: d2d(d) 
 .. autofunction:: h2h(h) 
 .. autofunction:: r2r(r) 
