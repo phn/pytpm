@@ -1,29 +1,24 @@
-.. _coord-conversions:
+============================================
+ Coordinate conversions using TPM and PyTPM
+============================================
 
-Coordinate conversions using TPM and PyTPM
-==========================================
-
-PyTPM is a Python interface to the TPM C library. Please read the TPM
-manual to learn more about TPM. Here I will only give a overview of the
-way TPM performs coordinate conversions.
+Please read the TPM manual to learn more about TPM. Here I will only
+give a overview of the way TPM performs coordinate conversions.
 
 .. contents::
 
-TPM
------
+In TPM all the information needed to perform coordinate transformations
+are stored in a ``TPM_TSTATE`` structure. This **state data structure**
+stores time information, observers location and other data. Not all
+data stored in this data structure are needed for all conversions.
 
-In TPM all information needed to perform coordinate transformations are
-stored in a ``TSTATE`` structure. This state data structure stores time
-information, observers location and other data. Not all data stored in
-this data structure are needed for all conversions.
-
-Each coordinate system defined in TPM is called a state. There are 21
-different states in TPM.
+Each coordinate system defined in TPM is called a **state**. There are 21
+different states in TPM, each identified by an integer from 1 to 21.
 
 The actual coordinates used are stored as vectors with 6 components (a
-6-vector): three position and three velocity components. Internally,
-all vectors are in Cartesian coordinates. But for input and output
-spherical vectors are also used. 
+6-vector or a **state vector**): three position and three velocity
+components. Internally, all vectors are in Cartesian coordinates. But
+for input and output spherical vectors are also used.
 
 The set of steps needed to perform a particular conversion are stored
 in a **look up table**. Each rows of this table stands for a starting
@@ -58,15 +53,16 @@ the latter, we would store the 6-vector for the FK5 coordinate at index
 ``TPM_S06``. After calling the function ``tpm``, we will extract the
 6-vector for the Galactic coordinates from index ``TPM_S04``.
 
-The general steps involved are: create a TSTATE structure, set the
-various parameters. Create a 6-vector for the input coordinates and
-insert it at the appropriate position in a array of 6-vectors. The call
-the ``tpm`` function with the required information. After successful
+The general steps involved are: create a ``TPM_TSTATE`` structure, set
+the various independent parameters and calculate the dependent
+parameters. Create a 6-vector for the input coordinates and insert it
+at the appropriate position in a array of 6-vectors. Then call the
+``tpm`` function with the required information. After successful
 completion extract the 6-vector for the output coordinates from the
 appropriate position in the array of 6-vectors.
 
 Also, the result from each intermediate step indicated by the look up
-table are also stored in appropriate locations in the array of
+table is also stored in appropriate locations in the array of
 6-vectors.
 
 All these steps can be performed in PyTPM.
@@ -79,7 +75,7 @@ PyTPM library are both show. The code is also available in
 ``examples/conversion_example.py``, respectively.
 
 C code
-~~~~~~
+======
 
 .. code-block:: c
 
@@ -135,8 +131,10 @@ C code
   }
 
 
+.. _pytpm-full-conversion:
+
 PyTPM code
-~~~~~~~~~~
+==========
 
 .. code-block:: python
 
@@ -187,13 +185,13 @@ PyTPM code
       
 We create a state structure, **tstate**, and initialize it by calling
 ``tpm_data()`` with ``TPM_INIT``. Then we assign values to independent
-parameters of the state structure. We then calculate all dependent
+parameters of the state data structure. We then calculate all dependent
 state properties by calling ``tpm_data()`` and passing ``TPM_ALL``. We
 then create an array of ``V6`` vectors, ``pvec``, create a ``V6``
 vector for our object, and assign it to the desired location in the
-array based on the starting state. We then call ``tpm()`` with the
+array, based on the starting state. We then call ``tpm()`` with the
 state structure and the array of ``V6`` vectors, along with the
-starting and ending states numbers. Finally we retrieve the appropriate
+starting and ending state numbers. Finally we retrieve the appropriate
 ``V6`` vector from the array, which will give us the final coordinates.
 
          

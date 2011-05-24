@@ -18,6 +18,7 @@
 .. _Practical Astronomy With Your Calculator: 
   http://www.amazon.com/Practical-Astronomy-Calculator-Peter-Duffett-Smith/dp/0521356997
 .. _Distribute: http://packages.python.org/distribute/
+.. _IERS: http://www.iers.org/
 
 .. contents::
 
@@ -36,14 +37,16 @@ Installation
 
 .. important::
 
-    The file src/tpm/delta_AT.c must be updated when Delta AT is
-    changed by the IERS and PyTPM Cython code must re-compiled. Update
-    the file and just run setup.py again.
+    The file :file:`src/tpm/delta_AT.c` must be updated when Delta-AT
+    is changed by the IERS_, and PyTPM Cython code must
+    re-compiled. Update the file and just run setup.py again. See 
+    :ref:`delta_at_info`, for ways to get updated values for this 
+    quantity.
 
 
 If you don't have Distribute_, then install it by following the
-instructions 
-`here <http://pypi.python.org/pypi/distribute#distribute-setup-py>`_.
+instructions `here
+<http://pypi.python.org/pypi/distribute#distribute-setup-py>`_.
 
 The source code for PyTPM can be found at
 http://github.com/phn/pytpm. Either clone the repository or click on

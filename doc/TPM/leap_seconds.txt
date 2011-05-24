@@ -1,0 +1,14 @@
+Whenever a leap second is added to the civil calendar, 
+the file src/tpm/delta_AT.c must be
+updated to reflect the new accumulated number of leap seconds for
+subsequent dates.
+
+You can compute the MJD test value that should be added to the code
+using the AstroDate class as follows:
+
+import datetime
+from coords import AstroDate
+
+newyear=datetime.datetime(2009,1,1)  #year, month, day, 0, 0, 0
+t=AstroDate(newyear)
+t.mjd

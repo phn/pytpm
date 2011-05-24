@@ -1,5 +1,3 @@
-.. _data-structures:
-
 =================
  Data Structures
 =================
@@ -8,6 +6,13 @@
 
 PyTPM wraps many of the C structures in TPM as Python classes, using
 Cython *extension types* or *cdef* classes. 
+
+Note that these are only useful in the context of their usage in
+PyTPM. Defining these structures make it easy to call the various TPM C
+functions from within Python. They are neither complete nor should be
+used in general handling of dates, times and vectors. The Python
+standard library *dateutil* provides mechanism for handling date and
+time. *Numpy* is a vector and matrix library.
 
 .. contents::
 
@@ -270,11 +275,6 @@ time, where as the class ``JD`` can be used to store a Julian date. As
 noted before the ``HMS`` structure can be used to store time in hours,
 minutes and seconds.
 
-Note that these are only useful in the context of their usage in
-PyTPM. They should not be used in general handling of dates and
-times. The Python standard library ``dateutil`` provides mechanism for
-handling date and time.
-
 ``YMD``
 -------
 
@@ -512,7 +512,8 @@ units of AU for length and AU/day for velocities. In addition to
 vectors with three components TPM uses, "6-vectors" that store the
 three position components and the three velocity components. TPM uses
 spherical vectors while handling user input coordinates, for example
-positions and proper motions from catalog.
+positions and proper motions from catalog. Here the units are radians
+and radians/day.
 
 In PyTPM, these data structures are provided as Python classes; Cython
 extension types. These are not meant to provide a complete
@@ -835,10 +836,10 @@ equivalent to the ``TPM_TSTATE`` structure in TPM. The reason I
 implemented this class was so that I can call the ``tpm_data()`` and
 ``tpm()`` functions from within Python. This object does not have any
 useful methods, but only has attributes corresponding to the 32
-parameters that define a state. Of these the independent parameters cna
-are read-write, where as the dependent parameters are read only. The
-latter can be calculated, as in TPM, by passing the object to
-``tpm_data()`` along with the type of calculation.
+parameters that define a state. Of these the independent parameters are
+read-write, where as the dependent parameters are read only. The latter
+can be calculated, as in TPM, by passing the object to ``tpm_data()``
+along with the type of calculation.
 
 .. code-block:: python
 
@@ -899,10 +900,10 @@ example, the index location 6, i.e., pvec[6], corresponds to the state
 ``TPM_S06``, and pvec[4] corresponds to ``TPM_S04``.
 
 So while performing FK5 epoch and equinox J2000 to Galactic conversion,
-we would insert our input ``V3CP`` vector at index location 6 and
+we would insert our input ``V6CP`` vector at index location 6 and
 retrieve the result from index location 4.
 
-A full example is shown in the overview and examples sections.
+A full example is shown :ref:`here <pytpm-full-conversion>`.
 
 
 ..  LocalWords:  PyTPM TPM cdef LocalWords DMS

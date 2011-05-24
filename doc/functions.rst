@@ -1,8 +1,6 @@
-.. _functions:
-
-====================
- Functions in PyTPM
-====================
+==================================
+ Functions and constants in PyTPM
+==================================
 
 .. currentmodule:: pytpm.tpm 
 
@@ -12,6 +10,9 @@ the arguments provided and returns the value returned by the TPM
 function.
 
 .. contents::
+
+Functions
+=========
 
 Main TPM functions
 ------------------
@@ -140,6 +141,65 @@ following functions.
 .. autofunction:: fmt_r(r)
 .. autofunction:: fmt_y(y)
 
+Functions related to astrometry
+===============================
+
+.. autofunction:: cat2v6(ra, de, pmra, pmdec, px, rv, C=36525.0)
+.. autofunction:: v62cat(v6, C=36525.0)
+.. autofunction:: proper_motion(v6, end, start)
+.. autofunction:: aberrate(p, e, flag)
+.. autofunction:: azel2hadec(v6, latitude)
+.. autofunction:: hadec2azel(v6, latitude)
+.. autofunction:: evp(tdb)
+.. autofunction:: ecl2equ(v6, obl)
+.. autofunction:: equ2ecl(v6, obl)    
+.. autofunction:: ellab(tdt, star, flag)
+.. autofunction:: equ2gal(v6)    
+.. autofunction:: gal2equ(v6)    
+.. autofunction:: eterms(ep)
+.. autofunction:: fk425(v6)
+.. autofunction:: fk524(v6)
+.. autofunction:: geod2geoc(lon, lat, alt)
+.. autofunction:: ldeflect(star, earth, flag)
+.. autofunction:: precess(start, end, v6, pflag)
+.. autofunction:: eccentricity(tdt)
+.. autofunction:: eccentricity_dot(tdt)
+.. autofunction:: obliquity(tdt)
+.. autofunction:: obliquity_dot(tdt)
+.. autofunction:: refco(lat=0.557744205098, alt=2093.093, T=273.15, P=1013.25, rh=0.0, wavelength=0.550, eps=1e-8)
+.. autofunction:: refract(zx, refa, refb, flag)
+.. autofunction:: solar_perigee(tdt)
+.. autofunction:: solar_perigee_dot(tdt)
+.. autofunction:: theta(start, end, pflag)
+.. autofunction:: thetadot(start, end, pflag)
+.. autofunction:: zee(start, end, pflag)
+.. autofunction:: zeedot(start, end, pflag)
+.. autofunction:: zeta(start, end, pflag)
+.. autofunction:: zetadot(start, end, pflag)
+.. autofunction:: nutations(tdt)
+
+Constants
+=========
+
+Some frequently used constants. There are several more constants
+available, but they are mostly for internal use. See TPM headers and
+manual for more information on these.
+
++---------+--------------------------------------------------+
+|M_PI     |Pi                                                |
++---------+--------------------------------------------------+
+|MJD_0    |Starting point for modified Julian dates.         |
++---------+--------------------------------------------------+
+|B1950    |Epoch B1950.0.                                    |
++---------+--------------------------------------------------+
+|J2000    |Epoch J2000.0.                                    |
++---------+--------------------------------------------------+
+|J1984    |Epoch J1984.0.                                    |
++---------+--------------------------------------------------+
+|CB       |Number of days in a Besselian century.            |
++---------+--------------------------------------------------+
+|CJ       |Number of days in a Julian century.               |
++---------+--------------------------------------------------+
 
 
 

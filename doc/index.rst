@@ -25,23 +25,37 @@ Python interface to the TPM C library
 .. _Practical Astronomy With Your Calculator: 
   http://www.amazon.com/Practical-Astronomy-Calculator-Peter-Duffett-Smith/dp/0521356997
 .. _Distribute: http://packages.python.org/distribute/
+.. _IERS: http://www.iers.org/
 
-PyTPM is a Python interface to the TPM library, generated using Cython_.
-TPM, `Telescope Pointing Machine`_ , is a C library written by `Jeff
+PyTPM is a Python interface to the `Telescope Pointing Machine`_ (TPM)
+library, generated using Cython_.  TPM is a C library written by `Jeff
 Percival`_, for performing coordinate conversions between several
 astronomical coordinate systems. It was designed with the aim of
 incorporating it into telescope control systems and hence the name. It
 is used by the `KPNO WIYN observatory`_ and the WHAM_ project for
-calculating directions to astronomical objects. 
+calculating directions to astronomical objects.
 
-In addition to most of the functions, macros, constants and structures
-defined in TPM, this module also provides a convenience function,
+In addition to interfaces to many of the functions, macros, constants
+and structures defined in TPM, this module also provides a convenience
+function,
 :func:`pytpm.convert.convert`. This function can be used for the most
 common type of coordinate conversion, i.e., converting two angles
 between different standard systems. Functions and data structures
 provided in the library can be used when more involved conversions are
 needed, for example conversions involving different equinoxes and
 epochs.
+
+Proper usage of PyTPM, and TPM, requires familiarity with concepts in
+astrometry. Before any non-trivial use of this module please read
+the :download:`TPM manual <TPM/tpm.pdf>`. A trivial use case would be
+converting *FK5 epoch and equinox J2000* coordinates to *FK4 epoch and
+equinox B1950* coordinates, *Galactic* coordinates or *Ecliptic epoch
+and equinox J2000* coordinates. The :func:`pytpm.convert.convert`
+function can be used for this. A non trivial use case would be
+converting *Hipparcos ICRS epoch 1991.25* coordinates of an object
+*with proper motion*, into *FK5 epoch and equinox J2000* coordinates;
+as provided by the Vizier catalog service, for example.
+
 
 Contents
 ========
@@ -54,27 +68,38 @@ Contents
    conversions
    data_structures
    functions
+   astrometry
 
+Important notes
+===============
 
-Credits
-=======
+As of now there is a ~0.2 arc-seconds difference in declination for FK5
+J2000 to FK4 B1950 conversion, between the value given by PyTPM and
+that given by Vizier/Simbad. This is most likely due to difference in
+the model used for the FK5-FK4 conversion.
+
+The file :file:`src/tpm/delta_AT.c` must be updated when Delta-AT is
+changed by the IERS_, and PyTPM Cython code must re-compiled. See
+:ref:`delta_at_info`, for ways to get updated values for this 
+quantity.
+
+TPM uses built-in ephemerides for the Earth and Sun, and a built-in
+model for calculating dynamic and rotational time.
+
+Credits and license
+===================
 
 `Jeff Percival`_ wrote the TPM__ C library. See
-``src/tpm/TPM_LICENSE.txt`` for TPM license. The version used here was
-obtained from the coords_ package (version 0.36) of the astrolib_
-library. A few C source files, missing from the above source, were
-provided by Jeff Percival.
+:file:`src/tpm/TPM_LICENSE.txt` for TPM license.  Code for the
+Python binding itself is released under the BSD license;
+see :file:`LICENSE.txt`. The version used here was obtained from the
+coords_ package (version 0.36) of the astrolib_ library. Some C source
+files, missing from the above source, were provided by Jeff Percival.
 
 Send an email to user *prasanthhn*, at the *gmail.com* domain, for
 reporting errors, comments, suggestions etc., for the PyTPM library.
 
-__ Telescope Pointing Machine
-
-License
-=======
-
-See ``src/tpm/TPM_LICENSE.txt`` for TPM license. Code for the Python
-binding itself is released under the BSD license; see LICENSE.txt.
+__ `Telescope Pointing machine`_
 
    
 Indices and tables

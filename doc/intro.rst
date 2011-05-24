@@ -7,15 +7,18 @@
 
 PyTPM provides facilities for converting astronomical coordinates
 between different coordinate systems. In addition it provides several
-utility functions related to dates and time, calendars, string
+utility functions related to date and time, calendars, string
 formatting and so on. In this document we will discuss some of the top
-level functions provided by PyTPM.
+level functionality provided by PyTPM.
 
-For a detailed list of functions defined in PyTPM see the section
-on :ref:`functions`. For detailed information on the constants, data
-structures and functions in PyTPM, see the section
-on :ref:`data-structures`. For an overview of TPM and comparison
-between TPM and PyTPM see :ref:`coord-conversions`.
+For a detailed list of functions and constants defined in PyTPM see the
+section on :doc:`functions`. For detailed information on the data
+structures defined in PyTPM, see the section
+on :doc:`data_structures`. For an overview of TPM and comparison
+between TPM and PyTPM see :doc:`conversions`.
+
+Please read the :download:`TPM manual <TPM/tpm.pdf>` before using the
+advanced facilities of PyTPM.
 
 .. contents::
 
@@ -48,9 +51,9 @@ The signature of this function is
      convert(ra, de,
             int s1=tpm.TPM_S06, int s2=tpm.TARGET_OBS_AZEL,
             double epoch=tpm.J2000, double equinox=tpm.J2000,
-            double utc=tpm.utc_now(),
-            double delta_at=tpm.delta_AT(tpm.utc_now()),
-            double delta_ut=tpm.delta_UT(tpm.utc_now()),
+            double utc=tpm.J2000,
+            double delta_at=tpm.delta_AT(tpm.J2000),
+            double delta_ut=tpm.delta_UT(tpm.J2000),
             double lon=-111.598333,
             double lat=31.956389,
             double alt=2093.093,
@@ -67,10 +70,10 @@ not all values are needed for many types of coordinate conversions.
 +------------+----------------------------------------------------+
 | Parameter  | Description                                        |
 +============+====================================================+
-| x          | input RA like angle in degrees (RA, longitude, Az);|
+| ra         | input RA like angle in degrees (RA, longitude, Az);|
 |            | scalar or a list.                                  |
 +------------+----------------------------------------------------+
-| y          | input DE like angle in degrees (DE, latitude, El); |
+| de         | input DE like angle in degrees (DE, latitude, El); |
 |            | scalar or a list.                                  |
 +------------+----------------------------------------------------+
 | s1         | start state                                        |
@@ -83,7 +86,7 @@ not all values are needed for many types of coordinate conversions.
 +------------+----------------------------------------------------+
 | utc        | time of "observation" as a Julian date;            |
 |            | exact meaning depends on the type of conversion;   |
-|            | defaults to the current UTC                        |
+|            | defaults to the epoch J2000.0                      |
 +------------+----------------------------------------------------+
 | delta_ut   | UT1 - UTC in seconds.                              |
 +------------+----------------------------------------------------+
@@ -199,11 +202,14 @@ coordinates, we execute:
     >>> ra = 359.97907800
     >>> de = -65.57713200
     >>> from pytpm import tpm, convert
-    >>> l,b = convert.convert(ra, de, s1=tpm.TPM_S06, s2=tpm.TPM_S04)[0]
+    >>> ra = 359.979087800
+    >>> de = -65.57713200
+    >>> l,b = convert.convert(ra, de, s1=tpm.TPM_S06, s2=tpm.TPM_S04)
     >>> l
-        -48.699664474942672
+    311.3003294489278
     >>> b
-        -50.705816281924577
+    -50.70581755128377
+    >>> 
 
 The following code converts the `coordinates of M100`_ between
 different systems.
@@ -217,30 +223,28 @@ different systems.
  >>> # FK5 epoch=J2000, equinox=J2000 to Galactic coordinates epoch=J2000
  >>> ra2000 = tpm.HMS(hh=12,mm=22,ss=54.899).to_degrees()
  >>> de2000 = tpm.DMS(dd=15,mm=49,ss=20.57).to_degrees()
- >>> l,b = convert.convert(ra2000, de2000, s1=tpm.TPM_S06, s2=tpm.TPM_S04)[0]
+ >>> l,b = convert.convert(ra2000, de2000, s1=tpm.TPM_S06, s2=tpm.TPM_S04)
  >>> l,b
-     (-88.863860438221522, 76.898868975136054)
- >>> l+360.0,b
-     (271.13613956177846, 76.898868975136054)
-  
+ (271.13613956177846, 76.89886897513605)
+
  >>> # FK4 epoch=B1950, equinox=B1950 to Galactic coordinates epoch=B1950
  >>> ra1950 = tpm.HMS(hh=12,mm=20,ss=22.94).to_degrees()
  >>> de1950 = tpm.DMS(dd=16, mm=5, ss=58.2).to_degrees()
- >>> l,b = convert.convert(ra1950, de1950, s1=tpm.TPM_S05, s2=tpm.TPM_S04)[0]
- >>> l+360.0,b
-     (271.13611058008075, 76.898921112825732)
+ >>> l,b = convert.convert(ra1950, de1950, s1=tpm.TPM_S05, s2=tpm.TPM_S04)
+ >>> l,b
+ (271.13611058008075, 76.89892111282573)
   
  >>> # FK4 epoch=B1950 equinox=B1950 to FK5 epoch=J2000, equinox=J2000
- >>> ra,de = convert.convert(ra1950, de1950, s1=tpm.TPM_S05,
-    ....: s2=tpm.TPM_S06, epoch=tpm.B1950, equinox=tpm.B1950)[0]
- >>> print tpm.HMS(d=ra+360.0), tpm.DMS(dd=de)
-  12H 22M 54.895S +15D 49' 20.528"
+ >>> ra,de = convert.convert(ra1950,de1950, s1=tpm.TPM_S05, s2=tpm.TPM_S06,
+   ....:  equinox=tpm.B1950, epoch=tpm.B1950)
+ >>> print tpm.HMS(d=ra), tpm.DMS(dd=de)
+ 12H 22M 54.895S +15D 49' 20.528"
   
  >>> # FK5 epoch=J2000, equinox=J2000 to FK4 epoch=B1950, equinox=B1950
- >>> ra,de = convert.convert(ra2000, de2000, s1=tpm.TPM_S06, 
-    ....: s2=tpm.TPM_S05, epoch=tpm.J2000, equinox=tpm.J2000)[0]
- >>> print tpm.HMS(d=ra+360.0), tpm.DMS(dd=de)
-  12H 20M 22.935S +16D 05' 58.024"
+ >>> ra,de = convert.convert(ra2000,de2000, s1=tpm.TPM_S06, s2=tpm.TPM_S05,
+   ....:  epoch=tpm.J2000, equinox=tpm.J2000)
+ >>> print tpm.HMS(d=ra), tpm.DMS(dd=de)
+ 12H 20M 22.935S +16D 05' 58.024"
 
 
 Utility functions
@@ -251,7 +255,7 @@ functions that come with PyTPM. These are simple interfaces to the
 functions in TPM.
 
 For a detailed list of functions defined in PyTPM see the section
-on :ref:`functions`. 
+on :doc:`functions`. 
   
 Get the current *UTC* time as a *Julian date*
 ---------------------------------------------
@@ -345,7 +349,6 @@ Convert decimal degrees into *DMS* string
     >>> dms.dd, dms.mm, dms.ss
         (187.5, 0.0, 0.0)
 
-
 Angle in degrees, arc-minutes and arc-seconds can be represented using
 the ``tpm.DMS`` class. The angle can be constructed in several ways.
 Passing the keywords ``dd``, ``mm``, ``ss`` for degrees, arc-minutes
@@ -353,8 +356,8 @@ and arc-seconds respectively, will create a angle with the indicated
 value. Passing the keyword ``r`` for angle in radians, will crate a
 ``DMS`` object with angle converted into degrees. Passing the keyword
 ``h`` for hours will convert the angle in hours into degrees. The
-``normalize()`` method, will normalize the parts of the angle into the
-proper range.
+``normalize()`` method, will normalize the acr-minutes and arc-seconds
+of the angle into the proper range.
 
 
 ..  LocalWords:  PyTPM pytpm TPM
