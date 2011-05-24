@@ -1,0 +1,597 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Introduction to PyTPM &mdash; PyTPM v0.5dev documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.5dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyTPM v0.5dev documentation" href="index.html" />
+    <link rel="next" title="Coordinate conversions using TPM and PyTPM" href="conversions.html" />
+    <link rel="prev" title="Installation and source files" href="installation.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="conversions.html" title="Coordinate conversions using TPM and PyTPM"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation and source files"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PyTPM v0.5dev documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="introduction-to-pytpm">
+<h1><a class="toc-backref" href="#id1">Introduction to PyTPM</a><a class="headerlink" href="#introduction-to-pytpm" title="Permalink to this headline">¶</a></h1>
+<p>PyTPM provides facilities for converting astronomical coordinates
+between different coordinate systems. In addition it provides several
+utility functions related to date and time, calendars, string
+formatting and so on. In this document we will discuss some of the top
+level functionality provided by PyTPM.</p>
+<p>For a detailed list of functions and constants defined in PyTPM see the
+section on <a class="reference internal" href="functions.html"><em>Functions and constants in PyTPM</em></a>. For detailed information on the data
+structures defined in PyTPM, see the section
+on <a class="reference internal" href="data_structures.html"><em>Data Structures</em></a>. For an overview of TPM and comparison
+between TPM and PyTPM see <a class="reference internal" href="conversions.html"><em>Coordinate conversions using TPM and PyTPM</em></a>.</p>
+<p>Please read the <a class="reference download internal" href="_downloads/tpm2.pdf"><tt class="xref download docutils literal"><span class="pre">TPM</span> <span class="pre">manual</span></tt></a> before using the
+advanced facilities of PyTPM.</p>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#introduction-to-pytpm" id="id1">Introduction to PyTPM</a><ul>
+<li><a class="reference internal" href="#convert-astronomical-coordinates-between-different-systems" id="id2">Convert astronomical coordinates between different systems</a></li>
+<li><a class="reference internal" href="#utility-functions" id="id3">Utility functions</a><ul>
+<li><a class="reference internal" href="#get-the-current-utc-time-as-a-julian-date" id="id4">Get the current <em>UTC</em> time as a <em>Julian date</em></a></li>
+<li><a class="reference internal" href="#convert-gregorian-calendar-date-into-a-julian-date" id="id5">Convert <em>Gregorian calendar</em> date into a <em>Julian date</em></a></li>
+<li><a class="reference internal" href="#convert-a-julian-date-into-a-date-in-the-gregorian-calendar" id="id6">Convert a <em>Julian date</em> into a date in the <em>Gregorian calendar</em></a></li>
+<li><a class="reference internal" href="#convert-decimal-degrees-into-dms-string" id="id7">Convert decimal degrees into <em>DMS</em> string</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Facilities in TPM that are wrapped by PyTPM are provided in the
+sub-module <tt class="docutils literal"><span class="pre">pytpm.tpm</span></tt>. The <tt class="docutils literal"><span class="pre">pytpm.convert</span></tt> module contains the
+function <tt class="docutils literal"><span class="pre">convert()</span></tt>, that is a convenience function for performing
+the most common type of coordinate conversion.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pytpm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pytpm</span> <span class="kn">import</span> <span class="n">tpm</span><span class="p">,</span> <span class="n">convert</span>
+</pre></div>
+</div>
+<div class="section" id="convert-astronomical-coordinates-between-different-systems">
+<h2><a class="toc-backref" href="#id2">Convert astronomical coordinates between different systems</a><a class="headerlink" href="#convert-astronomical-coordinates-between-different-systems" title="Permalink to this headline">¶</a></h2>
+<p>PyTPM can be used to convert <em>positions and velocities</em> in a given
+astronomical coordinate system into another. Examples of doing this are
+in the <tt class="docutils literal"><span class="pre">examples</span></tt> folder of the source code. You should read the TPM
+manual before attempting to use these advanced features.</p>
+<p>For the most common coordinate conversion, i.e., converting two angles
+in one system into those in another system, a convenience function is
+provided with PyTPM: <tt class="docutils literal"><span class="pre">pytpm.convert.convert()</span></tt>.</p>
+<p>The signature of this function is</p>
+<div class="highlight-python"><pre>convert(ra, de,
+       int s1=tpm.TPM_S06, int s2=tpm.TARGET_OBS_AZEL,
+       double epoch=tpm.J2000, double equinox=tpm.J2000,
+       double utc=tpm.J2000,
+       double delta_at=tpm.delta_AT(tpm.J2000),
+       double delta_ut=tpm.delta_UT(tpm.J2000),
+       double lon=-111.598333,
+       double lat=31.956389,
+       double alt=2093.093,
+       double xpole=0.0, double ypole=0.0,
+       double T=273.15, double P=1013.25, double H=0.0,
+       double wavelength=0.550)</pre>
+</div>
+<dl class="function">
+<dt id="pytpm.convert.convert">
+<tt class="descclassname">pytpm.convert.</tt><tt class="descname">convert</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.convert.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function for performing coordinate conversions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ra</strong> (<em>float</em>) &#8211; Input longitudinal angle or angles, like ra, in degrees.</li>
+<li><strong>de</strong> (<em>float</em>) &#8211; Input latitudinal angle or angles, like de, in degrees.</li>
+<li><strong>s1</strong> (<em>integer</em>) &#8211; Initial state.</li>
+<li><strong>s2</strong> (<em>integer</em>) &#8211; Final state.</li>
+<li><strong>epoch</strong> (<em>float</em>) &#8211; Epoch of input coordinates as a Julian date.</li>
+<li><strong>equniox</strong> &#8211; Equinox of input or output coordinates.</li>
+<li><strong>utc</strong> (<em>float</em>) &#8211; &#8220;Current&#8221; UTC time as a Julian date.</li>
+<li><strong>delta_at</strong> (<em>float</em>) &#8211; TAI - UTC in seconds.</li>
+<li><strong>delta_ut</strong> (<em>float</em>) &#8211; UT1 - UTC in seconds.</li>
+<li><strong>lon</strong> (<em>float</em>) &#8211; Geodetic longitude in degeres.</li>
+<li><strong>lat</strong> (<em>float</em>) &#8211; Geodetic latitude in degrees.</li>
+<li><strong>alt</strong> (<em>float</em>) &#8211; Altitude in meters.</li>
+<li><strong>xpole</strong> (<em>float</em>) &#8211; Polar motion in radians.</li>
+<li><strong>ypole</strong> (<em>float</em>) &#8211; Ploar motion in radians.</li>
+<li><strong>T</strong> (<em>float</em>) &#8211; Ambient temperature in Kelvin.</li>
+<li><strong>P</strong> (<em>float</em>) &#8211; Ambient pressure in millibars.</li>
+<li><strong>H</strong> (<em>float</em>) &#8211; Ambient humidity in the range 0-1.</li>
+<li><strong>wavelength</strong> (<em>float</em>) &#8211; Wavelength of observation in microns.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Output angles, (ra_like, de_like), in degrees</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">One 2-element tuple, or a list of 2-element tuples, of floats</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Most often we just want to convert two angles from one coordinate
+system into another. We do not worry about proper motions and all
+conversions happen at the same &#8220;current time&#8221;. This simplies the
+procedure a lot. Given a list of coordinates, most of the
+calculations need to be performed only once.</p>
+<p>This function performs such as coordinate conversion. It takes a
+list of ra like longitudinal angles in degrees, a list of de like
+latitudinal angles and all parameters needed for performing a
+particular transformation. All of these parameters have defualts.</p>
+<p>The default location is KPNO and the values are taken from the TPM
+C code.</p>
+<p>The TPM state data structure is initialized, the independent
+parameters are set, and all the dependent parameters are calculated
+using <tt class="docutils literal"><span class="pre">tpm_data(tstate,</span> <span class="pre">TPM_INIT)</span></tt>. This calculation is done only
+once. Then each of the coordinates are converted, by creating a
+<tt class="docutils literal"><span class="pre">V6</span></tt> vector and calling <tt class="docutils literal"><span class="pre">tpm()</span></tt>.</p>
+<p>The returned result is a list of tuples, where each tuple has the
+final ra like angle as the first element, and the final de like
+angle as the second element. If the input coordinates are single
+values and not lists, then the output is a single 2-element tuple.</p>
+<p>For details on the parameters see the PyTPM reference documentation
+and the TPM manual. The latter gives an example for the usage of
+this function.</p>
+</dd></dl>
+
+<p>The arguments to this function are given in the table below; all
+arguments, except for the input angles, have defaults. Also note that
+not all values are needed for many types of coordinate conversions.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="81%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Parameter</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>ra</td>
+<td>input RA like angle in degrees (RA, longitude, Az);
+scalar or a list.</td>
+</tr>
+<tr><td>de</td>
+<td>input DE like angle in degrees (DE, latitude, El);
+scalar or a list.</td>
+</tr>
+<tr><td>s1</td>
+<td>start state</td>
+</tr>
+<tr><td>s2</td>
+<td>end state</td>
+</tr>
+<tr><td>epoch</td>
+<td>epoch of the coordinates as a Julian date</td>
+</tr>
+<tr><td>equinox</td>
+<td>equinox of the coordinates as Julian date</td>
+</tr>
+<tr><td>utc</td>
+<td>time of &#8220;observation&#8221; as a Julian date;
+exact meaning depends on the type of conversion;
+defaults to the epoch J2000.0</td>
+</tr>
+<tr><td>delta_ut</td>
+<td>UT1 - UTC in seconds.</td>
+</tr>
+<tr><td>delta_at</td>
+<td>TAI - UTC in seconds.</td>
+</tr>
+<tr><td>lon</td>
+<td>geodetic longitude in degrees</td>
+</tr>
+<tr><td>lat</td>
+<td>geodetic latitude in degrees</td>
+</tr>
+<tr><td>alt</td>
+<td>altitude in meters</td>
+</tr>
+<tr><td>xpole</td>
+<td>ploar motion in radians</td>
+</tr>
+<tr><td>ypole</td>
+<td>ploar motion in radians</td>
+</tr>
+<tr><td>T</td>
+<td>temperature in kelvin</td>
+</tr>
+<tr><td>P</td>
+<td>pressure in milli-bars</td>
+</tr>
+<tr><td>H</td>
+<td>relative humidity (0-1)</td>
+</tr>
+<tr><td>wavelength</td>
+<td>wavelength of observation in microns</td>
+</tr>
+</tbody>
+</table>
+<p>The default location is the <a class="reference external" href="http://www.noao.edu/kpno">KPNO</a> observatory and the data is taken
+from the TPM source code, to be consistent with it.</p>
+<p>In TPM, and hence in PyTPM, a coordinate system is referred to as a
+<em>state</em>. Each state is given a name, which is just an integer
+constant. The state is defined by data in a state data structure
+(<em>TSTATE</em> in PyTPM). There are 21 states, plus a &#8220;null&#8221; state. These
+are given below. The states can be identified using integers or the
+special integer constants.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="84%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">State</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>TPM_S00</td>
+<td>Null</td>
+</tr>
+<tr><td>TPM_S01</td>
+<td>Heliocentric mean FK4 system, any equinox</td>
+</tr>
+<tr><td>TPM_S02</td>
+<td>Heliocentric mean FK5 system, any equinox</td>
+</tr>
+<tr><td>TPM_S03</td>
+<td>IAU 1980 Ecliptic system</td>
+</tr>
+<tr><td>TPM_S04</td>
+<td>IAU 1958 Galactic system</td>
+</tr>
+<tr><td>TPM_S05</td>
+<td>Heliocentric mean FK4 system, B1950 equinox</td>
+</tr>
+<tr><td>TPM_S06</td>
+<td>Heliocentric mean FK5 system, J2000 equinox</td>
+</tr>
+<tr><td>TPM_S07</td>
+<td>Geocentric mean FK5 system, J2000 equinox</td>
+</tr>
+<tr><td>TPM_S08</td>
+<td>TPM_S07 + light deflection</td>
+</tr>
+<tr><td>TPM_S09</td>
+<td>TPM_S08 + Aberration</td>
+</tr>
+<tr><td>TPM_S10</td>
+<td>TPM_S09 + precession</td>
+</tr>
+<tr><td>TPM_S11</td>
+<td>Geocentric apparent FK5, current equinox</td>
+</tr>
+<tr><td>TPM_S12</td>
+<td>Topocentric mean FK5, J2000 equinox</td>
+</tr>
+<tr><td>TPM_S13</td>
+<td>TPM_S12 + light definition</td>
+</tr>
+<tr><td>TPM_S14</td>
+<td>TPM_S13 + aberration</td>
+</tr>
+<tr><td>TPM_S15</td>
+<td>TPM_S14 + precession</td>
+</tr>
+<tr><td>TPM_S16</td>
+<td>Topocentric apparent FK5, current equinox</td>
+</tr>
+<tr><td>TPM_S17</td>
+<td>Topocentric apparent FK5, current equnix</td>
+</tr>
+<tr><td>TPM_S18</td>
+<td>Topocentric apparent (Hour Angle, Declination)</td>
+</tr>
+<tr><td>TPM_S19</td>
+<td>Topocentric observed (Azimuth, Elevation)</td>
+</tr>
+<tr><td>TPM_S20</td>
+<td>Topocentric observed (Hour Angle, Declination)</td>
+</tr>
+<tr><td>TPM_S21</td>
+<td>Topocentric observed WHAM (longitude, latitude)</td>
+</tr>
+</tbody>
+</table>
+<p>Some of these states have additional special names.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Name</th>
+<th class="head">State</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>TARGET_FK4</td>
+<td>(TPM_S01)</td>
+</tr>
+<tr><td>TARGET_FK5</td>
+<td>(TPM_S02)</td>
+</tr>
+<tr><td>TARGET_ECL</td>
+<td>(TPM_S03)</td>
+</tr>
+<tr><td>TARGET_GAL</td>
+<td>(TPM_S04)</td>
+</tr>
+<tr><td>TARGET_APP_HADEC</td>
+<td>(TPM_S17)</td>
+</tr>
+<tr><td>TARGET_OBS_HADEC</td>
+<td>(TPM_S20)</td>
+</tr>
+<tr><td>TARGET_APP_AZEL</td>
+<td>(TPM_S18)</td>
+</tr>
+<tr><td>TARGET_OBS_AZEL</td>
+<td>(TPM_S19)</td>
+</tr>
+<tr><td>TARGET_OBS_WHAM</td>
+<td>(TPM_S21)</td>
+</tr>
+</tbody>
+</table>
+<p>To convert RA and DE from FK5 (equinox and epoch J2000) to Galactic
+coordinates, we execute:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ra</span> <span class="o">=</span> <span class="mf">359.97907800</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">de</span> <span class="o">=</span> <span class="o">-</span><span class="mf">65.57713200</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pytpm</span> <span class="kn">import</span> <span class="n">tpm</span><span class="p">,</span> <span class="n">convert</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ra</span> <span class="o">=</span> <span class="mf">359.979087800</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">de</span> <span class="o">=</span> <span class="o">-</span><span class="mf">65.57713200</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="n">convert</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">de</span><span class="p">,</span> <span class="n">s1</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">TPM_S06</span><span class="p">,</span> <span class="n">s2</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">TPM_S04</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l</span>
+<span class="go">311.3003294489278</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span>
+<span class="go">-50.70581755128377</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>The following code converts the <a class="reference external" href="http://simbad.u-strasbg.fr/simbad/sim-basic?Ident=M100&amp;submit=SIMBAD+search">coordinates of M100</a> between
+different systems.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pytpm</span> <span class="kn">import</span> <span class="n">tpm</span><span class="p">,</span> <span class="n">convert</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># FK5 epoch=J2000, equinox=J2000 to Galactic coordinates epoch=J2000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ra2000</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">HMS</span><span class="p">(</span><span class="n">hh</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span><span class="n">mm</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span><span class="n">ss</span><span class="o">=</span><span class="mf">54.899</span><span class="p">)</span><span class="o">.</span><span class="n">to_degrees</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">de2000</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">DMS</span><span class="p">(</span><span class="n">dd</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span><span class="n">mm</span><span class="o">=</span><span class="mi">49</span><span class="p">,</span><span class="n">ss</span><span class="o">=</span><span class="mf">20.57</span><span class="p">)</span><span class="o">.</span><span class="n">to_degrees</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="n">convert</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">ra2000</span><span class="p">,</span> <span class="n">de2000</span><span class="p">,</span> <span class="n">s1</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">TPM_S06</span><span class="p">,</span> <span class="n">s2</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">TPM_S04</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l</span><span class="p">,</span><span class="n">b</span>
+<span class="go">(271.13613956177846, 76.89886897513605)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># FK4 epoch=B1950, equinox=B1950 to Galactic coordinates epoch=B1950</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ra1950</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">HMS</span><span class="p">(</span><span class="n">hh</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span><span class="n">mm</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">ss</span><span class="o">=</span><span class="mf">22.94</span><span class="p">)</span><span class="o">.</span><span class="n">to_degrees</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">de1950</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">DMS</span><span class="p">(</span><span class="n">dd</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">mm</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">ss</span><span class="o">=</span><span class="mf">58.2</span><span class="p">)</span><span class="o">.</span><span class="n">to_degrees</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="n">convert</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">ra1950</span><span class="p">,</span> <span class="n">de1950</span><span class="p">,</span> <span class="n">s1</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">TPM_S05</span><span class="p">,</span> <span class="n">s2</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">TPM_S04</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l</span><span class="p">,</span><span class="n">b</span>
+<span class="go">(271.13611058008075, 76.89892111282573)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># FK4 epoch=B1950 equinox=B1950 to FK5 epoch=J2000, equinox=J2000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ra</span><span class="p">,</span><span class="n">de</span> <span class="o">=</span> <span class="n">convert</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">ra1950</span><span class="p">,</span><span class="n">de1950</span><span class="p">,</span> <span class="n">s1</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">TPM_S05</span><span class="p">,</span> <span class="n">s2</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">TPM_S06</span><span class="p">,</span>
+<span class="go">  ....:  equinox=tpm.B1950, epoch=tpm.B1950)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">tpm</span><span class="o">.</span><span class="n">HMS</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="n">ra</span><span class="p">),</span> <span class="n">tpm</span><span class="o">.</span><span class="n">DMS</span><span class="p">(</span><span class="n">dd</span><span class="o">=</span><span class="n">de</span><span class="p">)</span>
+<span class="go">12H 22M 54.895S +15D 49&#39; 20.528&quot;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># FK5 epoch=J2000, equinox=J2000 to FK4 epoch=B1950, equinox=B1950</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ra</span><span class="p">,</span><span class="n">de</span> <span class="o">=</span> <span class="n">convert</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">ra2000</span><span class="p">,</span><span class="n">de2000</span><span class="p">,</span> <span class="n">s1</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">TPM_S06</span><span class="p">,</span> <span class="n">s2</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">TPM_S05</span><span class="p">,</span>
+<span class="go">  ....:  epoch=tpm.J2000, equinox=tpm.J2000)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">tpm</span><span class="o">.</span><span class="n">HMS</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="n">ra</span><span class="p">),</span> <span class="n">tpm</span><span class="o">.</span><span class="n">DMS</span><span class="p">(</span><span class="n">dd</span><span class="o">=</span><span class="n">de</span><span class="p">)</span>
+<span class="go">12H 20M 22.935S +16D 05&#39; 58.024&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="utility-functions">
+<h2><a class="toc-backref" href="#id3">Utility functions</a><a class="headerlink" href="#utility-functions" title="Permalink to this headline">¶</a></h2>
+<p>The following sections list a few examples of using the several utility
+functions that come with PyTPM. These are simple interfaces to the
+functions in TPM.</p>
+<p>For a detailed list of functions defined in PyTPM see the section
+on <a class="reference internal" href="functions.html"><em>Functions and constants in PyTPM</em></a>.</p>
+<div class="section" id="get-the-current-utc-time-as-a-julian-date">
+<h3><a class="toc-backref" href="#id4">Get the current <em>UTC</em> time as a <em>Julian date</em></a><a class="headerlink" href="#get-the-current-utc-time-as-a-julian-date" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">j</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">utc_now</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">j</span>
+<span class="go">2455675.76791</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">js</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">fmt_j</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">js</span>
+<span class="go"> 2455675  18H 25M 47.000S</span>
+</pre></div>
+</div>
+<p>The function <tt class="docutils literal"><span class="pre">tpm.utc_now()</span></tt> returns the current <em>UTC</em> time as a
+<em>Julian day</em> number; accurate only to a second. The function
+<tt class="docutils literal"><span class="pre">tpm.fmt_j()</span></tt> returns a string representation of a <em>Julian
+date</em>. Note that representing UTC as a Julian date leads to ambiguities
+during leap seconds; UTC is not a contiguous time system.</p>
+</div>
+<div class="section" id="convert-gregorian-calendar-date-into-a-julian-date">
+<h3><a class="toc-backref" href="#id5">Convert <em>Gregorian calendar</em> date into a <em>Julian date</em></a><a class="headerlink" href="#convert-gregorian-calendar-date-into-a-julian-date" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">j</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">gcal2j</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">tpm</span><span class="o">.</span><span class="n">fmt_j</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+<span class="go"> 2451545  00H 00M 00.000S</span>
+</pre></div>
+</div>
+<p>Function <tt class="docutils literal"><span class="pre">tpm.gcal2j()</span></tt> converts a <em>Gregorian calendar</em> date, given
+as <tt class="docutils literal"><span class="pre">YYYY</span></tt>, <tt class="docutils literal"><span class="pre">MM</span></tt>, <tt class="docutils literal"><span class="pre">DD</span></tt>, into the corresponding <em>Julian date</em> for
+midday, i.e., 12H 00M 00S, of that date. In short, it returns the
+Julian day number for the Gregorian calendar date.</p>
+</div>
+<div class="section" id="convert-a-julian-date-into-a-date-in-the-gregorian-calendar">
+<h3><a class="toc-backref" href="#id6">Convert a <em>Julian date</em> into a date in the <em>Gregorian calendar</em></a><a class="headerlink" href="#convert-a-julian-date-into-a-date-in-the-gregorian-calendar" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">j</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">gcal2j</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">j2gcal</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="go">    &lt;type &#39;dict&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="go">    3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">d</span>
+<span class="go">{&#39;y&#39;: 2000, &#39;dd&#39;: 1, &#39;m&#39;: 1}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="s">&quot;{y}/{m}/{dd}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">d</span><span class="p">)</span>
+<span class="go">2000/1/1</span>
+</pre></div>
+</div>
+<p>The function <tt class="docutils literal"><span class="pre">tpm.j2gcal()</span></tt>, returns the date in the <em>Gregorian
+calendar</em>, on which, the time corresponding to the given <em>Julian date</em>
+occurs. The date is returned as a Python dictionary with the key &#8216;y&#8217;
+for year, &#8216;m&#8217; for the month and &#8216;dd&#8217; for the day.</p>
+</div>
+<div class="section" id="convert-decimal-degrees-into-dms-string">
+<h3><a class="toc-backref" href="#id7">Convert decimal degrees into <em>DMS</em> string</a><a class="headerlink" href="#convert-decimal-degrees-into-dms-string" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="mf">12.3456</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">DMS</span><span class="p">(</span><span class="n">dd</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">dms</span>
+<span class="go">+12D 20&#39; 44.159&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">dms</span><span class="p">)</span>
+<span class="go">    &lt;type &#39;pytpm.tpm.DMS&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (12.345599999999999, 0.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (12.0, 20.0, 44.159999999997268)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">DMS</span><span class="p">(</span><span class="n">dd</span><span class="o">=</span><span class="mf">1.2345</span><span class="p">,</span> <span class="n">mm</span><span class="o">=-</span><span class="mf">12.34</span><span class="p">,</span> <span class="n">ss</span><span class="o">=</span><span class="mf">0.123</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">dms</span>
+<span class="go">+01D 01&#39; 43.922&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (1.2344999999999999, -12.34, 0.123)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (1.0, 1.0, 43.922999999999362)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">DMS</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">dms</span>
+<span class="go">+180D 00&#39; 00.000&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (180.0, 0.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">DMS</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="mf">24.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (360.0, 0.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">DMS</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="mf">12.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">dms</span>
+<span class="go">+187D 30&#39; 00.000&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (187.5, 0.0, 0.0)</span>
+</pre></div>
+</div>
+<p>Angle in degrees, arc-minutes and arc-seconds can be represented using
+the <tt class="docutils literal"><span class="pre">tpm.DMS</span></tt> class. The angle can be constructed in several ways.
+Passing the keywords <tt class="docutils literal"><span class="pre">dd</span></tt>, <tt class="docutils literal"><span class="pre">mm</span></tt>, <tt class="docutils literal"><span class="pre">ss</span></tt> for degrees, arc-minutes
+and arc-seconds respectively, will create a angle with the indicated
+value. Passing the keyword <tt class="docutils literal"><span class="pre">r</span></tt> for angle in radians, will crate a
+<tt class="docutils literal"><span class="pre">DMS</span></tt> object with angle converted into degrees. Passing the keyword
+<tt class="docutils literal"><span class="pre">h</span></tt> for hours will convert the angle in hours into degrees. The
+<tt class="docutils literal"><span class="pre">normalize()</span></tt> method, will normalize the acr-minutes and arc-seconds
+of the angle into the proper range.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Introduction to PyTPM</a><ul>
+<li><a class="reference internal" href="#convert-astronomical-coordinates-between-different-systems">Convert astronomical coordinates between different systems</a></li>
+<li><a class="reference internal" href="#utility-functions">Utility functions</a><ul>
+<li><a class="reference internal" href="#get-the-current-utc-time-as-a-julian-date">Get the current <em>UTC</em> time as a <em>Julian date</em></a></li>
+<li><a class="reference internal" href="#convert-gregorian-calendar-date-into-a-julian-date">Convert <em>Gregorian calendar</em> date into a <em>Julian date</em></a></li>
+<li><a class="reference internal" href="#convert-a-julian-date-into-a-date-in-the-gregorian-calendar">Convert a <em>Julian date</em> into a date in the <em>Gregorian calendar</em></a></li>
+<li><a class="reference internal" href="#convert-decimal-degrees-into-dms-string">Convert decimal degrees into <em>DMS</em> string</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="previous chapter">Installation and source files</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="conversions.html"
+                        title="next chapter">Coordinate conversions using TPM and PyTPM</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/intro.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="conversions.html" title="Coordinate conversions using TPM and PyTPM"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation and source files"
+             >previous</a> |</li>
+        <li><a href="index.html">PyTPM v0.5dev documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Prasanth Nair.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

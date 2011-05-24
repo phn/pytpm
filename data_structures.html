@@ -1,0 +1,1590 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Data Structures &mdash; PyTPM v0.5dev documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.5dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyTPM v0.5dev documentation" href="index.html" />
+    <link rel="next" title="Functions and constants in PyTPM" href="functions.html" />
+    <link rel="prev" title="Coordinate conversions using TPM and PyTPM" href="conversions.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="functions.html" title="Functions and constants in PyTPM"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="conversions.html" title="Coordinate conversions using TPM and PyTPM"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PyTPM v0.5dev documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="data-structures">
+<h1><a class="toc-backref" href="#id1">Data Structures</a><a class="headerlink" href="#data-structures" title="Permalink to this headline">¶</a></h1>
+<p>PyTPM wraps many of the C structures in TPM as Python classes, using
+Cython <em>extension types</em> or <em>cdef</em> classes.</p>
+<p>Note that these are only useful in the context of their usage in
+PyTPM. Defining these structures make it easy to call the various TPM C
+functions from within Python. They are neither complete nor should be
+used in general handling of dates, times and vectors. The Python
+standard library <em>dateutil</em> provides mechanism for handling date and
+time. <em>Numpy</em> is a vector and matrix library.</p>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#data-structures" id="id1">Data Structures</a><ul>
+<li><a class="reference internal" href="#classes-for-representing-angles" id="id2">Classes for representing angles</a><ul>
+<li><a class="reference internal" href="#dms" id="id3"><tt class="docutils literal"><span class="pre">DMS</span></tt></a></li>
+<li><a class="reference internal" href="#hms" id="id4"><tt class="docutils literal"><span class="pre">HMS</span></tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#classes-for-storing-time-and-date-time" id="id5">Classes for storing time and date-time</a><ul>
+<li><a class="reference internal" href="#ymd" id="id6"><tt class="docutils literal"><span class="pre">YMD</span></tt></a></li>
+<li><a class="reference internal" href="#jd" id="id7"><tt class="docutils literal"><span class="pre">JD</span></tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#classes-for-representing-vectors" id="id8">Classes for representing vectors</a><ul>
+<li><a class="reference internal" href="#v3cp-and-v3sp" id="id9"><tt class="docutils literal"><span class="pre">V3CP</span></tt> and <tt class="docutils literal"><span class="pre">V3SP</span></tt></a></li>
+<li><a class="reference internal" href="#v6c" id="id10"><tt class="docutils literal"><span class="pre">V6C</span></tt></a></li>
+<li><a class="reference internal" href="#v6s" id="id11"><tt class="docutils literal"><span class="pre">V6S</span></tt></a></li>
+<li><a class="reference internal" href="#tstate" id="id12"><tt class="docutils literal"><span class="pre">TSTATE</span></tt></a></li>
+<li><a class="reference internal" href="#pvec" id="id13"><tt class="docutils literal"><span class="pre">PVEC</span></tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="classes-for-representing-angles">
+<h2><a class="toc-backref" href="#id2">Classes for representing angles</a><a class="headerlink" href="#classes-for-representing-angles" title="Permalink to this headline">¶</a></h2>
+<p>There are two classes for storing angles. <tt class="docutils literal"><span class="pre">DMS</span></tt> for degrees,
+arc-minutes and arc-seconds, and <tt class="docutils literal"><span class="pre">HMS</span></tt> for hours, minutes and
+seconds. Objects of these classes can be initialized by passing scalar
+value of the angle in any of the three formats for representing angles:
+radians, hours, and degrees.</p>
+<div class="section" id="dms">
+<h3><a class="toc-backref" href="#id3"><tt class="docutils literal"><span class="pre">DMS</span></tt></a><a class="headerlink" href="#dms" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pytpm.tpm.DMS">
+<em class="property">class </em><tt class="descclassname">pytpm.tpm.</tt><tt class="descname">DMS</tt><a class="headerlink" href="#pytpm.tpm.DMS" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="pytpm.tpm.DMS.dd">
+<tt class="descname">dd</tt><a class="headerlink" href="#pytpm.tpm.DMS.dd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Degrees.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.DMS.mm">
+<tt class="descname">mm</tt><a class="headerlink" href="#pytpm.tpm.DMS.mm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minutes of arc.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.DMS.normalize">
+<tt class="descname">normalize</tt><a class="headerlink" href="#pytpm.tpm.DMS.normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize components.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.DMS.ss">
+<tt class="descname">ss</tt><a class="headerlink" href="#pytpm.tpm.DMS.ss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Seconds of arc.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.DMS.to_degrees">
+<tt class="descname">to_degrees</tt><a class="headerlink" href="#pytpm.tpm.DMS.to_degrees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return angle in decimal degrees.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.DMS.to_hms">
+<tt class="descname">to_hms</tt><a class="headerlink" href="#pytpm.tpm.DMS.to_hms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to HMS object.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.DMS.to_hours">
+<tt class="descname">to_hours</tt><a class="headerlink" href="#pytpm.tpm.DMS.to_hours" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return angle in decimal hours.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.DMS.to_radians">
+<tt class="descname">to_radians</tt><a class="headerlink" href="#pytpm.tpm.DMS.to_radians" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return angle in radians.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>A <tt class="docutils literal"><span class="pre">DMS</span></tt> structure stores an angle in decimal degrees, as a degrees
+part, <tt class="docutils literal"><span class="pre">DMS.dd</span></tt>, an arc-minutes part, <tt class="docutils literal"><span class="pre">DMS.mm</span></tt> and an arc-seconds
+part, <tt class="docutils literal"><span class="pre">DMS.ss</span></tt>. An object of this type can be initialized by passing
+an angle in several ways. If the keyword <tt class="docutils literal"><span class="pre">r</span></tt> is given then the input
+angle is taken to be in radians and all other keywords are ignored. If
+the keyword <tt class="docutils literal"><span class="pre">h</span></tt> is present then the angle is assumed to be in hours
+and the rest of the keywords are ignored. If neither of theses are
+present then, the values of the keywords <tt class="docutils literal"><span class="pre">dd</span></tt>, <tt class="docutils literal"><span class="pre">mm</span></tt> and <tt class="docutils literal"><span class="pre">ss</span></tt> are
+assigned to the corresponding attribute of the object.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">DMS</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">M_PI</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">(180.0, 0.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span>
+<span class="go">    {&#39;mm&#39;: 0.0, &#39;ss&#39;: 0.0, &#39;dd&#39;: 180.0}</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">DMS</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="mf">12.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span>
+<span class="go">    {&#39;mm&#39;: 0.0, &#39;ss&#39;: 0.0, &#39;dd&#39;: 180.0}</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">DMS</span><span class="p">(</span><span class="n">dd</span><span class="o">=</span><span class="mf">180.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span>
+<span class="go">    {&#39;mm&#39;: 0.0, &#39;ss&#39;: 0.0, &#39;dd&#39;: 180.0}</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">DMS</span><span class="p">(</span><span class="n">ss</span><span class="o">=</span><span class="mf">180.0</span><span class="o">*</span><span class="mi">3600</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span>
+<span class="go">    {&#39;mm&#39;: 0.0, &#39;ss&#39;: 648000.0, &#39;dd&#39;: 0.0}</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">DMS</span><span class="p">(</span><span class="n">dd</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">mm</span><span class="o">=</span><span class="mf">20.3</span><span class="p">,</span><span class="n">ss</span><span class="o">=</span><span class="mf">12.45</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span>
+<span class="go">    {&#39;mm&#39;: 20.300000000000001, &#39;ss&#39;: 12.449999999999999, &#39;dd&#39;: 1.0}</span>
+</pre></div>
+</div>
+<p>The components can be assigned to after the creation of the object, by
+accessing the <tt class="docutils literal"><span class="pre">dd</span></tt>, <tt class="docutils literal"><span class="pre">mm</span></tt> and <tt class="docutils literal"><span class="pre">ss</span></tt> attributes of the <tt class="docutils literal"><span class="pre">DMS</span></tt>
+object.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">DMS</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">dd</span> <span class="o">=</span> <span class="mf">10.23</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">mm</span> <span class="o">=</span> <span class="mf">12.3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">ss</span> <span class="o">=</span> <span class="mf">2.3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (10.23, 12.300000000000001, 2.2999999999999998)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">dms</span>
+<span class="go">--&gt; print(dms)</span>
+<span class="go">+10D 26&#39; 08.299&quot;</span>
+</pre></div>
+</div>
+<p>A <tt class="docutils literal"><span class="pre">DMS</span></tt> object can be converted into a string by passing it to the
+<tt class="docutils literal"><span class="pre">str()</span></tt> or <tt class="docutils literal"><span class="pre">unicode()</span></tt> functions. It will get converted into a
+string representation of the angle, when printed using the <tt class="docutils literal"><span class="pre">print</span></tt>
+statement.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">dms</span><span class="p">)</span>
+<span class="go">    &#39;+01D 20\&#39; 30.450&quot;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">unicode</span><span class="p">(</span><span class="n">dms</span><span class="p">)</span>
+<span class="go">    u&#39;+01D 20\&#39; 30.450&quot;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">dms</span>
+<span class="go">--&gt; print(dms)</span>
+<span class="go">+01D 20&#39; 30.450&quot;</span>
+</pre></div>
+</div>
+<p>The method <tt class="docutils literal"><span class="pre">normalize()</span></tt> will normalize the angle contained in the
+<tt class="docutils literal"><span class="pre">DMS</span></tt> object. That is, the <tt class="docutils literal"><span class="pre">dd</span></tt> and <tt class="docutils literal"><span class="pre">mm</span></tt> components will be
+converted into integer values and the <tt class="docutils literal"><span class="pre">ss</span></tt> will contain the
+fractional parts. This method will modify the <tt class="docutils literal"><span class="pre">DMS</span></tt> and does not
+return any value.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">DMS</span><span class="p">(</span><span class="n">ss</span><span class="o">=</span><span class="mf">180.0</span><span class="o">*</span><span class="mi">3600</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (0.0, 0.0, 648000.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (180.0, 0.0, 0.0)</span>
+</pre></div>
+</div>
+<p>There are a few methods available for converting the angle represented
+by a <tt class="docutils literal"><span class="pre">DMS</span></tt> object into other units.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># The angle 180 degrees = pi radians = 12 hours.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">DMS</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">M_PI</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">to_degrees</span><span class="p">()</span>
+<span class="go">    180.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">to_radians</span><span class="p">()</span>
+<span class="go">    3.1415926535897931</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">to_hours</span><span class="p">()</span>
+<span class="go">    12.0</span>
+</pre></div>
+</div>
+<p>Two <tt class="docutils literal"><span class="pre">DMS</span></tt> objects can be added to and subtracted from each other.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">DMS</span><span class="p">(</span><span class="n">dd</span><span class="o">=</span><span class="mf">12.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">dms</span> <span class="o">+</span> <span class="n">tpm</span><span class="o">.</span><span class="n">DMS</span><span class="p">(</span><span class="n">dd</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (22.0, 0.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">dms</span> <span class="o">-</span> <span class="n">tpm</span><span class="o">.</span><span class="n">DMS</span><span class="p">(</span><span class="n">dd</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">dms</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (12.0, 0.0, 0.0)</span>
+</pre></div>
+</div>
+<p>A <tt class="docutils literal"><span class="pre">DMS</span></tt> object can be converted into an <tt class="docutils literal"><span class="pre">HMS</span></tt> object, discussed
+below, using the <tt class="docutils literal"><span class="pre">to_hms()</span></tt> method. This method will return a new
+<tt class="docutils literal"><span class="pre">HMS</span></tt> object.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">DMS</span><span class="p">(</span><span class="n">dd</span><span class="o">=</span><span class="mf">180.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span> <span class="o">=</span> <span class="n">dms</span><span class="o">.</span><span class="n">to_hms</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span><span class="o">.</span><span class="n">hh</span><span class="p">,</span> <span class="n">hms</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">hms</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (12.0, 0.0, 0.0)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="hms">
+<h3><a class="toc-backref" href="#id4"><tt class="docutils literal"><span class="pre">HMS</span></tt></a><a class="headerlink" href="#hms" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pytpm.tpm.HMS">
+<em class="property">class </em><tt class="descclassname">pytpm.tpm.</tt><tt class="descname">HMS</tt><a class="headerlink" href="#pytpm.tpm.HMS" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="pytpm.tpm.HMS.hh">
+<tt class="descname">hh</tt><a class="headerlink" href="#pytpm.tpm.HMS.hh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hours.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.HMS.mm">
+<tt class="descname">mm</tt><a class="headerlink" href="#pytpm.tpm.HMS.mm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minutes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.HMS.normalize">
+<tt class="descname">normalize</tt><a class="headerlink" href="#pytpm.tpm.HMS.normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize components.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.HMS.ss">
+<tt class="descname">ss</tt><a class="headerlink" href="#pytpm.tpm.HMS.ss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Seconds.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.HMS.to_degrees">
+<tt class="descname">to_degrees</tt><a class="headerlink" href="#pytpm.tpm.HMS.to_degrees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert HMS into decimal degrees.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.HMS.to_hours">
+<tt class="descname">to_hours</tt><a class="headerlink" href="#pytpm.tpm.HMS.to_hours" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert time into hours.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.HMS.to_radians">
+<tt class="descname">to_radians</tt><a class="headerlink" href="#pytpm.tpm.HMS.to_radians" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert HMS into radians.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>An <tt class="docutils literal"><span class="pre">HMS</span></tt> object can be used to represent an angle in hours, minutes
+and seconds format. It can also be used to store time in the same
+units.</p>
+<p>Like the <tt class="docutils literal"><span class="pre">DMS</span></tt> class, it will accept several keywords, that can be
+used to initialize it with an angle or a time. If the keyword <tt class="docutils literal"><span class="pre">r</span></tt> is
+present then the angle is assumed to be in radians and all other
+keywords are ignored. If the keyword <tt class="docutils literal"><span class="pre">d</span></tt> is present then the angle is
+assumed to be in degrees. If neither of the above are present, then the
+keywords <tt class="docutils literal"><span class="pre">hh</span></tt>, <tt class="docutils literal"><span class="pre">mm</span></tt> and <tt class="docutils literal"><span class="pre">ss</span></tt> will be used to initialize the
+corresponding attributes.</p>
+<p>The components can be assigned to after the creation of the object, by
+accessing the <tt class="docutils literal"><span class="pre">dd</span></tt>, <tt class="docutils literal"><span class="pre">mm</span></tt> and <tt class="docutils literal"><span class="pre">ss</span></tt> attributes of the <tt class="docutils literal"><span class="pre">DMS</span></tt>
+object.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">HMS</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span><span class="o">.</span><span class="n">hh</span> <span class="o">=</span> <span class="mf">12.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span><span class="o">.</span><span class="n">mm</span> <span class="o">=</span> <span class="mf">0.34</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span><span class="o">.</span><span class="n">ss</span> <span class="o">=</span> <span class="mf">1.05</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span><span class="o">.</span><span class="n">hh</span><span class="p">,</span> <span class="n">hms</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">hms</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (12.0, 0.34000000000000002, 1.05)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">hms</span>
+<span class="go">--&gt; print(hms)</span>
+<span class="go"> 12H 00M 21.450S</span>
+</pre></div>
+</div>
+<p>An <tt class="docutils literal"><span class="pre">HMS</span></tt> object can be converted into a string by passing it to the
+<tt class="docutils literal"><span class="pre">str()</span></tt> or the <tt class="docutils literal"><span class="pre">unicode()</span></tt> functions. It will get converted into a
+string representation of the angle, when printed using the <tt class="docutils literal"><span class="pre">print</span></tt>
+statement.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">HMS</span><span class="p">(</span><span class="n">hh</span><span class="o">=</span><span class="mf">12.34</span><span class="p">,</span> <span class="n">mm</span><span class="o">=</span><span class="mf">54.34</span><span class="p">,</span> <span class="n">ss</span><span class="o">=</span><span class="mf">0.34</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">hms</span><span class="p">)</span>
+<span class="go">    &#39; 13H 14M 44.740S&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">unicode</span><span class="p">(</span><span class="n">hms</span><span class="p">)</span>
+<span class="go">    u&#39; 13H 14M 44.740S&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">hms</span>
+<span class="go">--&gt; print(hms)</span>
+<span class="go"> 13H 14M 44.740S</span>
+</pre></div>
+</div>
+<p>The method <tt class="docutils literal"><span class="pre">normalize()</span></tt> will normalize the angle contained in the
+<tt class="docutils literal"><span class="pre">HMS</span></tt> object. That is the <tt class="docutils literal"><span class="pre">hh</span></tt> and <tt class="docutils literal"><span class="pre">mm</span></tt> components will be
+converted into integer values and the <tt class="docutils literal"><span class="pre">ss</span></tt> component will contain the
+fractional parts. This method will modify the <tt class="docutils literal"><span class="pre">HMS</span></tt> object and does
+not return any value.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">HMS</span><span class="p">(</span><span class="n">hh</span><span class="o">=</span><span class="mf">12.34</span><span class="p">,</span> <span class="n">mm</span><span class="o">=</span><span class="mf">54.34</span><span class="p">,</span> <span class="n">ss</span><span class="o">=</span><span class="mf">0.34</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span><span class="o">.</span><span class="n">hh</span><span class="p">,</span> <span class="n">hms</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">hms</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (13.0, 14.0, 44.740000000000748)</span>
+</pre></div>
+</div>
+<p>There are a few methods available for converting the angle represented
+by an <tt class="docutils literal"><span class="pre">HMS</span></tt> object into other units.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">HMS</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">M_PI</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span><span class="o">.</span><span class="n">to_radians</span><span class="p">()</span>
+<span class="go">    3.1415926535897931</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span><span class="o">.</span><span class="n">to_degrees</span><span class="p">()</span>
+<span class="go">    180.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span><span class="o">.</span><span class="n">to_hours</span><span class="p">()</span>
+<span class="go">    12.0</span>
+</pre></div>
+</div>
+<p>Two <tt class="docutils literal"><span class="pre">HMS</span></tt> objects can be added to and subtracted from each other.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">HMS</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">M_PI</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span> <span class="o">=</span> <span class="n">hms</span> <span class="o">+</span> <span class="n">tpm</span><span class="o">.</span><span class="n">HMS</span><span class="p">(</span><span class="n">hh</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span>
+<span class="go">    {&#39;mm&#39;: 0.0, &#39;ss&#39;: 0.0, &#39;hh&#39;: 14.0}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span> <span class="o">=</span> <span class="n">hms</span> <span class="o">-</span> <span class="n">tpm</span><span class="o">.</span><span class="n">HMS</span><span class="p">(</span><span class="n">hh</span><span class="o">=</span><span class="mf">8.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span>
+<span class="go">    {&#39;mm&#39;: 0.0, &#39;ss&#39;: 0.0, &#39;hh&#39;: 6.0}</span>
+</pre></div>
+</div>
+<p>An <tt class="docutils literal"><span class="pre">HMS</span></tt> object can be converted into a <tt class="docutils literal"><span class="pre">DMS</span></tt> object using the
+<tt class="docutils literal"><span class="pre">to_dms()</span></tt> method. This method will return a new <tt class="docutils literal"><span class="pre">DMS</span></tt> object.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">HMS</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mf">180.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hms</span>
+<span class="go">    {&#39;mm&#39;: 0.0, &#39;ss&#39;: 0.0, &#39;hh&#39;: 12.0}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">hms</span><span class="o">.</span><span class="n">to_dms</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span>
+<span class="go">    {&#39;mm&#39;: 0.0, &#39;ss&#39;: 0.0, &#39;dd&#39;: 180.0}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="classes-for-storing-time-and-date-time">
+<h2><a class="toc-backref" href="#id5">Classes for storing time and date-time</a><a class="headerlink" href="#classes-for-storing-time-and-date-time" title="Permalink to this headline">¶</a></h2>
+<p>The class <tt class="docutils literal"><span class="pre">YMD</span></tt> can be used to store a Gregorian calendar date and
+time, where as the class <tt class="docutils literal"><span class="pre">JD</span></tt> can be used to store a Julian date. As
+noted before the <tt class="docutils literal"><span class="pre">HMS</span></tt> structure can be used to store time in hours,
+minutes and seconds.</p>
+<div class="section" id="ymd">
+<h3><a class="toc-backref" href="#id6"><tt class="docutils literal"><span class="pre">YMD</span></tt></a><a class="headerlink" href="#ymd" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pytpm.tpm.YMD">
+<em class="property">class </em><tt class="descclassname">pytpm.tpm.</tt><tt class="descname">YMD</tt><a class="headerlink" href="#pytpm.tpm.YMD" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="pytpm.tpm.YMD.dd">
+<tt class="descname">dd</tt><a class="headerlink" href="#pytpm.tpm.YMD.dd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Day as a float.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.YMD.doy">
+<tt class="descname">doy</tt><a class="headerlink" href="#pytpm.tpm.YMD.doy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Day of the year corresponding to date in the YMD.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.YMD.hh">
+<tt class="descname">hh</tt><a class="headerlink" href="#pytpm.tpm.YMD.hh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hours as a float.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.YMD.m">
+<tt class="descname">m</tt><a class="headerlink" href="#pytpm.tpm.YMD.m" title="Permalink to this definition">¶</a></dt>
+<dd><p>Month as an integer.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.YMD.mm">
+<tt class="descname">mm</tt><a class="headerlink" href="#pytpm.tpm.YMD.mm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minutes as a float.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.YMD.normalize">
+<tt class="descname">normalize</tt><a class="headerlink" href="#pytpm.tpm.YMD.normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize YMD.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.YMD.raw_str">
+<tt class="descname">raw_str</tt><a class="headerlink" href="#pytpm.tpm.YMD.raw_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>YMD string in the &#8216;raw&#8217; format.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.YMD.ss">
+<tt class="descname">ss</tt><a class="headerlink" href="#pytpm.tpm.YMD.ss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Seconds as a float.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.YMD.to_j">
+<tt class="descname">to_j</tt><a class="headerlink" href="#pytpm.tpm.YMD.to_j" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert YMD into scalar Julian date.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.YMD.to_jd">
+<tt class="descname">to_jd</tt><a class="headerlink" href="#pytpm.tpm.YMD.to_jd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert into YMD.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.YMD.to_year">
+<tt class="descname">to_year</tt><a class="headerlink" href="#pytpm.tpm.YMD.to_year" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert YMD into a year number.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.YMD.y">
+<tt class="descname">y</tt><a class="headerlink" href="#pytpm.tpm.YMD.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Year as an integer.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>The <tt class="docutils literal"><span class="pre">YMD</span></tt> class stores year, month, day, hours, minutes and seconds
+of a date, in the attributes <tt class="docutils literal"><span class="pre">y</span></tt>, <tt class="docutils literal"><span class="pre">m</span></tt>, <tt class="docutils literal"><span class="pre">dd</span></tt>, <tt class="docutils literal"><span class="pre">hh</span></tt>, <tt class="docutils literal"><span class="pre">mm</span></tt> and
+<tt class="docutils literal"><span class="pre">ss</span></tt> respectively. The first two are integers and the rest are
+floating point numbers.</p>
+<p>A <tt class="docutils literal"><span class="pre">YMD</span></tt> object can be initialized by passing date and time in several
+ways. If the keyword <tt class="docutils literal"><span class="pre">j</span></tt> is present then the value is taken to be a
+Julian date and the rest of the keywords are ignored. If the keyword
+<tt class="docutils literal"><span class="pre">year</span></tt> is present then the value is taken to be years, which can have
+a fractional part, and the rest of the keywords are ignored. If the
+keyword <tt class="docutils literal"><span class="pre">ydd</span></tt> is present, the the value must be a tuple of 2
+elements, the first being the year, which can have a fractional part
+and the second begin the day of the year, which can also have a
+fractional part. The rest of the keywords, again gets ignored. If none
+of the above are present, then the values from the keywords <tt class="docutils literal"><span class="pre">y</span></tt>,
+<tt class="docutils literal"><span class="pre">m</span></tt>, <tt class="docutils literal"><span class="pre">dd</span></tt>, <tt class="docutils literal"><span class="pre">hh</span></tt>, <tt class="docutils literal"><span class="pre">mm</span></tt> and <tt class="docutils literal"><span class="pre">ss</span></tt> are used to initialize the
+object. Here, <tt class="docutils literal"><span class="pre">y</span></tt> and <tt class="docutils literal"><span class="pre">m</span></tt> must be integers.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">YMD</span><span class="p">(</span><span class="n">j</span><span class="o">=</span><span class="mf">2451545.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">hh</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (2000, 1, 1.5, 0.0, 0.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span>
+<span class="go">    {&#39;mm&#39;: 0.0, &#39;dd&#39;: 1.5, &#39;m&#39;: 1, &#39;ss&#39;: 0.0, &#39;hh&#39;: 0.0, &#39;y&#39;: 2000}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">YMD</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mf">2000.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">hh</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (2000, 1, 0.0, 0.0, 0.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">YMD</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mf">2000.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">hh</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (2000, 1, 183.0, 0.0, 0.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">YMD</span><span class="p">(</span><span class="n">ydd</span><span class="o">=</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span><span class="mf">183.0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">hh</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (2000, 1, 183.0, 0.0, 0.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">YMD</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">2010</span><span class="p">,</span><span class="n">m</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="n">dd</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">hh</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (2010, 4, 14.0, 0.0, 0.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">YMD</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">2010</span><span class="p">,</span><span class="n">m</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="n">dd</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">hh</span><span class="o">=</span><span class="mf">12.0</span><span class="p">,</span> <span class="n">mm</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ss</span><span class="o">=</span><span class="mf">20.9</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">hh</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (2010, 4, 14.0, 12.0, 10.0, 20.899999999999999)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">YMD</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">2010</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">hh</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (2010, 1, 0.0, 0.0, 0.0, 0.0)</span>
+</pre></div>
+</div>
+<p>The individual components can also be assigned to and modified after
+creating the object.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">YMD</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">hh</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (2000, 1, 0.0, 0.0, 0.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span><span class="o">.</span><span class="n">y</span><span class="o">=</span><span class="mi">2010</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span><span class="o">.</span><span class="n">dd</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">hh</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (2010, 1, 12.0, 0.0, 0.0, 0.0)</span>
+</pre></div>
+</div>
+<p>A <tt class="docutils literal"><span class="pre">YMD</span></tt> can be converted into a string using the <tt class="docutils literal"><span class="pre">str()</span></tt> and
+<tt class="docutils literal"><span class="pre">unicode()</span></tt> functions and by using the <tt class="docutils literal"><span class="pre">print</span></tt> statement. The
+method <tt class="docutils literal"><span class="pre">raw_str()</span></tt> that will return a &#8220;raw&#8221; string representation of
+the date and time.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">YMD</span><span class="p">(</span><span class="n">j</span><span class="o">=</span><span class="mf">2451545.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">ymd</span><span class="p">)</span>
+<span class="go">    &#39;Sun Jan  2 00:00:00.000 2000&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">unicode</span><span class="p">(</span><span class="n">ymd</span><span class="p">)</span>
+<span class="go">    u&#39;Sun Jan  2 00:00:00.000 2000&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">ymd</span>
+<span class="go">--&gt; print(ymd)</span>
+<span class="go">Sun Jan  2 00:00:00.000 2000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span><span class="o">.</span><span class="n">raw_str</span><span class="p">()</span>
+<span class="go">    &#39;2000 1 2 0 0 0&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">YMD</span><span class="p">(</span><span class="n">j</span><span class="o">=</span><span class="mf">2451545.5</span><span class="o">+</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">ymd</span>
+<span class="go">--&gt; print(ymd)</span>
+<span class="go">Sun Jan  2 06:00:00.000 2000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span><span class="o">.</span><span class="n">raw_str</span><span class="p">()</span>
+<span class="go">    &#39;2000 1 2.25 0 0 0&#39;</span>
+</pre></div>
+</div>
+<p>The method <tt class="docutils literal"><span class="pre">normalize()</span></tt> will normalize the components of a <tt class="docutils literal"><span class="pre">YMD</span></tt>
+object.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">YMD</span><span class="p">(</span><span class="n">j</span><span class="o">=</span><span class="mf">2451545.5</span><span class="o">+</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span>
+<span class="go">    {&#39;mm&#39;: 0.0, &#39;dd&#39;: 2.25, &#39;m&#39;: 1, &#39;ss&#39;: 0.0, &#39;hh&#39;: 0.0, &#39;y&#39;: 2000}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span>
+<span class="go">    {&#39;mm&#39;: 0.0, &#39;dd&#39;: 2.0, &#39;m&#39;: 1, &#39;ss&#39;: 0.0, &#39;hh&#39;: 6.0, &#39;y&#39;: 2000}</span>
+</pre></div>
+</div>
+<p>The date and time in a <tt class="docutils literal"><span class="pre">YMD</span></tt> object can be converted into a scalar
+Julian date and a year, with fractional part, using the methods
+<tt class="docutils literal"><span class="pre">to_j()</span></tt> and <tt class="docutils literal"><span class="pre">to_year</span></tt> respectively. The method <tt class="docutils literal"><span class="pre">to_jd()</span></tt> returns
+a <tt class="docutils literal"><span class="pre">JD</span></tt> object, which is described in the next section. The method
+<tt class="docutils literal"><span class="pre">doy</span></tt> returns the time stored in the <tt class="docutils literal"><span class="pre">YMD</span></tt> as the day of the year,
+including fractional part.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">YMD</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">2010</span><span class="p">,</span><span class="n">m</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dd</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">hh</span><span class="o">=</span><span class="mf">12.0</span><span class="p">,</span> <span class="n">mm</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">ss</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span><span class="o">.</span><span class="n">to_j</span><span class="p">()</span>
+<span class="go">    2455198.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span><span class="o">.</span><span class="n">to_year</span><span class="p">()</span>
+<span class="go">    2010.004109589041</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span><span class="o">.</span><span class="n">doy</span><span class="p">()</span>
+<span class="go">    1.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span> <span class="o">=</span> <span class="n">ymd</span><span class="o">.</span><span class="n">to_jd</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">jd</span><span class="o">.</span><span class="n">hh</span><span class="p">,</span> <span class="n">jd</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">jd</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (2455198.0, 0.0, 0.0, 0.0)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="jd">
+<h3><a class="toc-backref" href="#id7"><tt class="docutils literal"><span class="pre">JD</span></tt></a><a class="headerlink" href="#jd" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pytpm.tpm.JD">
+<em class="property">class </em><tt class="descclassname">pytpm.tpm.</tt><tt class="descname">JD</tt><a class="headerlink" href="#pytpm.tpm.JD" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="pytpm.tpm.JD.dd">
+<tt class="descname">dd</tt><a class="headerlink" href="#pytpm.tpm.JD.dd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Day as a float.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.JD.hh">
+<tt class="descname">hh</tt><a class="headerlink" href="#pytpm.tpm.JD.hh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hours.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.JD.mm">
+<tt class="descname">mm</tt><a class="headerlink" href="#pytpm.tpm.JD.mm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minutes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.JD.normalize">
+<tt class="descname">normalize</tt><a class="headerlink" href="#pytpm.tpm.JD.normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize the JD structure.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.JD.ss">
+<tt class="descname">ss</tt><a class="headerlink" href="#pytpm.tpm.JD.ss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Seconds.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.JD.to_j">
+<tt class="descname">to_j</tt><a class="headerlink" href="#pytpm.tpm.JD.to_j" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert JD to a Julian date.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.JD.to_year">
+<tt class="descname">to_year</tt><a class="headerlink" href="#pytpm.tpm.JD.to_year" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert JD into year (Gregorian calendar).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.JD.to_ymd">
+<tt class="descname">to_ymd</tt><a class="headerlink" href="#pytpm.tpm.JD.to_ymd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to YMD (Gregorian calendar).</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>The <tt class="docutils literal"><span class="pre">JD</span></tt> class stores date and time in the form of a Julian date. It
+stores a Julian date, <tt class="docutils literal"><span class="pre">dd</span></tt>, as well as three attributes, <tt class="docutils literal"><span class="pre">hh</span></tt>,
+<tt class="docutils literal"><span class="pre">mm</span></tt> and <tt class="docutils literal"><span class="pre">ss</span></tt> for the fraction of a day in hours, minutes and
+seconds respectively. The value of the Julian date is the sum of <tt class="docutils literal"><span class="pre">dd</span></tt>
+with the fraction of the day calculated from <tt class="docutils literal"><span class="pre">hh</span></tt>, <tt class="docutils literal"><span class="pre">mm</span></tt> and <tt class="docutils literal"><span class="pre">ss</span></tt>.</p>
+<p>A <tt class="docutils literal"><span class="pre">JD</span></tt> object can be initialized by passing date and time in several
+formats. If the keyword <tt class="docutils literal"><span class="pre">j</span></tt> is present then the value is taken to be
+a Julian date and all the other keywords are ignored. If the keyword
+<tt class="docutils literal"><span class="pre">year</span></tt> is present the value is assumed to be a year with fractional
+parts. If neither are present, then the values given by the keywords
+<tt class="docutils literal"><span class="pre">dd</span></tt>, <tt class="docutils literal"><span class="pre">hh</span></tt>, <tt class="docutils literal"><span class="pre">mm</span></tt> and <tt class="docutils literal"><span class="pre">ss</span></tt> are used.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">JD</span><span class="p">(</span><span class="n">j</span><span class="o">=</span><span class="mf">2451545.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span>
+<span class="go">{&#39;mm&#39;: 0.0, &#39;ss&#39;: 0.0, &#39;dd&#39;: 2451545.0, &#39;hh&#39;: 0.0}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">jd</span><span class="o">.</span><span class="n">hh</span><span class="p">,</span> <span class="n">jd</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">jd</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (2451545.0, 0.0, 0.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">JD</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mf">2000.0</span><span class="o">+</span><span class="mf">1.5</span><span class="o">/</span><span class="mi">366</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">jd</span><span class="o">.</span><span class="n">hh</span><span class="p">,</span> <span class="n">jd</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">jd</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (2451545.5, -12.0, 0.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">JD</span><span class="p">(</span><span class="n">dd</span><span class="o">=</span><span class="mf">2451544.0</span><span class="p">,</span> <span class="n">hh</span><span class="o">=</span><span class="mf">24.0</span><span class="p">,</span> <span class="n">mm</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">ss</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">jd</span><span class="o">.</span><span class="n">hh</span><span class="p">,</span> <span class="n">jd</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">jd</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (2451544.0, 24.0, 0.0, 0.0)</span>
+</pre></div>
+</div>
+<p>The individual components can also be assigned to and modified after
+creating the object.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">JD</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span><span class="o">.</span><span class="n">dd</span> <span class="o">=</span> <span class="mf">2451545.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span><span class="o">.</span><span class="n">hh</span> <span class="o">=</span> <span class="mf">12.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span><span class="o">.</span><span class="n">mm</span> <span class="o">=</span> <span class="mf">45.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span><span class="o">.</span><span class="n">ss</span> <span class="o">=</span> <span class="mf">12.3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">jd</span><span class="o">.</span><span class="n">hh</span><span class="p">,</span> <span class="n">jd</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">jd</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (2451545.0, 12.0, 45.0, 12.300000000000001)</span>
+</pre></div>
+</div>
+<p>A <tt class="docutils literal"><span class="pre">JD</span></tt> object can be converted into a string using the <tt class="docutils literal"><span class="pre">str()</span></tt> and
+<tt class="docutils literal"><span class="pre">unicode()</span></tt> functions and by using the <tt class="docutils literal"><span class="pre">print</span></tt> statement.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">JD</span><span class="p">(</span><span class="n">j</span><span class="o">=</span><span class="mf">2451545.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">jd</span><span class="p">)</span>
+<span class="go">    &#39; 2451545  00H 00M 00.000S&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">unicode</span><span class="p">(</span><span class="n">jd</span><span class="p">)</span>
+<span class="go">    u&#39; 2451545  00H 00M 00.000S&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">jd</span>
+<span class="go">--&gt; print(jd)</span>
+<span class="go"> 2451545  00H 00M 00.000S</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">JD</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mf">2000.0</span><span class="o">+</span><span class="mf">23.25</span><span class="o">/</span><span class="mi">366</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">jd</span>
+<span class="go">--&gt; print(jd)</span>
+<span class="go"> 2451566  18H 00M 00.000S</span>
+</pre></div>
+</div>
+<p>The method <tt class="docutils literal"><span class="pre">normalize()</span></tt> will normalize the components of a <tt class="docutils literal"><span class="pre">JD</span></tt>
+object.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">JD</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mf">2000.0</span><span class="o">+</span><span class="mf">1.5</span><span class="o">/</span><span class="mi">366</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">jd</span><span class="o">.</span><span class="n">hh</span><span class="p">,</span> <span class="n">jd</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">jd</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (2451545.5, -12.0, 0.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">jd</span><span class="o">.</span><span class="n">hh</span><span class="p">,</span> <span class="n">jd</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">jd</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (2451545.0, 0.0, 0.0, 0.0)</span>
+</pre></div>
+</div>
+<p>The date and time stored in a <tt class="docutils literal"><span class="pre">JD</span></tt> object can be converted into a
+scalar Julian date, a year with a fractional part and a <tt class="docutils literal"><span class="pre">YMD</span></tt> object,
+using the methods <tt class="docutils literal"><span class="pre">to_j()</span></tt>, <tt class="docutils literal"><span class="pre">to_year()</span></tt> and <tt class="docutils literal"><span class="pre">to_ymd()</span></tt>
+respectively.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># Midday Jan 1 of 2000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">JD</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mf">2000.0</span><span class="o">+</span><span class="mf">1.5</span><span class="o">/</span><span class="mi">366</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span><span class="o">.</span><span class="n">to_j</span><span class="p">()</span>
+<span class="go">2451545.0</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jd</span><span class="o">.</span><span class="n">to_year</span><span class="p">()</span>
+<span class="go">    2000.0040983606557</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mf">1.5</span><span class="o">/</span><span class="mi">366</span>
+<span class="go">    0.0040983606557377051</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">jd</span><span class="o">.</span><span class="n">to_ymd</span><span class="p">()</span>
+<span class="go">--&gt; print(jd.to_ymd())</span>
+<span class="go">Sat Jan  1 12:00:00.000 2000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span> <span class="o">=</span> <span class="n">jd</span><span class="o">.</span><span class="n">to_ymd</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">hh</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (2000, 1, 2.0, -12.0, 0.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ymd</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">hh</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">ymd</span><span class="o">.</span><span class="n">ss</span>
+<span class="go">    (2000, 1, 1.0, 12.0, 0.0, 0.0)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="classes-for-representing-vectors">
+<h2><a class="toc-backref" href="#id8">Classes for representing vectors</a><a class="headerlink" href="#classes-for-representing-vectors" title="Permalink to this headline">¶</a></h2>
+<p>TPM stores and manipulates positions of objects using full length
+vectors. All calculations are carried out using Cartesian vectors with
+units of AU for length and AU/day for velocities. In addition to
+vectors with three components TPM uses, &#8220;6-vectors&#8221; that store the
+three position components and the three velocity components. TPM uses
+spherical vectors while handling user input coordinates, for example
+positions and proper motions from catalog. Here the units are radians
+and radians/day.</p>
+<p>In PyTPM, these data structures are provided as Python classes; Cython
+extension types. These are not meant to provide a complete
+implementation of vectors, but only have those features needed for
+their use in PyTPM. Just like the classes for angles and dates
+described above, they should only be used within the context of PyTPM.</p>
+<p>There are four vector classes: <tt class="docutils literal"><span class="pre">V3CP</span></tt>, <tt class="docutils literal"><span class="pre">V3SP</span></tt>, <tt class="docutils literal"><span class="pre">V6C</span></tt> and
+<tt class="docutils literal"><span class="pre">V6S</span></tt>. For the general use of PyTPM, only <tt class="docutils literal"><span class="pre">V6C</span></tt> and <tt class="docutils literal"><span class="pre">V6S</span></tt> are
+required.</p>
+<p>Classes <tt class="docutils literal"><span class="pre">V3CP</span></tt> and <tt class="docutils literal"><span class="pre">V3SP</span></tt> are used for representing a position
+vector in Cartesian and spherical coordinates, respectively. Both of
+these are derived from the class <tt class="docutils literal"><span class="pre">V3</span></tt>, which by itself is not very
+useful.</p>
+<p>The class <tt class="docutils literal"><span class="pre">V6C</span></tt> is used for representing a Cartesian 6-vector, and
+the class <tt class="docutils literal"><span class="pre">V6S</span></tt> is used for representing a spherical 6-vector. Both
+of these are derived from the class <tt class="docutils literal"><span class="pre">V6</span></tt>, which by itself is not very
+useful.</p>
+<p>There is no class for representing a velocity vector on its own, since
+I didn&#8217;t find any need for it. In fact, the <tt class="docutils literal"><span class="pre">V3CP</span></tt> and <tt class="docutils literal"><span class="pre">V3SP</span></tt> are
+also not needed, but I have them implemented anyway.</p>
+<div class="section" id="v3cp-and-v3sp">
+<h3><a class="toc-backref" href="#id9"><tt class="docutils literal"><span class="pre">V3CP</span></tt> and <tt class="docutils literal"><span class="pre">V3SP</span></tt></a><a class="headerlink" href="#v3cp-and-v3sp" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pytpm.tpm.V3CP">
+<em class="property">class </em><tt class="descclassname">pytpm.tpm.</tt><tt class="descname">V3CP</tt><a class="headerlink" href="#pytpm.tpm.V3CP" title="Permalink to this definition">¶</a></dt>
+<dd><p>A V3 Cartesian position vector.</p>
+<dl class="attribute">
+<dt id="pytpm.tpm.V3CP.c2s">
+<tt class="descname">c2s</tt><a class="headerlink" href="#pytpm.tpm.V3CP.c2s" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert Cartesian position vector into spherical vector.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V3CP.cross">
+<tt class="descname">cross</tt><a class="headerlink" href="#pytpm.tpm.V3CP.cross" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the cross product of two V3CP vectors.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V3CP.dot">
+<tt class="descname">dot</tt><a class="headerlink" href="#pytpm.tpm.V3CP.dot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the dot product of two V3CP vectors.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V3CP.mod">
+<tt class="descname">mod</tt><a class="headerlink" href="#pytpm.tpm.V3CP.mod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return modulus of the V3CP vector.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V3CP.unit">
+<tt class="descname">unit</tt><a class="headerlink" href="#pytpm.tpm.V3CP.unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return unit V3CP vector.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V3CP.x">
+<tt class="descname">x</tt><a class="headerlink" href="#pytpm.tpm.V3CP.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>X coordinate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V3CP.y">
+<tt class="descname">y</tt><a class="headerlink" href="#pytpm.tpm.V3CP.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Y coordinate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V3CP.z">
+<tt class="descname">z</tt><a class="headerlink" href="#pytpm.tpm.V3CP.z" title="Permalink to this definition">¶</a></dt>
+<dd><p>Z coordinate.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pytpm.tpm.V3SP">
+<em class="property">class </em><tt class="descclassname">pytpm.tpm.</tt><tt class="descname">V3SP</tt><a class="headerlink" href="#pytpm.tpm.V3SP" title="Permalink to this definition">¶</a></dt>
+<dd><p>A V3 spherical position vector.</p>
+<dl class="attribute">
+<dt id="pytpm.tpm.V3SP.alpha">
+<tt class="descname">alpha</tt><a class="headerlink" href="#pytpm.tpm.V3SP.alpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alpha coordinate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V3SP.cross">
+<tt class="descname">cross</tt><a class="headerlink" href="#pytpm.tpm.V3SP.cross" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the cross product of two V3SP vectors.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V3SP.delta">
+<tt class="descname">delta</tt><a class="headerlink" href="#pytpm.tpm.V3SP.delta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delta coordinate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V3SP.dot">
+<tt class="descname">dot</tt><a class="headerlink" href="#pytpm.tpm.V3SP.dot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the dot product of two V3SP vectors.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V3SP.mod">
+<tt class="descname">mod</tt><a class="headerlink" href="#pytpm.tpm.V3SP.mod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return modulus of the V3SP vector; magnitude of R component.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V3SP.nalpha">
+<tt class="descname">nalpha</tt><a class="headerlink" href="#pytpm.tpm.V3SP.nalpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalized alpha coordinate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V3SP.ndelta">
+<tt class="descname">ndelta</tt><a class="headerlink" href="#pytpm.tpm.V3SP.ndelta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalized alpha coordinate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V3SP.r">
+<tt class="descname">r</tt><a class="headerlink" href="#pytpm.tpm.V3SP.r" title="Permalink to this definition">¶</a></dt>
+<dd><p>Radial coordinate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V3SP.s2c">
+<tt class="descname">s2c</tt><a class="headerlink" href="#pytpm.tpm.V3SP.s2c" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert spherical position vector into Cartesian vector.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>As mentioned above, these are used for representing a position vector
+in Cartesian and spherical coordinates respectively.</p>
+<p>An instance of the <tt class="docutils literal"><span class="pre">V3CP</span></tt> class has the attributes <tt class="docutils literal"><span class="pre">x</span></tt>, <tt class="docutils literal"><span class="pre">y</span></tt> and
+<tt class="docutils literal"><span class="pre">z</span></tt> which stores the three components. The <tt class="docutils literal"><span class="pre">V3SP</span></tt> class stores the
+components in <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">alpha</span></tt> and <tt class="docutils literal"><span class="pre">delta</span></tt>; <tt class="docutils literal"><span class="pre">alpha</span></tt> is the RA like
+angle and <tt class="docutils literal"><span class="pre">delta</span></tt> is the DE like angle. It also has attributes
+<tt class="docutils literal"><span class="pre">nalpha</span></tt> and <tt class="docutils literal"><span class="pre">ndelta</span></tt> that store the angles <tt class="docutils literal"><span class="pre">alpha</span></tt> and <tt class="docutils literal"><span class="pre">delta</span></tt>
+respectively, scaled to [0 - 2π] and [-π/2 - π/2], respectively.</p>
+<p>The values for these components can be supplied at creation time, and
+can be modified later on.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">v3cp</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">V3CP</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v3cp</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">v3cp</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">v3cp</span><span class="o">.</span><span class="n">z</span>
+<span class="go">    (1.0, 0.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v3cp</span><span class="o">.</span><span class="n">y</span><span class="o">=</span><span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v3cp</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">v3cp</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">v3cp</span><span class="o">.</span><span class="n">z</span>
+<span class="go">    (1.0, 1.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v3sp</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">V3SP</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v3sp</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">v3sp</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="n">v3sp</span><span class="o">.</span><span class="n">delta</span>
+<span class="go">    (10.0, 0.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v3sp</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="mf">2.3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v3sp</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">v3sp</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="n">v3sp</span><span class="o">.</span><span class="n">delta</span>
+<span class="go">    (10.0, 0.0, 2.2999999999999998)</span>
+</pre></div>
+</div>
+<p>Both these types can be can be converted into a string representation
+by passing it to <tt class="docutils literal"><span class="pre">str()</span></tt> or <tt class="docutils literal"><span class="pre">unicode()</span></tt>. These will be converted
+into strings if they are used with the <tt class="docutils literal"><span class="pre">print</span></tt> statement.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">v3sp</span>
+<span class="go">--&gt; print(v3sp)</span>
+<span class="go"> 1.000000000000000e+01  0.000000000000000e+00  2.300000000000000e+00</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">v3cp</span>
+<span class="go">--&gt; print(v3cp)</span>
+<span class="go"> 1.000000000000000e+00  1.000000000000000e+00  0.000000000000000e+00</span>
+</pre></div>
+</div>
+<p>Two <tt class="docutils literal"><span class="pre">V3CP</span></tt> vectors can be added together, subtracted from each
+other. The method <tt class="docutils literal"><span class="pre">unit()</span></tt> returns the unit vector, where as
+<tt class="docutils literal"><span class="pre">mod()</span></tt> returns the length of the vector. The method <tt class="docutils literal"><span class="pre">cross()</span></tt>
+returns the cross product between two <tt class="docutils literal"><span class="pre">V3CP</span></tt> vectors, and the method
+<tt class="docutils literal"><span class="pre">dot</span></tt> returns the dot product between two <tt class="docutils literal"><span class="pre">V3CP</span></tt> vectors. A
+<tt class="docutils literal"><span class="pre">V3CP</span></tt> method can also be multiplied with a scalar; all components
+will get multiplied with the scalar and a new <tt class="docutils literal"><span class="pre">V3CP</span></tt> vector will be
+returned.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">v3cp</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">V3CP</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">z</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v3cp1</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">V3CP</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">z</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">v3cp</span> <span class="o">+</span> <span class="n">v3cp1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">z</span>
+<span class="go">    (2.0, 2.0, 2.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">v3cp</span> <span class="o">-</span> <span class="n">v3cp1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">z</span>
+<span class="go">    (0.0, 0.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v3cp</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">V3CP</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">z</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v3cp</span><span class="o">.</span><span class="n">mod</span><span class="p">()</span>
+<span class="go">    1.7320508075688772</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">v3cp</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">z</span>
+<span class="go">    (0.57735026918962584, 0.57735026918962584, 0.57735026918962584)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v3cp</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">V3CP</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">z</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v3cp1</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">V3CP</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">z</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">v3cp</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">v3cp1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">z</span>
+<span class="go">    (0.0, 0.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v3cp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v3cp1</span><span class="p">)</span>
+<span class="go">    3.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">v3cp</span> <span class="o">*</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">z</span>
+<span class="go">    (3.0, 3.0, 3.0)</span>
+</pre></div>
+</div>
+<p>The method <tt class="docutils literal"><span class="pre">c2s()</span></tt> will convert the Cartesian components into
+spherical and return the results as a <tt class="docutils literal"><span class="pre">V3SP</span></tt> object.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">v3cp</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">V3CP</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">z</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v3sp</span> <span class="o">=</span> <span class="n">v3cp</span><span class="o">.</span><span class="n">c2s</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v3sp</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">v3sp</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="n">v3sp</span><span class="o">.</span><span class="n">delta</span>
+<span class="go">    (1.7320508075688772, 0.78539816339744828, 0.61547970867038726)</span>
+</pre></div>
+</div>
+<p>A <tt class="docutils literal"><span class="pre">V3SP</span></tt> object, has most of methods as a <tt class="docutils literal"><span class="pre">V3CP</span></tt> object. Most
+operations are done by first converting into Cartesian and then
+converting the result back into spherical. It has the <tt class="docutils literal"><span class="pre">s2c()</span></tt> method
+that will convert the vector into Cartesian coordinates and returns the
+results as a <tt class="docutils literal"><span class="pre">V3CP</span></tt> object.</p>
+</div>
+<div class="section" id="v6c">
+<h3><a class="toc-backref" href="#id10"><tt class="docutils literal"><span class="pre">V6C</span></tt></a><a class="headerlink" href="#v6c" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pytpm.tpm.V6C">
+<em class="property">class </em><tt class="descclassname">pytpm.tpm.</tt><tt class="descname">V6C</tt><a class="headerlink" href="#pytpm.tpm.V6C" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for Cartesian V6 vector</p>
+<dl class="attribute">
+<dt id="pytpm.tpm.V6C.c2s">
+<tt class="descname">c2s</tt><a class="headerlink" href="#pytpm.tpm.V6C.c2s" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert V6C to V6S i.e., Cartesian to spherical.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V6C.cross">
+<tt class="descname">cross</tt><a class="headerlink" href="#pytpm.tpm.V6C.cross" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cross product of POS components of two V6C vectors.</p>
+<p>VEL component of the resulting V6 vector is set to 0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V6C.dot">
+<tt class="descname">dot</tt><a class="headerlink" href="#pytpm.tpm.V6C.dot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dot product of the POS vector of V6C vectors.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V6C.mod">
+<tt class="descname">mod</tt><a class="headerlink" href="#pytpm.tpm.V6C.mod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return modulus, i.e., length, of position component of V6C vector.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V6C.pos">
+<tt class="descname">pos</tt><a class="headerlink" href="#pytpm.tpm.V6C.pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>POS component.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V6C.scale">
+<tt class="descname">scale</tt><a class="headerlink" href="#pytpm.tpm.V6C.scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return V6C with components scaled by the given factor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V6C.unit">
+<tt class="descname">unit</tt><a class="headerlink" href="#pytpm.tpm.V6C.unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return V6C with unit POS vector and scaled VEL.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V6C.v62v3">
+<tt class="descname">v62v3</tt><a class="headerlink" href="#pytpm.tpm.V6C.v62v3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert V6C into V3CP by addding space motion.</p>
+<p>Space motion is applied for the given number of days, dt.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V6C.x">
+<tt class="descname">x</tt><a class="headerlink" href="#pytpm.tpm.V6C.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>X coordinate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V6C.xdot">
+<tt class="descname">xdot</tt><a class="headerlink" href="#pytpm.tpm.V6C.xdot" title="Permalink to this definition">¶</a></dt>
+<dd><p>XDOT coordinate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V6C.y">
+<tt class="descname">y</tt><a class="headerlink" href="#pytpm.tpm.V6C.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Y coordinate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V6C.ydot">
+<tt class="descname">ydot</tt><a class="headerlink" href="#pytpm.tpm.V6C.ydot" title="Permalink to this definition">¶</a></dt>
+<dd><p>YDOT coordinate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V6C.z">
+<tt class="descname">z</tt><a class="headerlink" href="#pytpm.tpm.V6C.z" title="Permalink to this definition">¶</a></dt>
+<dd><p>Z coordinate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V6C.zdot">
+<tt class="descname">zdot</tt><a class="headerlink" href="#pytpm.tpm.V6C.zdot" title="Permalink to this definition">¶</a></dt>
+<dd><p>ZDOT coordinate.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>This class is used for representing a Cartesian 6-vector and has 6
+important attributes: <tt class="docutils literal"><span class="pre">x</span></tt>, <tt class="docutils literal"><span class="pre">y</span></tt>, <tt class="docutils literal"><span class="pre">z</span></tt>, <tt class="docutils literal"><span class="pre">xdot</span></tt>, <tt class="docutils literal"><span class="pre">ydot</span></tt> and
+<tt class="docutils literal"><span class="pre">zdot</span></tt>. Each of these stand for the position and velocity
+components. These can be assigned values at creation time by passing
+keyword arguments. Their values can be modified after creation.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">V6C</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span><span class="o">.</span><span class="n">x</span>
+<span class="go">    1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span><span class="o">.</span><span class="n">y</span>
+<span class="go">    0.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span><span class="o">.</span><span class="n">z</span><span class="o">=</span><span class="mf">100.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span><span class="o">.</span><span class="n">ydot</span><span class="o">=-</span><span class="mf">10.94</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">xdot</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">ydot</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">zdot</span>
+<span class="go">    (1.0, 0.0, 100.0, 0.0, -10.94, 0.0)</span>
+</pre></div>
+</div>
+<p>We can add and subtract two <tt class="docutils literal"><span class="pre">V6C</span></tt> vectors: the corresponding
+coordinate components are added and subtracted.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">v6c1</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">V6C</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span><span class="n">z</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span><span class="n">xdot</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">,</span><span class="n">ydot</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span><span class="n">zdot</span><span class="o">=-</span><span class="mf">12.345</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6c2</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">V6C</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span><span class="n">z</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">xdot</span><span class="o">=-</span><span class="mf">6.0</span><span class="p">,</span><span class="n">ydot</span><span class="o">=-</span><span class="mf">3.0</span><span class="p">,</span><span class="n">zdot</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span> <span class="o">=</span> <span class="n">v6c1</span> <span class="o">+</span> <span class="n">v6c2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">xdot</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">ydot</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">zdot</span>
+<span class="go">    (20.0, 16.0, 11.0, -7.0, 0.0, -11.345000000000001)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span> <span class="o">=</span> <span class="n">v6c1</span> <span class="o">-</span> <span class="n">v6c2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">xdot</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">ydot</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">zdot</span>
+<span class="go">    (0.0, 2.0, 5.0, 5.0, 6.0, -13.345000000000001)</span>
+</pre></div>
+</div>
+<p>The length of the position component in a <tt class="docutils literal"><span class="pre">V6C</span></tt> vector can be
+calculated using the <tt class="docutils literal"><span class="pre">mod()</span></tt> method.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">V6C</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span><span class="n">z</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span><span class="o">.</span><span class="n">mod</span><span class="p">()</span>
+<span class="go">    5.196152422706632</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span><span class="o">.</span><span class="n">mod</span><span class="p">()</span><span class="o">**</span><span class="mi">2</span>
+<span class="go">    27.0</span>
+</pre></div>
+</div>
+<p>The method <tt class="docutils literal"><span class="pre">unit()</span></tt> will return another <tt class="docutils literal"><span class="pre">V6C</span></tt> vector, containing
+the unit vector of the position component and with the velocity
+components scaled with reciprocal of length of the position component.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">V6C</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span><span class="n">z</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span><span class="n">xdot</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">ydot</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">zdot</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6cu</span> <span class="o">=</span> <span class="n">v6c</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6cu</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">v6cu</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">v6cu</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">v6cu</span><span class="o">.</span><span class="n">xdot</span><span class="p">,</span> <span class="n">v6cu</span><span class="o">.</span><span class="n">ydot</span><span class="p">,</span> <span class="n">v6cu</span><span class="o">.</span><span class="n">zdot</span>
+<span class="go">(0.57735026918962573,</span>
+<span class="go"> 0.57735026918962573,</span>
+<span class="go"> 0.57735026918962573,</span>
+<span class="go"> 0.19245008972987526,</span>
+<span class="go"> 0.19245008972987526,</span>
+<span class="go"> 0.19245008972987526)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mf">1.0</span><span class="o">/</span><span class="n">v6c</span><span class="o">.</span><span class="n">mod</span><span class="p">()</span>
+<span class="go">    0.19245008972987526</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mf">3.0</span><span class="o">/</span><span class="n">v6c</span><span class="o">.</span><span class="n">mod</span><span class="p">()</span>
+<span class="go">    0.57735026918962573</span>
+</pre></div>
+</div>
+<p>The method <tt class="docutils literal"><span class="pre">scale()</span></tt> will multiply all components with the given number
+and return a new <tt class="docutils literal"><span class="pre">V6C</span></tt> vector with the components set to the results.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">V6C</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span><span class="n">z</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span><span class="n">xdot</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">ydot</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">zdot</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span> <span class="o">=</span> <span class="n">v6c</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mf">10.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">xdot</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">ydot</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">zdot</span>
+<span class="go">    (30.0, 30.0, 30.0, 10.0, 10.0, 10.0)</span>
+</pre></div>
+</div>
+<p>The method <tt class="docutils literal"><span class="pre">v62v3()</span></tt>, multiply the velocity components with the given
+scalar, adds them to the corresponding position component and returns
+the result as a <tt class="docutils literal"><span class="pre">V3CP</span></tt> vector. That is, it applies space motion to
+the given <tt class="docutils literal"><span class="pre">V6C</span></tt> position component.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">V6C</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span><span class="n">z</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span><span class="n">xdot</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">ydot</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">zdot</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v3cp</span> <span class="o">=</span> <span class="n">v6c</span><span class="o">.</span><span class="n">v62v3</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v3cp</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">v3cp</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">v3cp</span><span class="o">.</span><span class="n">z</span>
+<span class="go">    (5.0, 5.0, 5.0)</span>
+</pre></div>
+</div>
+<p>The methods <tt class="docutils literal"><span class="pre">dot()</span></tt> and <tt class="docutils literal"><span class="pre">cross()</span></tt> perform scalar and vector product
+between the two vectors. In the latter case, the velocity components of
+the resulting vector is set to 0.0</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">v6c1</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">V6C</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span><span class="n">z</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span><span class="n">xdot</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">,</span><span class="n">ydot</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span><span class="n">zdot</span><span class="o">=-</span><span class="mf">12.345</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6c2</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">V6C</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span><span class="n">z</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">xdot</span><span class="o">=-</span><span class="mf">6.0</span><span class="p">,</span><span class="n">ydot</span><span class="o">=-</span><span class="mf">3.0</span><span class="p">,</span><span class="n">zdot</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6c1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v6c2</span><span class="p">)</span>
+<span class="go">    187.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span> <span class="o">=</span> <span class="n">v6c1</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">v6c2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">xdot</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">ydot</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">zdot</span>
+<span class="go">    (-29.0, 50.0, -20.0, 0.0, 0.0, 0.0)</span>
+</pre></div>
+</div>
+<p>The method <tt class="docutils literal"><span class="pre">c2s()</span></tt> converts the 6-vector into spherical coordinates
+and returns the result as a <tt class="docutils literal"><span class="pre">V6S</span></tt> vector. This is the method that
+will be used often, while using the PyTPM library. All calculations in
+PyTPM are done in Cartesian coordinates but the final result is most
+often needed in spherical coordinates, for example RA and DE.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">V6C</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">z</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">xdot</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">ydot</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">zdot</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6s</span> <span class="o">=</span> <span class="n">v6c</span><span class="o">.</span><span class="n">c2s</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6s</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">v6s</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="n">v6s</span><span class="o">.</span><span class="n">delta</span><span class="p">,</span> <span class="n">v6s</span><span class="o">.</span><span class="n">rdot</span><span class="p">,</span> <span class="n">v6s</span><span class="o">.</span><span class="n">alphadot</span><span class="p">,</span> <span class="n">v6s</span><span class="o">.</span><span class="n">deltadot</span>
+<span class="go">(1.7320508075688772,</span>
+<span class="go"> 0.78539816339744828,</span>
+<span class="go"> 0.61547970867038726,</span>
+<span class="go"> 1.7320508075688774,</span>
+<span class="go"> 0.0,</span>
+<span class="go"> -8.739772475095232e-18)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="v6s">
+<h3><a class="toc-backref" href="#id11"><tt class="docutils literal"><span class="pre">V6S</span></tt></a><a class="headerlink" href="#v6s" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pytpm.tpm.V6S">
+<em class="property">class </em><tt class="descclassname">pytpm.tpm.</tt><tt class="descname">V6S</tt><a class="headerlink" href="#pytpm.tpm.V6S" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for spherical V6 vector</p>
+<dl class="attribute">
+<dt id="pytpm.tpm.V6S.alpha">
+<tt class="descname">alpha</tt><a class="headerlink" href="#pytpm.tpm.V6S.alpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>ALPHA coordinate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V6S.alphadot">
+<tt class="descname">alphadot</tt><a class="headerlink" href="#pytpm.tpm.V6S.alphadot" title="Permalink to this definition">¶</a></dt>
+<dd><p>ALPHADOT coordinate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V6S.delta">
+<tt class="descname">delta</tt><a class="headerlink" href="#pytpm.tpm.V6S.delta" title="Permalink to this definition">¶</a></dt>
+<dd><p>DELTA coordinate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V6S.deltadot">
+<tt class="descname">deltadot</tt><a class="headerlink" href="#pytpm.tpm.V6S.deltadot" title="Permalink to this definition">¶</a></dt>
+<dd><p>DELTADOT coordinate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V6S.nalpha">
+<tt class="descname">nalpha</tt><a class="headerlink" href="#pytpm.tpm.V6S.nalpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalized alpha coordinate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V6S.ndelta">
+<tt class="descname">ndelta</tt><a class="headerlink" href="#pytpm.tpm.V6S.ndelta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalized alpha coordinate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V6S.r">
+<tt class="descname">r</tt><a class="headerlink" href="#pytpm.tpm.V6S.r" title="Permalink to this definition">¶</a></dt>
+<dd><p>R coordinate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V6S.rdot">
+<tt class="descname">rdot</tt><a class="headerlink" href="#pytpm.tpm.V6S.rdot" title="Permalink to this definition">¶</a></dt>
+<dd><p>RDOT coordinate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.V6S.s2c">
+<tt class="descname">s2c</tt><a class="headerlink" href="#pytpm.tpm.V6S.s2c" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert V6S to V6C i.e., spherical to Cartesian.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>The <tt class="docutils literal"><span class="pre">V6S</span></tt> class holds a 6-vector in spherical coordinates. The
+components are stored in the attributes <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">alpha</span></tt>, <tt class="docutils literal"><span class="pre">delta</span></tt>,
+<tt class="docutils literal"><span class="pre">rdot</span></tt>, <tt class="docutils literal"><span class="pre">alphadot</span></tt>, and <tt class="docutils literal"><span class="pre">deltadot</span></tt>. Here <tt class="docutils literal"><span class="pre">alpha</span></tt> is the
+RA like angle and <tt class="docutils literal"><span class="pre">delta</span></tt> is the DE like angle. These properties can
+be set at creation time and can be modified later on. The angles are in
+radians.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">v6s</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">V6S</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mf">1e9</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">2.3</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">3.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6s</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">v6s</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="n">v6s</span><span class="o">.</span><span class="n">delta</span><span class="p">,</span> <span class="n">v6s</span><span class="o">.</span><span class="n">rdot</span><span class="p">,</span> <span class="n">v6s</span><span class="o">.</span><span class="n">alphadot</span><span class="p">,</span> <span class="n">v6s</span><span class="o">.</span><span class="n">deltadot</span>
+<span class="go">    (1000000000.0, 2.2999999999999998, 3.5, 0.0, 0.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6s</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6s</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">v6s</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="n">v6s</span><span class="o">.</span><span class="n">delta</span><span class="p">,</span> <span class="n">v6s</span><span class="o">.</span><span class="n">rdot</span><span class="p">,</span> <span class="n">v6s</span><span class="o">.</span><span class="n">alphadot</span><span class="p">,</span> <span class="n">v6s</span><span class="o">.</span><span class="n">deltadot</span>
+<span class="go">    (1.0, 2.2999999999999998, 3.5, 0.0, 0.0, 0.0)</span>
+</pre></div>
+</div>
+<p>The attributes <tt class="docutils literal"><span class="pre">nalpha</span></tt> and <tt class="docutils literal"><span class="pre">ndelta</span></tt> gives normalized values of
+<tt class="docutils literal"><span class="pre">alpha</span></tt> and <tt class="docutils literal"><span class="pre">delta</span></tt> respectively. The first gives a value between
+0 and 2π, while the latter gives a value between -π/2 and π/2.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tpm</span><span class="o">.</span><span class="n">M_PI</span>
+<span class="go">    3.1415926535897931</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6s</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">M_PI</span><span class="o">*</span><span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6s</span><span class="o">.</span><span class="n">nalpha</span>
+<span class="go">    3.1415926535897931</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6s</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="o">-</span><span class="n">tpm</span><span class="o">.</span><span class="n">M_PI</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6s</span><span class="o">.</span><span class="n">ndelta</span>
+<span class="go">    0.0</span>
+</pre></div>
+</div>
+<p>Since a <tt class="docutils literal"><span class="pre">V6S</span></tt> vector is only used for converting catalog data into
+Cartesian coordinates, and vice-versa, this vector has only one method:
+<tt class="docutils literal"><span class="pre">s2c</span></tt>. The method converts the vector into Cartesian coordinates and
+returns a <tt class="docutils literal"><span class="pre">V6C</span></tt> vector.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tpm</span><span class="o">.</span><span class="n">M_PI</span>
+<span class="go">    3.1415926535897931</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6s</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">V6S</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">M_PI</span><span class="o">/</span><span class="mf">4.0</span><span class="p">,</span><span class="n">delta</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">M_PI</span><span class="o">/</span><span class="mf">3.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span> <span class="o">=</span> <span class="n">v6s</span><span class="o">.</span><span class="n">s2c</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">z</span>
+<span class="go">    (0.35355339059327384, 0.35355339059327379, 0.8660254037844386)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v6c</span><span class="o">.</span><span class="n">xdot</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">ydot</span><span class="p">,</span> <span class="n">v6c</span><span class="o">.</span><span class="n">zdot</span>
+<span class="go">    (0.0, 0.0, 0.0)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="tstate">
+<h3><a class="toc-backref" href="#id12"><tt class="docutils literal"><span class="pre">TSTATE</span></tt></a><a class="headerlink" href="#tstate" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pytpm.tpm.TSTATE">
+<em class="property">class </em><tt class="descclassname">pytpm.tpm.</tt><tt class="descname">TSTATE</tt><a class="headerlink" href="#pytpm.tpm.TSTATE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class corresponding to TPM TSTATE structure.</p>
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.H">
+<tt class="descname">H</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.H" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ambient humidity (0-1).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.P">
+<tt class="descname">P</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.P" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ambient pressure in millibars.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.T">
+<tt class="descname">T</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.T" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ambient temperature in Kelvins.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.alt">
+<tt class="descname">alt</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.alt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Altitude above geoid in meters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.delta_at">
+<tt class="descname">delta_at</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.delta_at" title="Permalink to this definition">¶</a></dt>
+<dd><p>DELTA_AT = TAI - UTC (s)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.delta_ut">
+<tt class="descname">delta_ut</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.delta_ut" title="Permalink to this definition">¶</a></dt>
+<dd><p>DELTA_UT = UT1 - UTC (s)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.eb">
+<tt class="descname">eb</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.eb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Barycentric Earth state vector.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.eh">
+<tt class="descname">eh</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.eh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Heliocentric Earth state vector.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.gast">
+<tt class="descname">gast</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.gast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Greewich Apparent Sidereal Time.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.gmst">
+<tt class="descname">gmst</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.gmst" title="Permalink to this definition">¶</a></dt>
+<dd><p>Greewich Mean Sidereal Time.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.last">
+<tt class="descname">last</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.last" title="Permalink to this definition">¶</a></dt>
+<dd><p>Local Apparent Sidereal Time.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.lat">
+<tt class="descname">lat</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.lat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Latitude in radians.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.lon">
+<tt class="descname">lon</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.lon" title="Permalink to this definition">¶</a></dt>
+<dd><p>East longitude in radians.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.nm">
+<tt class="descname">nm</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.nm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Nutation matrix for NOW.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.nut_lon">
+<tt class="descname">nut_lon</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.nut_lon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Nutation in longitude.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.nut_obl">
+<tt class="descname">nut_obl</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.nut_obl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Nutation in obliquity.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.obliquity">
+<tt class="descname">obliquity</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.obliquity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obliquity of the Ecliptic.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.obs_m">
+<tt class="descname">obs_m</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.obs_m" title="Permalink to this definition">¶</a></dt>
+<dd><p>Geocentric Earth-fixed mean state vector.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.obs_s">
+<tt class="descname">obs_s</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.obs_s" title="Permalink to this definition">¶</a></dt>
+<dd><p>Geocentric space-fixed true state vector.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.obs_t">
+<tt class="descname">obs_t</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.obs_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Geocentric Earth-fixed true state vector.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.pm">
+<tt class="descname">pm</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.pm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Precession matrix from J2000 to NOW.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.refa">
+<tt class="descname">refa</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.refa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refraction coefficient.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.refb">
+<tt class="descname">refb</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.refb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refraction coefficient.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.tai">
+<tt class="descname">tai</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.tai" title="Permalink to this definition">¶</a></dt>
+<dd><p>International Atomic Time.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.tdb">
+<tt class="descname">tdb</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.tdb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Barycentric Dynamic Time.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.tdt">
+<tt class="descname">tdt</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.tdt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Terrestrial Dynamic Time;Terrestrial Time.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.ut1">
+<tt class="descname">ut1</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.ut1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Universal time.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.utc">
+<tt class="descname">utc</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.utc" title="Permalink to this definition">¶</a></dt>
+<dd><p>UTC as JD. Defines NOW, i.e., current time.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.wavelength">
+<tt class="descname">wavelength</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.wavelength" title="Permalink to this definition">¶</a></dt>
+<dd><p>Observing wavelength in microns.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.xpole">
+<tt class="descname">xpole</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.xpole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Polar motion in radians.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytpm.tpm.TSTATE.ypole">
+<tt class="descname">ypole</tt><a class="headerlink" href="#pytpm.tpm.TSTATE.ypole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Polar motion in radians.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>A <tt class="docutils literal"><span class="pre">TSTATE</span></tt> object is used to store the &#8220;state data&#8221; in PyTPM. This is
+equivalent to the <tt class="docutils literal"><span class="pre">TPM_TSTATE</span></tt> structure in TPM. The reason I
+implemented this class was so that I can call the <tt class="docutils literal"><span class="pre">tpm_data()</span></tt> and
+<tt class="docutils literal"><span class="pre">tpm()</span></tt> functions from within Python. This object does not have any
+useful methods, but only has attributes corresponding to the 32
+parameters that define a state. Of these the independent parameters are
+read-write, where as the dependent parameters are read only. The latter
+can be calculated, as in TPM, by passing the object to <tt class="docutils literal"><span class="pre">tpm_data()</span></tt>
+along with the type of calculation.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tstate</span> <span class="o">=</span> <span class="n">tpm</span><span class="o">.</span><span class="n">TSTATE</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">tstate</span><span class="p">):</span>
+<span class="go">   .....:     if not i.startswith(&quot;_&quot;): print i</span>
+<span class="go">   .....:</span>
+<span class="go">   .....:</span>
+<span class="go">H</span>
+<span class="go">P</span>
+<span class="go">T</span>
+<span class="go">alt</span>
+<span class="go">delta_at</span>
+<span class="go">delta_ut</span>
+<span class="go">eb</span>
+<span class="go">eh</span>
+<span class="go">gast</span>
+<span class="go">gmst</span>
+<span class="go">last</span>
+<span class="go">lat</span>
+<span class="go">lon</span>
+<span class="go">nm</span>
+<span class="go">nut_lon</span>
+<span class="go">nut_obl</span>
+<span class="go">obliquity</span>
+<span class="go">obs_m</span>
+<span class="go">obs_s</span>
+<span class="go">obs_t</span>
+<span class="go">pm</span>
+<span class="go">refa</span>
+<span class="go">refb</span>
+<span class="go">tai</span>
+<span class="go">tdb</span>
+<span class="go">tdt</span>
+<span class="go">ut1</span>
+<span class="go">utc</span>
+<span class="go">wavelength</span>
+<span class="go">xpole</span>
+<span class="go">ypole</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pvec">
+<h3><a class="toc-backref" href="#id13"><tt class="docutils literal"><span class="pre">PVEC</span></tt></a><a class="headerlink" href="#pvec" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pytpm.tpm.PVEC">
+<em class="property">class </em><tt class="descclassname">pytpm.tpm.</tt><tt class="descname">PVEC</tt><a class="headerlink" href="#pytpm.tpm.PVEC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for holding N_TPM_STATES element array of V6 vectors.</p>
+</dd></dl>
+
+<p>TPM needs an array of <tt class="docutils literal"><span class="pre">V6</span></tt> structures, where it will store the
+initial, intermediate and final results, while performing coordinate
+transformations. In PyTPM, I have decided to implement a class that can
+be treated as an array of <tt class="docutils literal"><span class="pre">V6CP</span></tt> object. This is much more flexible
+and robust than dealing with a simple list of <tt class="docutils literal"><span class="pre">V6CP</span></tt> objects. This
+object can be passed, along with other information, to <tt class="docutils literal"><span class="pre">tpm()</span></tt> when
+performing coordinate transformations.</p>
+<p>An index location corresponds to the appropriate TPM state. For
+example, the index location 6, i.e., pvec[6], corresponds to the state
+<tt class="docutils literal"><span class="pre">TPM_S06</span></tt>, and pvec[4] corresponds to <tt class="docutils literal"><span class="pre">TPM_S04</span></tt>.</p>
+<p>So while performing FK5 epoch and equinox J2000 to Galactic conversion,
+we would insert our input <tt class="docutils literal"><span class="pre">V6CP</span></tt> vector at index location 6 and
+retrieve the result from index location 4.</p>
+<p>A full example is shown <a class="reference internal" href="conversions.html#pytpm-full-conversion"><em>here</em></a>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Data Structures</a><ul>
+<li><a class="reference internal" href="#classes-for-representing-angles">Classes for representing angles</a><ul>
+<li><a class="reference internal" href="#dms"><tt class="docutils literal"><span class="pre">DMS</span></tt></a></li>
+<li><a class="reference internal" href="#hms"><tt class="docutils literal"><span class="pre">HMS</span></tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#classes-for-storing-time-and-date-time">Classes for storing time and date-time</a><ul>
+<li><a class="reference internal" href="#ymd"><tt class="docutils literal"><span class="pre">YMD</span></tt></a></li>
+<li><a class="reference internal" href="#jd"><tt class="docutils literal"><span class="pre">JD</span></tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#classes-for-representing-vectors">Classes for representing vectors</a><ul>
+<li><a class="reference internal" href="#v3cp-and-v3sp"><tt class="docutils literal"><span class="pre">V3CP</span></tt> and <tt class="docutils literal"><span class="pre">V3SP</span></tt></a></li>
+<li><a class="reference internal" href="#v6c"><tt class="docutils literal"><span class="pre">V6C</span></tt></a></li>
+<li><a class="reference internal" href="#v6s"><tt class="docutils literal"><span class="pre">V6S</span></tt></a></li>
+<li><a class="reference internal" href="#tstate"><tt class="docutils literal"><span class="pre">TSTATE</span></tt></a></li>
+<li><a class="reference internal" href="#pvec"><tt class="docutils literal"><span class="pre">PVEC</span></tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="conversions.html"
+                        title="previous chapter">Coordinate conversions using TPM and PyTPM</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="functions.html"
+                        title="next chapter">Functions and constants in PyTPM</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/data_structures.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="functions.html" title="Functions and constants in PyTPM"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="conversions.html" title="Coordinate conversions using TPM and PyTPM"
+             >previous</a> |</li>
+        <li><a href="index.html">PyTPM v0.5dev documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Prasanth Nair.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>
