@@ -9,6 +9,14 @@ c_tests_dir = os.path.join(test_dir, "c_tests")
 
 class TestConvert(unittest.TestCase):
     """Test tpm.convert.convert."""
+    def testConvertInterface(self):
+        """Convert properly handles input paramters."""
+        self.assertRaises(TypeError, lambda: convert.convert())
+        self.assertRaises(TypeError, lambda: convert.convert(ra=0.0))
+        self.assertRaises(TypeError, lambda: convert.convert(dec=0.0))
+        self.assertRaises(ValueError, lambda: convert.convert(ra=0,
+                                                             dec=[0,1]))
+        
     def testFK52GAL_simple(self):
         """tpm.convert.convert: FK5 to GAL simple."""
         # See pytpm/tests/c_tests/test_convert.c.
@@ -16,7 +24,10 @@ class TestConvert(unittest.TestCase):
         de2000 = [-65.57713200, -64.37231300]
         l = [311.30033553, 311.91103451]
         b = [-50.70581628, -51.84847717]
-        r = convert.convert(ra2000, de2000, s1=tpm.TPM_S06, s2=tpm.TPM_S04)
+        r = convert.convert(ra2000, de2000,
+                            utc = tpm.J2000, epoch=tpm.J2000,
+                            equinox = tpm.J2000,
+                            s1=tpm.TPM_S06, s2=tpm.TPM_S04)
         for i in range(len(r)):
             if r[i][0] < 0.0: x = r[i][0] + 360.0
             else: x = r[i][0]
@@ -29,14 +40,17 @@ class TestConvert(unittest.TestCase):
         # See pytpm/tests/c_tests/test_convert_hip.c and
         # pytpm/tests/data/hip_readme.txt.
         ra = []
-        de = []
+        dec = []
         f = open(hip_data, "r")
         for i in f:
             x = [float(j) for j in i.split()]
             ra.append(x[2])
-            de.append(x[3])
+            dec.append(x[3])
         f.close()
-        r = convert.convert(ra, de, s1=tpm.TPM_S06, s2=tpm.TPM_S04)  
+        r = convert.convert(ra, dec,
+                            utc = tpm.J2000, epoch=tpm.J2000,
+                            equinox = tpm.J2000,
+                            s1=tpm.TPM_S06, s2=tpm.TPM_S04)  
 
         f = open(os.path.join(c_tests_dir, "hip_fk5j2000_gal.txt"),"r")
         for i,line in enumerate(f):
@@ -49,14 +63,17 @@ class TestConvert(unittest.TestCase):
         # See pytpm/tests/c_tests/test_convert_hip.c and
         # pytpm/tests/data/hip_readme.txt.
         ra = []
-        de = []
+        dec = []
         f = open(hip_data, "r")
         for i in f:
             x = [float(j) for j in i.split()]
             ra.append(x[2])
-            de.append(x[3])
+            dec.append(x[3])
         f.close()
-        r = convert.convert(ra, de, s1=tpm.TPM_S06, s2=tpm.TPM_S05)
+        r = convert.convert(ra, dec,
+                            utc = tpm.J2000, epoch=tpm.J2000,
+                            equinox = tpm.J2000,
+                            s1=tpm.TPM_S06, s2=tpm.TPM_S05)
 
         f = open(os.path.join(c_tests_dir, "hip_fk5j2000_fk4b1950.txt"),"r")
         for i,line in enumerate(f):
@@ -69,15 +86,17 @@ class TestConvert(unittest.TestCase):
         # See pytpm/tests/c_tests/test_convert_hip.c and
         # pytpm/tests/data/hip_readme.txt.
         ra = []
-        de = []
+        dec = []
         f = open(hip_data, "r")
         for i in f:
             x = [float(j) for j in i.split()]
             ra.append(x[2])
-            de.append(x[3])
+            dec.append(x[3])
         f.close()
-        r = convert.convert(ra, de, s1=tpm.TPM_S06, s2=tpm.TPM_S03,
-                            equinox=tpm.J2000, utc=tpm.J2000)
+        r = convert.convert(ra, dec,
+                            utc = tpm.J2000, epoch=tpm.J2000,
+                            equinox = tpm.J2000,
+                            s1=tpm.TPM_S06, s2=tpm.TPM_S03)
 
         f = open(os.path.join(c_tests_dir, "hip_fk5j2000_eclj2000.txt"),"r")
         for i,line in enumerate(f):
@@ -90,14 +109,17 @@ class TestConvert(unittest.TestCase):
         # See pytpm/tests/c_tests/test_convert_hip.c and
         # pytpm/tests/data/hip_readme.txt.
         ra = []
-        de = []
+        dec = []
         f = open(hip_data, "r")
         for i in f:
             x = [float(j) for j in i.split()]
             ra.append(x[4])
-            de.append(x[5])
+            dec.append(x[5])
         f.close()
-        r = convert.convert(ra, de, s1=tpm.TPM_S05, s2=tpm.TPM_S04)  
+        r = convert.convert(ra, dec,
+                            utc = tpm.J2000, epoch=tpm.J2000,
+                            equinox = tpm.J2000,
+                            s1=tpm.TPM_S05, s2=tpm.TPM_S04)  
 
         f = open(os.path.join(c_tests_dir, "hip_fk4b1950_gal.txt"),"r")
         for i,line in enumerate(f):
@@ -110,14 +132,17 @@ class TestConvert(unittest.TestCase):
         # See pytpm/tests/c_tests/test_convert_hip.c and
         # pytpm/tests/data/hip_readme.txt.
         ra = []
-        de = []
+        dec = []
         f = open(hip_data, "r")
         for i in f:
             x = [float(j) for j in i.split()]
             ra.append(x[4])
-            de.append(x[5])
+            dec.append(x[5])
         f.close()
-        r = convert.convert(ra, de, s1=tpm.TPM_S05, s2=tpm.TPM_S06)
+        r = convert.convert(ra, dec,
+                            utc = tpm.J2000, epoch=tpm.J2000,
+                            equinox = tpm.J2000,
+                            s1=tpm.TPM_S05, s2=tpm.TPM_S06)
 
         f = open(os.path.join(c_tests_dir, "hip_fk4b1950_fk5j2000.txt"),"r")
         for i,line in enumerate(f):
@@ -130,15 +155,17 @@ class TestConvert(unittest.TestCase):
         # See pytpm/tests/c_tests/test_convert_hip.c and
         # pytpm/tests/data/hip_readme.txt.
         ra = []
-        de = []
+        dec = []
         f = open(hip_data, "r")
         for i in f:
             x = [float(j) for j in i.split()]
             ra.append(x[4])
-            de.append(x[5])
+            dec.append(x[5])
         f.close()
-        r = convert.convert(ra, de, s1=tpm.TPM_S05, s2=tpm.TPM_S03,
-                            equinox=tpm.J2000, utc=tpm.J2000)
+        r = convert.convert(ra, dec,
+                            utc = tpm.J2000, epoch=tpm.J2000,
+                            equinox = tpm.J2000,
+                            s1=tpm.TPM_S05, s2=tpm.TPM_S03)
 
         f = open(os.path.join(c_tests_dir, "hip_fk4b1950_eclj2000.txt"),"r")
         for i,line in enumerate(f):
