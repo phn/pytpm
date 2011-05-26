@@ -119,7 +119,7 @@ cdef class DMS(object):
 
     
 cdef class HMS(object):
-    valid_keys = ('r', 'd', 'hh', 'mm', 'ss')
+    valid_keys = ('r', 'dd', 'hh', 'mm', 'ss')
     cdef _tpm_times.HMS _hms
     def __cinit__(self):
         self._hms.hh = 0.0
@@ -132,8 +132,8 @@ cdef class HMS(object):
                 raise TypeError, "Invalid keyword: {0}".format(key)
         if "r" in kwargs:
             self._hms = _tpm_times.r2hms(kwargs['r'])
-        elif "d" in kwargs:
-            self._hms = _tpm_times.d2hms(kwargs['d'])
+        elif "dd" in kwargs:
+            self._hms = _tpm_times.d2hms(kwargs['dd'])
         else:
             self._hms.hh = kwargs.get('hh',0.0)
             self._hms.mm = kwargs.get('mm',0.0) 

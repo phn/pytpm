@@ -274,7 +274,7 @@ class TestHMSStructure(unittest.TestCase):
         verify(t, t_norm)
 
         # See if initializing with degrees work.
-        t = dict(d=12.5)
+        t = dict(dd=12.5)
         t_norm = dict(hh=12.5*(12/180.0), mm=0.0, ss=0.0)
         verify(t, t_norm)
         
@@ -436,8 +436,8 @@ class TestHMSStructure(unittest.TestCase):
 
         # Verify that initializing with degrees and then converting
         # back gives the same answer.
-        t = dict(d=12.5)
-        verify(t, t['d'])
+        t = dict(dd=12.5)
+        verify(t, t['dd'])
         
     def testToRadians(self):
         """HMS.to_radians() => HMS into radians."""
