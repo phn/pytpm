@@ -907,11 +907,12 @@ def geod2geoc(double lon, double lat, double alt):
     :param alt: Altitude in meters.
     :type alt: float
 
-    :return: A V6C vector with geocentric position.
+    :return: A V6C geocentric state vector (meters, meters/s)
     :rtype: V6C
 
     Converts the given geodetic position to a geocentric one and
-    returns the results in a V6C state vector.
+    returns the results in a V6C state vector. The units are meters and
+    meters/second.
     """
     v6 = V6C()
     v6.setV6(_tpm_astro.geod2geoc(lon, lat, alt))
