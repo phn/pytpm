@@ -102,7 +102,27 @@ cdef class DMS(object):
         return hms
 
     def normalize(self):
-        """Normalize components."""
+        """Normalize components.
+
+        Note: ``angle = (sign*dd) + (mm/60.0) + (ss/3600.0)`` and not
+        ``sign * ( (dd) + (mm/60.0) + (ss/3600.0) )``. For negative
+        numbers this gives different answers for the components when
+        normalize is called. Similarly, for negative numbers, the angle
+        will be incorrect if the components are separately set. In the
+        first case, print statement does not have this problem.
+
+          >>> dms = tpm.DMS(dd=-1.23)
+          >>> dms.dd, dms.mm, dms.ss
+          (-1.23, 0.0, 0.0)
+          >>> print dms
+          -01D 13' 47.999"
+          >>> dms.normalize()
+          >>> dms.dd, dms.mm, dms.ss
+          (-2.0, 46.0, 12.00000000000017)
+          >>> print dms
+          -01D 13' 47.999"
+          
+        """
         self._dms = _tpm_times.dms2dms(self._dms)
 
     def to_degrees(self):
