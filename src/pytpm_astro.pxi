@@ -969,6 +969,37 @@ def precess(double start, double end, V6C v6, int pflag):
     v.setV6(_tpm_astro.precess(start, end, v6.getV6(), pflag))
     return v
 
+def precess_m(double start, double end, int pflag, int sflag):
+    """Precession matrix for time between end and start.
+
+    :param start: Starting point as a Julian date.
+    :type start: float
+    :param end: End point as a Julian date.
+    :type start: float
+    :param pflag: Precession model to use.
+    :type pflag: integer
+    :param sflag: Rotating frame or inertial frame
+    :type sflag: integer
+
+    Returns the precession matrix for precession from ``start`` time to
+    ``end`` time. The model used for cacluating precession angles is
+    specified using the ``pflag`` parameter. The possible values are::
+
+      PRECESS_NEWCOMB	
+      PRECESS_ANDOYER	
+      PRECESS_KINOSHITA	
+      PRECESS_LIESKE	
+      PRECESS_FK4	
+      PRECESS_FK5	
+
+    If ``sflag != PRECESS_ROTATING``, then the "P-dot" term in the
+    precession matrix is set to null. The other possibility is
+    ``PRECESS_INERTIAL``, when the "P-dot" term is not set to null.
+    """
+    m6 = M6()
+    m6.setM6(_tpm_astro.precess_m(start, end, pflag, sflag))
+    return m6
+
 def eccentricity(double tdt):
     """Eccentricity of Earth's orbit.
 

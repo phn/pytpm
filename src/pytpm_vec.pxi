@@ -519,3 +519,337 @@ cdef class V6S(V6):
         v6c = V6C()
         v6c.setV6(_tpm_vec.v6s2c(self.getV6()))
         return v6c
+
+
+cdef class M3(object):
+    """Class that wraps M3 structure."""
+    cdef _tpm_vec.M3 _m3
+
+    def __cinit__(self):
+        self._m3 = _tpm_vec.m3I(1.0)
+
+    def __init__(self, xx=1.0, xy=0.0, xz=0.0, yx=0.0, yy=1.0, yz=0.0,
+                 zx=0.0, zy=0.0, zz=1.0):
+        self._m3.m[0][0] = xx
+        self._m3.m[0][1] = xy
+        self._m3.m[0][2] = xz        
+        self._m3.m[1][0] = yx
+        self._m3.m[1][1] = yy
+        self._m3.m[1][2] = yz
+        self._m3.m[2][0] = zx
+        self._m3.m[2][1] = zy
+        self._m3.m[2][2] = zz 
+        
+    def __getxx(self):
+        return self._m3.m[0][0]
+    def __setxx(self, double xx):
+        self._m3.m[0][0] = xx
+    xx = property(__getxx, __setxx, doc="XX.")
+
+    def __getxy(self):
+        return self._m3.m[0][1]
+    def __setxy(self, double xy):
+        self._m3.m[0][1] = xy
+    xy = property(__getxy, __setxy, doc="XY.")
+    
+    def __getxz(self):
+        return self._m3.m[0][2]
+    def __setxz(self, double xz):
+        self._m3.m[1][2] = xz
+    xz = property(__getxz, __setxz, doc="XZ.")
+    
+    def __getyx(self):
+        return self._m3.m[1][0]
+    def __setyx(self, double yx):
+        self._m3.m[1][0] = yx
+    yx = property(__getyx, __setyx, doc="YX.")        
+
+    def __getyy(self):
+        return self._m3.m[1][1]
+    def __setyy(self, double yy):
+        self._m3.m[1][1] = yy
+    yy = property(__getyy, __setyy, doc="YY.")
+    
+    def __getyz(self):
+        return self._m3.m[1][2]
+    def __setyz(self, double yz):
+        self._m3.m[1][2] = yz
+    yz = property(__getyz, __setyz, doc="YZ.")
+    
+    def __getzx(self):
+        return self._m3.m[2][0]
+    def __setzx(self, double zx):
+        self._m3.m[2][0] = zx
+    zx = property(__getzx, __setzx, doc="ZX.")
+    
+    def __getzy(self):
+        return self._m3.m[2][1]
+    def __setzy(self, double zy):
+        self._m3.m[2][1] = zy
+    zy = property(__getzy, __setzy, doc="ZY.")
+    
+    def __getzz(self):
+        return self._m3.m[2][2]
+    def __setzz(self, double zz):
+        self._m3.m[2][2] = zz
+    zz = property(__getzz, __setzz, doc="ZZ.")
+
+    cdef _tpm_vec.M3 getM3(self):
+        return self._m3
+
+    cdef setM3(self, _tpm_vec.M3 m3):
+        self._m3 = m3
+
+    def __str__(self):
+        return self.__unicode__().encode("utf-8")
+    
+    def __unicode__(self):
+        return unicode(_tpm_vec.m3fmt(self._m3))
+
+    def __sub__(M3 self, M3 other):
+        # Cython doesn't distinguish between sub and rsub. Hence type
+        # check on self.
+        m3 = M3()
+        m3.setM3(_tpm_vec.m3diff(self.getM3(), other.getM3()))
+        return m3
+
+    def __add__(M3 self, M3 other):
+        # Cython doesn't distinguish between add and radd. Hence type
+        # check on self.
+        m3 = M3()
+        m3.setM3(_tpm_vec.m3sum(self.getM3(), other.getM3()))
+        return m3
+
+    def __mul__(M3 self, double x):
+        # Cython doesn't distinguish between mul and rmul. Hence type
+        # check on self.
+        m3 = M3()
+        m3.setM3(_tpm_vec.m3scale(self.getM3(), x))
+        return m3
+
+    def inv(self):
+        """Inverse of the matrix."""
+        m3 = M3()
+        m3.setM3(_tpm_vec.m3inv(self.getM3()))
+        return m3
+
+    def m3m3(self, M3 other):
+        """Product of 2 matrices."""
+        m3 = M3()
+        m3.setM3(_tpm_vec.m3m3(self.getM3(), other.getM3()))
+        return m3
+    
+    def m3v3(self, V3CP v3):
+        """Product of M3 matrix and V3CP vector."""
+        v = V3CP()
+        v.setV3(_tpm_vec.m3v3(self.getM3(), v3.getV3()))
+        return v
+
+    def m3v6(self, V6C v6):
+        """Product of M3 matrix and V6C vector.
+
+        Both POS and VEL are multiplied by M3.
+        """
+        v = V6C()
+        v.setV6(_tpm_vec.m3v6(self.getM3(), v6.getV6()))
+        return v
+       
+    
+def m3Rx(double theta):
+   """Return a rotation matrix for rotation about X-axis.
+
+   :param theta: Rotation angle in radians.
+   :type theta: float
+   
+   :return: An M3 object representing a rotation matrix about X-axis.
+   :rtype: M3
+   """
+   m3 = M3()
+   m3.setM3(_tpm_vec.m3Rx(theta))
+   return m3
+
+def m3RxDot(double theta, double thetadot):
+   """Return derivative of rotation matrix for rotation about X-axis.
+
+   :param theta: Rotation angle in radians.
+   :type theta: float
+   :param thetadot: Derivative of rotation angle in radians/sec.
+   :type thetadot: float
+   
+   :return: An M3 object.
+   :rtype: M3
+   """
+   m3 = M3()
+   m3.setM3(_tpm_vec.m3RxDot(theta, thetadot))
+   return m3
+
+def m3Ry(double theta):
+   """Return a rotation matrix for rotation about Y-axis.
+
+   :param theta: Rotation angle in radians.
+   :type theta: float
+   
+   :return: An M3 object representing a rotation matrix about Y-axis.
+   :rtype: M3
+   """
+   m3 = M3()
+   m3.setM3(_tpm_vec.m3Ry(theta))
+   return m3
+
+def m3RyDot(double theta, double thetadot):
+   """Return derivative of rotation matrix for rotation about Y-axis.
+
+   :param theta: Rotation angle in radians.
+   :type theta: float
+   :param thetadot: Derivative of rotation angle in radians/sec.
+   :type thetadot: float
+   
+   :return: An M3 object.
+   :rtype: M3
+   """
+   m3 = M3()
+   m3.setM3(_tpm_vec.m3RyDot(theta, thetadot))
+   return m3
+
+def m3Rz(double theta):
+   """Return a rotation matrix for rotation about Z-axis.
+
+   :param theta: Rotation angle in radians.
+   :type theta: float
+   
+   :return: An M3 object representing a rotation matrix about Z-axis.
+   :rtype: M3
+   """
+   m3 = M3()
+   m3.setM3(_tpm_vec.m3Rz(theta))
+   return m3
+
+def m3RzDot(double theta, double thetadot):
+   """Return derivative of rotation matrix for rotation about Z-axis.
+
+   :param theta: Rotation angle in radians.
+   :type theta: float
+   :param thetadot: Derivative of rotation angle in radians/sec.
+   :type thetadot: float
+   
+   :return: An M3 object.
+   :rtype: M3
+   """
+   m3 = M3()
+   m3.setM3(_tpm_vec.m3RzDot(theta, thetadot))
+   return m3
+
+cdef class M6(object):
+    """Class that wraps M6 structure."""
+    cdef _tpm_vec.M6 _m6
+
+    def __cinit__(self):
+        self._m6 = _tpm_vec.m6I(1.0)
+        
+    def __init__(self):
+        self._m6 = _tpm_vec.m6I(1.0)
+
+    cdef _tpm_vec.M6 getM6(self):
+        return self._m6
+
+    cdef setM6(self, _tpm_vec.M6 m6):
+        self._m6 = m6
+        
+    def __getPP(self):
+        pp = M3()
+        pp.setM3(self._m6.m[0][0])
+        return pp
+    def __setPP(self, M3 m3):
+        self._m6.m[0][0] = m3.getM3()
+    pp = property(__getPP, __setPP, doc="PP component.")
+
+    def __getPV(self):
+        pv = M3()
+        pv.setM3(self._m6.m[0][1])
+        return pv
+    def __setPV(self, M3 m3):
+        self._m6.m[0][1] = m3.getM3()
+    pv = property(__getPV, __setPV, doc="PV component.")
+    
+    def __getVP(self):
+        vp = M3()
+        vp.setM3(self._m6.m[1][0])
+        return vp
+    def __setVP(self, M3 m3):
+        self._m6.m[1][0] = m3.getM3()
+    vp = property(__getVP, __setVP, doc="VP component.")
+
+    def __getVV(self):
+        vv = M3()
+        vv.setM3(self._m6.m[1][1])
+        return vv
+    def __setVV(self, M3 m3):
+        self._m6.m[1][1] = m3.getM3()
+    vv = property(__getVV, __setVV, doc="VV component.")
+
+    def __add__(M6 self, M6 other):
+        # Cython doesn't distinguish between add and radd. Hence type
+        # check on self.
+        m6 = M6()
+        m6.setM6(_tpm_vec.m6sum(self.getM6(), other.getM6()))
+        return m6
+    
+    def __sub__(M6 self, M6 other):
+        # Cython does not differentiate sub and rsub; hence typecheck.
+        m6 = M6()
+        m6.setM6(_tpm_vec.m6diff(self.getM6(), other.getM6()))
+        return m6
+
+    def __mul__(M6 self, double x):
+        # Cython doesn't distinguish between mul and rmul. Hence type
+        # check on self.
+        m6 = M6()
+        m6.setM6(_tpm_vec.m6scale(self.getM6(), x))
+        return m6
+
+    def __str__(self):
+        return self.__unicode__().encode("utf-8")
+    
+    def __unicode__(self):
+        return unicode(_tpm_vec.m6fmt(self._m6))
+    
+    def inv(self):
+        """Inverse of M6 matrix."""
+        m6 = M6()
+        m6.setM6(_tpm_vec.m6inv(self.getM6()))
+        return m6
+
+    def m6v3(self, V3CP v3):
+        """Product of M6 matrix and V3CP vector.
+
+        Only the PP component of M6 is used.
+        """
+        v = V3CP()
+        v.setV3(_tpm_vec.m6v3(self.getM6(), v3.getV3()))
+        return v
+
+    def m6v6(self, V6C v6):
+        """Product of M6 matrix and V6C vector.
+        """
+        v = V6C()
+        v.setV6(_tpm_vec.m6v6(self.getM6(), v6.getV6()))
+        return v
+        
+        
+def m6Qx(double x, double xdot):
+    """An M6 matrix for rotation about X-axis."""
+    m6 = M6()
+    m6.setM6(_tpm_vec.m6Qx(x, xdot))
+    return m6
+
+def m6Qy(double y, double ydot):
+    """An M6 matrix for rotation about Y-axis."""
+    m6 = M6()
+    m6.setM6(_tpm_vec.m6Qy(y, ydot))
+    return m6
+
+def m6Qz(double z, double zdot):
+    """An M6 matrix for rotation about Z-axis."""
+    m6 = M6()
+    m6.setM6(_tpm_vec.m6Qz(z, zdot))
+    return m6
