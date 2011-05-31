@@ -254,16 +254,16 @@ cdef class V6(object):
         self._v6.v[VEL].v[1] = 0.0
         self._v6.v[VEL].v[2] = 0.0
 
-    def __init__(self, ctype=CARTESIAN, X=0.0, Y=0.0, Z=0.0,
-                 Xdot=0.0, Ydot=0.0, Zdot=0.0):
+    def __init__(self, ctype=CARTESIAN, x=0.0, y=0.0, z=0.0,
+                 xdot=0.0, ydot=0.0, zdot=0.0):
         self._v6.v[POS].type = ctype
-        self._v6.v[POS].v[0] = X
-        self._v6.v[POS].v[1] = Y
-        self._v6.v[POS].v[2] = Z
+        self._v6.v[POS].v[0] = x
+        self._v6.v[POS].v[1] = y
+        self._v6.v[POS].v[2] = z
         self._v6.v[VEL].type = ctype
-        self._v6.v[VEL].v[0] = Xdot
-        self._v6.v[VEL].v[1] = Ydot
-        self._v6.v[VEL].v[2] = Zdot
+        self._v6.v[VEL].v[0] = xdot
+        self._v6.v[VEL].v[1] = ydot
+        self._v6.v[VEL].v[2] = zdot
 
     cdef int getType(self):
         return self._v6.v[POS].type
@@ -275,38 +275,38 @@ cdef class V6(object):
     cdef getX(self):
         return self._v6.v[POS].v[0]
 
-    cdef setX(self, double X):
-        self._v6.v[POS].v[0] = X
+    cdef setX(self, double x):
+        self._v6.v[POS].v[0] = x
 
     cdef getY(self):
         return self._v6.v[POS].v[1]
 
-    cdef setY(self, double Y):
-        self._v6.v[POS].v[1] = Y
+    cdef setY(self, double y):
+        self._v6.v[POS].v[1] = y
 
     cdef getZ(self):
         return self._v6.v[POS].v[2]
 
-    cdef setZ(self, double Z):
-        self._v6.v[POS].v[2] = Z
+    cdef setZ(self, double z):
+        self._v6.v[POS].v[2] = z
 
     cdef getXdot(self):
         return self._v6.v[VEL].v[0]
 
-    cdef setXdot(self, double Xdot):
-        self._v6.v[VEL].v[0] = Xdot
+    cdef setXdot(self, double xdot):
+        self._v6.v[VEL].v[0] = xdot
 
     cdef getYdot(self):
         return self._v6.v[VEL].v[1]
 
-    cdef setYdot(self, double Ydot):
-        self._v6.v[VEL].v[1] = Ydot
+    cdef setYdot(self, double ydot):
+        self._v6.v[VEL].v[1] = ydot
 
     cdef getZdot(self):
         return self._v6.v[VEL].v[2]
 
-    cdef setZdot(self, double Zdot):
-        self._v6.v[VEL].v[2] = Zdot
+    cdef setZdot(self, double zdot):
+        self._v6.v[VEL].v[2] = zdot
 
     cdef _tpm_vec.V6 getV6(self):
         return self._v6

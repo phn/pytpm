@@ -121,7 +121,9 @@ cdef class DMS(object):
           (-2.0, 46.0, 12.00000000000017)
           >>> print dms
           -01D 13' 47.999"
-          
+
+        In the above case if we were to do ``dms.dd=-1.0, dms.mm=13,
+        dms.ss=48`` then we would get different results.
         """
         self._dms = _tpm_times.dms2dms(self._dms)
 
