@@ -341,17 +341,17 @@ class TestCatV6(unittest.TestCase):
         # ICRS Epoch J1991.25
         import math
         ra = tpm.d2r(269.45402305)
-        de = tpm.d2r(4.66828815)
+        dec = tpm.d2r(4.66828815)
         px = 549.01 / 1000.0 # To Arc seconds
         rv = 0.0
         # pmra * cos(de) into pmra
-        pmra = (-797.84 / 1000.0 ) / math.cos(de) 
+        pmra = (-797.84 / 1000.0 ) / math.cos(dec) 
         pmra *= 100.0 # To Arcseconds per century.
-        pmde = (10326.93 / 1000.0) 
-        pmde *= 100.0 # To Arcseconds per century.
+        pmdec = (10326.93 / 1000.0) 
+        pmdec *= 100.0 # To Arcseconds per century.
         C = tpm.CJ
 
-        v6 = tpm.cat2v6(ra, de, pmra, pmde, px, rv, C)
+        v6 = tpm.cat2v6(ra, dec, pmra, pmdec, px, rv, C)
 
         self.assertAlmostEqual(v6.x, -3568.1807935995)
         self.assertAlmostEqual(v6.y, -374439.8219691383)
@@ -367,24 +367,24 @@ class TestCatV6(unittest.TestCase):
         # ICRS Epoch J1991.25
         import math
         ra = tpm.d2r(269.45402305)
-        de = tpm.d2r(4.66828815)
+        dec = tpm.d2r(4.66828815)
         px = 549.01 / 1000.0 # To Arc seconds
         rv = 0.0
         # pmra * cos(de) into pmra
-        pmra = (-797.84 / 1000.0 ) / math.cos(de) 
+        pmra = (-797.84 / 1000.0 ) / math.cos(dec) 
         pmra *= 100.0 # To Arcseconds per century.
-        pmde = (10326.93 / 1000.0) 
-        pmde *= 100.0 # To Arcseconds per century.
+        pmdec = (10326.93 / 1000.0) 
+        pmdec *= 100.0 # To Arcseconds per century.
         C = tpm.CJ
 
-        v6 = tpm.cat2v6(ra, de, pmra, pmde, px, rv, C)
+        v6 = tpm.cat2v6(ra, dec, pmra, pmdec, px, rv, C)
         
         p = tpm.v62cat(v6, C)
 
         self.assertAlmostEqual(tpm.r2r(p['ra']), ra)
-        self.assertAlmostEqual(p['de'], de)
+        self.assertAlmostEqual(p['dec'], dec)
         self.assertAlmostEqual(p['pmra'], pmra)
-        self.assertAlmostEqual(p['pmde'], pmde)
+        self.assertAlmostEqual(p['pmdec'], pmdec)
         self.assertAlmostEqual(p['px'], px)
         self.assertAlmostEqual(p['rv'], rv)
 

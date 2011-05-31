@@ -577,8 +577,8 @@ def cat2v6(ra, de, pmra, pmdec, px, rv, C=36525.0):
     :type de: float
     :param pmra: Proper motion in ra (not pmra*cos(de)) as "/century.
     :type pmra: float 
-    :param pmde: Proper motion in de as "/century.
-    :type pmde: float
+    :param pmdec: Proper motion in de as "/century.
+    :type pmdec: float
     :param px: Parallax in arc-seconds.
     :type px: float
     :param rv: Radial velocity in km/s.
@@ -612,16 +612,16 @@ def v62cat(V6C v6, C=36525.0):
 
     :return: A dictionary containing catalog quantities for the
              object. The keys are: ``ra`` for right ascension in
-             radians, ``de`` for declination in radians, ``pmra`` for
-             proper motion in ra (not pmra*cos(de)) in "/century,
-             ``pmde`` for proper motion in de in "/century, ``px`` for
+             radians, ``dec`` for declination in radians, ``pmra`` for
+             proper motion in ra (not pmra*cos(dec)) in "/century,
+             ``pmdec`` for proper motion in dec in "/century, ``px`` for
              parallax in arc-seconds and ``rv`` for radial velocity in
              km/s.
     :rtype: dict
     """
-    cdef double ra=0.0, de=0.0, pmra=0.0, pmde=0.0, px=0.0, rv=0.0
-    _tpm_astro.v62cat(&ra, &de, &pmra, &pmde, &px, &rv, v6.getV6(), C)
-    return dict(ra=ra, de=de, pmra=pmra, pmde=pmde, px=px, rv=rv)
+    cdef double ra=0.0, dec=0.0, pmra=0.0, pmdec=0.0, px=0.0, rv=0.0
+    _tpm_astro.v62cat(&ra, &dec, &pmra, &pmdec, &px, &rv, v6.getV6(), C)
+    return dict(ra=ra, dec=dec, pmra=pmra, pmdec=pmdec, px=px, rv=rv)
     
 def proper_motion(V6C v6, end, start):
     """Apply proper motion to the given V6C vector.
