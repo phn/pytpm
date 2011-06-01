@@ -183,3 +183,130 @@ def convert(ra=-999, dec=-999, double utc=-999, double delta_at=-999,
     if len(x) == 1:
         return x[0]
     return x
+
+cpdef convertv6(v6=None, double utc=-999, double delta_at=-999,
+            double delta_ut=-999,
+            int s1=tpm.TPM_S06, int s2=tpm.TARGET_OBS_AZEL,
+            double epoch=tpm.J2000, double equinox=tpm.J2000,
+            double lon=-111.598333,
+            double lat=31.956389,
+            double alt=2093.093,
+            double xpole=0.0, double ypole=0.0,
+            double T=273.15, double P=1013.25, double H=0.0,
+            double wavelength=0.550):
+    """Utility function for performing coordinate conversions.
+
+    :param v6: The V6C vector(s) to be transformed.
+    :type v6: V6C
+    :param utc: "Current" UTC time as a Julian date.
+    :type utc: float
+    :param delta_at: TAI - UTC in seconds.
+    :type delta_at: float
+    :param delta_ut: UT1 - UTC in seconds.
+    :type delta_ut: float
+    :param s1: Initial state.
+    :type s1: integer
+    :param s2: Final state.
+    :type s2: integer
+    :param epoch: Epoch of input coordinates as a Julian date.
+    :type epoch: float
+    :param equniox: Equinox of input or output coordinates.
+    :type equinox: float
+    :param lon: Geodetic longitude in degeres.
+    :type lon: float    
+    :param lat: Geodetic latitude in degrees.
+    :type lat: float
+    :param alt: Altitude in meters.
+    :type alt: float
+    :param xpole: Polar motion in radians.
+    :type xpole: float
+    :param ypole: Ploar motion in radians.
+    :type ypole: float
+    :param T: Ambient temperature in Kelvin.
+    :type T: float
+    :param P: Ambient pressure in millibars.
+    :type P: float
+    :param H: Ambient humidity in the range 0-1.
+    :type H: float
+    :param wavelength: Wavelength of observation in microns.
+    :type wavelength: float
+
+    :return: The transformed V6C vector.
+    :rtype: V6C
+
+    The input v6 can be a single V6C object or a list/tuple of V6C
+    objects. The independent parameters will be the same for all of the
+    V6C object and the dependent parameters will be calculated only
+    once.
+    
+    The default location is KPNO and the values are taken from the TPM
+    C code.
+
+    If ``utc`` is not provided then it is set to J2000.0 AND BOTH
+    ``delta_at`` and ``delta_ut`` ARE SET TO THEIR VALUES AT
+    J2000.0. That is, if ``utc`` is not given then the specified values
+    for these two are ignored. If ``utc`` is given but ``delta_at``
+    and/or ``delta_ut`` is not given, then the missing value is set to
+    that at the given ``utc``.
+    """
+    cdef int i
+    if not v6:
+        raise TypeError("convertv6 needs V6C object.")
+    if utc == -999:
+        # UTC not supplied set all three time scale values, ignoring
+        # the given values of delta_at and delta_ut.
+        utc = tpm.J2000
+        delta_at = tpm.delta_AT(utc)
+        delta_ut = tpm.delta_UT(utc)
+    else:
+        if delta_at == -999:
+            delta_at = tpm.delta_AT(utc)
+        if delta_ut == -999:
+            delta_ut = tpm.delta_UT(utc)
+    try:
+        len(v6)
+    except TypeError:
+        # Not a list. Assume that this is a single number.
+        v6 = (v6,)
+    for j,v in enumerate(v6):
+        if type(v) != type(tpm.V6C()):
+            if j == 0:
+                raise TypeError("v6 must be an object of type tpm.V6C.")
+            else:
+                raise TypeError(
+                    "v6[{0}] must be an object of type tpm.V6C.".format(j))
+
+    tstate = tpm.TSTATE()
+    # Initialize TPM state.
+    tpm.tpm_data(tstate, tpm.TPM_INIT)
+    
+    # Set independent quantities.
+    tstate.utc = utc
+    tstate.delta_ut = delta_ut
+    tstate.delta_at = delta_at
+    tstate.lon = tpm.d2r(lon) 
+    tstate.lat = tpm.d2r(lat) 
+    tstate.alt = alt
+    tstate.xpole = xpole
+    tstate.ypole = ypole
+    tstate.T = T
+    tstate.P = P
+    tstate.H = H
+    tstate.wavelength = wavelength
+
+    # Calculate all dependent parameters.
+    tpm.tpm_data(tstate, tpm.TPM_ALL)
+            
+    pvec = tpm.PVEC()
+    v6_out = []
+    for v in v6:
+        pvec[s1] = v
+
+        temp =  tpm.tpm(pvec, s1, s2, epoch, equinox, tstate)
+        assert s2 == temp
+        v6_out.append(pvec[s2])
+
+    if len(v6) == 1:
+        return v6_out[0]
+    return v6_out
+    
