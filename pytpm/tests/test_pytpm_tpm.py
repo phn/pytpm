@@ -8,15 +8,15 @@ class CheckTSTATE(object):
     """Perform comparison of TSTATE attributes with provided vals."""
     def checkm3(self, m3, t):
         """Compare M3 with values in t."""
-        self.assertAlmostEqual(m3['XX'], t['XX'], t.get('XXp', 7))
-        self.assertAlmostEqual(m3['XY'], t['XY'], t.get('XYp', 7))
-        self.assertAlmostEqual(m3['XZ'], t['XZ'], t.get('XZp', 7))
-        self.assertAlmostEqual(m3['YX'], t['YX'], t.get('YXp', 7))
-        self.assertAlmostEqual(m3['YY'], t['YY'], t.get('YYp', 7))
-        self.assertAlmostEqual(m3['YZ'], t['YZ'], t.get('YZp', 7))
-        self.assertAlmostEqual(m3['ZX'], t['ZX'], t.get('ZXp', 7))
-        self.assertAlmostEqual(m3['ZY'], t['ZY'], t.get('ZYp', 7))
-        self.assertAlmostEqual(m3['ZZ'], t['ZZ'], t.get('ZZp', 7))
+        self.assertAlmostEqual(m3.xx, t['XX'], t.get('XXp', 7))
+        self.assertAlmostEqual(m3.xy, t['XY'], t.get('XYp', 7))
+        self.assertAlmostEqual(m3.xz, t['XZ'], t.get('XZp', 7))
+        self.assertAlmostEqual(m3.yx, t['YX'], t.get('YXp', 7))
+        self.assertAlmostEqual(m3.yy, t['YY'], t.get('YYp', 7))
+        self.assertAlmostEqual(m3.yz, t['YZ'], t.get('YZp', 7))
+        self.assertAlmostEqual(m3.zx, t['ZX'], t.get('ZXp', 7))
+        self.assertAlmostEqual(m3.zy, t['ZY'], t.get('ZYp', 7))
+        self.assertAlmostEqual(m3.zz, t['ZZ'], t.get('ZZp', 7))
 
     def checkv6(self, v6c, t):
         """Compare V6 fields with the values in t."""
@@ -135,13 +135,13 @@ class TestTSTATE(unittest.TestCase, CheckTSTATE):
         self.checkm3(tstate.nm, t)
         
         pm = tstate.pm
-        self.checkm3(pm['PP'], t)
-        self.checkm3(pm['VV'], t)
+        self.checkm3(pm.pp, t)
+        self.checkm3(pm.vv, t)
         t['XX'] = 0.0
         t['YY'] = 0.0
         t['ZZ'] = 0.0
-        self.checkm3(pm['PV'], t)
-        self.checkm3(pm['VP'], t)
+        self.checkm3(pm.pv, t)
+        self.checkm3(pm.vp, t)
 
         t = dict(x=0.0, y=0.0, z=0.0, xdot=0.0, ydot=0.0, zdot=0.0)
         self.checkv6(tstate.eb, t)

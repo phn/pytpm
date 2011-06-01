@@ -77,7 +77,7 @@ class TestTPMData(unittest.TestCase, CheckTSTATE):
             )
         self.checkm3(tstate.nm, t_m3)
  
-        self.checkm3(tstate.pm['PP'], dict(
+        self.checkm3(tstate.pm.pp, dict(
                 XX=9.999999999998971e-01, XXp=12,
                 XY=-4.161124735358035e-07, XYp=12,
                 XZ=-1.808195760693911e-07, XZp=12,
@@ -89,7 +89,7 @@ class TestTPMData(unittest.TestCase, CheckTSTATE):
                 ZZ=9.999999999999837e-01, ZZp=12
                 ))
 
-        self.checkm3(tstate.pm['VV'],dict(
+        self.checkm3(tstate.pm.vv,dict(
                 XX=9.999999999998971e-01, XXp=12,
                 XY=-4.161124735358035e-07, XYp=12,
                 XZ=-1.808195760693911e-07, XZp=12,
@@ -105,8 +105,8 @@ class TestTPMData(unittest.TestCase, CheckTSTATE):
         t_m3['XX'] = 0.0
         t_m3['YY'] = 0.0
         t_m3['ZZ'] = 0.0
-        self.checkm3(tstate.pm['PV'], t_m3)
-        self.checkm3(tstate.pm['VP'], t_m3)  
+        self.checkm3(tstate.pm.pv, t_m3)
+        self.checkm3(tstate.pm.vp, t_m3)  
 
         self.checkv6(tstate.eb, dict(
                 x=-1.959527204776065e-01, xp=12,

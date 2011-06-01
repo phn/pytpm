@@ -1112,12 +1112,8 @@ def refract(double zx, double refa, double refb, int flag):
     :rtype: float
     
     Given a zenith distance ``zx``, this function returns the amount of
-    change in this quantity due to refraction. If ``flag > 0`` then
-    ``zx`` is taken to be the apparent zenith distance and the
-    calculated value must be added to ``zx`` to get the observed zenith
-    distance. If ``flag <= 0`` then ``zx`` is taken to be the observed
-    zenith distance and then the returned value must be subtracted from
-    ``zx`` to get the apparent zenith distance.
+    change in this quantity due to refraction. This correction must be
+    added to ``zx`` to find the resultant zenith distance.
     """
     return _tpm_astro.refract(zx, refa, refb, flag)
     

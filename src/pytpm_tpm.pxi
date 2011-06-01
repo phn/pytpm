@@ -208,23 +208,16 @@ cdef class TSTATE(object):
         return self._tstate.nut_obl
     nut_obl = property(__getnut_obl, doc="Nutation in obliquity.")
 
-    cdef __m3_to_dict(self, _tpm_vec.s_m3 m3):
-        cdef int i, j
-        k = ['XX', 'XY', 'XZ', 'YX', 'YY','YZ', 'ZX', 'ZY', 'ZZ']
-        l = [m3.m[i][j]
-             for i in range(3) for j in range(3)]
-        return dict(zip(k,l))
-    
     def __getnm(self):
-        return self.__m3_to_dict(self._tstate.nm)
+        m3 = M3()
+        m3.setM3(self._tstate.nm)
+        return m3
     nm = property(__getnm, doc="Nutation matrix for NOW.")
 
     def __getpm(self):
-        pp = self.__m3_to_dict(self._tstate.pm.m[0][0])
-        pv = self.__m3_to_dict(self._tstate.pm.m[0][1])
-        vp = self.__m3_to_dict(self._tstate.pm.m[1][0])
-        vv = self.__m3_to_dict(self._tstate.pm.m[1][1])
-        return dict(PP=pp, PV=pv, VP=vp, VV=vv)
+        m6 = M6()
+        m6.setM6(self._tstate.pm)
+        return m6
     pm = property(__getpm, doc="Precession matrix from J2000 to NOW.")
 
     def __getut1(self):
