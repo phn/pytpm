@@ -310,3 +310,65 @@ cpdef convertv6(v6=None, double utc=-999, double delta_at=-999,
         return v6_out[0]
     return v6_out
     
+cpdef precess(ra=-999,dec=-999,double start=-999,double end=-999,
+              int pflag=tpm.PRECESS_FK5):
+    """Precess list of ra and dec values.
+
+    :param ra: Right Ascension, scalar or list.
+    :type ra: float
+    :param dec: Declination, scalar of list.
+    :type dec: float
+    :param start: Starting time for precession, as a Julian date.
+    :type start: float
+    :param end: End time for precession, as a Julian date.
+    :type end: float
+    :param pflag: The precession model to use.
+    :type pflag: integer
+
+    This function can be used to precess equatorial (ra,dec)
+    corodinates using a particular model of precession. The input
+    coordinates can be in the FK5 or FK4 systems. In the FK5 system
+    there is only one precession model, which is selected using ``pflag
+    == tpm.PRECESS_FK5``. The FK4 system has several models, and can be
+    selected by setting appropriate constants as the value of
+    ``pflag``:
+
+      PRECESS_ANDOYER, PRECESS_NEWCOMB, PRECESS_KINOSHITA,
+      PRECESS_LIESKE
+
+    See the tpm manual for definitions of these constants.
+    """
+    cdef int j
+    cdef double i
+    try:
+        len(ra)
+    except TypeError:
+        # Not a list. Assume that this is a single number.
+        ra = [tpm.d2r(ra)]
+    else:
+        ra = [tpm.d2r(i) for i in ra]        
+    try:
+        len(dec)
+    except TypeError:
+        # Not a list. Assume that this is a single number.
+        dec = [tpm.d2r(dec)]
+    else:
+        dec = [tpm.d2r(i) for i in dec]
+        
+    if len(ra) != len(dec):
+            raise ValueError, "Both ra and dec must be of equal length."
+
+    ra_out = []
+    dec_out = []
+    for j in range(len(ra)):
+        v6 = tpm.V6S(r=1e10,alpha=ra[j],delta=dec[j])
+        v6 = v6.s2c()
+        v6 = tpm.precess(start,end,v6,pflag)
+        v6 = v6.c2s()
+        ra_out.append(v6.nalpha)
+        dec_out.append(v6.ndelta)
+
+    ra_out = [tpm.r2d(i) for i in ra_out]
+    dec_out = [tpm.r2d(i) for i in dec_out]
+
+    return ra_out, dec_out
