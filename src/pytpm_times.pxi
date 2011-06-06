@@ -350,7 +350,7 @@ cdef class YMD(object):
         self._ymd = _tpm_times.ymd2ymd(self._ymd)
 
     def to_jd(self):
-        """Convert into YMD."""
+        """Convert into JD."""
         cdef _tpm_times.JD _jd
         _jd = _tpm_times.ymd2jd(self._ymd)
         jd = JD()

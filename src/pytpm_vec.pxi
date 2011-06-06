@@ -739,6 +739,7 @@ def m3RzDot(double theta, double thetadot):
    m3.setM3(_tpm_vec.m3RzDot(theta, thetadot))
    return m3
 
+
 cdef class M6(object):
     """Class that wraps M6 structure."""
     cdef _tpm_vec.M6 _m6
