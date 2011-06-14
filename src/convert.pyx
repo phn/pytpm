@@ -139,8 +139,17 @@ def convert(ra=-999, dec=-999, double utc=-999, double delta_at=-999,
     and the TPM manual. The latter gives an example for the usage of
     this function.
     """
-    if ra == -999 or dec == -999:
-        raise TypeError, "ra and dec cannot be empty."
+    # -999 given so that the function has keyword arguments; If default
+    # value is not present then Cython will not create keywords.
+
+    # This check is problamatic for Numpy array.
+    try:
+        if ra == -999 or dec == -999:
+            raise TypeError, "ra and dec cannot be empty."
+    except ValueError:
+        # Must be Numpy array
+        pass
+
     if utc == -999:
         # UTC not supplied set all three time scale values, ignoring
         # the given values of delta_at and delta_ut.
