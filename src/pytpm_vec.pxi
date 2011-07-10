@@ -160,28 +160,36 @@ cdef class V3SP(V3):
 
     def __getr(self):
         return self.getX()
+    
     def __setr(self, r):
         self.setX(r)
+        
     r = property(__getr, __setr, doc="Radial coordinate.")
 
     def __getalpha(self):
         return self.getY()
+    
     def __setalpha(self, alpha):
         self.setY(alpha)
+        
     alpha = property(__getalpha, __setalpha, doc="Alpha coordinate.")
 
     def __getdelta(self):
         return self.getZ()
+    
     def __setdelta(self, delta):
         self.setZ(delta)
+        
     delta = property(__getdelta, __setdelta, doc="Delta coordinate.")
 
     def __getnalpha(self):
         return _tpm_vec.v3alpha(self.getV3())
+    
     nalpha = property(__getnalpha, doc="Normalized alpha coordinate.")
 
     def __getndelta(self):
         return _tpm_vec.v3delta(self.getV3())
+    
     ndelta = property(__getndelta, doc="Normalized alpha coordinate.")
 
     def s2c(self):
@@ -345,46 +353,59 @@ cdef class V6C(V6):
 
     def __getx(self):
         return self.getX()
+    
     def __setx(self, x):
         self.setX(x)
+        
     x = property(__getx, __setx, doc="X coordinate.")
 
     def __gety(self):
         return self.getY()
+    
     def __sety(self, y):
         self.setY(y)
     y = property(__gety, __sety, doc="Y coordinate.")
 
     def __getz(self):
         return self.getZ()
+    
     def __setz(self, z):
         self.setZ(z)
+
     z = property(__getz, __setz, doc="Z coordinate.")
 
     def __getxdot(self):
         return self.getXdot()
+    
     def __setxdot(self, xdot):
         self.setXdot(xdot)
+        
     xdot = property(__getxdot, __setxdot, doc="XDOT coordinate.")
 
     def __getydot(self):
         return self.getYdot()
+    
     def __setydot(self, ydot):
         self.setYdot(ydot)
+        
     ydot = property(__getydot, __setydot, doc="YDOT coordinate.")
 
     def __getzdot(self):
         return self.getZdot()
+    
     def __setzdot(self, zdot):
         self.setZdot(zdot)
+        
     zdot = property(__getzdot, __setzdot, doc="ZDOT coordinate.")
 
     def __getPOS(self):
         v3p = V3CP()
         v3p.setV3(self.getPOS())
         return v3p
+    
     def __setPOS(self, V3CP v3cp):
         self.setPOS(v3cp.getV3())
+        
     pos = property(__getPOS, __setPOS, doc="POS component.")
         
     def __sub__(V6C self, V6C other):
@@ -406,7 +427,7 @@ cdef class V6C(V6):
             raise TypeError, "Can only add two V6C values."
 
     def mod(self):
-        """Return modulus, i.e., length, of position component of V6C vector."""
+        """Return modulus (length), of position component of V6C vector."""
         return _tpm_vec.v6mod(self.getV6())
 
     def unit(self):
@@ -460,7 +481,8 @@ cdef class V6S(V6):
     """Class for spherical V6 vector"""
     # The following is read only.
     ctype = SPHERICAL
-    def __init__(self, r=0.0, alpha=0.0, delta=0.0, rdot=0.0, alphadot=0.0, deltadot=0.0):
+    def __init__(self, r=0.0, alpha=0.0, delta=0.0, rdot=0.0,
+                 alphadot=0.0, deltadot=0.0):
         self.setType(SPHERICAL) # Set type of the underlying V6. Why
                                 # can't I call the inherited V6.__init__()?
         self.r = r
@@ -472,14 +494,18 @@ cdef class V6S(V6):
 
     def __getr(self):
         return self.getX()
+    
     def __setr(self, r):
         self.setX(r)
+        
     r = property(__getr, __setr, doc="R coordinate.")
 
     def __getalpha(self):
         return self.getY()
+    
     def __setalpha(self, alpha):
         self.setY(alpha)
+        
     alpha = property(__getalpha, __setalpha, doc="ALPHA coordinate.")
 
     def __getdelta(self):
@@ -490,28 +516,38 @@ cdef class V6S(V6):
 
     def __getrdot(self):
         return self.getXdot()
+    
     def __setrdot(self, rdot):
         self.setXdot(rdot)
+        
     rdot = property(__getrdot, __setrdot, doc="RDOT coordinate.")
 
     def __getalphadot(self):
         return self.getYdot()
+    
     def __setalphadot(self, alphadot):
         self.setYdot(alphadot)
-    alphadot = property(__getalphadot, __setalphadot, doc="ALPHADOT coordinate.")
+        
+    alphadot = property(__getalphadot, __setalphadot,
+                        doc="ALPHADOT coordinate.")
 
     def __getdeltadot(self):
         return self.getZdot()
+    
     def __setdeltadot(self, deltadot):
         self.setZdot(deltadot)
-    deltadot = property(__getdeltadot, __setdeltadot, doc="DELTADOT coordinate.")
+        
+    deltadot = property(__getdeltadot, __setdeltadot,
+                        doc="DELTADOT coordinate.")
 
     def __getnalpha(self):
         return _tpm_vec.v6alpha(self.getV6())
+    
     nalpha = property(__getnalpha, doc="Normalized alpha coordinate.")
     
     def __getndelta(self):
         return _tpm_vec.v6delta(self.getV6())
+    
     ndelta = property(__getndelta, doc="Normalized alpha coordinate.")
     
     def s2c(self):
@@ -542,56 +578,73 @@ cdef class M3(object):
         
     def __getxx(self):
         return self._m3.m[0][0]
+    
     def __setxx(self, double xx):
         self._m3.m[0][0] = xx
+        
     xx = property(__getxx, __setxx, doc="XX.")
 
     def __getxy(self):
         return self._m3.m[0][1]
+    
     def __setxy(self, double xy):
         self._m3.m[0][1] = xy
+        
     xy = property(__getxy, __setxy, doc="XY.")
     
     def __getxz(self):
         return self._m3.m[0][2]
     def __setxz(self, double xz):
         self._m3.m[1][2] = xz
+        
     xz = property(__getxz, __setxz, doc="XZ.")
     
     def __getyx(self):
         return self._m3.m[1][0]
+    
     def __setyx(self, double yx):
         self._m3.m[1][0] = yx
+        
     yx = property(__getyx, __setyx, doc="YX.")        
 
     def __getyy(self):
         return self._m3.m[1][1]
+    
     def __setyy(self, double yy):
         self._m3.m[1][1] = yy
+        
     yy = property(__getyy, __setyy, doc="YY.")
     
     def __getyz(self):
         return self._m3.m[1][2]
+    
     def __setyz(self, double yz):
         self._m3.m[1][2] = yz
+        
     yz = property(__getyz, __setyz, doc="YZ.")
     
     def __getzx(self):
         return self._m3.m[2][0]
+    
     def __setzx(self, double zx):
         self._m3.m[2][0] = zx
+        
     zx = property(__getzx, __setzx, doc="ZX.")
     
     def __getzy(self):
         return self._m3.m[2][1]
+    
     def __setzy(self, double zy):
         self._m3.m[2][1] = zy
+        
     zy = property(__getzy, __setzy, doc="ZY.")
     
     def __getzz(self):
         return self._m3.m[2][2]
+    
     def __setzz(self, double zz):
         self._m3.m[2][2] = zz
+        
     zz = property(__getzz, __setzz, doc="ZZ.")
 
     cdef _tpm_vec.M3 getM3(self):
@@ -760,32 +813,40 @@ cdef class M6(object):
         pp = M3()
         pp.setM3(self._m6.m[0][0])
         return pp
+    
     def __setPP(self, M3 m3):
         self._m6.m[0][0] = m3.getM3()
+
     pp = property(__getPP, __setPP, doc="PP component.")
 
     def __getPV(self):
         pv = M3()
         pv.setM3(self._m6.m[0][1])
         return pv
+    
     def __setPV(self, M3 m3):
         self._m6.m[0][1] = m3.getM3()
+        
     pv = property(__getPV, __setPV, doc="PV component.")
     
     def __getVP(self):
         vp = M3()
         vp.setM3(self._m6.m[1][0])
         return vp
+    
     def __setVP(self, M3 m3):
         self._m6.m[1][0] = m3.getM3()
+        
     vp = property(__getVP, __setVP, doc="VP component.")
 
     def __getVV(self):
         vv = M3()
         vv.setM3(self._m6.m[1][1])
         return vv
+    
     def __setVV(self, M3 m3):
         self._m6.m[1][1] = m3.getM3()
+        
     vv = property(__getVV, __setVV, doc="VV component.")
 
     def __add__(M6 self, M6 other):
