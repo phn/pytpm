@@ -186,7 +186,8 @@ class TestTimeFunctions(unittest.TestCase):
         dtt = [42.184, 42.184, 64.184, 54.184, 66.184]
         for i,j in zip(self.utc, dtt):
             self.assertAlmostEqual(tpm.delta_TT(i), j, 12)
-        
+
+            
 class TestPVECClass(unittest.TestCase):
     """Test facilities of the PVEC class: array of V6 vectors."""
     def checkpvec(self, pvec, i, t):
@@ -388,6 +389,7 @@ class TestCatV6(unittest.TestCase):
         self.assertAlmostEqual(p['px'], px)
         self.assertAlmostEqual(p['rv'], rv)
 
+        
 class TestProperMotion(unittest.TestCase):
     """Test function proper_motion."""
     def testpm(self):

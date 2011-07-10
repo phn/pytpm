@@ -12,7 +12,7 @@ table = parse_single_table("hipparcos.vot", pedantic=False)
 data = table.array
 
 fs = "{0:13.8f} {1:13.8} {2:13.8f} {3:13.8f} {4:13.8f} {5:13.8f} "
-fs += "{6:13.8f} {7:13.8f} {8:13.8f} {9:13.8f}\n"
+fs += "{6:13.8f} {7:13.8f} {8:13.8} {9:13.8}\n"
 
 f = open("hip.txt","w")
 for i in data[0::100]:
