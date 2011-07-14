@@ -1,0 +1,9 @@
+include LICENSE.txt
+include README.rst
+recursive-include src/tpm *
+recursive-include doc *
+recursive-include pytpm/tests/data *
+recursive-include pytpm/tests/c_tests *
+recursive-exclude pytpm/tests/c_tests *exe
+exclude setup-devel.py
+recursive-exclude src *pxd *pxi *pyx
