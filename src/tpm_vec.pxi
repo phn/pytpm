@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 # The following line must be present in the pytpm.pyx file.
-# cimport _tpm_vec
+# cimport tpm_vec
 
-POS = _tpm_vec.POS
-VEL = _tpm_vec.VEL
-CARTESIAN = _tpm_vec.CARTESIAN
-SPHERICAL = _tpm_vec.SPHERICAL
-POLAR = _tpm_vec.POLAR
+POS = tpm_vec.POS
+VEL = tpm_vec.VEL
+CARTESIAN = tpm_vec.CARTESIAN
+SPHERICAL = tpm_vec.SPHERICAL
+POLAR = tpm_vec.POLAR
 
 cdef class V3(object):
-    """Class that wraps _tpm_vec.V3; for use from Cython only."""
-    cdef _tpm_vec.V3 _v3
+    """Class that wraps tpm_vec.V3; for use from Cython only."""
+    cdef tpm_vec.V3 _v3
 
     def __cinit__(self):
         self._v3.type = CARTESIAN
@@ -48,10 +48,10 @@ cdef class V3(object):
     cdef double getZ(self):
         return self._v3.v[2]
 
-    cdef _tpm_vec.V3 getV3(self):
+    cdef tpm_vec.V3 getV3(self):
         return self._v3
 
-    cdef setV3(self, _tpm_vec.V3 _v3):
+    cdef setV3(self, tpm_vec.V3 _v3):
         self._v3 = _v3
 
 
@@ -86,8 +86,8 @@ cdef class V3CP(V3):
 
     def c2s(self):
         """Convert Cartesian position vector into spherical vector."""
-        cdef _tpm_vec.V3 _v3
-        _v3 = _tpm_vec.v3c2s(self.getV3())
+        cdef tpm_vec.V3 _v3
+        _v3 = tpm_vec.v3c2s(self.getV3())
         #v3 = V3SP(r=_v3.v[0], alpha=_v3.v[1], delta=_v3[2])
         v3sp = V3SP()
         v3sp.setV3(_v3)
@@ -97,7 +97,7 @@ cdef class V3CP(V3):
         """Return V3CP that holds difference between two V3CPs."""
         if isinstance(self, V3CP) and isinstance(other, V3CP):
             v3cp = V3CP()
-            v3cp.setV3(_tpm_vec.v3diff(self.getV3(), other.getV3()))
+            v3cp.setV3(tpm_vec.v3diff(self.getV3(), other.getV3()))
             return v3cp
         else:
             raise TypeError, "Can only subtract two V3CP values."
@@ -106,7 +106,7 @@ cdef class V3CP(V3):
         """Return V3CP that holds the sum of two V3CPs."""
         if isinstance(self, V3CP) and isinstance(other, V3CP):
             v3cp = V3CP()
-            v3cp.setV3(_tpm_vec.v3sum(self.getV3(), other.getV3()))
+            v3cp.setV3(tpm_vec.v3sum(self.getV3(), other.getV3()))
             return v3cp
         else:
             raise TypeError, "Can only add two V3CP values."
@@ -114,27 +114,27 @@ cdef class V3CP(V3):
     def __mul__(V3CP self, double n):
         """Scale X,Y and Z components with the scalar number."""
         v3cp = V3CP()
-        v3cp.setV3(_tpm_vec.v3scale(self.getV3(), n))
+        v3cp.setV3(tpm_vec.v3scale(self.getV3(), n))
         return v3cp
     
     def unit(self):
         """Return unit V3CP vector."""
         v3cp = V3CP()
-        v3cp.setV3(_tpm_vec.v3unit(self.getV3()))
+        v3cp.setV3(tpm_vec.v3unit(self.getV3()))
         return v3cp
 
     def mod(self):
         """Return modulus of the V3CP vector."""
-        return _tpm_vec.v3mod(self.getV3())
+        return tpm_vec.v3mod(self.getV3())
 
     def dot(V3CP self, V3CP other):
         """Return the dot product of two V3CP vectors."""
-        return _tpm_vec.v3dot(self.getV3(), other.getV3())
+        return tpm_vec.v3dot(self.getV3(), other.getV3())
 
     def cross(V3CP self, V3CP other):
         """Return the cross product of two V3CP vectors."""
         v3cp = V3CP()
-        v3cp.setV3(_tpm_vec.v3cross(self.getV3(), other.getV3()))
+        v3cp.setV3(tpm_vec.v3cross(self.getV3(), other.getV3()))
         return v3cp
 
     def __str__(self):
@@ -143,7 +143,7 @@ cdef class V3CP(V3):
 
     def __unicode__(self):
         """Return unicode representation of V3CP."""
-        s = _tpm_vec.v3fmt(self.getV3())
+        s = tpm_vec.v3fmt(self.getV3())
         return unicode(s)
 
     
@@ -183,19 +183,19 @@ cdef class V3SP(V3):
     delta = property(__getdelta, __setdelta, doc="Delta coordinate.")
 
     def __getnalpha(self):
-        return _tpm_vec.v3alpha(self.getV3())
+        return tpm_vec.v3alpha(self.getV3())
     
     nalpha = property(__getnalpha, doc="Normalized alpha coordinate.")
 
     def __getndelta(self):
-        return _tpm_vec.v3delta(self.getV3())
+        return tpm_vec.v3delta(self.getV3())
     
     ndelta = property(__getndelta, doc="Normalized alpha coordinate.")
 
     def s2c(self):
         """Convert spherical position vector into Cartesian vector."""
-        cdef _tpm_vec.V3 _v3
-        _v3 = _tpm_vec.v3s2c(self.getV3())
+        cdef tpm_vec.V3 _v3
+        _v3 = tpm_vec.v3s2c(self.getV3())
         v3cp = V3CP()
         v3cp.setV3(_v3)
         return v3cp
@@ -204,7 +204,7 @@ cdef class V3SP(V3):
         """Return V3SP that holds difference between two V3SPs."""
         if isinstance(self, V3SP) and isinstance(other, V3SP):
             v3cp = V3CP()
-            v3cp.setV3(_tpm_vec.v3diff(self.getV3(), other.getV3()))
+            v3cp.setV3(tpm_vec.v3diff(self.getV3(), other.getV3()))
             return v3cp.c2s()
         else:
             raise TypeError, "Can only subtract two V3SP values."
@@ -213,7 +213,7 @@ cdef class V3SP(V3):
         """Return V3SP that holds the sum of two V3SPs."""
         if isinstance(self, V3SP) and isinstance(other, V3SP):
             v3cp = V3CP()
-            v3cp.setV3(_tpm_vec.v3sum(self.getV3(), other.getV3()))
+            v3cp.setV3(tpm_vec.v3sum(self.getV3(), other.getV3()))
             return v3cp.c2s()
         else:
             raise TypeError, "Can only add two V3SP values."
@@ -221,21 +221,21 @@ cdef class V3SP(V3):
     def __mul__(V3SP self, double n):
         """Scale R with the scalar number."""
         v3sp = V3SP()
-        v3sp.setV3(_tpm_vec.v3scale(self.getV3(), n))
+        v3sp.setV3(tpm_vec.v3scale(self.getV3(), n))
         return v3sp
 
     def mod(self):
         """Return modulus of the V3SP vector; magnitude of R component."""
-        return _tpm_vec.v3mod(self.getV3())
+        return tpm_vec.v3mod(self.getV3())
 
     def dot(V3SP self, V3SP other):
         """Return the dot product of two V3SP vectors."""
-        return _tpm_vec.v3dot(self.getV3(), other.getV3())
+        return tpm_vec.v3dot(self.getV3(), other.getV3())
     
     def cross(V3SP self, V3SP other):
         """Return the cross product of two V3SP vectors."""
         v3cp = V3CP()
-        v3cp.setV3(_tpm_vec.v3cross(self.getV3(), other.getV3()))
+        v3cp.setV3(tpm_vec.v3cross(self.getV3(), other.getV3()))
         return v3cp.c2s()
 
     def __str__(self):
@@ -244,13 +244,13 @@ cdef class V3SP(V3):
 
     def __unicode__(self):
         """Return unicode representation of V3SP"""
-        s = _tpm_vec.v3fmt(self.getV3())
+        s = tpm_vec.v3fmt(self.getV3())
         return unicode(s)
 
 
 cdef class V6(object):
-    """Class that wraps _tpm_vec.V6; for use from Cython only."""
-    cdef _tpm_vec.V6 _v6
+    """Class that wraps tpm_vec.V6; for use from Cython only."""
+    cdef tpm_vec.V6 _v6
 
     def __cinit__(self):
         self._v6.v[POS].type = CARTESIAN
@@ -316,24 +316,24 @@ cdef class V6(object):
     cdef setZdot(self, double zdot):
         self._v6.v[VEL].v[2] = zdot
 
-    cdef _tpm_vec.V6 getV6(self):
+    cdef tpm_vec.V6 getV6(self):
         return self._v6
 
-    cdef setV6(self, _tpm_vec.V6 _v6):
+    cdef setV6(self, tpm_vec.V6 _v6):
         self._v6 = _v6
 
-    cdef _tpm_vec.V3 getPOS(self):
+    cdef tpm_vec.V3 getPOS(self):
         return self._v6.v[POS]
 
-    cdef setPOS(self, _tpm_vec.V3 _v3):
+    cdef setPOS(self, tpm_vec.V3 _v3):
         if (_v3.type != self.getType()):
             raise ValueError, "Type of V3 must be the same as that of V6."
         self._v6.v[POS] = _v3
 
-    cdef _tpm_vec.V3 getVEL(self):
+    cdef tpm_vec.V3 getVEL(self):
         return self._v6.v[VEL]
 
-    cdef setVEL(self, _tpm_vec.V3 _v3):
+    cdef setVEL(self, tpm_vec.V3 _v3):
         if (_v3.type != self.getType()):
             raise ValueError, "Type of V3 must be the same as that of V6."
         self._v6.v[VEL] = _v3
@@ -412,7 +412,7 @@ cdef class V6C(V6):
         """Return V6C that holds difference between two V6C vectors."""
         if isinstance(self, V6C) and isinstance(other, V6C):
             v6c = V6C()
-            v6c.setV6(_tpm_vec.v6diff(self.getV6(), other.getV6()))
+            v6c.setV6(tpm_vec.v6diff(self.getV6(), other.getV6()))
             return v6c
         else:
             raise TypeError, "Can only subtract two V6C values."
@@ -421,25 +421,25 @@ cdef class V6C(V6):
         """Return V6C that holds the sum of two V6C vectors."""
         if isinstance(self, V6C) and isinstance(other, V6C):
             v6c = V6C()
-            v6c.setV6(_tpm_vec.v6sum(self.getV6(), other.getV6()))
+            v6c.setV6(tpm_vec.v6sum(self.getV6(), other.getV6()))
             return v6c
         else:
             raise TypeError, "Can only add two V6C values."
 
     def mod(self):
         """Return modulus (length), of position component of V6C vector."""
-        return _tpm_vec.v6mod(self.getV6())
+        return tpm_vec.v6mod(self.getV6())
 
     def unit(self):
         """Return V6C with unit POS vector and scaled VEL."""
         v6c = V6C()
-        v6c.setV6(_tpm_vec.v6unit(self.getV6()))
+        v6c.setV6(tpm_vec.v6unit(self.getV6()))
         return v6c
 
     def scale(self, x):
         """Return V6C with components scaled by the given factor."""
         v6c = V6C()
-        v6c.setV6(_tpm_vec.v6scale(self.getV6(), x))
+        v6c.setV6(tpm_vec.v6scale(self.getV6(), x))
         return v6c
 
     def v62v3(self, dt):
@@ -448,13 +448,13 @@ cdef class V6C(V6):
         Space motion is applied for the given number of days, dt.
         """
         v3cp = V3CP()
-        v3cp.setV3(_tpm_vec.v62v3(self.getV6(), dt))
+        v3cp.setV3(tpm_vec.v62v3(self.getV6(), dt))
         return v3cp
 
     def dot(V6C self, V6C other):
         """Dot product of the POS vector of V6C vectors."""
         if isinstance(self, V6C) and isinstance(other, V6C):
-            return _tpm_vec.v6dot(self.getV6(), other.getV6())
+            return tpm_vec.v6dot(self.getV6(), other.getV6())
         else:
             raise TypeError, "Can only take dot product of two V6C values."
 
@@ -465,7 +465,7 @@ cdef class V6C(V6):
         """
         if isinstance(self, V6C) and isinstance(other, V6C):
             v6c = V6C()
-            v6c.setV6(_tpm_vec.v6cross(self.getV6(), other.getV6()))
+            v6c.setV6(tpm_vec.v6cross(self.getV6(), other.getV6()))
             return v6c
         else:
             raise TypeError, "Can only take cross product of two V6C values."
@@ -473,7 +473,7 @@ cdef class V6C(V6):
     def c2s(self):
         """Convert V6C to V6S i.e., Cartesian to spherical."""
         v6s = V6S()
-        v6s.setV6(_tpm_vec.v6c2s(self.getV6()))
+        v6s.setV6(tpm_vec.v6c2s(self.getV6()))
         return v6s
 
     
@@ -541,28 +541,28 @@ cdef class V6S(V6):
                         doc="DELTADOT coordinate.")
 
     def __getnalpha(self):
-        return _tpm_vec.v6alpha(self.getV6())
+        return tpm_vec.v6alpha(self.getV6())
     
     nalpha = property(__getnalpha, doc="Normalized alpha coordinate.")
     
     def __getndelta(self):
-        return _tpm_vec.v6delta(self.getV6())
+        return tpm_vec.v6delta(self.getV6())
     
     ndelta = property(__getndelta, doc="Normalized alpha coordinate.")
     
     def s2c(self):
         """Convert V6S to V6C i.e., spherical to Cartesian."""
         v6c = V6C()
-        v6c.setV6(_tpm_vec.v6s2c(self.getV6()))
+        v6c.setV6(tpm_vec.v6s2c(self.getV6()))
         return v6c
 
 
 cdef class M3(object):
     """Class that wraps M3 structure."""
-    cdef _tpm_vec.M3 _m3
+    cdef tpm_vec.M3 _m3
 
     def __cinit__(self):
-        self._m3 = _tpm_vec.m3I(1.0)
+        self._m3 = tpm_vec.m3I(1.0)
 
     def __init__(self, xx=1.0, xy=0.0, xz=0.0, yx=0.0, yy=1.0, yz=0.0,
                  zx=0.0, zy=0.0, zz=1.0):
@@ -647,55 +647,55 @@ cdef class M3(object):
         
     zz = property(__getzz, __setzz, doc="ZZ.")
 
-    cdef _tpm_vec.M3 getM3(self):
+    cdef tpm_vec.M3 getM3(self):
         return self._m3
 
-    cdef setM3(self, _tpm_vec.M3 m3):
+    cdef setM3(self, tpm_vec.M3 m3):
         self._m3 = m3
 
     def __str__(self):
         return self.__unicode__().encode("utf-8")
     
     def __unicode__(self):
-        return unicode(_tpm_vec.m3fmt(self._m3))
+        return unicode(tpm_vec.m3fmt(self._m3))
 
     def __sub__(M3 self, M3 other):
         # Cython doesn't distinguish between sub and rsub. Hence type
         # check on self.
         m3 = M3()
-        m3.setM3(_tpm_vec.m3diff(self.getM3(), other.getM3()))
+        m3.setM3(tpm_vec.m3diff(self.getM3(), other.getM3()))
         return m3
 
     def __add__(M3 self, M3 other):
         # Cython doesn't distinguish between add and radd. Hence type
         # check on self.
         m3 = M3()
-        m3.setM3(_tpm_vec.m3sum(self.getM3(), other.getM3()))
+        m3.setM3(tpm_vec.m3sum(self.getM3(), other.getM3()))
         return m3
 
     def __mul__(M3 self, double x):
         # Cython doesn't distinguish between mul and rmul. Hence type
         # check on self.
         m3 = M3()
-        m3.setM3(_tpm_vec.m3scale(self.getM3(), x))
+        m3.setM3(tpm_vec.m3scale(self.getM3(), x))
         return m3
 
     def inv(self):
         """Inverse of the matrix."""
         m3 = M3()
-        m3.setM3(_tpm_vec.m3inv(self.getM3()))
+        m3.setM3(tpm_vec.m3inv(self.getM3()))
         return m3
 
     def m3m3(self, M3 other):
         """Product of 2 matrices."""
         m3 = M3()
-        m3.setM3(_tpm_vec.m3m3(self.getM3(), other.getM3()))
+        m3.setM3(tpm_vec.m3m3(self.getM3(), other.getM3()))
         return m3
     
     def m3v3(self, V3CP v3):
         """Product of M3 matrix and V3CP vector."""
         v = V3CP()
-        v.setV3(_tpm_vec.m3v3(self.getM3(), v3.getV3()))
+        v.setV3(tpm_vec.m3v3(self.getM3(), v3.getV3()))
         return v
 
     def m3v6(self, V6C v6):
@@ -704,7 +704,7 @@ cdef class M3(object):
         Both POS and VEL are multiplied by M3.
         """
         v = V6C()
-        v.setV6(_tpm_vec.m3v6(self.getM3(), v6.getV6()))
+        v.setV6(tpm_vec.m3v6(self.getM3(), v6.getV6()))
         return v
        
     
@@ -718,7 +718,7 @@ def m3Rx(double theta):
    :rtype: M3
    """
    m3 = M3()
-   m3.setM3(_tpm_vec.m3Rx(theta))
+   m3.setM3(tpm_vec.m3Rx(theta))
    return m3
 
 def m3RxDot(double theta, double thetadot):
@@ -733,7 +733,7 @@ def m3RxDot(double theta, double thetadot):
    :rtype: M3
    """
    m3 = M3()
-   m3.setM3(_tpm_vec.m3RxDot(theta, thetadot))
+   m3.setM3(tpm_vec.m3RxDot(theta, thetadot))
    return m3
 
 def m3Ry(double theta):
@@ -746,7 +746,7 @@ def m3Ry(double theta):
    :rtype: M3
    """
    m3 = M3()
-   m3.setM3(_tpm_vec.m3Ry(theta))
+   m3.setM3(tpm_vec.m3Ry(theta))
    return m3
 
 def m3RyDot(double theta, double thetadot):
@@ -761,7 +761,7 @@ def m3RyDot(double theta, double thetadot):
    :rtype: M3
    """
    m3 = M3()
-   m3.setM3(_tpm_vec.m3RyDot(theta, thetadot))
+   m3.setM3(tpm_vec.m3RyDot(theta, thetadot))
    return m3
 
 def m3Rz(double theta):
@@ -774,7 +774,7 @@ def m3Rz(double theta):
    :rtype: M3
    """
    m3 = M3()
-   m3.setM3(_tpm_vec.m3Rz(theta))
+   m3.setM3(tpm_vec.m3Rz(theta))
    return m3
 
 def m3RzDot(double theta, double thetadot):
@@ -789,24 +789,24 @@ def m3RzDot(double theta, double thetadot):
    :rtype: M3
    """
    m3 = M3()
-   m3.setM3(_tpm_vec.m3RzDot(theta, thetadot))
+   m3.setM3(tpm_vec.m3RzDot(theta, thetadot))
    return m3
 
 
 cdef class M6(object):
     """Class that wraps M6 structure."""
-    cdef _tpm_vec.M6 _m6
+    cdef tpm_vec.M6 _m6
 
     def __cinit__(self):
-        self._m6 = _tpm_vec.m6I(1.0)
+        self._m6 = tpm_vec.m6I(1.0)
         
     def __init__(self):
-        self._m6 = _tpm_vec.m6I(1.0)
+        self._m6 = tpm_vec.m6I(1.0)
 
-    cdef _tpm_vec.M6 getM6(self):
+    cdef tpm_vec.M6 getM6(self):
         return self._m6
 
-    cdef setM6(self, _tpm_vec.M6 m6):
+    cdef setM6(self, tpm_vec.M6 m6):
         self._m6 = m6
         
     def __getPP(self):
@@ -853,32 +853,32 @@ cdef class M6(object):
         # Cython doesn't distinguish between add and radd. Hence type
         # check on self.
         m6 = M6()
-        m6.setM6(_tpm_vec.m6sum(self.getM6(), other.getM6()))
+        m6.setM6(tpm_vec.m6sum(self.getM6(), other.getM6()))
         return m6
     
     def __sub__(M6 self, M6 other):
         # Cython does not differentiate sub and rsub; hence typecheck.
         m6 = M6()
-        m6.setM6(_tpm_vec.m6diff(self.getM6(), other.getM6()))
+        m6.setM6(tpm_vec.m6diff(self.getM6(), other.getM6()))
         return m6
 
     def __mul__(M6 self, double x):
         # Cython doesn't distinguish between mul and rmul. Hence type
         # check on self.
         m6 = M6()
-        m6.setM6(_tpm_vec.m6scale(self.getM6(), x))
+        m6.setM6(tpm_vec.m6scale(self.getM6(), x))
         return m6
 
     def __str__(self):
         return self.__unicode__().encode("utf-8")
     
     def __unicode__(self):
-        return unicode(_tpm_vec.m6fmt(self._m6))
+        return unicode(tpm_vec.m6fmt(self._m6))
     
     def inv(self):
         """Inverse of M6 matrix."""
         m6 = M6()
-        m6.setM6(_tpm_vec.m6inv(self.getM6()))
+        m6.setM6(tpm_vec.m6inv(self.getM6()))
         return m6
 
     def m6v3(self, V3CP v3):
@@ -887,31 +887,31 @@ cdef class M6(object):
         Only the PP component of M6 is used.
         """
         v = V3CP()
-        v.setV3(_tpm_vec.m6v3(self.getM6(), v3.getV3()))
+        v.setV3(tpm_vec.m6v3(self.getM6(), v3.getV3()))
         return v
 
     def m6v6(self, V6C v6):
         """Product of M6 matrix and V6C vector.
         """
         v = V6C()
-        v.setV6(_tpm_vec.m6v6(self.getM6(), v6.getV6()))
+        v.setV6(tpm_vec.m6v6(self.getM6(), v6.getV6()))
         return v
         
         
 def m6Qx(double x, double xdot):
     """An M6 matrix for rotation about X-axis."""
     m6 = M6()
-    m6.setM6(_tpm_vec.m6Qx(x, xdot))
+    m6.setM6(tpm_vec.m6Qx(x, xdot))
     return m6
 
 def m6Qy(double y, double ydot):
     """An M6 matrix for rotation about Y-axis."""
     m6 = M6()
-    m6.setM6(_tpm_vec.m6Qy(y, ydot))
+    m6.setM6(tpm_vec.m6Qy(y, ydot))
     return m6
 
 def m6Qz(double z, double zdot):
     """An M6 matrix for rotation about Z-axis."""
     m6 = M6()
-    m6.setM6(_tpm_vec.m6Qz(z, zdot))
+    m6.setM6(tpm_vec.m6Qz(z, zdot))
     return m6

@@ -13,7 +13,7 @@ depends = glob.glob("src/tpm/*.h") # Just in case.
 include_dirs = [os.path.abspath("src/tpm")]
 
 # This setup.py does not run Cython.
-srcfiles.append("src/pytpm.c")
+srcfiles.append("src/tpm.c")
 ext_modules = [Extension("pytpm.tpm", srcfiles,
                      include_dirs = include_dirs,
                      depends = depends)]

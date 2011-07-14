@@ -1,27 +1,27 @@
 # -*- coding: utf-8 -*-
 # The following line must be present in the pytpm.pyx file.
-# cimport _tpm_astro
+# cimport tpm_astro
 
-IAU_K = _tpm_astro.IAU_K
-IAU_DM = _tpm_astro.IAU_DM 
-IAU_AU = _tpm_astro.IAU_AU  
-IAU_C  = _tpm_astro.IAU_C  
-IAU_RE = _tpm_astro.IAU_RE  
-IAU_RM = _tpm_astro.IAU_RM  
-IAU_F  = _tpm_astro.IAU_F  
-IAU_KAPPA = _tpm_astro.IAU_KAPPA
-IAU_W   = _tpm_astro.IAU_W 
-GAL_RA  = _tpm_astro.GAL_RA 
-GAL_DEC = _tpm_astro.GAL_DEC 
-GAL_LON = _tpm_astro.GAL_LON 
-PRECESS_NEWCOMB    = _tpm_astro.PRECESS_NEWCOMB 
-PRECESS_ANDOYER    = _tpm_astro.PRECESS_ANDOYER 
-PRECESS_KINOSHITA  = _tpm_astro.PRECESS_KINOSHITA 
-PRECESS_LIESKE     = _tpm_astro.PRECESS_LIESKE 
-PRECESS_FK4        = _tpm_astro.PRECESS_FK4 
-PRECESS_FK5        = _tpm_astro.PRECESS_FK5 
-PRECESS_INERTIAL   = _tpm_astro.PRECESS_INERTIAL 
-PRECESS_ROTATING   = _tpm_astro.PRECESS_ROTATING 
+IAU_K = tpm_astro.IAU_K
+IAU_DM = tpm_astro.IAU_DM 
+IAU_AU = tpm_astro.IAU_AU  
+IAU_C  = tpm_astro.IAU_C  
+IAU_RE = tpm_astro.IAU_RE  
+IAU_RM = tpm_astro.IAU_RM  
+IAU_F  = tpm_astro.IAU_F  
+IAU_KAPPA = tpm_astro.IAU_KAPPA
+IAU_W   = tpm_astro.IAU_W 
+GAL_RA  = tpm_astro.GAL_RA 
+GAL_DEC = tpm_astro.GAL_DEC 
+GAL_LON = tpm_astro.GAL_LON 
+PRECESS_NEWCOMB    = tpm_astro.PRECESS_NEWCOMB 
+PRECESS_ANDOYER    = tpm_astro.PRECESS_ANDOYER 
+PRECESS_KINOSHITA  = tpm_astro.PRECESS_KINOSHITA 
+PRECESS_LIESKE     = tpm_astro.PRECESS_LIESKE 
+PRECESS_FK4        = tpm_astro.PRECESS_FK4 
+PRECESS_FK5        = tpm_astro.PRECESS_FK5 
+PRECESS_INERTIAL   = tpm_astro.PRECESS_INERTIAL 
+PRECESS_ROTATING   = tpm_astro.PRECESS_ROTATING 
 
 def tpm_data(TSTATE tstate, int action):
     """Compute and set dependent TSTATE data.
@@ -54,13 +54,13 @@ def tpm_data(TSTATE tstate, int action):
 
     The TPM manual has more details on these quantities.
     """
-    _tpm_astro.tpm_data(&tstate._tstate, action)
+    tpm_astro.tpm_data(&tstate._tstate, action)
 
-# If I use _tpm_tpm.N_TPM_STATES or N_TPM_STATES inplace of 22 then
+# If I use tpm_tpm.N_TPM_STATES or N_TPM_STATES inplace of 22 then
 # Cython gives the following error: Not allowed in a constant
 # expression. Why?  In C code I can do V6 pvec[N_TPM_STATES].
 cdef struct s_pvec:
-    _tpm_vec.V6 pvec[22]
+    tpm_vec.V6 pvec[22]
 ctypedef s_pvec S_PVEC
 
 cdef class PVEC(object):
@@ -158,11 +158,11 @@ def tpm(PVEC pvec, int s1, int s2, double ep, double eq, TSTATE tstate):
     if not 0 <= s2 < N_TPM_STATES:
         raise ValueError, "S2 must be in 0 <= S2 < N_TPM_STATES"
     cdef S_PVEC spvec
-    cdef _tpm_tpm.TPM_TSTATE ststate
+    cdef tpm_tpm.TPM_TSTATE ststate
     
     spvec = pvec.__get_pvec()
     ststate = tstate.__get_tstate()
-    t = _tpm_astro.tpm(spvec.pvec, s1, s2, ep, eq, &ststate)
+    t = tpm_astro.tpm(spvec.pvec, s1, s2, ep, eq, &ststate)
     pvec.__set_pvec(spvec)
     tstate.__set_tstate(ststate)
     return t
@@ -188,7 +188,7 @@ def tpm_state(int s):
     >>> tpm.tpm_state(tpm.TPM_S19)
     'Topo. obs. Az/El'
     """
-    return _tpm_astro.tpm_state(s)
+    return tpm_astro.tpm_state(s)
 
 def delta_AT(utc):
     """Return Delta AT = TAI - UTC for the given UTC.
@@ -204,7 +204,7 @@ def delta_AT(utc):
     The file src/tpm/delta_AT.c must be updated when Delta AT is
     changed by the IERS and PyTPM Cython code must re-compiled.
     """
-    return _tpm_astro.delta_AT(utc)
+    return tpm_astro.delta_AT(utc)
 
 def delta_T(ut1):
     """Return Delta T = TT - UT1 for the given UT1.
@@ -222,7 +222,7 @@ def delta_T(ut1):
 
     A built-in model is used for calculating this quantity.
     """
-    return _tpm_astro.delta_T(ut1)
+    return tpm_astro.delta_T(ut1)
 
 def delta_UT(utc):
     """Return Delta UT = UT1 - UTC for the given UTC.
@@ -238,7 +238,7 @@ def delta_UT(utc):
     model. For the latter the input time argument must be UT1, but the
     error in using UTC should be small.
     """
-    return _tpm_astro.delta_UT(utc)
+    return tpm_astro.delta_UT(utc)
 
 def delta_ET(utc):
     """Return Delta ET = ET - UTC for the given UTC.
@@ -249,7 +249,7 @@ def delta_ET(utc):
     :return: Delta ET = ET - UTC in seconds.
     :rtype: float
     """
-    return _tpm_astro.delta_ET(utc)
+    return tpm_astro.delta_ET(utc)
 
 def delta_TT(utc):
     """Return Delta TT = TDT - UTC for the given UTC.
@@ -260,7 +260,7 @@ def delta_TT(utc):
     :return: Delta TT = TDT - UTC.
     :rtype: float
     """
-    return _tpm_astro.delta_TT(utc)
+    return tpm_astro.delta_TT(utc)
 
 def tdt2tdb(tdt):
     """Return TDB for the given TDT.
@@ -271,7 +271,7 @@ def tdt2tdb(tdt):
     :return: TDB as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.tdt2tdb(tdt)
+    return tpm_astro.tdt2tdb(tdt)
 
 def ut12gmst(ut1):
     """Return GMST for the given UT1.
@@ -285,7 +285,7 @@ def ut12gmst(ut1):
     Given a UT1 Julian date, this function returns the Greenwich Mean
     Sidereal Time as an angle in radians in the range (0, 2π).
     """
-    return _tpm_astro.ut12gmst(ut1)
+    return tpm_astro.ut12gmst(ut1)
     
 def et2tdt(et):
     """Return TDT for the given ET.
@@ -296,7 +296,7 @@ def et2tdt(et):
     :return: TDT as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.et2tdt(et)
+    return tpm_astro.et2tdt(et)
 
 def tai2tdt(tai):
     """Return TDT for the given TAI.
@@ -307,7 +307,7 @@ def tai2tdt(tai):
     :return: TDT as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.tai2tdt(tai)
+    return tpm_astro.tai2tdt(tai)
 
 def tdt2et(tdt):
     """Return ET for the given TDT.
@@ -318,7 +318,7 @@ def tdt2et(tdt):
     :return: ET as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.tdt2et(tdt)
+    return tpm_astro.tdt2et(tdt)
 
 def ut12et(ut1):
     """Return ET for the given UT1.
@@ -329,7 +329,7 @@ def ut12et(ut1):
     :return: ET as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.ut12et(ut1)
+    return tpm_astro.ut12et(ut1)
 
 def utc2et(utc):
     """Return ET for the given UTC.
@@ -340,7 +340,7 @@ def utc2et(utc):
     :return: ET as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.utc2et(utc)
+    return tpm_astro.utc2et(utc)
 
 def utc2tdt(utc):
     """Return TDT for the given UTC.
@@ -351,7 +351,7 @@ def utc2tdt(utc):
     :return: TDT as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.utc2tdt(utc)
+    return tpm_astro.utc2tdt(utc)
 
 def utc2ut1(utc):
     """Return UT1 for the given UTC.
@@ -362,7 +362,7 @@ def utc2ut1(utc):
     :return: UT1 as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.utc2ut1(utc)
+    return tpm_astro.utc2ut1(utc)
     
 def et2ut1(et):
     """Return UT1 for the given ET.
@@ -373,7 +373,7 @@ def et2ut1(et):
     :return: UT1 as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.et2ut1(et)
+    return tpm_astro.et2ut1(et)
 
 def et2utc(et):
     """Return UTC for the given ET.
@@ -384,7 +384,7 @@ def et2utc(et):
     :return: UTC as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.et2utc(et)
+    return tpm_astro.et2utc(et)
 
 def tai2utc(tai):
     """Return UTC for the given TAI.
@@ -395,7 +395,7 @@ def tai2utc(tai):
     :return: UTC as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.tai2utc(tai)
+    return tpm_astro.tai2utc(tai)
 
 def tdt2tai(tdt):
     """Return TAI for the given TDT.
@@ -406,7 +406,7 @@ def tdt2tai(tdt):
     :return: TAI as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.tdt2tai(tdt)
+    return tpm_astro.tdt2tai(tdt)
 
 def tdt2utc(tdt):
     """Return UTC for the given TDT.
@@ -417,7 +417,7 @@ def tdt2utc(tdt):
     :return: UTC as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.tdt2utc(tdt)
+    return tpm_astro.tdt2utc(tdt)
 
 def ut12utc(ut1):
     """Return UTC for the given UT1.
@@ -428,7 +428,7 @@ def ut12utc(ut1):
     :return: UTC as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.ut12utc(ut1)
+    return tpm_astro.ut12utc(ut1)
 
 def et2tai(et):
     """Return TAI for the given ET.
@@ -439,7 +439,7 @@ def et2tai(et):
     :return: TAI as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.et2tai(et)
+    return tpm_astro.et2tai(et)
 
 def et2tdb(et):
     """Return TDB for the given ET.
@@ -450,7 +450,7 @@ def et2tdb(et):
     :return: TDB as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.et2tdb(et)
+    return tpm_astro.et2tdb(et)
 
 def tai2et(tai):
     """Return ET for the given TAI.
@@ -461,7 +461,7 @@ def tai2et(tai):
     :return: ET as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.tai2et(tai)
+    return tpm_astro.tai2et(tai)
 
 def tai2tdb(tai):
     """Return TDB for the given TAI.
@@ -472,7 +472,7 @@ def tai2tdb(tai):
     :return: TDB as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.tai2tdb(tai)
+    return tpm_astro.tai2tdb(tai)
 
 def tai2ut1(tai):
     """Return UT1 for the given TAI.
@@ -483,23 +483,23 @@ def tai2ut1(tai):
     :return: UT1 as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.tai2ut1(tai)
+    return tpm_astro.tai2ut1(tai)
 
 #def tdb2et(tdb):
 #    """Return ET for the given TDB."""
-#    return _tpm_astro.tdb2et(tdb)
+#    return tpm_astro.tdb2et(tdb)
 # 
 #def tdb2tai(tdb):
 #    """Return TAI for the given TDB."""
-#    return _tpm_astro.tdb2tai(tdb)
+#    return tpm_astro.tdb2tai(tdb)
 # 
 #def tdb2ut1(tdb):
 #    """Return UT1 for the given TDB."""
-#    return _tpm_astro.tdb2ut1(tdb)
+#    return tpm_astro.tdb2ut1(tdb)
 # 
 #def tdb2utc(tdb):
 #    """Return UTC for the given TDB."""
-#    return _tpm_astro.tdb2utc(tdb)
+#    return tpm_astro.tdb2utc(tdb)
 
 def tdt2ut1(tdt):
     """Return UT1 for the given TDT.
@@ -510,7 +510,7 @@ def tdt2ut1(tdt):
     :return: UT1 as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.tdt2ut1(tdt)
+    return tpm_astro.tdt2ut1(tdt)
 
 def ut12tai(ut1):
     """Return TAI for the given UT1.
@@ -521,7 +521,7 @@ def ut12tai(ut1):
     :return: TAI as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.ut12tai(ut1)
+    return tpm_astro.ut12tai(ut1)
 
 def ut12tdb(ut1):
     """Return TDB for the given UT1.
@@ -532,7 +532,7 @@ def ut12tdb(ut1):
     :return: TDB as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.ut12tdb(ut1)
+    return tpm_astro.ut12tdb(ut1)
 
 def ut12tdt(ut1):
     """Return TDT for the given UT1.
@@ -543,7 +543,7 @@ def ut12tdt(ut1):
     :return: TDT as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.ut12tdt(ut1)
+    return tpm_astro.ut12tdt(ut1)
 
 def utc2tdb(utc):
     """Return TDB for the given UTC.
@@ -554,19 +554,19 @@ def utc2tdb(utc):
     :return: TDB as a Julian date.
     :rtype: float
     """
-    return _tpm_astro.utc2tdb(utc)
+    return tpm_astro.utc2tdb(utc)
 
 def et2ut(et):
     """Return UT for the given ET; same as et2ut1(et)."""
-    return _tpm_astro.et2ut(et)
+    return tpm_astro.et2ut(et)
 
 def ut2et(ut):
     """Return ET for the given UT; same as ut12et(ut)."""
-    return _tpm_astro.ut2et(ut)
+    return tpm_astro.ut2et(ut)
 
 def ut2gmst(ut):
     """Return GMST for the given UT; same as ut12gmst(ut)"""
-    return _tpm_astro.ut2gmst(ut)
+    return tpm_astro.ut2gmst(ut)
 
 def cat2v6(ra, de, pmra, pmdec, px, rv, C=36525.0):
     """Create a V6C vector from catalog entry.
@@ -599,7 +599,7 @@ def cat2v6(ra, de, pmra, pmdec, px, rv, C=36525.0):
     has 36524.21987817305 days (``tpm.CB``).
     """
     v6 = V6C()
-    v6.setV6(_tpm_astro.cat2v6(ra, de, pmra, pmdec, px, rv, C))
+    v6.setV6(tpm_astro.cat2v6(ra, de, pmra, pmdec, px, rv, C))
     return v6
     
 def v62cat(V6C v6, C=36525.0):
@@ -620,7 +620,7 @@ def v62cat(V6C v6, C=36525.0):
     :rtype: dict
     """
     cdef double ra=0.0, dec=0.0, pmra=0.0, pmdec=0.0, px=0.0, rv=0.0
-    _tpm_astro.v62cat(&ra, &dec, &pmra, &pmdec, &px, &rv, v6.getV6(), C)
+    tpm_astro.v62cat(&ra, &dec, &pmra, &pmdec, &px, &rv, v6.getV6(), C)
     return dict(ra=ra, dec=dec, pmra=pmra, pmdec=pmdec, px=px, rv=rv)
     
 def proper_motion(V6C v6, end, start):
@@ -646,9 +646,9 @@ def proper_motion(V6C v6, end, start):
     in V6C are stored as AU/day and hence time interval must be in
     days.
     """
-    cdef _tpm_astro.V6 _v6
+    cdef tpm_astro.V6 _v6
     v61 = V6C()
-    _v6 = _tpm_astro.proper_motion(v6.getV6(), end, start)
+    _v6 = tpm_astro.proper_motion(v6.getV6(), end, start)
     v61.setV6(_v6)
     return v61
 
@@ -679,8 +679,8 @@ def aberrate(V6C p, V6C e, int flag):
     The algorithm uses vectors and hence the ``e`` can be for any
     observer, not just Earth based observers.
     """
-    cdef _tpm_astro.V6 _v6
-    _v6 = _tpm_astro.aberrate(p.getV6(), e.getV6(), flag)
+    cdef tpm_astro.V6 _v6
+    _v6 = tpm_astro.aberrate(p.getV6(), e.getV6(), flag)
     v6 = V6C()
     v6.setV6(_v6)
     return v6
@@ -705,7 +705,7 @@ def azel2hadec(V6C v6, double latitude):
     above conversion.
     """
     v = V6C()
-    v.setV6(_tpm_astro.azel2hadec(v6.getV6(), latitude))
+    v.setV6(tpm_astro.azel2hadec(v6.getV6(), latitude))
     return v
 
 def hadec2azel(V6C v6, double latitude):
@@ -728,7 +728,7 @@ def hadec2azel(V6C v6, double latitude):
     above conversion.
     """
     v = V6C()
-    v.setV6(_tpm_astro.hadec2azel(v6.getV6(), latitude))
+    v.setV6(tpm_astro.hadec2azel(v6.getV6(), latitude))
     return v
 
 def evp(double tdb):
@@ -747,8 +747,8 @@ def evp(double tdb):
     The first element of the tuple is the Barycentric vector and the
     second is the Heliocentric vector.
     """
-    cdef _tpm_vec.V6 _vb, _vh
-    _tpm_astro.evp(tdb, &_vb, &_vh)
+    cdef tpm_vec.V6 _vb, _vh
+    tpm_astro.evp(tdb, &_vb, &_vh)
     v6b = V6C()
     v6b.setV6(_vb)
     v6h = V6C()
@@ -770,7 +770,7 @@ def ecl2equ(V6C v6, double obl):
     coordinates into FK5 equatorial coordinates.
     """
     v = V6C()
-    v.setV6(_tpm_astro.ecl2equ(v6.getV6(), obl))
+    v.setV6(tpm_astro.ecl2equ(v6.getV6(), obl))
     return v
 
 def equ2ecl(V6C v6, double obl):
@@ -789,7 +789,7 @@ def equ2ecl(V6C v6, double obl):
     obliquity. 
     """
     v = V6C()
-    v.setV6(_tpm_astro.equ2ecl(v6.getV6(), obl))
+    v.setV6(tpm_astro.equ2ecl(v6.getV6(), obl))
     return v
     
 def ellab(double tdt, V6C star, int flag):
@@ -810,7 +810,7 @@ def ellab(double tdt, V6C star, int flag):
     then the correction is added else it is subtracted.
     """
     v = V6C()
-    v.setV6(_tpm_astro.ellab(tdt, star.getV6(), flag))
+    v.setV6(tpm_astro.ellab(tdt, star.getV6(), flag))
     return v
 
 def equ2gal(V6C v6):
@@ -828,7 +828,7 @@ def equ2gal(V6C v6):
     degrees. 
     """
     v = V6C()
-    v.setV6(_tpm_astro.equ2gal(v6.getV6()))
+    v.setV6(tpm_astro.equ2gal(v6.getV6()))
     return v
     
 def gal2equ(V6C v6):
@@ -846,7 +846,7 @@ def gal2equ(V6C v6):
     degrees.
     """
     v = V6C()
-    v.setV6(_tpm_astro.gal2equ(v6.getV6()))
+    v.setV6(tpm_astro.gal2equ(v6.getV6()))
     return v
     
 def eterms(double ep):
@@ -862,7 +862,7 @@ def eterms(double ep):
     e-terms with another state vector.
     """
     v6 = V6C()
-    v6.setV6(_tpm_astro.eterms(ep))
+    v6.setV6(tpm_astro.eterms(ep))
     return v6
 
 def fk425(V6C v6):
@@ -878,7 +878,7 @@ def fk425(V6C v6):
     TPM manual and src/tpm/fk425.c for more details.
     """
     v = V6C()
-    v.setV6(_tpm_astro.fk425(v6.getV6()))
+    v.setV6(tpm_astro.fk425(v6.getV6()))
     return v
 
 def fk524(V6C v6):
@@ -894,7 +894,7 @@ def fk524(V6C v6):
     TPM manual and src/tpm/fk524.c for more details.
     """
     v = V6C()
-    v.setV6(_tpm_astro.fk524(v6.getV6()))
+    v.setV6(tpm_astro.fk524(v6.getV6()))
     return v
 
 def geod2geoc(double lon, double lat, double alt):
@@ -915,7 +915,7 @@ def geod2geoc(double lon, double lat, double alt):
     meters/second.
     """
     v6 = V6C()
-    v6.setV6(_tpm_astro.geod2geoc(lon, lat, alt))
+    v6.setV6(tpm_astro.geod2geoc(lon, lat, alt))
     return v6
 
 def ldeflect(V6C star, V6C earth, int flag):
@@ -935,7 +935,7 @@ def ldeflect(V6C star, V6C earth, int flag):
     state vector in ``star``.
     """
     v6 = V6C()
-    v6.setV6(_tpm_astro.ldeflect(star.getV6(), earth.getV6(), flag))
+    v6.setV6(tpm_astro.ldeflect(star.getV6(), earth.getV6(), flag))
     return v6
 
 def precess(double start, double end, V6C v6, int pflag):
@@ -966,7 +966,7 @@ def precess(double start, double end, V6C v6, int pflag):
     See TPM manual for definition of these constants.
     """
     v = V6C()
-    v.setV6(_tpm_astro.precess(start, end, v6.getV6(), pflag))
+    v.setV6(tpm_astro.precess(start, end, v6.getV6(), pflag))
     return v
 
 def precess_m(double start, double end, int pflag, int sflag):
@@ -997,7 +997,7 @@ def precess_m(double start, double end, int pflag, int sflag):
     ``PRECESS_INERTIAL``, when the "P-dot" term is not set to null.
     """
     m6 = M6()
-    m6.setM6(_tpm_astro.precess_m(start, end, pflag, sflag))
+    m6.setM6(tpm_astro.precess_m(start, end, pflag, sflag))
     return m6
 
 def eccentricity(double tdt):
@@ -1012,7 +1012,7 @@ def eccentricity(double tdt):
     Returns the eccentricity of Earth's orbit at the given time. Time
     is a TDT (same as TT) as a Julian date.
     """
-    return _tpm_astro.eccentricity(tdt)
+    return tpm_astro.eccentricity(tdt)
 
 def eccentricity_dot(double tdt):
     """Rate of change in the eccentricity of Earth's orbit.
@@ -1027,7 +1027,7 @@ def eccentricity_dot(double tdt):
     of Earth's orbit at the given time. Time is a TDT (same as TT) as a
     Julian date.
     """
-    return _tpm_astro.eccentricity_dot(tdt)
+    return tpm_astro.eccentricity_dot(tdt)
 
 def obliquity(double tdt):
     """Mean obliquity of Ecliptic(epoch J2000).
@@ -1041,7 +1041,7 @@ def obliquity(double tdt):
     The obliquity of the mean Ecliptic of J2000, at the given TDT (same
     as TT) is returned. The returned value is in radians.
     """
-    return _tpm_astro.obliquity(tdt)
+    return tpm_astro.obliquity(tdt)
 
 def obliquity_dot(double tdt):
     """Rate of change of mean obliquity of Ecliptic(epoch J2000).
@@ -1056,7 +1056,7 @@ def obliquity_dot(double tdt):
     obliquity of Ecliptic at the given time. Time is a TDT (same as TT)
     as a Julian date.
     """
-    return _tpm_astro.obliquity_dot(tdt)
+    return tpm_astro.obliquity_dot(tdt)
 
 def refco(double lat=0.557744205098, double alt=2093.093,
           double T=273.15, double P=1013.25, double rh=0.0,
@@ -1092,7 +1092,7 @@ def refco(double lat=0.557744205098, double alt=2093.093,
     cdef double refb
     refa = 0.0
     refb = 0.0
-    _tpm_astro.refco( lat,  alt,  T,  P, rh,  wavelength,  eps,
+    tpm_astro.refco( lat,  alt,  T,  P, rh,  wavelength,  eps,
                       &refa,  &refb)
     return (refa, refb)
 
@@ -1115,7 +1115,7 @@ def refract(double zx, double refa, double refb, int flag):
     change in this quantity due to refraction. This correction must be
     added to ``zx`` to find the resultant zenith distance.
     """
-    return _tpm_astro.refract(zx, refa, refb, flag)
+    return tpm_astro.refract(zx, refa, refb, flag)
     
 def solar_perigee(double tdt):
     """Mean longitude of the perigee of solar orbit.
@@ -1126,7 +1126,7 @@ def solar_perigee(double tdt):
     :return: Longitude in radians.
     :rtype: float
     """
-    return _tpm_astro.solar_perigee(tdt)
+    return tpm_astro.solar_perigee(tdt)
 
 def solar_perigee_dot(double tdt):
     """Rate of change of solar perigee.
@@ -1137,7 +1137,7 @@ def solar_perigee_dot(double tdt):
     :return: Rate of change of longitude in radians/julian century.
     :rtype: float
     """
-    return _tpm_astro.solar_perigee_dot(tdt)
+    return tpm_astro.solar_perigee_dot(tdt)
 
 def theta(double start, double end, int pflag):
     """FK4 and FK5 precession angles.
@@ -1162,7 +1162,7 @@ def theta(double start, double end, int pflag):
 
     See TPM manual for definition of these constants.
     """
-    return _tpm_astro.theta(start, end, pflag)
+    return tpm_astro.theta(start, end, pflag)
 
 def thetadot(double start, double end, int pflag):
     """Rate of change of FK4 and FK5 precession angles.
@@ -1188,7 +1188,7 @@ def thetadot(double start, double end, int pflag):
 
     See TPM manual for definition of these constants.
     """
-    return _tpm_astro.thetadot(start, end, pflag)
+    return tpm_astro.thetadot(start, end, pflag)
 
 def zee(double start, double end, int pflag):
     """FK4 and FK5 precession angles.
@@ -1213,7 +1213,7 @@ def zee(double start, double end, int pflag):
 
     See TPM manual for definition of these constants.
     """
-    return _tpm_astro.zee(start, end, pflag)
+    return tpm_astro.zee(start, end, pflag)
 
 def zeedot(double start, double end, int pflag):
     """Rate of change of FK4 and FK5 precession angles.
@@ -1239,7 +1239,7 @@ def zeedot(double start, double end, int pflag):
 
     See TPM manual for definition of these constants.
     """
-    return _tpm_astro.zeedot(start, end, pflag)
+    return tpm_astro.zeedot(start, end, pflag)
 
 def zeta(double start, double end, int pflag):
     """FK4 and FK5 precession angles.
@@ -1264,7 +1264,7 @@ def zeta(double start, double end, int pflag):
 
     See TPM manual for definition of these constants.
     """
-    return _tpm_astro.zeta(start, end, pflag)
+    return tpm_astro.zeta(start, end, pflag)
 
 def zetadot(double start, double end, int pflag):
     """Rate of change of FK4 and FK5 precession angles.
@@ -1290,7 +1290,7 @@ def zetadot(double start, double end, int pflag):
 
     See TPM manual for definition of these constants.
     """
-    return _tpm_astro.zetadot(start, end, pflag)
+    return tpm_astro.zetadot(start, end, pflag)
 
 def nutations(tdt):
     """Nutations in longitude and obliquity.
@@ -1304,5 +1304,5 @@ def nutations(tdt):
     cdef double delta_phi, delta_eps
     delta_phi = 0.0
     delta_eps = 0.0
-    _tpm_astro.nutations(tdt, &delta_phi, &delta_eps)
+    tpm_astro.nutations(tdt, &delta_phi, &delta_eps)
     return (delta_phi, delta_eps)

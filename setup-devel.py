@@ -51,7 +51,7 @@ ext_modules = [Extension("pytpm.tpm", srcfiles,
                          libraries = libraries)]
 ext_modules.append(
         Extension("pytpm.convert", ["src/convert.pyx"],
-                  depends=["src/pytpm.pyx"]))
+                  depends=["src/tpm.pyx"]))
 
 # Package structure is
 # pytpm/__init__.py

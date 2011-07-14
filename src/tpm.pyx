@@ -1,7 +1,15 @@
-# -*- coding: utf-8 -*-
-# Inlcude this at the end of the pytpm.pyx file; functions here may use
-# facilities that are defined in the other pxi files.
+cimport tpm_times 
+cimport tpm_vec
+cimport tpm_tpm
+cimport tpm_astro
 
+include "tpm_times.pxi"
+include "tpm_vec.pxi"
+include "tpm_tpm.pxi"
+include "tpm_astro.pxi"
+
+
+# Some functions that use features in TPM.
 def nalpha(double alpha, degrees=True):
     """Normalize angle in the x-y plane, i.e., longitudinal angle.
     
@@ -28,11 +36,11 @@ def nalpha(double alpha, degrees=True):
     normalizing the angle.
     """
     if degrees:
-        x = _tpm_times.d2r(alpha)
-        x = _tpm_times.r2r(x)
-        return _tpm_times.r2d(x)
+        x = tpm_times.d2r(alpha)
+        x = tpm_times.r2r(x)
+        return tpm_times.r2d(x)
     else:
-        return _tpm_times.r2r(alpha)
+        return tpm_times.r2r(alpha)
 
 def ndelta(double delta, degrees=True):
     """Normalize angle out of the x-y plane, i.e., latitudinal angle.
@@ -57,11 +65,11 @@ def ndelta(double delta, degrees=True):
     normalizing the angle.
     """
     # Create a V3 object and pass it to the v3delta function.
-    cdef _tpm_vec.V3 v3
+    cdef tpm_vec.V3 v3
     v3.v[0] = 1.0
-    v3.v[1] = _tpm_times.M_PI # Can be any value.
-    v3.v[2] =  _tpm_times.d2r(delta) if degrees else delta
+    v3.v[1] = tpm_times.M_PI # Can be any value.
+    v3.v[2] =  tpm_times.d2r(delta) if degrees else delta
     if degrees:
-        return _tpm_times.r2d(_tpm_vec.v3delta(v3))
+        return tpm_times.r2d(tpm_vec.v3delta(v3))
     else:
-        return _tpm_vec.v3delta(v3)
+        return tpm_vec.v3delta(v3)

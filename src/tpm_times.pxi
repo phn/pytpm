@@ -1,25 +1,25 @@
 # -*- coding: utf-8 -*-
 # The following line must be present in the pytpm.pyx file.
-# cimport _tpm_times 
+# cimport tpm_times 
 
-M_PI = _tpm_times.M_PI
-MJD_0 = _tpm_times.MJD_0
-B1950 = _tpm_times.B1950
-J2000 = _tpm_times.J2000
-J1984 = _tpm_times.J1984
-CB = _tpm_times.CB
-CJ = _tpm_times.CJ
-SUNDAY  = _tpm_times.SUNDAY 
-MONDAY  = _tpm_times.MONDAY
-TUESDAY = _tpm_times.TUESDAY
-WEDNESDAY = _tpm_times.WEDNESDAY
-THURSDAY =  _tpm_times.THURSDAY
-FRIDAY  =   _tpm_times.FRIDAY
-SATURDAY =  _tpm_times.SATURDAY 
+M_PI = tpm_times.M_PI
+MJD_0 = tpm_times.MJD_0
+B1950 = tpm_times.B1950
+J2000 = tpm_times.J2000
+J1984 = tpm_times.J1984
+CB = tpm_times.CB
+CJ = tpm_times.CJ
+SUNDAY  = tpm_times.SUNDAY 
+MONDAY  = tpm_times.MONDAY
+TUESDAY = tpm_times.TUESDAY
+WEDNESDAY = tpm_times.WEDNESDAY
+THURSDAY =  tpm_times.THURSDAY
+FRIDAY  =   tpm_times.FRIDAY
+SATURDAY =  tpm_times.SATURDAY 
 
 cdef class DMS(object):
     valid_keys = ('r', 'h', 'dd', 'mm', 'ss')
-    cdef _tpm_times.DMS _dms
+    cdef tpm_times.DMS _dms
     def __cinit__(self):
         self._dms.dd = 0.0
         self._dms.mm = 0.0
@@ -30,9 +30,9 @@ cdef class DMS(object):
             if key not in self.valid_keys:
                 raise TypeError, "Invalid keyword: {0}".format(key)
         if "r" in kwargs:
-            self._dms = _tpm_times.r2dms(kwargs['r'])
+            self._dms = tpm_times.r2dms(kwargs['r'])
         elif "h" in kwargs:
-            self._dms = _tpm_times.h2dms(kwargs['h'])
+            self._dms = tpm_times.h2dms(kwargs['h'])
         else:
             self._dms.dd = kwargs.get('dd',0.0)
             self._dms.mm = kwargs.get('mm',0.0) 
@@ -64,8 +64,8 @@ cdef class DMS(object):
         return self.__unicode__().encode("utf-8")
     
     def __unicode__(self):
-        cdef _tpm_times.DMS dms
-        return unicode(_tpm_times.fmt_dms(self._dms))
+        cdef tpm_times.DMS dms
+        return unicode(tpm_times.fmt_dms(self._dms))
 
     def __add__(self, other):
         # Cython does not have __radd__ and the first parameter may not
@@ -95,8 +95,8 @@ cdef class DMS(object):
 
     def to_hms(self):
         """Convert to HMS object."""
-        cdef _tpm_times.HMS _hms
-        _hms = _tpm_times.dms2hms(self._dms)
+        cdef tpm_times.HMS _hms
+        _hms = tpm_times.dms2hms(self._dms)
         hms = HMS()
         hms._hms = _hms
         return hms
@@ -125,24 +125,24 @@ cdef class DMS(object):
         In the above case if we were to do ``dms.dd=-1.0, dms.mm=13,
         dms.ss=48`` then we would get different results.
         """
-        self._dms = _tpm_times.dms2dms(self._dms)
+        self._dms = tpm_times.dms2dms(self._dms)
 
     def to_degrees(self):
         """Return angle in decimal degrees."""
-        return _tpm_times.dms2d(self._dms)
+        return tpm_times.dms2d(self._dms)
 
     def to_hours(self):
         """Return angle in decimal hours."""
-        return _tpm_times.dms2h(self._dms)
+        return tpm_times.dms2h(self._dms)
 
     def to_radians(self):
         """Return angle in radians."""
-        return _tpm_times.dms2r(self._dms)
+        return tpm_times.dms2r(self._dms)
 
     
 cdef class HMS(object):
     valid_keys = ('r', 'dd', 'hh', 'mm', 'ss')
-    cdef _tpm_times.HMS _hms
+    cdef tpm_times.HMS _hms
     def __cinit__(self):
         self._hms.hh = 0.0
         self._hms.mm = 0.0
@@ -153,9 +153,9 @@ cdef class HMS(object):
             if key not in self.valid_keys:
                 raise TypeError, "Invalid keyword: {0}".format(key)
         if "r" in kwargs:
-            self._hms = _tpm_times.r2hms(kwargs['r'])
+            self._hms = tpm_times.r2hms(kwargs['r'])
         elif "dd" in kwargs:
-            self._hms = _tpm_times.d2hms(kwargs['dd'])
+            self._hms = tpm_times.d2hms(kwargs['dd'])
         else:
             self._hms.hh = kwargs.get('hh',0.0)
             self._hms.mm = kwargs.get('mm',0.0) 
@@ -187,9 +187,9 @@ cdef class HMS(object):
         return self.__unicode__().encode("utf-8")
     
     def __unicode__(self):
-        cdef _tpm_times.HMS hms
-        hms = _tpm_times.hms2hms(self._hms)
-        s = _tpm_times.fmt_hms(hms)
+        cdef tpm_times.HMS hms
+        hms = tpm_times.hms2hms(self._hms)
+        s = tpm_times.fmt_hms(hms)
         return unicode(s)
 
     def __add__(self, other):
@@ -219,32 +219,32 @@ cdef class HMS(object):
             raise TypeError, "Can only subtract two HMS values."
 
     def to_dms(self):
-        cdef _tpm_times.DMS _dms
-        _dms = _tpm_times.hms2dms(self._hms)
+        cdef tpm_times.DMS _dms
+        _dms = tpm_times.hms2dms(self._hms)
         dms = DMS()
         dms._dms = _dms
         return dms
 
     def normalize(self):
         """Normalize components."""
-        self._hms = _tpm_times.hms2hms(self._hms)
+        self._hms = tpm_times.hms2hms(self._hms)
 
     def to_hours(self):
         """Convert time into hours."""
-        return _tpm_times.hms2h(self._hms)
+        return tpm_times.hms2h(self._hms)
 
     def to_degrees(self):
         """Convert HMS into decimal degrees."""
-        return _tpm_times.hms2d(self._hms)
+        return tpm_times.hms2d(self._hms)
 
     def to_radians(self):
         """Convert HMS into radians."""
-        return _tpm_times.hms2r(self._hms)
+        return tpm_times.hms2r(self._hms)
     
     
 cdef class YMD(object):
     valid_keys = ('j','year','ydd','y','m','dd','hh','mm','ss')
-    cdef _tpm_times.YMD _ymd
+    cdef tpm_times.YMD _ymd
     def __cinit__(self):
         self._ymd.y = 2000
         self._ymd.m = 1
@@ -258,13 +258,13 @@ cdef class YMD(object):
             if key not in self.valid_keys:
                 raise TypeError, "Invalid keyword: {0}".format(key)
         if "j" in kwarg:
-            self._ymd = _tpm_times.j2ymd(kwarg['j'])
+            self._ymd = tpm_times.j2ymd(kwarg['j'])
         elif "year" in kwarg:
-            self._ymd = _tpm_times.y2ymd(kwarg['year'])
+            self._ymd = tpm_times.y2ymd(kwarg['year'])
         elif "ydd" in kwarg:
             # Must be tuple (integer year, double day)
             y,d = kwarg['ydd']
-            self._ymd = _tpm_times.ydd2ymd(y,d)
+            self._ymd = tpm_times.ydd2ymd(y,d)
         else:
             y = kwarg.get('y', 2000)
             assert type(y) == type(1), "Year must be an integer."
@@ -324,9 +324,9 @@ cdef class YMD(object):
         return self.__unicode__().encode("utf-8")
 
     def __unicode__(self):
-        cdef _tpm_times.YMD ymd
-        ymd = _tpm_times.ymd2ymd(self._ymd)
-        s = _tpm_times.fmt_ymd(ymd)
+        cdef tpm_times.YMD ymd
+        ymd = tpm_times.ymd2ymd(self._ymd)
+        s = tpm_times.fmt_ymd(ymd)
         return unicode(s)
 
     def __sub__(self, other):
@@ -347,36 +347,36 @@ cdef class YMD(object):
 
     def normalize(self):
         """Normalize YMD."""
-        self._ymd = _tpm_times.ymd2ymd(self._ymd)
+        self._ymd = tpm_times.ymd2ymd(self._ymd)
 
     def to_jd(self):
         """Convert into JD."""
-        cdef _tpm_times.JD _jd
-        _jd = _tpm_times.ymd2jd(self._ymd)
+        cdef tpm_times.JD _jd
+        _jd = tpm_times.ymd2jd(self._ymd)
         jd = JD()
         jd._jd = _jd
         return jd
 
     def to_j(self):
         """Convert YMD into scalar Julian date."""
-        return _tpm_times.ymd2j(self._ymd)
+        return tpm_times.ymd2j(self._ymd)
         
     def raw_str(self):
         """YMD string in the 'raw' format."""
-        return _tpm_times.fmt_ymd_raw(self._ymd)
+        return tpm_times.fmt_ymd_raw(self._ymd)
 
     def doy(self):
         """Day of the year corresponding to date in the YMD."""
-        return _tpm_times.ymd2dd(self._ymd)
+        return tpm_times.ymd2dd(self._ymd)
 
     def to_year(self):
         """Convert YMD into a year number."""
-        return _tpm_times.ymd2y(self._ymd)
+        return tpm_times.ymd2y(self._ymd)
 
     
 cdef class JD(object):
     valid_keys = ('j', 'year', 'dd', 'hh', 'mm', 'ss')
-    cdef _tpm_times.JD _jd
+    cdef tpm_times.JD _jd
     def __cinit__(self):
         self._jd.dd = 2451545.5
         self._jd.hms.hh = 0.0
@@ -388,9 +388,9 @@ cdef class JD(object):
             if key not in self.valid_keys:
                 raise TypeError, "Invalid keyword: {0}".format(key)
         if "j" in kwargs:
-            self._jd = _tpm_times.j2jd(kwargs['j'])
+            self._jd = tpm_times.j2jd(kwargs['j'])
         elif "year" in kwargs:
-            self._jd = _tpm_times.y2jd(kwargs['year'])
+            self._jd = tpm_times.y2jd(kwargs['year'])
         else:
             self._jd.dd = kwargs.get('dd',0.0)
             self._jd.hms.hh = kwargs.get('hh', 0.0)
@@ -429,9 +429,9 @@ cdef class JD(object):
         return self.__unicode__().encode("utf-8")
 
     def __unicode__(self):
-        cdef _tpm_times.JD jd
-        jd = _tpm_times.jd2jd(self._jd)
-        s = _tpm_times.fmt_jd(jd)
+        cdef tpm_times.JD jd
+        jd = tpm_times.jd2jd(self._jd)
+        s = tpm_times.fmt_jd(jd)
         return unicode(s)
 
     def __add__(self, other):
@@ -464,23 +464,23 @@ cdef class JD(object):
 
     def normalize(self):
         """Normalize the JD structure."""
-        self._jd = _tpm_times.jd2jd(self._jd)
+        self._jd = tpm_times.jd2jd(self._jd)
 
     def to_ymd(self):
         """Convert to YMD (Gregorian calendar)."""
-        cdef _tpm_times.YMD _ymd
-        _ymd = _tpm_times.jd2ymd(self._jd)
+        cdef tpm_times.YMD _ymd
+        _ymd = tpm_times.jd2ymd(self._jd)
         ymd = YMD()
         ymd._ymd = _ymd
         return ymd
 
     def to_j(self):
         """Convert JD to a Julian date."""
-        return _tpm_times.jd2j(self._jd)
+        return tpm_times.jd2j(self._jd)
 
     def to_year(self):
         """Convert JD into year (Gregorian calendar)."""
-        return _tpm_times.jd2y(self._jd)
+        return tpm_times.jd2y(self._jd)
 
     
 #double BYEAR2JD(double x)
@@ -498,7 +498,7 @@ cpdef double byear2jd(double byear):
     >>> tpm.byear2jd(2000.0)
     2451544.5333981365
     """
-    return _tpm_times.BYEAR2JD(byear)
+    return tpm_times.BYEAR2JD(byear)
  
 #double JD2BYEAR(double x)
 cpdef double jd2byear(double jd):
@@ -515,7 +515,7 @@ cpdef double jd2byear(double jd):
     >>> tpm.jd2byear(tpm.J2000)
     2000.0012775135656
     """
-    return _tpm_times.JD2BYEAR(jd)
+    return tpm_times.JD2BYEAR(jd)
  
 #double JYEAR2JD(double x)
 cpdef double jyear2jd(double jyear):
@@ -532,7 +532,7 @@ cpdef double jyear2jd(double jyear):
     >>> tpm.jyear2jd(1950.0)
     2433282.5
     """
-    return _tpm_times.JYEAR2JD(jyear)
+    return tpm_times.JYEAR2JD(jyear)
 
 #double JD2JYEAR(double x)
 cpdef double jd2jyear(double jd):
@@ -548,7 +548,7 @@ cpdef double jd2jyear(double jd):
     >>> tpm.jd2jyear(tpm.B1950)
     1949.9997904422992
     """
-    return _tpm_times.JD2JYEAR(jd)
+    return tpm_times.JD2JYEAR(jd)
 
 #JD jd_now(void)
 cpdef JD jd_now():
@@ -560,7 +560,7 @@ cpdef JD jd_now():
     This function is only accurate to the nearest second.
     """
     jd = JD()
-    jd._jd = _tpm_times.jd_now()
+    jd._jd = tpm_times.jd_now()
     return jd
 
 #double utc_now(void)
@@ -572,7 +572,7 @@ cpdef double utc_now():
     
     This function is only accurate to the nearest second.
     """
-    return _tpm_times.utc_now()
+    return tpm_times.utc_now()
 
 #double gcal2j(int y, int m, int d)
 cpdef gcal2j(int y, int m, int dd):
@@ -595,7 +595,7 @@ cpdef gcal2j(int y, int m, int dd):
     >>> tpm.gcal2j(1950,1,1)
     2433283.0
     """
-    return _tpm_times.gcal2j(y, m, dd)
+    return tpm_times.gcal2j(y, m, dd)
 
 #double jcal2j(int y, int m, int d)
 cpdef double jcal2j(int y, int m, int dd):
@@ -620,7 +620,7 @@ cpdef double jcal2j(int y, int m, int dd):
     >>> tpm.jcal2j(1950,1,1)
     2433296.0
     """
-    return _tpm_times.jcal2j(y, m, dd)
+    return tpm_times.jcal2j(y, m, dd)
 
 #void j2gcal(int *y, int *m, int *d, double j)
 cpdef j2gcal(double j):
@@ -640,7 +640,7 @@ cpdef j2gcal(double j):
     """
     cdef int y, m, d
     y = m = d = 0;
-    _tpm_times.j2gcal(&y, &m, &d, j)
+    tpm_times.j2gcal(&y, &m, &d, j)
     return dict(y=y, m=m, dd=d)
 
 #void j2jcal(int *y, int *m, int *d, double j)
@@ -661,7 +661,7 @@ cpdef j2jcal(double j):
     """
     cdef int y, m, d
     y = m = d = 0;
-    _tpm_times.j2jcal(&y, &m, &d, j)
+    tpm_times.j2jcal(&y, &m, &d, j)
     return dict(y=y, m=m, dd=d)
 
 #double j2y(double j)
@@ -679,7 +679,7 @@ cpdef double j2y(double j):
     >>> tpm.j2y(tpm.J2000+366)
     2001.004109589041
     """
-    return _tpm_times.j2y(j)
+    return tpm_times.j2y(j)
 
 #double y2j(double y)
 cpdef double y2j(double y):
@@ -698,7 +698,7 @@ cpdef double y2j(double y):
     >>> tpm.j2gcal(tpm.y2j(2001.004109589041))
     {'dd': 1, 'm': 1, 'y': 2001}
     """
-    return _tpm_times.y2j(y)
+    return tpm_times.y2j(y)
 
 #int j2dow(double j)
 cpdef int j2dow(double j):
@@ -716,7 +716,7 @@ cpdef int j2dow(double j):
     >>> tpm.j2dow(j)
     5
     """
-    return _tpm_times.j2dow(j)
+    return tpm_times.j2dow(j)
 
 #int y2doy(int y)
 cpdef int y2doy(int y):
@@ -739,7 +739,7 @@ cpdef int y2doy(int y):
     >>> tpm.y2doy(2004)
     366    
     """
-    return _tpm_times.y2doy(y)
+    return tpm_times.y2doy(y)
 
 #char *fmt_alpha(double alpha)
 cpdef char *fmt_alpha(double alpha):
@@ -774,7 +774,7 @@ cpdef char *fmt_alpha(double alpha):
     >>> tpm.fmt_alpha(-(2*tpm.M_PI+(tpm.M_PI/12.0)))
     ' 23H 00M 00.000S'    
     """
-    return _tpm_times.fmt_alpha(alpha)
+    return tpm_times.fmt_alpha(alpha)
 
 #char *fmt_delta(double delta)
 cpdef char* fmt_delta(double delta):
@@ -805,7 +805,7 @@ cpdef char* fmt_delta(double delta):
     >>> tpm.fmt_delta(-tpm.M_PI)
     '+00D 00\' 00.000"'
     """
-    return _tpm_times.fmt_delta(delta)
+    return tpm_times.fmt_delta(delta)
 
 #char *fmt_d(double d)
 cpdef char *fmt_d(double d):
@@ -836,7 +836,7 @@ cpdef char *fmt_d(double d):
     >>> tpm.fmt_d(720)
     '+720D 00\' 00.000"'
     """
-    return _tpm_times.fmt_d(d)
+    return tpm_times.fmt_d(d)
     
 #char *fmt_h(double h)
 cpdef char *fmt_h(double h):
@@ -861,7 +861,7 @@ cpdef char *fmt_h(double h):
     >>> tpm.fmt_h(-133.456)
     '-133H 27M 21.599S'
     """
-    return _tpm_times.fmt_h(h)
+    return tpm_times.fmt_h(h)
 
 #char *fmt_j(double j)
 cpdef char *fmt_j(double j):
@@ -888,7 +888,7 @@ cpdef char *fmt_j(double j):
     >>> tpm.fmt_j(tpm.J2000-0.7)
     ' 2451544  07H 11M 59.999S'
     """
-    return _tpm_times.fmt_j(j)
+    return tpm_times.fmt_j(j)
 
 #char *fmt_r(double r)
 cpdef char* fmt_r(double r):
@@ -916,7 +916,7 @@ cpdef char* fmt_r(double r):
     >>> tpm.fmt_r(3*tpm.M_PI)
     '+540D 00\' 00.000"'
     """
-    return _tpm_times.fmt_r(r)
+    return tpm_times.fmt_r(r)
 
 #char *fmt_y(double y)
 cpdef char* fmt_y(double y):
@@ -942,7 +942,7 @@ cpdef char* fmt_y(double y):
     >>> tpm.fmt_y(2001.0+32/365.0)
     'Thu Feb  1 00:00:00.000 2001'
     """
-    return _tpm_times.fmt_y(y)
+    return tpm_times.fmt_y(y)
 
 #double d2d(double d)
 cpdef double d2d(double d):
@@ -965,7 +965,7 @@ cpdef double d2d(double d):
     >>> tpm.d2d(-361.0)
     359.0
     """
-    return _tpm_times.d2d(d)
+    return tpm_times.d2d(d)
 
 #double h2h(double h)
 cpdef double h2h(double h):
@@ -990,7 +990,7 @@ cpdef double h2h(double h):
     >>> tpm.h2h(1)
     1.0
     """
-    return _tpm_times.h2h(h)
+    return tpm_times.h2h(h)
 
 #double r2r(double r)
 cpdef double r2r(double r):
@@ -1015,10 +1015,10 @@ cpdef double r2r(double r):
     >>> tpm.r2r(-tpm.M_PI/2.0)
     4.7123889803846897
     """
-    return _tpm_times.r2r(r)
+    return tpm_times.r2r(r)
 
 # In TPM the following are in vec.h and then redefined in
-# times.h. I am including all of these in _tpm_times for
+# times.h. I am including all of these in tpm_times for
 # convenience.
 #define d2h(d)	
 cpdef double d2h(double d):
@@ -1037,7 +1037,7 @@ cpdef double d2h(double d):
     >>> tpm.d2h(12.3456)
     0.82303999999999999
     """
-    return _tpm_times.d2h(d)
+    return tpm_times.d2h(d)
 
 #define h2d(h)	
 cpdef double h2d(double h):
@@ -1056,7 +1056,7 @@ cpdef double h2d(double h):
     >>> tpm.h2d(-25)
     -375.0
     """
-    return _tpm_times.h2d(h)
+    return tpm_times.h2d(h)
 
 #define d2r(d)	
 cpdef double d2r(double d):
@@ -1075,7 +1075,7 @@ cpdef double d2r(double d):
     >>> tpm.d2r(361.0)
     6.3006385996995293
     """
-    return _tpm_times.d2r(d)
+    return tpm_times.d2r(d)
 
 #define r2d(r)	
 cpdef double r2d(double r):
@@ -1096,7 +1096,7 @@ cpdef double r2d(double r):
     >>> tpm.r2d(-2*tpm.M_PI)
     -360.0
     """
-    return _tpm_times.r2d(r)
+    return tpm_times.r2d(r)
 
 #define h2r(h)	
 cpdef double h2r(double h):
@@ -1113,7 +1113,7 @@ cpdef double h2r(double h):
     >>> tpm.h2r(-12.0)
     -3.1415926535897931
     """
-    return _tpm_times.h2r(h)
+    return tpm_times.h2r(h)
 
 #define r2h(r)	
 cpdef double r2h(double r):
@@ -1130,7 +1130,7 @@ cpdef double r2h(double r):
     >>> tpm.r2h(-tpm.M_PI)
     -12.0
     """
-    return _tpm_times.r2h(r)
+    return tpm_times.r2h(r)
 
 #define d2as(d)	
 cpdef double d2as(double d):
@@ -1147,7 +1147,7 @@ cpdef double d2as(double d):
    >>> tpm.d2as(-1.0)
    -3600.0
     """
-    return _tpm_times.d2as(d)
+    return tpm_times.d2as(d)
 
 #define as2d(x)	
 cpdef double as2d(double arcs):
@@ -1164,7 +1164,7 @@ cpdef double as2d(double arcs):
     >>> tpm.as2d(-3600.0)
     -1.0
     """
-    return _tpm_times.as2d(arcs)
+    return tpm_times.as2d(arcs)
 
 #define as2h(x)	
 cpdef double as2h(double arcs):
@@ -1181,7 +1181,7 @@ cpdef double as2h(double arcs):
     >>> tpm.as2h(-3600.0*180.0)
     -12.0
     """
-    return _tpm_times.as2h(arcs)
+    return tpm_times.as2h(arcs)
 
 #define h2as(h)	
 cpdef double h2as(double h):
@@ -1198,7 +1198,7 @@ cpdef double h2as(double h):
     >>> tpm.h2as(-12.0)
     -648000.0
     """
-    return _tpm_times.h2as(h)
+    return tpm_times.h2as(h)
 
 #define r2as(r)	
 cpdef double r2as(double r):
@@ -1215,7 +1215,7 @@ cpdef double r2as(double r):
     >>> tpm.r2as(-tpm.M_PI)
     -648000.0
     """
-    return _tpm_times.r2as(r)
+    return tpm_times.r2as(r)
 
 #define as2r(x)	
 cpdef double as2r(double arcs):
@@ -1232,4 +1232,4 @@ cpdef double as2r(double arcs):
     >>> tpm.as2r(-3600.0*180.0)
     -3.1415926535897931
     """
-    return _tpm_times.as2r(arcs)
+    return tpm_times.as2r(arcs)
