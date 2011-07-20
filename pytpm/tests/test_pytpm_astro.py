@@ -341,18 +341,18 @@ class TestCatV6(unittest.TestCase):
         # Barnard's star from Hipparcos catalog. 
         # ICRS Epoch J1991.25
         import math
-        ra = tpm.d2r(269.45402305)
-        dec = tpm.d2r(4.66828815)
+        alpha = tpm.d2r(269.45402305)
+        delta = tpm.d2r(4.66828815)
         px = 549.01 / 1000.0 # To Arc seconds
         rv = 0.0
         # pmra * cos(de) into pmra
-        pmra = (-797.84 / 1000.0 ) / math.cos(dec) 
-        pmra *= 100.0 # To Arcseconds per century.
-        pmdec = (10326.93 / 1000.0) 
-        pmdec *= 100.0 # To Arcseconds per century.
+        pma = (-797.84 / 1000.0 ) / math.cos(delta) 
+        pma *= 100.0 # To Arcseconds per century.
+        pmd = (10326.93 / 1000.0) 
+        pmd *= 100.0 # To Arcseconds per century.
         C = tpm.CJ
 
-        v6 = tpm.cat2v6(ra, dec, pmra, pmdec, px, rv, C)
+        v6 = tpm.cat2v6(alpha, delta, pma, pmd, px, rv, C)
 
         self.assertAlmostEqual(v6.x, -3568.1807935995)
         self.assertAlmostEqual(v6.y, -374439.8219691383)
@@ -367,25 +367,25 @@ class TestCatV6(unittest.TestCase):
         # Barnard's star from Hipparcos catalog. 
         # ICRS Epoch J1991.25
         import math
-        ra = tpm.d2r(269.45402305)
-        dec = tpm.d2r(4.66828815)
+        alpha = tpm.d2r(269.45402305)
+        delta = tpm.d2r(4.66828815)
         px = 549.01 / 1000.0 # To Arc seconds
         rv = 0.0
         # pmra * cos(de) into pmra
-        pmra = (-797.84 / 1000.0 ) / math.cos(dec) 
-        pmra *= 100.0 # To Arcseconds per century.
-        pmdec = (10326.93 / 1000.0) 
-        pmdec *= 100.0 # To Arcseconds per century.
+        pma = (-797.84 / 1000.0 ) / math.cos(delta) 
+        pma *= 100.0 # To Arcseconds per century.
+        pmd = (10326.93 / 1000.0) 
+        pmd *= 100.0 # To Arcseconds per century.
         C = tpm.CJ
 
-        v6 = tpm.cat2v6(ra, dec, pmra, pmdec, px, rv, C)
+        v6 = tpm.cat2v6(alpha, delta, pma, pmd, px, rv, C)
         
         p = tpm.v62cat(v6, C)
 
-        self.assertAlmostEqual(tpm.r2r(p['ra']), ra)
-        self.assertAlmostEqual(p['dec'], dec)
-        self.assertAlmostEqual(p['pmra'], pmra)
-        self.assertAlmostEqual(p['pmdec'], pmdec)
+        self.assertAlmostEqual(tpm.r2r(p['alpha']), alpha)
+        self.assertAlmostEqual(p['delta'], delta)
+        self.assertAlmostEqual(p['pma'], pma)
+        self.assertAlmostEqual(p['pmd'], pmd)
         self.assertAlmostEqual(p['px'], px)
         self.assertAlmostEqual(p['rv'], rv)
 

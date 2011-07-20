@@ -13,10 +13,10 @@ class TestConvert(unittest.TestCase):
     def testConvertInterface(self):
         """Convert properly handles input paramters."""
         self.assertRaises(TypeError, lambda: convert.convert())
-        self.assertRaises(TypeError, lambda: convert.convert(ra=0.0))
-        self.assertRaises(TypeError, lambda: convert.convert(dec=0.0))
-        self.assertRaises(ValueError, lambda: convert.convert(ra=0,
-                                                             dec=[0,1]))
+        self.assertRaises(TypeError, lambda: convert.convert(alpha=0.0))
+        self.assertRaises(TypeError, lambda: convert.convert(delta=0.0))
+        self.assertRaises(ValueError, lambda: convert.convert(alpha=0,
+                                                             delta=[0,1]))
         
     def testFK52GAL_simple(self):
         """tpm.convert.convert: FK5 to GAL simple."""
@@ -30,8 +30,11 @@ class TestConvert(unittest.TestCase):
                             equinox = tpm.J2000,
                             s1=tpm.TPM_S06, s2=tpm.TPM_S04)
         for i in range(len(r)):
-            if r[i][0] < 0.0: x = r[i][0] + 360.0
-            else: x = r[i][0]
+            if r[i][0] < 0.0:
+                x = r[i][0] + 360.0
+            else:
+                x = r[i][0]
+                
             y = r[i][1]
             self.assertAlmostEqual(x, l[i], 8)
             self.assertAlmostEqual(y, b[i], 8)
@@ -218,10 +221,10 @@ class TestConvertv6(unittest.TestCase):
             tpm.proper_motion(v, ep2, ep)
             d = tpm.v62cat(v, tpm.CJ)
             x = [float(j) for j in f.readline().strip().split()]
-            self.assertAlmostEqual(tpm.r2d(tpm.r2r(d['ra'])), x[0], 8)
-            self.assertAlmostEqual(tpm.r2d(d['dec']), x[1], 8)
-            self.assertAlmostEqual(d['pmra'], x[2], 4)
-            self.assertAlmostEqual(d['pmdec'], x[3], 4)            
+            self.assertAlmostEqual(tpm.r2d(tpm.r2r(d['alpha'])), x[0], 8)
+            self.assertAlmostEqual(tpm.r2d(d['delta']), x[1], 8)
+            self.assertAlmostEqual(d['pma'], x[2], 4)
+            self.assertAlmostEqual(d['pmd'], x[3], 4)            
             self.assertAlmostEqual(d['px'], x[4], 8)
             self.assertAlmostEqual(d['rv'], x[5], 2)
             
@@ -265,10 +268,10 @@ class TestConvertv6(unittest.TestCase):
             tpm.proper_motion(v6, ep2, ep)
             d = tpm.v62cat(v6, tpm.CJ)
             x = [float(j) for j in f.readline().strip().split()]
-            self.assertAlmostEqual(tpm.r2d(tpm.r2r(d['ra'])), x[0], 8)
-            self.assertAlmostEqual(tpm.r2d(d['dec']), x[1], 8)
-            self.assertAlmostEqual(d['pmra'], x[2], 4)
-            self.assertAlmostEqual(d['pmdec'], x[3], 4)            
+            self.assertAlmostEqual(tpm.r2d(tpm.r2r(d['alpha'])), x[0], 8)
+            self.assertAlmostEqual(tpm.r2d(d['delta']), x[1], 8)
+            self.assertAlmostEqual(d['pma'], x[2], 4)
+            self.assertAlmostEqual(d['pmd'], x[3], 4)            
             self.assertAlmostEqual(d['px'], x[4], 8)
             self.assertAlmostEqual(d['rv'], x[5], 2)
             

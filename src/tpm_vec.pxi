@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# The following line must be present in the pytpm.pyx file.
+# The following line must be present in the tpm.pyx file.
 # cimport tpm_vec
 
 POS = tpm_vec.POS
@@ -56,7 +56,24 @@ cdef class V3(object):
 
 
 cdef class V3CP(V3):
-    """A V3 Cartesian position vector."""
+    """A V3 Cartesian position vector.
+
+    Parameters
+    ----------
+    x : float
+        X coordinate.
+    y : float
+        Y coordinate.
+    z : float
+        Z coordinate.
+
+    Attributes
+    ----------
+    x
+    y
+    z
+    
+    """
     # The following are read only.
     ctype = CARTESIAN
     vtype = POS
@@ -68,30 +85,91 @@ cdef class V3CP(V3):
 
     def __getx(self):
         return self.getX()
+    
     def __setx(self, x):
         self.setX(x)
+        
     x = property(__getx, __setx, doc="X coordinate.")
 
     def __gety(self):
         return self.getY()
+    
     def __sety(self, y):
         self.setY(y)
+        
     y = property(__gety, __sety, doc="Y coordinate.")
 
     def __getz(self):
         return self.getZ()
+    
     def __setz(self, z):
         self.setZ(z)
+        
     z = property(__getz, __setz, doc="Z coordinate.")
 
     def c2s(self):
-        """Convert Cartesian position vector into spherical vector."""
+        """Convert Cartesian position vector into spherical vector.
+
+        Returns
+        -------
+        v3 : tpm.V3SP
+            The position in spherical coordinates.
+            
+        """
         cdef tpm_vec.V3 _v3
         _v3 = tpm_vec.v3c2s(self.getV3())
         #v3 = V3SP(r=_v3.v[0], alpha=_v3.v[1], delta=_v3[2])
         v3sp = V3SP()
         v3sp.setV3(_v3)
         return v3sp
+    
+    def unit(self):
+        """Return unit V3CP vector.
+
+        Returns
+        -------
+        x : tpm.V3CP
+            Unit vector in the direction of this vector.
+            
+        """
+        v3cp = V3CP()
+        v3cp.setV3(tpm_vec.v3unit(self.getV3()))
+        return v3cp
+
+    def mod(self):
+        """Return modulus (length) of the V3CP vector.
+
+        Returns
+        -------
+        x : float
+            Length of the vector.
+            
+        """
+        return tpm_vec.v3mod(self.getV3())
+
+    def dot(V3CP self, V3CP other):
+        """Return the dot product of two V3CP vectors.
+
+        Returns
+        -------
+        d : float
+            Dot product of the given vector with this vector.
+            
+        """
+        return tpm_vec.v3dot(self.getV3(), other.getV3())
+
+    def cross(V3CP self, V3CP other):
+        """Return the cross product of two V3CP vectors.
+
+        Returns
+        -------
+        x : tpm.V3CP
+            Cross product of this vector with the given vector.
+            
+        """
+        v3cp = V3CP()
+        v3cp.setV3(tpm_vec.v3cross(self.getV3(), other.getV3()))
+        return v3cp
 
     def __sub__(V3CP self, V3CP other):
         """Return V3CP that holds difference between two V3CPs."""
@@ -117,26 +195,6 @@ cdef class V3CP(V3):
         v3cp.setV3(tpm_vec.v3scale(self.getV3(), n))
         return v3cp
     
-    def unit(self):
-        """Return unit V3CP vector."""
-        v3cp = V3CP()
-        v3cp.setV3(tpm_vec.v3unit(self.getV3()))
-        return v3cp
-
-    def mod(self):
-        """Return modulus of the V3CP vector."""
-        return tpm_vec.v3mod(self.getV3())
-
-    def dot(V3CP self, V3CP other):
-        """Return the dot product of two V3CP vectors."""
-        return tpm_vec.v3dot(self.getV3(), other.getV3())
-
-    def cross(V3CP self, V3CP other):
-        """Return the cross product of two V3CP vectors."""
-        v3cp = V3CP()
-        v3cp.setV3(tpm_vec.v3cross(self.getV3(), other.getV3()))
-        return v3cp
-
     def __str__(self):
         """Return string representation of V3CP."""
         return self.__unicode__().encode("utf-8")
@@ -148,7 +206,26 @@ cdef class V3CP(V3):
 
     
 cdef class V3SP(V3):
-    """A V3 spherical position vector."""
+    """A V3 spherical position vector.
+
+    Parameters
+    ----------
+    r : float
+        Radial coordinate.
+    alpha : float
+        Longitudinal angle in radians.
+    delta : float
+        Latitudinal angle in radians.
+
+    Attributes
+    ----------
+    r
+    alpha
+    delta
+    nalpha : alpha normalized to [0, 2π).
+    ndelta : delta normalized to [-π/2, π/2].
+    
+    """
     # The following are read only.
     ctype = SPHERICAL
     vtype = POS
@@ -172,7 +249,8 @@ cdef class V3SP(V3):
     def __setalpha(self, alpha):
         self.setY(alpha)
         
-    alpha = property(__getalpha, __setalpha, doc="Alpha coordinate.")
+    alpha = property(__getalpha, __setalpha,
+                     doc="Longitudinal coordinate.")
 
     def __getdelta(self):
         return self.getZ()
@@ -180,28 +258,80 @@ cdef class V3SP(V3):
     def __setdelta(self, delta):
         self.setZ(delta)
         
-    delta = property(__getdelta, __setdelta, doc="Delta coordinate.")
+    delta = property(__getdelta, __setdelta,
+                     doc="Latitudinal coordinate.")
 
     def __getnalpha(self):
         return tpm_vec.v3alpha(self.getV3())
     
-    nalpha = property(__getnalpha, doc="Normalized alpha coordinate.")
+    nalpha = property(__getnalpha, doc="alpha normalized to [0, 2π).")
 
     def __getndelta(self):
         return tpm_vec.v3delta(self.getV3())
     
-    ndelta = property(__getndelta, doc="Normalized alpha coordinate.")
+    ndelta = property(__getndelta, doc="delta normalized to [-π/2, π/2].")
 
     def s2c(self):
-        """Convert spherical position vector into Cartesian vector."""
+        """Convert spherical position vector into Cartesian vector.
+        
+        Returns
+        -------
+        v : tpm.V3CP
+            Spherical vector converted into Cartesian.
+            
+        """
         cdef tpm_vec.V3 _v3
         _v3 = tpm_vec.v3s2c(self.getV3())
         v3cp = V3CP()
         v3cp.setV3(_v3)
         return v3cp
-        
+
+    def mod(self):
+        """Return magnitude of radial component R.
+
+        Returns
+        -------
+        m : float
+            Length of the radial component.
+            
+        """
+        return tpm_vec.v3mod(self.getV3())
+
+    def dot(V3SP self, V3SP other):
+        """Return the dot product of two V3SP vectors.
+
+        Dot product is calculated after converting to Cartesian
+        coordinates.
+
+        Returns
+        -------
+        d : float
+            Dot product.
+            
+        """
+        return tpm_vec.v3dot(self.getV3(), other.getV3())
+    
+    def cross(V3SP self, V3SP other):
+        """Return the cross product of two V3SP vectors.
+
+        Cross product is calculated after converting to Cartesian
+        coordinates.
+
+        Returns
+        -------
+        v : tpm.V3SP
+            Spherical vector.
+            
+        """
+        v3cp = V3CP()
+        v3cp.setV3(tpm_vec.v3cross(self.getV3(), other.getV3()))
+        return v3cp.c2s()
+    
     def __sub__(V3SP self, V3SP other):
-        """Return V3SP that holds difference between two V3SPs."""
+        """Return V3SP that holds difference between two V3SPs.
+
+        Difference is taken after conversion to Cartesian coordinates.
+        """
         if isinstance(self, V3SP) and isinstance(other, V3SP):
             v3cp = V3CP()
             v3cp.setV3(tpm_vec.v3diff(self.getV3(), other.getV3()))
@@ -210,7 +340,10 @@ cdef class V3SP(V3):
             raise TypeError, "Can only subtract two V3SP values."
 
     def __add__(V3SP self, V3SP other):
-        """Return V3SP that holds the sum of two V3SPs."""
+        """Return V3SP that holds the sum of two V3SPs.
+        
+        Addition is performed after conversion to Cartesian coordinates.
+        """
         if isinstance(self, V3SP) and isinstance(other, V3SP):
             v3cp = V3CP()
             v3cp.setV3(tpm_vec.v3sum(self.getV3(), other.getV3()))
@@ -223,21 +356,7 @@ cdef class V3SP(V3):
         v3sp = V3SP()
         v3sp.setV3(tpm_vec.v3scale(self.getV3(), n))
         return v3sp
-
-    def mod(self):
-        """Return modulus of the V3SP vector; magnitude of R component."""
-        return tpm_vec.v3mod(self.getV3())
-
-    def dot(V3SP self, V3SP other):
-        """Return the dot product of two V3SP vectors."""
-        return tpm_vec.v3dot(self.getV3(), other.getV3())
     
-    def cross(V3SP self, V3SP other):
-        """Return the cross product of two V3SP vectors."""
-        v3cp = V3CP()
-        v3cp.setV3(tpm_vec.v3cross(self.getV3(), other.getV3()))
-        return v3cp.c2s()
-
     def __str__(self):
         """Return string representation of V3SP"""
         return self.__unicode__().encode("utf-8")
@@ -340,7 +459,33 @@ cdef class V6(object):
 
 
 cdef class V6C(V6):
-    """Class for Cartesian V6 vector"""
+    """Class for Cartesian V6 vector.
+
+    Parameters
+    ----------
+    x : float
+        X coordinate.
+    y : float
+        Y coordinate.
+    z : float
+        Z coordinate.
+    xdot : float
+        Rate of change of `x`.
+    ydot : float
+        Rate of change of `y`.
+    zdot : float
+        Rate of change of `z`.
+
+    Attributes
+    ----------
+    x
+    y
+    z
+    xdot
+    ydot
+    zdot
+    
+    """
     # The following is read only.
     ctype = CARTESIAN
     def __init__(self, x=0.0, y=0.0, z=0.0, xdot=0.0, ydot=0.0, zdot=0.0):
@@ -380,7 +525,8 @@ cdef class V6C(V6):
     def __setxdot(self, xdot):
         self.setXdot(xdot)
         
-    xdot = property(__getxdot, __setxdot, doc="XDOT coordinate.")
+    xdot = property(__getxdot, __setxdot,
+                    doc="Rate of change of X coordinate.")
 
     def __getydot(self):
         return self.getYdot()
@@ -388,7 +534,8 @@ cdef class V6C(V6):
     def __setydot(self, ydot):
         self.setYdot(ydot)
         
-    ydot = property(__getydot, __setydot, doc="YDOT coordinate.")
+    ydot = property(__getydot, __setydot,
+                    doc="Rate of change of Y coordinate.")
 
     def __getzdot(self):
         return self.getZdot()
@@ -396,7 +543,8 @@ cdef class V6C(V6):
     def __setzdot(self, zdot):
         self.setZdot(zdot)
         
-    zdot = property(__getzdot, __setzdot, doc="ZDOT coordinate.")
+    zdot = property(__getzdot, __setzdot,
+                    doc="Rate of change of Z coordinate.")
 
     def __getPOS(self):
         v3p = V3CP()
@@ -406,7 +554,7 @@ cdef class V6C(V6):
     def __setPOS(self, V3CP v3cp):
         self.setPOS(v3cp.getV3())
         
-    pos = property(__getPOS, __setPOS, doc="POS component.")
+    pos = property(__getPOS, __setPOS, doc="The position component.")
         
     def __sub__(V6C self, V6C other):
         """Return V6C that holds difference between two V6C vectors."""
@@ -427,17 +575,42 @@ cdef class V6C(V6):
             raise TypeError, "Can only add two V6C values."
 
     def mod(self):
-        """Return modulus (length), of position component of V6C vector."""
+        """Return modulus of position component of V6C vector.
+
+        Returns
+        -------
+        x : float
+            The length of the position component.
+            
+        """
         return tpm_vec.v6mod(self.getV6())
 
     def unit(self):
-        """Return V6C with unit POS vector and scaled VEL."""
+        """Return V6C with unit position and scaled velocity components.
+
+        The velocity component is scaled by inverse of length of the
+        position component.
+
+        Returns
+        -------
+        v : tpm.V6C
+            A V6C vector.
+            
+        """
         v6c = V6C()
         v6c.setV6(tpm_vec.v6unit(self.getV6()))
         return v6c
 
     def scale(self, x):
-        """Return V6C with components scaled by the given factor."""
+        """Return V6C with components scaled by the given factor.
+
+        Returns
+        -------
+        v : tpm.V6C
+            A vector with components set to those in this vector
+            multiplied by the given `x`.
+            
+        """
         v6c = V6C()
         v6c.setV6(tpm_vec.v6scale(self.getV6(), x))
         return v6c
@@ -445,23 +618,46 @@ cdef class V6C(V6):
     def v62v3(self, dt):
         """Convert V6C into V3CP by addding space motion.
 
-        Space motion is applied for the given number of days, dt.
+        The positon component is increment by the product of space motion
+        and given number of days, dt.
+
+        Returns
+        -------
+        v : tpm.V6CP
+            The position vector at the end of time `dt`.
+            
         """
         v3cp = V3CP()
         v3cp.setV3(tpm_vec.v62v3(self.getV6(), dt))
         return v3cp
 
     def dot(V6C self, V6C other):
-        """Dot product of the POS vector of V6C vectors."""
+        """Dot product of the position components.
+
+        Returns
+        -------
+        x : float
+            The dot product of the position component of this vector
+            with that of the given vector.
+            
+        """
         if isinstance(self, V6C) and isinstance(other, V6C):
             return tpm_vec.v6dot(self.getV6(), other.getV6())
         else:
             raise TypeError, "Can only take dot product of two V6C values."
 
     def cross(V6C self, V6C other):
-        """Cross product of POS components of two V6C vectors.
+        """Cross product of the position components.
 
-        VEL component of the resulting V6 vector is set to 0.
+        The velocity component of the resulting V6 vector is set to 0.
+
+        Returns
+        -------
+        v : tpm.V6C
+            A V6C vector with position component set to the cross
+            product of the position component of this vector and the given
+            vector. The velocity component is set ot 0.
+            
         """
         if isinstance(self, V6C) and isinstance(other, V6C):
             v6c = V6C()
@@ -471,14 +667,49 @@ cdef class V6C(V6):
             raise TypeError, "Can only take cross product of two V6C values."
 
     def c2s(self):
-        """Convert V6C to V6S i.e., Cartesian to spherical."""
+        """Cartesian to spherical conversion.
+
+        Returns
+        -------
+        v : tpm.V6S
+            The spherical equivalent of this vector.
+            
+        """
         v6s = V6S()
         v6s.setV6(tpm_vec.v6c2s(self.getV6()))
         return v6s
 
     
 cdef class V6S(V6):
-    """Class for spherical V6 vector"""
+    """Class for spherical V6 vector.
+
+    Parameters
+    ----------
+    r : float
+        Radial coordinate.
+    alpha : float
+        Longitudinal angle.
+    delta : float
+        Latitudinal angle.
+    rdot : float
+        Rate of change in `r`.
+    alphadot : float
+        Rate of change in `alpha`.
+    deltadot : float
+        Rate of change in `delta`.
+
+    Attributes
+    ----------
+    r
+    alpha
+    delta
+    nalpha : alpha normalized to [0, 2π).
+    ndelta : delta normalized to [-π/2, π/2].
+    rdot
+    alphadot
+    deltadot
+    
+    """
     # The following is read only.
     ctype = SPHERICAL
     def __init__(self, r=0.0, alpha=0.0, delta=0.0, rdot=0.0,
@@ -520,7 +751,8 @@ cdef class V6S(V6):
     def __setrdot(self, rdot):
         self.setXdot(rdot)
         
-    rdot = property(__getrdot, __setrdot, doc="RDOT coordinate.")
+    rdot = property(__getrdot, __setrdot,
+                    doc="Rate of change of R coordinate.")
 
     def __getalphadot(self):
         return self.getYdot()
@@ -529,7 +761,7 @@ cdef class V6S(V6):
         self.setYdot(alphadot)
         
     alphadot = property(__getalphadot, __setalphadot,
-                        doc="ALPHADOT coordinate.")
+                        doc="Rate of change of ALPHA coordinate.")
 
     def __getdeltadot(self):
         return self.getZdot()
@@ -538,27 +770,69 @@ cdef class V6S(V6):
         self.setZdot(deltadot)
         
     deltadot = property(__getdeltadot, __setdeltadot,
-                        doc="DELTADOT coordinate.")
+                        doc="Rate of change of DELTA coordinate.")
 
     def __getnalpha(self):
         return tpm_vec.v6alpha(self.getV6())
     
-    nalpha = property(__getnalpha, doc="Normalized alpha coordinate.")
+    nalpha = property(__getnalpha, doc="alpha normalized to [0, 2π).")
     
     def __getndelta(self):
         return tpm_vec.v6delta(self.getV6())
     
-    ndelta = property(__getndelta, doc="Normalized alpha coordinate.")
+    ndelta = property(__getndelta, doc="delta normalized to [-π/2, π/2].")
     
     def s2c(self):
-        """Convert V6S to V6C i.e., spherical to Cartesian."""
+        """Spherical to Cartesian.
+
+        Returns
+        -------
+        v : tpm.V6C
+            The Cartesian equivalent of this vector.
+            
+        """
         v6c = V6C()
         v6c.setV6(tpm_vec.v6s2c(self.getV6()))
         return v6c
 
 
 cdef class M3(object):
-    """Class that wraps M3 structure."""
+    """Class that wraps M3 structure, representing a matrix.
+
+    Parameters
+    ----------
+    xx : float
+        m[0][0].
+    xy : float
+        m[0][1].
+    xz : float
+        m[0][2].
+    yx : float
+        m[1][0]
+    yy : float
+        m[1][1].
+    yz : float
+        m[1][2].
+    zx : float
+        m[2][0].
+    zy : float
+        m[2][1].
+    zz : float
+        m[2][2].
+
+    Attributes
+    ----------
+    xx
+    xy
+    xz
+    yx
+    yy
+    yz
+    zx
+    zy
+    zz
+    
+    """
     cdef tpm_vec.M3 _m3
 
     def __cinit__(self):
@@ -681,19 +955,40 @@ cdef class M3(object):
         return m3
 
     def inv(self):
-        """Inverse of the matrix."""
+        """Inverse of the matrix.
+
+        Returns
+        -------
+        m3 : tpm.M3
+            Inverse matrix.
+            
+        """
         m3 = M3()
         m3.setM3(tpm_vec.m3inv(self.getM3()))
         return m3
 
     def m3m3(self, M3 other):
-        """Product of 2 matrices."""
+        """Product of 2 matrices.
+
+        Returns
+        -------
+        m3 : tpm.M3
+            Product.
+            
+        """
         m3 = M3()
         m3.setM3(tpm_vec.m3m3(self.getM3(), other.getM3()))
         return m3
     
     def m3v3(self, V3CP v3):
-        """Product of M3 matrix and V3CP vector."""
+        """Product of an M3 matrix and a V3CP vector.
+
+        Returns
+        -------
+        v : tpm.V3CP
+            Product of matrix with Cartesian vector.
+            
+        """
         v = V3CP()
         v.setV3(tpm_vec.m3v3(self.getM3(), v3.getV3()))
         return v
@@ -701,92 +996,181 @@ cdef class M3(object):
     def m3v6(self, V6C v6):
         """Product of M3 matrix and V6C vector.
 
-        Both POS and VEL are multiplied by M3.
+        Both position and velocity components are multiplied by M3.
+
+        Returns
+        -------
+        v : tpm.V6C
+            A V6C vector with position set to that obtained by
+            multipying this matrix and the position component of the
+            given vector, and the velocity set to that obtained by
+            multiplying this matrix and the velocity component of the
+            given vector.
+            
         """
         v = V6C()
         v.setV6(tpm_vec.m3v6(self.getM3(), v6.getV6()))
         return v
        
     
-def m3Rx(double theta):
-   """Return a rotation matrix for rotation about X-axis.
+def m3rx(theta):
+   """A rotation matrix for rotation about X-axis.
 
-   :param theta: Rotation angle in radians.
-   :type theta: float
+   Parameters
+   ----------
+   theta : float
+       Rotation angle in radians.
+
+   Returns
+   -------
+   m3 : tpm.M3
+       A rotation matrix about X-axis.
+
+   Notes
+   -----
+   The rotation matrix::
    
-   :return: An M3 object representing a rotation matrix about X-axis.
-   :rtype: M3
+       1      0          0 
+       0 cos(theta)  sin(theta)
+       0 -sin(theta) cos(theta)
+   
    """
    m3 = M3()
    m3.setM3(tpm_vec.m3Rx(theta))
    return m3
 
-def m3RxDot(double theta, double thetadot):
-   """Return derivative of rotation matrix for rotation about X-axis.
+def m3rxdot(theta, thetadot):
+   """Derivative of rotation matrix for rotation about X-axis.
 
-   :param theta: Rotation angle in radians.
-   :type theta: float
-   :param thetadot: Derivative of rotation angle in radians/sec.
-   :type thetadot: float
+   Parameters
+   ----------
+   theta : float
+       Rotation angle in radians.
+   thetadot : float
+       Rate of change of `theta` in radians/second.
+     
+   Returns
+   -------
+   m3 : tpm.M3
+       A rotation matrix about X-axis.
+
+   Notes
+   -----
+   The rotation matrix::
    
-   :return: An M3 object.
-   :rtype: M3
+                 
+                    0        0          0       
+      thetadot *    0  -sin(theta) cos(theta)   
+                    0  -cos(theta) -sin(theta)  
+                  
    """
    m3 = M3()
    m3.setM3(tpm_vec.m3RxDot(theta, thetadot))
    return m3
 
-def m3Ry(double theta):
-   """Return a rotation matrix for rotation about Y-axis.
+def m3ry(theta):
+   """A rotation matrix for rotation about Y-axis.
 
-   :param theta: Rotation angle in radians.
-   :type theta: float
-   
-   :return: An M3 object representing a rotation matrix about Y-axis.
-   :rtype: M3
+   Parameters
+   ----------
+   theta : float
+       Rotation angle in radians.
+
+   Returns
+   -------
+   m3 : tpm.M3
+       A rotation matrix about Y-axis.
+
+   Notes
+   -----
+   The rotation matrix::
+
+       cos(theta)  0  -sin(theta)
+             0     1        0
+       sin(theta)  0   cos(theta)
+
    """
    m3 = M3()
    m3.setM3(tpm_vec.m3Ry(theta))
    return m3
 
-def m3RyDot(double theta, double thetadot):
-   """Return derivative of rotation matrix for rotation about Y-axis.
+def m3rydot(theta, thetadot):
+   """Derivative of rotation matrix for rotation about Y-axis.
 
-   :param theta: Rotation angle in radians.
-   :type theta: float
-   :param thetadot: Derivative of rotation angle in radians/sec.
-   :type thetadot: float
-   
-   :return: An M3 object.
-   :rtype: M3
+   Parameters
+   ----------
+   theta : float
+       Rotation angle in radians.
+   thetadot : float
+       Rate of change of `theta` in radians/second.
+     
+   Returns
+   -------
+   m3 : tpm.M3
+       A rotation matrix about Y-axis.
+
+   Notes
+   -----
+   The rotation matrix::
+
+                    -sin(theta) 0  -cos(theta)
+      thetadot *         0      0       0  
+                    cos(theta)  0  -sin(theta)
+
    """
    m3 = M3()
    m3.setM3(tpm_vec.m3RyDot(theta, thetadot))
    return m3
 
-def m3Rz(double theta):
-   """Return a rotation matrix for rotation about Z-axis.
+def m3rz(theta):
+   """Rotation matrix for rotation about Z-axis.
 
-   :param theta: Rotation angle in radians.
-   :type theta: float
-   
-   :return: An M3 object representing a rotation matrix about Z-axis.
-   :rtype: M3
+   Parameters
+   ----------
+   theta : float
+       Rotation angle in radians.
+
+   Returns
+   -------
+   m3 : tpm.M3
+       A rotation matrix about Z-axis.
+
+   Notes
+   -----
+   The rotation matrix::
+
+        cos(theta) sin(theta) 0
+       -sin(theta) cos(theta) 0
+             0          0     1
+             
    """
    m3 = M3()
    m3.setM3(tpm_vec.m3Rz(theta))
    return m3
 
-def m3RzDot(double theta, double thetadot):
-   """Return derivative of rotation matrix for rotation about Z-axis.
+def m3rzdot(theta, thetadot):
+   """Derivative of rotation matrix for rotation about Z-axis.
 
-   :param theta: Rotation angle in radians.
-   :type theta: float
-   :param thetadot: Derivative of rotation angle in radians/sec.
-   :type thetadot: float
-   
-   :return: An M3 object.
-   :rtype: M3
+   Parameters
+   ----------
+   theta : float
+       Rotation angle in radians.
+   thetadot : float
+       Rate of change of `theta` in radians/second.
+     
+   Returns
+   -------
+   m3 : tpm.M3
+       A rotation matrix about Z-axis.
+
+   Notes
+   -----
+   The rotation matrix::
+
+                    -sin(theta)  cos(theta)  0
+      thetadot *    -cos(theta) -sin(theta)  0
+                          0            0     0
+
    """
    m3 = M3()
    m3.setM3(tpm_vec.m3RzDot(theta, thetadot))
@@ -794,7 +1178,22 @@ def m3RzDot(double theta, double thetadot):
 
 
 cdef class M6(object):
-    """Class that wraps M6 structure."""
+    """Class that wraps M6 structure.
+
+    This is essential a 2x2 array of tpm.M3 matrices.
+
+    Attributes
+    ----------
+    pp : tpm.M3
+        m6[0][0].
+    pv : tpm.M3
+        m6[0][1].
+    vp : tpm.M3
+        m6[1][0].
+    vv : tpm.M3
+        m6[1][1]
+        
+    """
     cdef tpm_vec.M6 _m6
 
     def __cinit__(self):
@@ -876,7 +1275,14 @@ cdef class M6(object):
         return unicode(tpm_vec.m6fmt(self._m6))
     
     def inv(self):
-        """Inverse of M6 matrix."""
+        """Inverse of M6 matrix.
+
+        Returns
+        -------
+        m : tpm.M6
+            Inverse matrix.
+            
+        """
         m6 = M6()
         m6.setM6(tpm_vec.m6inv(self.getM6()))
         return m6
@@ -884,7 +1290,12 @@ cdef class M6(object):
     def m6v3(self, V3CP v3):
         """Product of M6 matrix and V3CP vector.
 
-        Only the PP component of M6 is used.
+        Returns
+        -------
+        v : tpm.V3CP
+            Cartesian vector obtained by multiplying the PP component
+            of this matrix with the given Cartesian vector.
+            
         """
         v = V3CP()
         v.setV3(tpm_vec.m6v3(self.getM6(), v3.getV3()))
@@ -892,26 +1303,75 @@ cdef class M6(object):
 
     def m6v6(self, V6C v6):
         """Product of M6 matrix and V6C vector.
+
+        Returns
+        -------
+        v : tpm.V6C
+            Cartesian vector obtained by multiplying this matrix with
+            the given Cartesian vector.
+        
         """
         v = V6C()
         v.setV6(tpm_vec.m6v6(self.getM6(), v6.getV6()))
         return v
         
         
-def m6Qx(double x, double xdot):
-    """An M6 matrix for rotation about X-axis."""
+def m6qx(x, xdot):
+    """An M6 matrix for rotation about X-axis.
+
+    Parameters
+    ----------
+    x : float
+        Angle of rotation in radians.
+    xdot : float
+        Rate of change angle of rotation in radians/second.
+
+    Returns
+    -------
+    m : tpm.M6
+        An M6 matrix for rotating a V6 vector about the X-axis.
+        
+    """
     m6 = M6()
     m6.setM6(tpm_vec.m6Qx(x, xdot))
     return m6
 
-def m6Qy(double y, double ydot):
-    """An M6 matrix for rotation about Y-axis."""
+def m6qy(y, ydot):
+    """An M6 matrix for rotation about Y-axis.
+
+    Parameters
+    ----------
+    x : float
+        Angle of rotation in radians.
+    xdot : float
+        Rate of change of angle of rotation in radians/second.
+
+    Returns
+    -------
+    m : tpm.M6
+        An M6 matrix for rotating a V6 vector about the Y-axis.
+
+    """
     m6 = M6()
     m6.setM6(tpm_vec.m6Qy(y, ydot))
     return m6
 
-def m6Qz(double z, double zdot):
-    """An M6 matrix for rotation about Z-axis."""
+def m6qz(z, zdot):
+    """An M6 matrix for rotation about Z-axis.
+
+    Parameters
+    ----------
+    x : float
+        Angle of rotation in radians.
+    xdot : float
+        Rate of change or angle of rotation in radians/second.
+
+    Returns
+    -------
+    m : tpm.M6
+        An M6 matrix for rotating a V6 vector about the Z-axis.
+
+    """
     m6 = M6()
     m6.setM6(tpm_vec.m6Qz(z, zdot))
     return m6

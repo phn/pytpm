@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# The following line must be present in the pytpm.pyx file.
+# The following line must be present in the tpm.pyx file.
 # cimport tpm_astro
 
 IAU_K = tpm_astro.IAU_K
@@ -26,18 +26,19 @@ PRECESS_ROTATING   = tpm_astro.PRECESS_ROTATING
 def tpm_data(TSTATE tstate, int action):
     """Compute and set dependent TSTATE data.
 
-    :param tstate: A TSTATE object.
-    :type tstate: TSTATE
-    :param action: The action to perform.
-    :type action: integer
-
-    :return: None
-    :rtype: None
-
     Given a TSTATE and an action, this function will perform the action
     and set the various dependent properties of the TSTATE object.
+    
+    Parameters
+    ----------
+    tstate : tpm.TSTATE
+        The TPM state structure to be changed.
+    action : int
+        The action to perform.
 
-    The ``action`` can be one of
+    Notes
+    -----
+    The `action` can be one of
 
     + ``TPM_INIT``
         Perform initialization.
@@ -53,18 +54,25 @@ def tpm_data(TSTATE tstate, int action):
         Perform all calculations except ``TPM_REFRACTION``.
 
     The TPM manual has more details on these quantities.
+    
     """
     tpm_astro.tpm_data(&tstate._tstate, action)
 
 # If I use tpm_tpm.N_TPM_STATES or N_TPM_STATES inplace of 22 then
 # Cython gives the following error: Not allowed in a constant
-# expression. Why?  In C code I can do V6 pvec[N_TPM_STATES].
+# expression. Why?  In C code I can do V6 pvec[N_TPM_STATES]. Maybe
+# Cython can't determine if N_TPM_STATES is a constant or not?
 cdef struct s_pvec:
     tpm_vec.V6 pvec[22]
 ctypedef s_pvec S_PVEC
 
 cdef class PVEC(object):
-    """Class for holding N_TPM_STATES element array of V6 vectors."""
+    """Class for holding N_TPM_STATES element array of V6 vectors.
+
+    This is a list like object with valid indexes from 0 to 21. Each
+    index represents the state having the same number. Each index
+    location stores a V6C vector corresponding to that state.
+    """
     cdef S_PVEC _pvec
 
     def __cinit__(self):
@@ -128,30 +136,44 @@ cdef class PVEC(object):
         
 
 def tpm(PVEC pvec, int s1, int s2, double ep, double eq, TSTATE tstate):
-    """Apply transition from state s1 to state s2.
-    
-    :param pvec: A PVEC object with appropriate V6 members.
-    :type pvec: PVEC
-    :param s1: Starting state (0 <= s1 < N_TPM_STATES).
-    :type s1: integer
-    :param s2: End state (0 <= s2 < N_TPM_STATES).
-    :type s2: integer
-    :param ep: Epoch of the postion and velocity of s1.
-    :type ep: float
-    :param eq: Equinox (of s1 and or s2, dependeing on transition).
-    :type eq: float
-    :param tstate: A TSTATE object with appropriate initial values.
-    :type eq: TSTATE
+    """Apply transition between to states.
 
-    :return: Final state (should be s2).
-    :rtype: integer
+    On completion the `pvec` object will contain state vectors obtained
+    during all transitions needed for the `s1` to `s2`
+    transition. Specifically, `pvec[s2]` will have the V6C vector
+    corresponding to the target state `s2`.
     
-    This is the main TPM function, that call the looks up the state
-    tables and performs all required transformations to take the state
-    vector at ``pvec[s1]`` from state ``s1`` to state ``s2``. It stores
-    the resulting state vector in ``pvec[s2]``.
+    Parameters
+    ----------
+    pvec : tpm.PVEC
+        A PVEC object with appropriate V6 members.
+    s1 : int
+        Starting state (0 <= s1 < N_TPM_STATES).
+    s2 : int
+        End state (0 <= s2 < N_TPM_STATES).    
+    ep : float
+        Epoch of state vector corresponding to `s1`, as a Julian date.
+    eq : float
+        Equinox as a Julian date. It can be of s1 and or s2, depending
+        on the specific transition.
+    tstate : tpm.TSTATE
+        A TSTATE object with appropriate initial values.
 
-    For more information see TPM manual and PyTPM reference.
+    Returns
+    -------
+    s : int
+        Final state (must be equal to `s2`).
+
+    Notes
+    -----
+    This is the main TPM function. It looks up the state tables and
+    performs all required transformations to take the state vector at
+    `pvec[s1]` from state `s1` to state `s2`. It stores the
+    resulting state vector in `pvec[s2]`. Intermediate states are
+    stored in their respective positions in `pvec`.
+
+    For more information see the TPM manual.
+    
     """
     if not 0 <= s1 < N_TPM_STATES:
         raise ValueError, "S1 must be in 0 <= S1 < N_TPM_STATES"
@@ -167,18 +189,24 @@ def tpm(PVEC pvec, int s1, int s2, double ep, double eq, TSTATE tstate):
     tstate.__set_tstate(ststate)
     return t
 
-def tpm_state(int s):
+def tpm_state(s):
     """Return state name given state id.
-
-    :param s: State id.
-    :type s: integer
-
-    :return: State name.
-    :rtype: string
 
     Given an integer id for a state, this function returns a
     descriptive name for the state.
+    
+    Parameters
+    ----------
+    s : int
+        State id.
 
+    Returns
+    -------
+    n : str
+        State name.
+
+    Examples
+    --------
     >>> tpm.tpm_state(tpm.TPM_S06)
     'Helio. mean FK5'
     >>> tpm.tpm_state(tpm.TPM_S04)
@@ -187,301 +215,434 @@ def tpm_state(int s):
     'Topo. obs. HA/Dec'
     >>> tpm.tpm_state(tpm.TPM_S19)
     'Topo. obs. Az/El'
+    
     """
     return tpm_astro.tpm_state(s)
 
 def delta_AT(utc):
     """Return Delta AT = TAI - UTC for the given UTC.
 
-    :param utc: UTC as a Julian date.
-    :type utc: float
-
-    :return: Delta AT = TAI - UTC in seconds.
-    :rtype: float
-
-    **IMPORTANT**
+    .. warning:: 
     
-    The file src/tpm/delta_AT.c must be updated when Delta AT is
-    changed by the IERS and PyTPM Cython code must re-compiled.
+        The file src/tpm/delta_AT.c must be updated when Delta AT is
+        changed by the IERS, and PyTPM Cython code must re-compiled.
+
+    Parameters
+    ----------
+    utc : float
+        UTC as a Julian date.
+
+    Returns
+    -------
+    d : float
+        Delta AT = TAI - UTC in seconds.
+
     """
     return tpm_astro.delta_AT(utc)
 
 def delta_T(ut1):
     """Return Delta T = TT - UT1 for the given UT1.
 
-    :param ut1: UT1 as a Julian date.
-    :type ut1: float
-    
-    :return: Delta T = TT - UT1 in seconds.
-    :rtype: float
+    Parameters
+    ----------
+    ut1 : float
+        UT1 as a Julian date.
 
+    Returns
+    -------
+    dt : float
+        Delta T = TT - UT1 in seconds.
+
+    Notes
+    -----
     This function returns the ``TT - UT1`` value for the given UT1. The
     value returned is ``ET - UT1`` for dates before 1984.0 and ``TDT -
     UT1`` for dates on and after 1984.0. TDT was the name of TT between
     1984.0 and 2000.0.
 
-    A built-in model is used for calculating this quantity.
+    .. warning::
+    
+        A simple linear interpolation is carried out over a list of
+        historical values.
+        
     """
     return tpm_astro.delta_T(ut1)
 
 def delta_UT(utc):
     """Return Delta UT = UT1 - UTC for the given UTC.
 
-    :param utc: UTC as a Julian date.
-    :type utc: float
+    Parameters
+    ----------
+    utc : float
+        UTC as a Julian date.
 
-    :return: UT1 - UTC for in seconds.
-    :rtype: float
-    
+    Returns
+    -------
+    dt  : float
+        UT1 - UTC for in seconds.
+
+    Notes
+    -----
     The value of ``UT1 - UTC`` is calculated by taking the difference
     of delta_ET and delta_T. The later is calculated using a built-in
     model. For the latter the input time argument must be UT1, but the
     error in using UTC should be small.
+    
     """
     return tpm_astro.delta_UT(utc)
 
 def delta_ET(utc):
     """Return Delta ET = ET - UTC for the given UTC.
 
-    :param utc: UTC as a Julian date.
-    :type utc: float
+    Parameters
+    ----------
+    utc : float
+        UTC as a Julian date.
 
-    :return: Delta ET = ET - UTC in seconds.
-    :rtype: float
+    Returns
+    -------
+    dt : float
+        Delta ET = ET - UTC in seconds.
+
     """
     return tpm_astro.delta_ET(utc)
 
 def delta_TT(utc):
     """Return Delta TT = TDT - UTC for the given UTC.
 
-    :param utc: UTC as a Julian date.
-    :type utc: float
+    Parameters
+    ----------
+    utc : float
+        UTC as a Julian date.
 
-    :return: Delta TT = TDT - UTC.
-    :rtype: float
+    Returns
+    -------
+    dt : float
+        Delta TT = TDT - UTC.
+
     """
     return tpm_astro.delta_TT(utc)
 
 def tdt2tdb(tdt):
     """Return TDB for the given TDT.
 
-    :param tdt: TDT as a Julian date.
-    :type tdt: float
+    Parameters
+    ----------
+    tdt : float
+        TDT as a Julian date.
 
-    :return: TDB as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    dt : float
+        TDB as a Julian date.
+
     """
     return tpm_astro.tdt2tdb(tdt)
 
 def ut12gmst(ut1):
     """Return GMST for the given UT1.
 
-    :param ut1: UT1 as a Julian date.
-    :type ut1: float
-
-    :return: GMST as an angle in radians.
-    :rtype: float
-
     Given a UT1 Julian date, this function returns the Greenwich Mean
     Sidereal Time as an angle in radians in the range (0, 2π).
+    
+    Parameters
+    ----------
+    ut1 : float
+        UT1 as a Julian date.
+
+    Returns
+    -------
+    gmst : float
+        GMST as an angle in radians in the range 0-2π.
+    
     """
     return tpm_astro.ut12gmst(ut1)
     
 def et2tdt(et):
     """Return TDT for the given ET.
 
-    :param et: ET as a Julian date.
-    :type et: float
+    Parameters
+    ----------
+    et : float
+        ET as a Julian date.
 
-    :return: TDT as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    tdt : float
+        TDT as a Julian date.
+        
     """
     return tpm_astro.et2tdt(et)
 
 def tai2tdt(tai):
     """Return TDT for the given TAI.
 
-    :param tai: TAI as a Julian date.
-    :type tai: float
+    Parameters
+    ----------
+    tai : float
+        TAI as a Julian date.
 
-    :return: TDT as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    tdt : float
+        TDT as a Julian date.
+
     """
     return tpm_astro.tai2tdt(tai)
 
 def tdt2et(tdt):
     """Return ET for the given TDT.
 
-    :param tdt: TDT as a Julian date.
-    :type tdt: float
+    Parameters
+    ----------
+    tdt : float
+        TDT as a Julian date.
 
-    :return: ET as a Julian date.
-    :rtype: float
+    Returns
+    --------
+    et : float
+        ET as a Julian date.
+
     """
     return tpm_astro.tdt2et(tdt)
 
 def ut12et(ut1):
     """Return ET for the given UT1.
 
-    :param ut1: UT1 as a Julian date.
-    :type ut1: float
+    Parameters
+    ----------
+    ut1 : float
+        UT1 as a Julian date.
 
-    :return: ET as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    et : float
+        ET as a Julian date.
+
     """
     return tpm_astro.ut12et(ut1)
 
 def utc2et(utc):
     """Return ET for the given UTC.
-    
-    :param utc: UTC as a Julian date.
-    :type utc: float
 
-    :return: ET as a Julian date.
-    :rtype: float
+    Parameters
+    ----------
+    utc : float
+        UTC as a Julian date.
+
+    Returns
+    -------
+    et : float
+        ET as a Julian date.
+
     """
     return tpm_astro.utc2et(utc)
 
 def utc2tdt(utc):
     """Return TDT for the given UTC.
 
-    :param utc: UTC as a Julian date.
-    :type utc: float
+    Parameters
+    ----------
+    utc : float
+         UTC as a Julian date.
 
-    :return: TDT as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    tdt : float
+        TDT as a Julian date.
+        
     """
     return tpm_astro.utc2tdt(utc)
 
 def utc2ut1(utc):
     """Return UT1 for the given UTC.
 
-    :param utc: UTC as a Julian date.
-    :type utc: float
+    Parameters
+    ----------
+    utcv: float
+        UTC as a Julian date.
 
-    :return: UT1 as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    ut1 : float
+        UT1 as a Julian date.
+
     """
     return tpm_astro.utc2ut1(utc)
     
 def et2ut1(et):
     """Return UT1 for the given ET.
 
-    :param et: ET as a Julian date.
-    :type et: float
+    Parameters
+    ----------
+    et : float
+        ET as a Julian date.
 
-    :return: UT1 as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    ut1 : float
+        UT1 as a Julian date.
+
     """
     return tpm_astro.et2ut1(et)
 
 def et2utc(et):
     """Return UTC for the given ET.
 
-    :param et: ET as a Julian date.
-    :type et: float
+    Parameters
+    ----------
+    et : float
+        ET as a Julian date.
 
-    :return: UTC as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    utc : float
+        UTC as a Julian date.
+
     """
     return tpm_astro.et2utc(et)
 
 def tai2utc(tai):
     """Return UTC for the given TAI.
 
-    :param tai: TAI as a Julian date.
-    :type tai: float
+    Parameters
+    ----------
+    tai : float
+        TAI as a Julian date.
 
-    :return: UTC as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    utc : float
+        UTC as a Julian date.
+
     """
     return tpm_astro.tai2utc(tai)
 
 def tdt2tai(tdt):
     """Return TAI for the given TDT.
 
-    :param tdt: TDT as a Julian date.
-    :type tdt: float
+    Parameters
+    ----------
+    tdt : float
+        TDT as a Julian date.
 
-    :return: TAI as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    tai : float
+        TAI as a Julian date.
+
     """
     return tpm_astro.tdt2tai(tdt)
 
 def tdt2utc(tdt):
     """Return UTC for the given TDT.
 
-    :param tdt: TDT as a Julian date.
-    :type tdt: float
+    Parameters
+    ----------
+    tdt : float
+        TDT as a Julian date.
 
-    :return: UTC as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    utc : float
+        UTC as a Julian date.
+
     """
     return tpm_astro.tdt2utc(tdt)
 
 def ut12utc(ut1):
     """Return UTC for the given UT1.
 
-    :param ut1: UT1 as a Julian date.
-    :type ut1: float
+    Parameters
+    ----------
+    ut1 : float
+        UT1 as a Julian date.
 
-    :return: UTC as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    utc : float
+        UTC as a Julian date.
+
     """
     return tpm_astro.ut12utc(ut1)
 
 def et2tai(et):
     """Return TAI for the given ET.
 
-    :param et: ET as a Julian date.
-    :type et: float
+    Parameters
+    ----------
+    et : float
+        ET as a Julian date.
 
-    :return: TAI as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    tai : float
+         TAI as a Julian date.
+
     """
     return tpm_astro.et2tai(et)
 
 def et2tdb(et):
     """Return TDB for the given ET.
 
-    :param et: ET as a Julian date.
-    :type et: float
+    Parameters
+    ----------
+    et : float
+        ET as a Julian date.
 
-    :return: TDB as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    tdb : float
+        TDB as a Julian date.
+
     """
     return tpm_astro.et2tdb(et)
 
 def tai2et(tai):
     """Return ET for the given TAI.
 
-    :param tai: TAI as a Julian date.
-    :type tai: float
+    Parameters
+    ----------
+    tai : float
+        TAI as a Julian date.     
 
-    :return: ET as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    et : float
+        ET as a Julian date.
+
     """
     return tpm_astro.tai2et(tai)
 
 def tai2tdb(tai):
     """Return TDB for the given TAI.
 
-    :param tai: TAI as a Julian date.
-    :type tai: float
+    Parameters
+    ----------
+    tai : float
+        TAI as a Julian date.
 
-    :return: TDB as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    tdb : float
+        TDB as a Julian date.
+
     """
     return tpm_astro.tai2tdb(tai)
 
 def tai2ut1(tai):
     """Return UT1 for the given TAI.
 
-    :param tai: TAI as a Julian date.
-    :type tai: float
+    Parameters
+    ----------
+    tai : float
+        TAI as a Julian date.
 
-    :return: UT1 as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    ut1 : float
+         UT1 as a Julian date.
+
     """
     return tpm_astro.tai2ut1(tai)
 
@@ -504,55 +665,80 @@ def tai2ut1(tai):
 def tdt2ut1(tdt):
     """Return UT1 for the given TDT.
 
-    :param tdt: TDT as a Julian date.
-    :type tdt: float
+    Parameters
+    ----------
+    tdt : float
+        TDT as a Julian date.
 
-    :return: UT1 as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    ut1 : float
+        UT1 as a Julian date.
+
     """
     return tpm_astro.tdt2ut1(tdt)
 
 def ut12tai(ut1):
     """Return TAI for the given UT1.
 
-    :param ut1: UT1 as a Julian date.
-    :type ut1: float
+    Parameters
+    ----------
+    ut1 : float
+        UT1 as a Julian date.
 
-    :return: TAI as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    tai : float
+        TAI as a Julian date.
+
     """
     return tpm_astro.ut12tai(ut1)
 
 def ut12tdb(ut1):
     """Return TDB for the given UT1.
 
-    :param ut1: UT1 as a Julian date.
-    :type ut1: float
+    Parameters
+    ----------
+    ut1 : float
+        UT1 as a Julian date.
 
-    :return: TDB as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    tdb : float
+         TDB as a Julian date.
+
     """
     return tpm_astro.ut12tdb(ut1)
 
 def ut12tdt(ut1):
     """Return TDT for the given UT1.
 
-    :param ut1: UT1 as a Julian date.
-    :type ut1: float
+    Parameters
+    ----------
+    ut1 : float
+        UT1 as a Julian date.
 
-    :return: TDT as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    tdt : float
+         TDT as a Julian date.
+
     """
     return tpm_astro.ut12tdt(ut1)
 
 def utc2tdb(utc):
     """Return TDB for the given UTC.
 
-    :param utc: UTC as a Julian date.
-    :type utc: foat
+    Parameters
+    ----------
+    utc : float
+        UTC as a Julian date.
 
-    :return: TDB as a Julian date.
-    :rtype: float
+    Returns
+    -------
+    tdb : float
+         TDB as a Julian date.
+
     """
     return tpm_astro.utc2tdb(utc)
 
@@ -568,75 +754,108 @@ def ut2gmst(ut):
     """Return GMST for the given UT; same as ut12gmst(ut)"""
     return tpm_astro.ut2gmst(ut)
 
-def cat2v6(ra, de, pmra, pmdec, px, rv, C=36525.0):
-    """Create a V6C vector from catalog entry.
+def cat2v6(alpha, delta, pma, pmd, px, rv, C=36525.0):
+    """Create a V6C vector from a catalog entry.
 
-    :param ra: Right Ascension in radians.
-    :type ra: float
-    :param de: Declination in radians.
-    :type de: float
-    :param pmra: Proper motion in ra (not pmra*cos(de)) as "/century.
-    :type pmra: float 
-    :param pmdec: Proper motion in de as "/century.
-    :type pmdec: float
-    :param px: Parallax in arc-seconds.
-    :type px: float
-    :param rv: Radial velocity in km/s.
-    :type rv: float
-    :param C: Days in a century, used in pmra and pmde.
-    :type C: float
+    Parameters
+    ----------
+    alpha : float
+        Longitudinal angle (e.g., RA) in radians.
+    delta : float
+        Latitudinal angle (e.g., Dec) in radians.
+    pma : float
+        Proper motion in `alpha` (not pmra*cos(delta)) in "/century.
+    pmd : float
+        Proper motion in `delta` in "/century.
+    px : float
+        Parallax in arc-seconds.
+    rv : float
+        Radial velocity in km/s.
+    C : float
+        Days in a century, as used in pmra and pmde.
 
-    :return: V6C vector
-    :rtype: V6C
+    Returns
+    -------
+    v6 : tpm.V6C
+        V6C vector containing the Cartesian position and velocities of
+        the catalog position.
 
+    Notes
+    -----
     This function is used to convert a catalog entry for an object into
-    a ``V6C`` vector.
+    a `V6C` vector.
 
     Internally TPM uses velocities in AU/day, and needs to know how
-    many days are in a century. The porper motions can be in
+    many days are in a century. The proper motions can be in
     arc-seconds per Julian century or arc-seconds per tropical century.
-    A Julian century has 36525 days (``tpm.CJ``) and a tropical century
-    has 36524.21987817305 days (``tpm.CB``).
+    A Julian century has 36525 days (`tpm.CJ`) and a tropical century
+    has 36524.21987817305 days (`tpm.CB`).
+    
     """
     v6 = V6C()
-    v6.setV6(tpm_astro.cat2v6(ra, de, pmra, pmdec, px, rv, C))
+    v6.setV6(tpm_astro.cat2v6(alpha, delta, pma, pmd, px, rv, C))
     return v6
     
 def v62cat(V6C v6, C=36525.0):
     """Return catalog quantites given a V6C vector.
-    
-    :param v6: A V6C object.
-    :type v6: V6C
-    :param C: Number of days in a century.
-    :type C: float
 
-    :return: A dictionary containing catalog quantities for the
-             object. The keys are: ``ra`` for right ascension in
-             radians, ``dec`` for declination in radians, ``pmra`` for
-             proper motion in ra (not pmra*cos(dec)) in "/century,
-             ``pmdec`` for proper motion in dec in "/century, ``px`` for
-             parallax in arc-seconds and ``rv`` for radial velocity in
-             km/s.
-    :rtype: dict
+    Parameters
+    ----------
+    v6 : tpm.V6C
+        A V6C object containing the position and velocity of an
+        object. It is assumed that the positions are in AU and
+        velocities are in AU/day.
+    C : float
+        Number of days in a century. To convert the velocities into
+        "/centruy from AU/day, it is necessary to know the numb`er of
+        days in a century. For Julian centuries this is 36525 days
+        (`tpm.CJ`) and for tropical centuries this is ~36524.22
+        (`tpm.CB`).
+
+    Returns
+    -------
+    d : dict
+        The keys and values are:
+          + alpha : float
+                Longitudinal coordinate (e.g., RA) in radians.
+          + delta : float
+                Latitudinal coordinate (e.g., Dec) in radians.
+          + pma : float
+                Proper motion in `alpha` (not alpha*cos(delta) in
+                "/century
+          + pmd : float
+                Proper motion in `delta` in "/century.
+          + px : float
+                Parallax in arc-seconds.
+          + rv : float
+                Radial velocity in km/s.
+                  
     """
-    cdef double ra=0.0, dec=0.0, pmra=0.0, pmdec=0.0, px=0.0, rv=0.0
-    tpm_astro.v62cat(&ra, &dec, &pmra, &pmdec, &px, &rv, v6.getV6(), C)
-    return dict(ra=ra, dec=dec, pmra=pmra, pmdec=pmdec, px=px, rv=rv)
+    cdef double alpha=0.0, delta=0.0, pma=0.0, pmd=0.0, px=0.0, rv=0.0
+    tpm_astro.v62cat(&alpha, &delta, &pma, &pmd, &px, &rv,
+                      v6.getV6(), C)
+    return dict(alpha=alpha, delta=delta, pma=pma, pmd=pmd, px=px,
+                rv=rv)
     
 def proper_motion(V6C v6, end, start):
     """Apply proper motion to the given V6C vector.
 
-    :param v6: A V6C object.
-    :type v6: V6C
-    :param end: End (to) time in days (can be Julian date).
-    :type end: float
-    :param start: Starting (from) time in days (can be Julian date).
-    :type start: float
+    Parameters
+    ----------
+    v6 : tpm.V6C
+        A V6C object containing positions and velocities.
+    end : float
+        Ending/final time in days (can be Julian date).
+    start : Starting/initial time in days (can be Julian date).
 
-    :return: A V6C object containing the new position.
-    :rtype: V6C
+    Returns
+    -------
+    v : tpm.V6C
+        A V6C object containing the new position.
 
-    Given starting time and end time, theis function applies proper
+    Notes
+    -----
+    Given starting time and end time, this function applies proper
     motion to the coordinates in the given V6C object. A simple linear
     multiplication of velocity with time is performed, followed by 
     addition of this increment to the position coordinates.
@@ -655,28 +874,34 @@ def proper_motion(V6C v6, end, start):
 def aberrate(V6C p, V6C e, int flag):
     """Apply aberration of light to a state vector.
 
-    :param p: The vector to which aberration must be applied.
-    :type p: V6C
-    :param e: The vector with aberration causing velocity component.
-    :type e: V6C
-    :param flag: Add aberration to ``p`` if flag >0 else subtract it.
-    :type flag: intger
-    
-    :return: The result of applying aberration to ``p``.
-    :rtype: V6C
+    Parameters
+    ----------
+    p : tpm.V6C
+        The vector to which aberration must be applied.
+    e : tpm.V6C
+        The vector with aberration causing velocity component.
+    flag : int
+        Add aberration to `p` if flag > 0 else subtract it.
 
-    The velocity components in ``e`` is taken to be the oberver's
+    Returns
+    -------
+    v : tpm.V6C
+        The result of applying aberration to `p`.
+
+    Notes
+    -----
+    The velocity components in `e` is taken to be the oberver's
     velocity and the aberration correction is applied to the position
-    components in ``p``. The aberration is added to ``p`` is ``flag >
-    0`` else it is subtracted from ``p``. The velocity component of
-    ``p`` is, of-course, unchanged.
+    components in `p`. The aberration is added to `p` is `flag >
+    0` else it is subtracted from `p`. The velocity component of
+    `p` is, of-course, unchanged.
 
-    If ``e`` is the barycentric state vector of the Earth's, center
+    If `e` is the barycentric state vector of the Earth's, center
     then we have geocentric aberration. If it is the sum of the above
     with the observer's geocentric space-fixed mean state vector, then
     we have topocentric aberration.
 
-    The algorithm uses vectors and hence the ``e`` can be for any
+    The algorithm uses vectors and hence the `e` can be for any
     observer, not just Earth based observers.
     """
     cdef tpm_astro.V6 _v6
@@ -688,17 +913,24 @@ def aberrate(V6C p, V6C e, int flag):
 def azel2hadec(V6C v6, double latitude):
     """Convert V6C from (AZ, EL) to (HA, DEC).
 
-    :param v6: A state vector.
-    :type v6: V6C
-    :param latitude: Latitude in radians.
-    :type latitude: float
+    Parameters
+    ----------
+    v6 : tpm.V6C
+        A V6C vector containing Cartesian coordinates in Az-El system.
+    latitude : float
+        Latitude in radians. Northern latitudes are positive.
 
-    :return: State vector converted into (HA, DEC) system.
-    :rtype: V6C
+    Returns
+    -------
+    v : tpm.V6C
+        State vector converted into Ha-Dec system.
 
-    Two simple rotations are performed on ``v6`` to convert it from
+
+    Notes
+    -----
+    Two simple rotations are performed on `v6` to convert it from
     (AZ, EL) system into (HA, DEC) system.  Azimuth is measured
-    **Eastwards from North**. 
+    north of east.
 
     The conversion from (AZ, EL) to (HA, DEC) does not require the full
     setup of TPM and hence this function can be directly used for the
@@ -711,17 +943,23 @@ def azel2hadec(V6C v6, double latitude):
 def hadec2azel(V6C v6, double latitude):
     """Convert V6C from (HA, DEC) to (AZ, EL).
 
-    :param v6: A state vector.
-    :type v6: V6C
-    :param latitude: Latitude in radians.
-    :type latitude: float
+    Parameters
+    ----------
+    v6 : tpm.V6C
+        A V6C vector containing Cartesian cooridinates in Ha-Dec system.
+    latitude : float
+        Latitude in radians.
 
-    :return: State vector converted into (AZ, EL) system.
-    :rtype: V6C
+    Return
+    ------
+    v : tpm.V6C
+        State vector converted into (AZ, EL) system.
 
+    Notes
+    -----
     Two simple rotations are performed on ``v6`` to convert it from
     (HA, DEC) system into (AZ, EL) system.  Azimuth is measured
-    **Eastwards from North**. 
+    north of east.
 
     The conversion from (HA, DEC) to (AZ, EL) does not require the full
     setup of TPM and hence this function can be directly used for the
@@ -734,18 +972,24 @@ def hadec2azel(V6C v6, double latitude):
 def evp(double tdb):
     """J2000 Barycentric and Heliocentric state vectors for Earth.
 
-    :param tdb: Barycentric Dynamic Time as a Julian date.
-    :type tdb: float
+    Parameters
+    ----------
+    tdb : float
+        Barycentric Dynamic Time as a Julian date.
 
-    :return: A tuple of Barycentric and Heliocentric state vectors.
-    :rtype: (V6C, V6C)
+    Returns
+    -------
+    v : 2 element tuple of tpm.V6C
+        The first element of the tuple is the Barycentric vector and
+        the second is the Heliocentric vector. The positions are in AU
+        and velocities are in AU/day.
 
+    Notes
+    -----
     Calculates Earth's J2000 Barycentric and Heliocentric state
-    vectors, for the given Barycentric Dynamic Time ``tdb``. The state
-    vector is calculated using a built-in model.
+    vectors, for the given Barycentric Dynamic Time `tdb`. The state
+    vector is calculated using a built-in model. See src/tpm/evp.c.
 
-    The first element of the tuple is the Barycentric vector and the
-    second is the Heliocentric vector.
     """
     cdef tpm_vec.V6 _vb, _vh
     tpm_astro.evp(tdb, &_vb, &_vh)
@@ -756,37 +1000,53 @@ def evp(double tdb):
     return v6b, v6h
 
 def ecl2equ(V6C v6, double obl):
-    """Convert V6 from Ecliptic to FK5 Equatorial coordinates.
-    
-    :param v6: A state vector in Ecliptic system.
-    :type v6: V6C
-    :param obl: Obliquity at the time of interest.
-    :type obl: float
+    """Convert Ecliptic to FK5 Equatorial coordinates.
 
-    :return: A state vector in FK5 equatorial coordinates.
-    :rtype: V6C
+    Parameters
+    ----------
+    v6 : tpm.V6C
+        A V6C vector with Cartesian coordinates in the Ecliptic system.
+    obl : float
+        Obliquity of the ecliptic at the time of interest.
 
-    A simple rotation through ``obl`` is performed to convert Ecliptic
+    Returns
+    -------
+    v : tpm.V6C
+        A V6C vector with Cartesian coordinates in FK5 equatorial
+        coordinates.
+
+    Notes
+    -----
+    A simple rotation through `obl` is performed to convert Ecliptic
     coordinates into FK5 equatorial coordinates.
+    
     """
     v = V6C()
     v.setV6(tpm_astro.ecl2equ(v6.getV6(), obl))
     return v
 
 def equ2ecl(V6C v6, double obl):
-    """Convert FK5 equatorial coordinates into Ecliptic coordinates.
+    """Convert FK5 equatorial coordinates to Ecliptic coordinates.
 
-    :param v6: State vector to be transformed.
-    :type v6: V6C
-    :param obl: Obliquity at the time of interest.
-    :type obl: float
+    Parameters
+    ----------
+    v6 : tpm.V6C
+        A V6C vector with Cartesian coordinates in the FK5 equatorial
+        system. 
+    obl : float
+         Obliquity at the time of interest.
 
-    :return: State vector in Ecliptics coordinates.
-    :rtype: V6C
+    Returns
+    --------
+    v : tpm.V6C
+        A V6C vector with Cartesian coordinates in the Ecliptic system.
 
+    Notes
+    -----
     A simple rotation is performed to convert the given state vector
     from FK5 Equatorial system into Ecliptic system, using the given
-    obliquity. 
+    obliquity.
+    
     """
     v = V6C()
     v.setV6(tpm_astro.equ2ecl(v6.getV6(), obl))
@@ -795,37 +1055,52 @@ def equ2ecl(V6C v6, double obl):
 def ellab(double tdt, V6C star, int flag):
     """Add or remove elliptic aberration.
 
-    :param tdt: Terrestrial Time (same as Terrestrial Dynamic Time).
-    :type tdt: float
-    :param star: A state vector for the object.
-    :type star: V6C
-    :param flag: Add correction if flag > 0 else subtract.
-    :type flag: integer
+    Parameters
+    ----------
+    tdt : float
+        Terrestrial Time (same as Terrestrial Dynamic Time).
+    star : tpm.V6C
+        A state vector for the object.
+    flag : int
+        Add correction if flag > 0 else subtract.
 
-    :return: A state vector with elliptic aberration applied to input.
-    :rtype: V6C
+    Returns
+    -------
+    v : tpm.V6C
+        A V6C vector with elliptic aberration applied to the input.
 
+        
+    Notes
+    -----
     This function applies elliptic aberration to the the given state
     vector, and return the resulting state vector. If ``flag > 0``
-    then the correction is added else it is subtracted.
+    then the correction is added, otherwise it is subtracted.
+    
     """
     v = V6C()
     v.setV6(tpm_astro.ellab(tdt, star.getV6(), flag))
     return v
 
 def equ2gal(V6C v6):
-    """Convert state vector from FK4 Equatorial to Galactic.
+    """Convert FK4 Equatorial to Galactic.
 
-    :param v6: State vector in FK4 Equatorial coordinates.
-    :type v6: V6C
+    Parameters
+    ----------
+    v6 : tpm.V6C
+        A V6C vector with Cartesian coordinates in FK4 Equatorial system.
 
-    :return: State vector in Galactic coordinates.
-    :rtype: V6C
+    Returns
+    -------
+    v : tpm.V6C
+        A V6C vector with Cartesian coordinates in the Galactic system.
 
+    Notes
+    -----
     Applies three rotations after subtracting E-terms of
     aberration. Galactic pole is (192.25, 27.4) degrees and longitude
     of ascending node of the Galactic plane on the equator is 33
-    degrees. 
+    degrees.
+    
     """
     v = V6C()
     v.setV6(tpm_astro.equ2gal(v6.getV6()))
@@ -834,48 +1109,70 @@ def equ2gal(V6C v6):
 def gal2equ(V6C v6):
     """Convert state vector from Galactic to FK4 Equatorial.
 
-    :param v6: State vector in Galactic coordinates.
-    :type v6: V6C
+    Parameters
+    ----------
+    v6 : tpm.V6C
+        A V6C vector with Cartesian coordinates in the Galactic system.
 
-    :return: State vector in FK4 Equatorial coordinates.
-    :rtype: V6C
+    Returns
+    -------
+    v : tpm.V6C
+        A V6C vector with Cartesian coordinates in the FK4 Equatorial
+        system. 
 
+    Notes
+    -----
     Applies three rotations and then adds E-terms of
     aberration. Galactic pole is (192.25, 27.4) degrees and longitude
     of ascending node of the Galactic plane on the equator is 33
     degrees.
+    
     """
     v = V6C()
     v.setV6(tpm_astro.gal2equ(v6.getV6()))
     return v
     
 def eterms(double ep):
-    """Return state vector contaiing e-terms of aberration.
+    """Return a V6C vector containing the e-terms of aberration.
 
-    :param ep: Epoch, as a Julian date, for the calculations.
-    :type ep: float
+    Parameters
+    ----------
+    ep : float
+        Epoch as a Julian date.
 
-    :return: State vector containing the e-terms.
-    :rtype: V6C
+    Returns
+    -------
+    v : tpm.V6C
+        a V6C vector containing the e-terms of aberration.
 
+    Notes
+    -----
     The state vector returned can be used to add or subtract the
     e-terms with another state vector.
+    
     """
     v6 = V6C()
     v6.setV6(tpm_astro.eterms(ep))
     return v6
 
 def fk425(V6C v6):
-    """Precess state vector from FK4 to FK5.
+    """Precess a V6C vector from FK4 system to FK5 system.
 
-    :param v6: FK4 State vector to be transformed.
-    :type v6: V6C
+    Parameters
+    ----------
+    v6 : tpm.V6C
+        FK4 V6C vector to be transformed.
 
-    :return: FK5 state vector.
-    :rtype: V6C
+    Returns
+    -------
+    v : tpm.V6C
+        FK5 V6C vector.
 
+    Notes
+    -----
     Perform FK4 to FK5 transformation of the given state vector. See
     TPM manual and src/tpm/fk425.c for more details.
+    
     """
     v = V6C()
     v.setV6(tpm_astro.fk425(v6.getV6()))
@@ -884,35 +1181,50 @@ def fk425(V6C v6):
 def fk524(V6C v6):
     """Precess state vector from FK5 to FK4.
 
-    :param v6: FK5 State vector to be transformed.
-    :type v6: V6C
+    Parameters
+    ----------
+    v6 : tpm.V6C
+        FK5 V6C vector to be transformed.
 
-    :return: FK4 state vector.
-    :rtype: V6C
+    Returns
+    -------
+    v : tpm.V6C
+        FK4 V6C vector.
 
+    Notes
+    -----    
     Perform FK4 to FK5 transformation of the given state vector. See
     TPM manual and src/tpm/fk524.c for more details.
+    
     """
     v = V6C()
     v.setV6(tpm_astro.fk524(v6.getV6()))
     return v
 
-def geod2geoc(double lon, double lat, double alt):
+def geod2geoc(lon, lat, alt):
     """Convert geodetic position to geocentric position.
 
-    :param lon: Longitude in radians (east positive).
-    :type lon: float
-    :param lat: Longitude in radians (north positive).
-    :type lat: float
-    :param alt: Altitude in meters.
-    :type alt: float
+    Parameters
+    ----------
+    lon : float
+        Longitude in radians (east positive).
+    lat : float
+        Latitude in radians (north positive).
+    alt : float
+         Altitude in meters.
 
-    :return: A V6C geocentric state vector (meters, meters/s)
-    :rtype: V6C
+    Returns
+    -------
+    v : tpm.V6C
+        A V6C geocentric vector. Lengths should be in meters and
+        velocities should be in meters/s.
 
+    Notes
+    -----
     Converts the given geodetic position to a geocentric one and
     returns the results in a V6C state vector. The units are meters and
     meters/second.
+    
     """
     v6 = V6C()
     v6.setV6(tpm_astro.geod2geoc(lon, lat, alt))
@@ -921,18 +1233,25 @@ def geod2geoc(double lon, double lat, double alt):
 def ldeflect(V6C star, V6C earth, int flag):
     """Apply General Relativity deflection of light.
 
-    :param star: State vector the object of interest.
-    :type star: V6C
-    :param earth: State vector for Earth.
-    :type earth: V6C
-    :param flag: Correction is added is flag > 0 else subtracted.
-    :type flag: integer
+    Parameters
+    ----------
+    star : tpm.V6C
+        A V6C vector for the object of interest.
+    earth : tpm.V6C
+        V6C vector for Earth.
+    flag : int
+        Correction is added is flag > 0 else subtracted. 
 
-    :return: Light deflection corrected state vector.
-    :rtype: V6C
+    Returns
+    -------
+    v : tpm.V6C
+        Light deflection corrected V6C vector.
 
+    Notes
+    -----
     Applies the relativisty light deflection due to the Sun, to the
-    state vector in ``star``.
+    state vector in `star`.
+    
     """
     v6 = V6C()
     v6.setV6(tpm_astro.ldeflect(star.getV6(), earth.getV6(), flag))
@@ -941,49 +1260,60 @@ def ldeflect(V6C star, V6C earth, int flag):
 def precess(double start, double end, V6C v6, int pflag):
     """Precess a state vector within an inertial frame.
 
-    :param start: Initial epoch as a Julian date.
-    :type start: float
-    :param end: Final epoch as a Julian date.
-    :type end: float
-    :param v6: The state vector to be precessed.
-    :type v6: V6C
-    :param pflag: Precession model to use.
-    :type pflag: integer
+    Parameters
+    ----------
+    start : float
+        Initial epoch as a Julian date.
+    end : float
+        Final epoch as a Julian date.
+    v6 : tpm.V6C
+        The V6C vector to be precessed.
+    pflag : int
+        Precession model to use.
 
-    :return: Precessed state vector.
-    :rtype: V6C
+    Returns
+    -------
+    v : tpm.V6C
+        Precessed V6C vector.
 
-    This function precesses the given state vector, ``v6`` from
-    ``start`` to ``end`` using the given precession model
-    ``pflag``. The precession is carried out within an inertial
+    Notes
+    -----
+    This function precesses the given state vector, `v6` from
+    `start` to `end` using the given precession model
+    `pflag`. The precession is carried out within an inertial
     frame. So this cannot do FK4 to FK5, for example.
 
-    The values for ``pflag`` can be::
+    The values for `pflag` can be::
     
       PRECESS_NEWCOMB, PRECESS_ANDOYER, PRECESS_KINOSHITA,
       PRECESS_LIESKE and PRECESS_FK5.
 
     See TPM manual for definition of these constants.
+    
     """
     v = V6C()
     v.setV6(tpm_astro.precess(start, end, v6.getV6(), pflag))
     return v
 
-def precess_m(double start, double end, int pflag, int sflag):
+def precess_m(start, end, pflag, sflag):
     """Precession matrix for time between end and start.
 
-    :param start: Starting point as a Julian date.
-    :type start: float
-    :param end: End point as a Julian date.
-    :type start: float
-    :param pflag: Precession model to use.
-    :type pflag: integer
-    :param sflag: Rotating frame or inertial frame
-    :type sflag: integer
+    Parameters
+    ----------
+    start : float
+        Starting (initial) epoch as a Julian date.
+    end : float
+         Ending (final) point as a Julian date.
+    pflag : int
+        Precession model to use.
+    sflag : int
+        Rotating frame or inertial frame.
 
-    Returns the precession matrix for precession from ``start`` time to
-    ``end`` time. The model used for cacluating precession angles is
-    specified using the ``pflag`` parameter. The possible values are::
+    Notes
+    -----
+    Returns the precession matrix for precession from `start` time to
+    `end` time. The model used for cacluating precession angles is
+    specified using the `pflag` parameter. The possible values are::
 
       PRECESS_NEWCOMB	
       PRECESS_ANDOYER	
@@ -992,101 +1322,136 @@ def precess_m(double start, double end, int pflag, int sflag):
       PRECESS_FK4	
       PRECESS_FK5	
 
-    If ``sflag != PRECESS_ROTATING``, then the "P-dot" term in the
+    If `sflag != PRECESS_ROTATING`, then the "P-dot" term in the
     precession matrix is set to null. The other possibility is
-    ``PRECESS_INERTIAL``, when the "P-dot" term is not set to null.
+    `PRECESS_INERTIAL`, when the "P-dot" term is not set to null.
+    
     """
     m6 = M6()
     m6.setM6(tpm_astro.precess_m(start, end, pflag, sflag))
     return m6
 
-def eccentricity(double tdt):
+def eccentricity(tdt):
     """Eccentricity of Earth's orbit.
 
-    :param tdt: Terrestrial Dynamic Time (same as TT) as Julian date.
-    :type tdt: float
+    Parameters
+    ----------
+    tdt : float
+        Terrestrial Dynamic Time (same as TT) as Julian date.
 
-    :return: Eccentricity of Earth's orbit.
-    :rtype: float
+    Parameters
+    ----------
+    e : float
+        Eccentricity of Earth's orbit.
 
+    Notes
+    -----
     Returns the eccentricity of Earth's orbit at the given time. Time
     is a TDT (same as TT) as a Julian date.
+    
     """
     return tpm_astro.eccentricity(tdt)
 
-def eccentricity_dot(double tdt):
+def eccentricity_dot(tdt):
     """Rate of change in the eccentricity of Earth's orbit.
 
-    :param tdt: Terrestrial Dynamic Time (same as TT) as Julian date.
-    :type tdt: float
+    Parameters
+    ----------
+    tdt : float
+        Terrestrial Dynamic Time (same as TT) as Julian date.
 
-    :return: Rate of change in the eccentricity of Earth's orbit.
-    :rtype: float
+    Returns
+    -------
+    edot : float
+        Rate of change in the eccentricity of Earth's orbit.
 
+    Notes
+    -----
     Returns the rate of change (per Julian century) in the eccentricity
-    of Earth's orbit at the given time. Time is a TDT (same as TT) as a
+    of Earth's orbit at the given time. Time is TDT (same as TT) as a
     Julian date.
+    
     """
     return tpm_astro.eccentricity_dot(tdt)
 
-def obliquity(double tdt):
+def obliquity(tdt):
     """Mean obliquity of Ecliptic(epoch J2000).
 
-    :param tdt: Terrestrial Dynamic Time (same as TT) as a Julian date.
-    :type tdt: float
+    Parameters
+    ----------
+    tdt : float
+        Terrestrial Dynamic Time (same as TT) as a Julian date.
 
-    :return: Obliquity of the Ecliptic in radians.
-    :rtype: float
+    Returns
+    -------
+    obl : float
+        Obliquity of the Ecliptic in radians.
 
+    Notes
+    -----
     The obliquity of the mean Ecliptic of J2000, at the given TDT (same
     as TT) is returned. The returned value is in radians.
+    
     """
     return tpm_astro.obliquity(tdt)
 
-def obliquity_dot(double tdt):
+def obliquity_dot(tdt):
     """Rate of change of mean obliquity of Ecliptic(epoch J2000).
 
-    :param tdt: Terrestrial Dynamic Time (same as TT) as a Julian date.
-    :type tdt: float
+    Parameters
+    ----------
+    tdt : float
+        Terrestrial Dynamic Time (same as TT) as a Julian date.
 
-    :return: Rate of change of obliquity of the Ecliptic in ra/jcen.
-    :rtype: float
+    Returns
+    -------
+    odot : float
+        Rate of change of obliquity of the Ecliptic in ra/jcen.
 
+    Notes
+    -----
     Returns the rate of change (radians per Julian century) in the
     obliquity of Ecliptic at the given time. Time is a TDT (same as TT)
     as a Julian date.
+    
     """
     return tpm_astro.obliquity_dot(tdt)
 
-def refco(double lat=0.557744205098, double alt=2093.093,
-          double T=273.15, double P=1013.25, double rh=0.0,
-          double wavelength=0.550, double eps=1e-8):
+def refco(lat=0.557744205098, alt=2093.093,
+          T=273.15, P=1013.25, rh=0.0,
+          wavelength=0.550, eps=1e-8):
     """Refractions coefficients for use with ``refract()``.
 
-    :param lat: Observer's astronomical latitude (radians).
-    :type lat: float
-    :param alt: Observer's altitude above sea level (meters).
-    :type alt: float
-    :param T: Ambient temperature (Kelvin).
-    :type T: float
-    :param rh: Relative humidity (0-1).
-    :type rh: integer
-    :param wavelength: Wavelength in microns.
-    :type wavelength: float
-    :param eps: Fractional accuracy.
-    :type eps: float
+    Parameters
+    ----------
+    lat : float
+        Observer's latitude (radians).
+    alt : float
+        Observer's altitude above sea level (meters).
+    T : float
+        Ambient temperature (Kelvin).
+    rh : int
+        Relative humidity (0-1).
+    wavelength : float
+        Wavelength in microns.
+    eps : float
+        Fractional accuracy.
 
-    :return: Refraction coefficients, as a 2-element tuple.
-    :rtype: (float, float)
+    Returns
+    -------
+    r : 2-element tuple of floats
+        (refa, refb)
 
+    Notes
+    -----
     The values returned are used for calculating change in zenith
     distance that must be applied to correct for refraction. These
-    values are passed to the function ``refract()`` for this
-    calculation.
+    values are passed to the function `refract` for this calculation.
 
     The default location is KPNO.
 
     See src/tpm/refco.c for more details.
+    
     """
     cdef double refa
     cdef double refb
@@ -1096,143 +1461,187 @@ def refco(double lat=0.557744205098, double alt=2093.093,
                       &refa,  &refb)
     return (refa, refb)
 
-def refract(double zx, double refa, double refb, int flag):
+def refract(zx, refa, refb, flag):
     """Returns change in zenith distance due to refraction.
 
-    :param zx: Raw zenith distance, apparent or observed (radians).
-    :type zx: float
-    :param refa: Refraction coefficient from ``refco``.
-    :type refa: float
-    :param refa: Refraction coefficient from ``refco``.
-    :type refa: float
-    :param flag: Apply refraction if flag > 0, else remove.
-    :type flag: integer
+    Parameters
+    ----------
+    zx : float
+        Raw zenith distance, apparent or observed (radians).
+    refa : float
+        Refraction coefficient from ``refco``.
+    refa : float
+        Refraction coefficient from ``refco``.
+    flag : float
+        Apply refraction if flag > 0, else remove.
 
-    :return: Correction to zenith distance due to refraction.
-    :rtype: float
-    
+    Returns
+    -------
+    z : float
+        Correction to zenith distance due to refraction.
+
+    Notes
+    -----
     Given a zenith distance ``zx``, this function returns the amount of
     change in this quantity due to refraction. This correction must be
     added to ``zx`` to find the resultant zenith distance.
+    
     """
     return tpm_astro.refract(zx, refa, refb, flag)
     
-def solar_perigee(double tdt):
+def solar_perigee(tdt):
     """Mean longitude of the perigee of solar orbit.
 
-    :param tdt: Terresttrial Dynamic Time (same as TT).
-    :type tdt: float
+    Parameters
+    ----------
+    tdt : float
+        Terresttrial Dynamic Time (same as TT).
 
-    :return: Longitude in radians.
-    :rtype: float
+    Returns
+    -------
+    s : float
+        Longitude in radians.
+
     """
     return tpm_astro.solar_perigee(tdt)
 
-def solar_perigee_dot(double tdt):
+def solar_perigee_dot(tdt):
     """Rate of change of solar perigee.
 
-    :param tdt: Terresttrial Dynamic Time (same as TT).
-    :type tdt: float
+    Parameters
+    ----------
+    tdt : float
+        Terresttrial Dynamic Time (same as TT).
 
-    :return: Rate of change of longitude in radians/julian century.
-    :rtype: float
+    Returns
+    -------
+    s : float
+        Rate of change of longitude in radians/julian century.
+
     """
     return tpm_astro.solar_perigee_dot(tdt)
 
-def theta(double start, double end, int pflag):
+def theta(start, end, pflag):
     """FK4 and FK5 precession angles.
 
-    :param start: Starting time as a Julian date.
-    :type start: float
-    :param end: Ending time as a Julian date.
-    :type end: float
-    :param pflag: The model to use.
-    :type pflag: integer
+    Parameters
+    ----------
+    start : float
+        Starting (initial) time as a Julian date.
+    end : float
+        Ending (final) time as a Julian date.
+    pflag : int
+        The model to use.
 
-    :return: Precession angle for the given time period.
-    :rtype: float
+    Returns
+    -------
+    theta : float
+        Precession angle for the given time period.
 
-    Returns the precession angle for the model indicated by ``pflag``
-    for the time ``end``, starting from the time ``start``.
+    Notes
+    -----
+    Returns the precession angle for the model indicated by `pflag`
+    for the time `end`, starting from the time `start`.
 
-    The values for ``pflag`` can be::
+    The values for `pflag` can be::
     
       PRECESS_NEWCOMB, PRECESS_ANDOYER, PRECESS_KINOSHITA,
       PRECESS_LIESKE and PRECESS_FK5.
 
     See TPM manual for definition of these constants.
+    
     """
     return tpm_astro.theta(start, end, pflag)
 
-def thetadot(double start, double end, int pflag):
+def thetadot(start, end, pflag):
     """Rate of change of FK4 and FK5 precession angles.
 
-    :param start: Starting time as a Julian date.
-    :type start: float
-    :param end: Ending time as a Julian date.
-    :type end: float
-    :param pflag: The model to use.
-    :type pflag: integer
+    Parameters
+    ----------
+    start : float
+        Starting (initial) time as a Julian date.
+    end : float
+        Ending (final) time as a Julian date.
+    pflag : int
+        The model to use.
 
-    :return: Rate of change of precession angle for the given time period.
-    :rtype: float
+    Returns
+    -------
+    td : float
+        Rate of change of precession angle for the given time period.
 
+    Notes
+    -----
     Returns the rate of change of precession angle for the model
-    indicated by ``pflag`` for the time ``end``, starting from the time
-    ``start``.
+    indicated by `pflag` for the time `end`, starting from the time
+    `start`.
 
-    The values for ``pflag`` can be::
+    The values for `pflag` can be::
     
       PRECESS_NEWCOMB, PRECESS_ANDOYER, PRECESS_KINOSHITA,
       PRECESS_LIESKE and PRECESS_FK5.
 
     See TPM manual for definition of these constants.
+    
     """
     return tpm_astro.thetadot(start, end, pflag)
 
-def zee(double start, double end, int pflag):
+def zee(start, end, pflag):
     """FK4 and FK5 precession angles.
 
-    :param start: Starting time as a Julian date.
-    :type start: float
-    :param end: Ending time as a Julian date.
-    :type end: float
-    :param pflag: The model to use.
-    :type pflag: integer
+    Parameters
+    ----------
+    start : float
+        Starting (initial) time as a Julian date.
+    end : float
+        Ending (final) time as a Julian date.
+    pflag : int
+        The model to use.
 
-    :return: Precession angle for the given time period.
-    :rtype: float
+    Returns
+    -------
+    z :float
+         Precession angle for the given time period.
 
-    Returns the precession angle for the model indicated by ``pflag``
-    for the time ``end``, starting from the time ``start``.
+    Notes
+    -----
+    Returns the precession angle for the model indicated by `pflag`
+    for the time `end`, starting from the time `start`.
 
-    The values for ``pflag`` can be::
+    The values for `pflag` can be::
     
       PRECESS_NEWCOMB, PRECESS_ANDOYER, PRECESS_KINOSHITA,
       PRECESS_LIESKE and PRECESS_FK5.
 
     See TPM manual for definition of these constants.
+    
     """
     return tpm_astro.zee(start, end, pflag)
 
-def zeedot(double start, double end, int pflag):
+def zeedot(start, end, pflag):
     """Rate of change of FK4 and FK5 precession angles.
 
-    :param start: Starting time as a Julian date.
-    :type start: float
-    :param end: Ending time as a Julian date.
-    :type end: float
-    :param pflag: The model to use.
-    :type pflag: integer
+    Parameters
+    ----------
+    start : float
+        Starting (initial) time as a Julian date.
+    end : float
+        Ending (final) time as a Julian date.
+    pflag : int
+        The model to use.
 
-    :return: Rate of change of precession angle for the given time period.
-    :rtype: float
+    Returns
+    -------
+    zd :float
+         Rate of change of precession angle for the given time period.
 
+    Notes
+    -----
     Returns the rate of change of precession angle for the model
-    indicated by ``pflag`` for the time ``end``, starting from the time
-    ``start``.
+    indicated by `pflag` for the time `end`, starting from the time
+    `start`.
 
-    The values for ``pflag`` can be::
+    The values for `pflag` can be::
     
       PRECESS_NEWCOMB, PRECESS_ANDOYER, PRECESS_KINOSHITA,
       PRECESS_LIESKE and PRECESS_FK5.
@@ -1241,44 +1650,57 @@ def zeedot(double start, double end, int pflag):
     """
     return tpm_astro.zeedot(start, end, pflag)
 
-def zeta(double start, double end, int pflag):
+def zeta(start, end, pflag):
     """FK4 and FK5 precession angles.
 
-    :param start: Starting time as a Julian date.
-    :type start: float
-    :param end: Ending time as a Julian date.
-    :type end: float
-    :param pflag: The model to use.
-    :type pflag: integer
+    Parameters
+    ----------
+    start : float
+        Starting (initial) time as a Julian date.
+    end : float
+        Ending (final) time as a Julian date.
+    pflag : int
+        The model to use.
 
-    :return: Precession angle for the given time period.
-    :rtype: float
+    Returns
+    -------
+    zd :float
+         Precession angle for the given time period.
 
-    Returns the precession angle for the model indicated by ``pflag``
-    for the time ``end``, starting from the time ``start``.
+    Notes
+    -----
+    Returns the precession angle for the model indicated by `pflag`
+    for the time `end`, starting from the time `start`.
 
-    The values for ``pflag`` can be::
+    The values for `pflag` can be::
     
       PRECESS_NEWCOMB, PRECESS_ANDOYER, PRECESS_KINOSHITA,
       PRECESS_LIESKE and PRECESS_FK5.
 
     See TPM manual for definition of these constants.
+    
     """
     return tpm_astro.zeta(start, end, pflag)
 
-def zetadot(double start, double end, int pflag):
+def zetadot(start, end, pflag):
     """Rate of change of FK4 and FK5 precession angles.
 
-    :param start: Starting time as a Julian date.
-    :type start: float
-    :param end: Ending time as a Julian date.
-    :type end: float
-    :param pflag: The model to use.
-    :type pflag: integer
+    Parameters
+    ----------
+    start : float
+        Starting (initial) time as a Julian date.
+    end : float
+        Ending (final) time as a Julian date.
+    pflag : int
+        The model to use.
 
-    :return: Rate of change of precession angle for the given time period.
-    :rtype: float
+    Returns
+    -------
+    zd :float
+         Rate of change of precession angle for the given time period.
 
+    Notes
+    -----
     Returns the rate of change of precession angle for the model
     indicated by ``pflag`` for the time ``end``, starting from the time
     ``start``.
@@ -1289,17 +1711,24 @@ def zetadot(double start, double end, int pflag):
       PRECESS_LIESKE and PRECESS_FK5.
 
     See TPM manual for definition of these constants.
+    
     """
     return tpm_astro.zetadot(start, end, pflag)
 
 def nutations(tdt):
     """Nutations in longitude and obliquity.
 
-    :param tdt: Terrestrial Dynamic Time (same as TDT).
-    :type tdt: float
+    Parameters
+    ----------
+    tdt : float
+        Terrestrial Dynamic Time (same as TDT).
 
-    :return: Nutations in radians (delta_phi, delta_eps).
-    :rtype: (float, float)
+    Returns
+    -------
+    n : 2-element tuple of floats
+        The first element is the nutation in longitude and the second
+        element is the nutation in obliquity. Both are in radians.
+
     """
     cdef double delta_phi, delta_eps
     delta_phi = 0.0

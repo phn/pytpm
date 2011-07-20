@@ -65,10 +65,10 @@ class TestICRSEp19912Other(unittest.TestCase):
             tpm.proper_motion(v6, ep2, ep)
             d = tpm.v62cat(v6, tpm.CJ)
             x = [float(j) for j in f.readline().strip().split()]
-            self.assertAlmostEqual(tpm.r2d(tpm.r2r(d['ra'])), x[0], 8)
-            self.assertAlmostEqual(tpm.r2d(d['dec']), x[1], 8)
-            self.assertAlmostEqual(d['pmra'], x[2], 4)
-            self.assertAlmostEqual(d['pmdec'], x[3], 4)            
+            self.assertAlmostEqual(tpm.r2d(tpm.r2r(d['alpha'])), x[0], 8)
+            self.assertAlmostEqual(tpm.r2d(d['delta']), x[1], 8)
+            self.assertAlmostEqual(d['pma'], x[2], 4)
+            self.assertAlmostEqual(d['pmd'], x[3], 4)            
             self.assertAlmostEqual(d['px'], x[4], 8)
             self.assertAlmostEqual(d['rv'], x[5], 2)
             
@@ -115,10 +115,10 @@ class TestICRSEp19912Other(unittest.TestCase):
             tpm.proper_motion(v6, ep2, ep)
             d = tpm.v62cat(v6, tpm.CJ)
             x = [float(j) for j in f.readline().strip().split()]
-            self.assertAlmostEqual(tpm.r2d(tpm.r2r(d['ra'])), x[0], 8)
-            self.assertAlmostEqual(tpm.r2d(d['dec']), x[1], 8)
-            self.assertAlmostEqual(d['pmra'], x[2], 4)
-            self.assertAlmostEqual(d['pmdec'], x[3], 4)            
+            self.assertAlmostEqual(tpm.r2d(tpm.r2r(d['alpha'])), x[0], 8)
+            self.assertAlmostEqual(tpm.r2d(d['delta']), x[1], 8)
+            self.assertAlmostEqual(d['pma'], x[2], 4)
+            self.assertAlmostEqual(d['pmd'], x[3], 4)            
             self.assertAlmostEqual(d['px'], x[4], 8)
             self.assertAlmostEqual(d['rv'], x[5], 2)
             
@@ -165,10 +165,10 @@ class TestICRSEp19912Other(unittest.TestCase):
             tpm.proper_motion(v6, ep2, ep)
             d = tpm.v62cat(v6, tpm.CJ)
             x = [float(j) for j in f.readline().strip().split()]
-            self.assertAlmostEqual(tpm.r2d(tpm.r2r(d['ra'])), x[0], 8)
-            self.assertAlmostEqual(tpm.r2d(d['dec']), x[1], 8)
-            self.assertAlmostEqual(d['pmra'], x[2], 4)
-            self.assertAlmostEqual(d['pmdec'], x[3], 4)            
+            self.assertAlmostEqual(tpm.r2d(tpm.r2r(d['alpha'])), x[0], 8)
+            self.assertAlmostEqual(tpm.r2d(d['delta']), x[1], 8)
+            self.assertAlmostEqual(d['pma'], x[2], 4)
+            self.assertAlmostEqual(d['pmd'], x[3], 4)            
             self.assertAlmostEqual(d['px'], x[4], 8)
             self.assertAlmostEqual(d['rv'], x[5], 2)
             
@@ -216,10 +216,10 @@ class TestICRSEp19912Other(unittest.TestCase):
             tpm.proper_motion(v6, ep2, ep)
             d = tpm.v62cat(v6, tpm.CJ)
             x = [float(j) for j in f.readline().strip().split()]
-            self.assertAlmostEqual(tpm.r2d(tpm.r2r(d['ra'])), x[0], 8)
-            self.assertAlmostEqual(tpm.r2d(d['dec']), x[1], 8)
-            self.assertAlmostEqual(d['pmra'], x[2], 4)
-            self.assertAlmostEqual(d['pmdec'], x[3], 4)            
+            self.assertAlmostEqual(tpm.r2d(tpm.r2r(d['alpha'])), x[0], 8)
+            self.assertAlmostEqual(tpm.r2d(d['delta']), x[1], 8)
+            self.assertAlmostEqual(d['pma'], x[2], 4)
+            self.assertAlmostEqual(d['pmd'], x[3], 4)            
             self.assertAlmostEqual(d['px'], x[4], 8)
             self.assertAlmostEqual(d['rv'], x[5], 2)
             

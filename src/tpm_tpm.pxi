@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# The following line must be present in the pytpm.pyx file.
+# The following line must be present in the tpm.pyx file.
 # cimport tpm_vec
 
 TPM_S00 = tpm_tpm.TPM_S00     
@@ -64,7 +64,114 @@ TPM_REFRACTION = tpm_tpm.TPM_REFRACTION
 TPM_ALL = tpm_tpm.TPM_ALL
 
 cdef class TSTATE(object):
-    """Class corresponding to TPM TSTATE structure."""
+    """Class corresponding to TPM TSTATE structure.
+
+    The class stores all 30 quantities needed to define a state in
+    TPM. These quantities are accessible as attributes of an
+    object. The 12 independent attributes are read-write and the 18
+    dependent attributes are read-only.
+
+    Parameters
+    ----------
+    utc : float
+        The "current time" as a Julian date (UTC).
+    delta_at : float
+        TAI - UTC in seconds.
+    delta_ut : float
+        UT1 - UTC in seconds.
+    lon : float
+        Longitude of an observer in radians. Eastern longitudes are
+        positive.
+    lat : float
+        Latitude of an observer in radians. Northern latitide are
+        positive.
+    alt : float
+        Altitude of an observer in meters.
+    xpole : float
+        Polar motion in radians.
+    ypole : float
+        Polar motion in radians.
+    T : float
+        Temperature in Kelvins.
+    P : float
+        Pressure in milli-bars.
+    H : float
+        Ambient humidity [0-1].
+    wavelength : float
+        Wavelength of observation in microns.
+
+    Attributes
+    ----------
+    utc : float
+        The "current time" as a Julian date (UTC).
+    delta_at : float
+        TAI - UTC in seconds.
+    delta_ut : float
+        UT1 - UTC in seconds.
+    lon : float
+        Longitude of an observer in radians. Eastern longitudes are
+        positive.
+    lat : float
+        Latitude of an observer in radians. Northern latitide are
+        positive.
+    alt : float
+        Altitude of an observer in meters.
+    xpole : float
+        Polar motion in radians.
+    ypole : float
+        Polar motion in radians.
+    T : float
+        Temperature in Kelvins.
+    P : float
+        Pressure in milli-bars.
+    H : float
+        Ambient humidity [0-1].
+    wavelength : float
+        Wavelength of observation in microns.
+    tai : float
+        International Atomic Time as a Julian date.
+    tdt : float
+        Terrestrial Dynamic Time (Terrestrial Time) as a Julian date.
+    tdb : float
+        Barycentric Dynamic Time as a Julian date.
+    obliquity : float
+        Mean obliquity of the ecliptic at the "current time" in
+        radians.
+    nut_lon : float
+        Nutation in longitude in radinas.
+    nut_obl : float
+        Nutation in obliquity in radians.
+    nm : tpm.M3
+        Nutation matric for "current time".
+    pm : tpm.M3
+        Precession matric from J2000.0 to "current time".
+    ut1 : float
+        Universal Time as a Julian date.
+    gmst : float
+        Greewich Mean Sidereal Time in radians.
+    gast : float
+       Greewich Apparent Sidereal Time in radians.
+    last : float
+       Local Apparent Sidereal Time in radians.
+    eb : tpm.V6C
+       Barycentric Earth position and velocity, w.r.t mean J2000.0
+       equator and equinox.
+    eh : tpm.V6C
+       Heliocentric Earth position and velocity, w.r.t mean J2000.0
+       equator and equinox.
+    obs_m : tpm.V6C
+       Geocentric Earth-fixed mean state vector.
+    obs_t : tpm.V6C
+       Geocentric Earth-fixed true state vector. This takes into
+       account polar motion.
+    obs_s : tpm.V6C
+       Geocentric space-fixed true state vector.
+    refa : float
+       Refraction coefficient.
+    refb : float
+       Refraction coefficient.
+       
+    """
     cdef tpm_tpm.TPM_TSTATE _tstate
 
     def __cinit__(self):
@@ -215,7 +322,7 @@ cdef class TSTATE(object):
         return self._tstate.tdt
     
     tdt = property(__gettdt,
-                   doc="Terrestrial Dynamic Time;Terrestrial Time.")
+                   doc="Terrestrial Dynamic Time (Terrestrial Time).")
 
     def __gettdb(self):
         return self._tstate.tdb
