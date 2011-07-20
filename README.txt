@@ -19,7 +19,7 @@ Python interface to the TPM C library
 .. _Distribute: http://packages.python.org/distribute/
 .. _numpydoc: http://pypi.python.org/pypi/numpydoc
 .. _Sphinx: http://sphinx.pocoo.org/
-
+.. _IERS: http://www.iers.org/
 
 PyTPM is a Python interface to the TPM library, generated using
 Cython_.  TPM, `Telescope Pointing Machine`_ , is a C library written
@@ -28,7 +28,7 @@ several astronomical coordinate systems. It was designed with the aim
 of incorporating it into telescope control systems and hence the
 name. It is used by the `KPNO WIYN observatory`_ and the WHAM_ project
 for calculating directions to astronomical objects. The TPM C source
-code used here was copied from the astrolib_ project, and addititonal C
+code used here was copied from the astrolib_ project, and additional C
 source files were provided by Jeff Percival.
 
 In addition to most of the functions, macros, constants and structures
@@ -57,21 +57,24 @@ Installation
 
 .. important::
 
-    The file :file:`src/tpm/delta_AT.c` must be updated when Delta-AT
+    The file `src/tpm/delta_AT.c` must be updated when Delta-AT
     is changed by the IERS_, and PyTPM Cython code must
-    re-compiled. Update the file and just run setup.py again. See 
-    :ref:`delta_at_info`, for ways to get updated values for this 
-    quantity.
+    re-compiled. Update the file and just run setup.py again.
 
 If you don't have Distribute_, then install it by following the
 instructions 
 `here <http://pypi.python.org/pypi/distribute#distribute-setup-py>`_.
 
-1. Download the distribution by clicking the **Download** button in the
-   Github repository page. Then run `python setup.py install`. Use the
-   `prefix` or `user` arguments to change the install location.
+#. Install pip/easy_install and then run `pip install pytpm` or
+   `easy_install pytpm`.
 
-2. Install pip and then run `pip install pytpm`.
+or 
+
+#. Download the distribution by clicking the *Download* button in the
+   `Github repository page <https://github.com/phn/pytpm>`_ or from the
+   `pypi page <http://pypi.python.org/pypi/PyTPM>`_. Then run `python
+   setup.py install`. Use the `--prefix <dest>` or `--user` arguments
+   to change the install location.
 
 Examples
 ========
@@ -249,7 +252,7 @@ coordinates, we execute::
     >>> ra = 359.97907800
     >>> de = -65.57713200
     >>> from pytpm import tpm, convert
-    >>> l,b = convert.convert(ra, de, s1=tpm.TPM_S06, s2=tpm.TPM_S04)[0]
+    >>> l,b = convert.convert(ra, de, s1=tpm.TPM_S06, s2=tpm.TPM_S04)
     >>> l
         -48.699664474942672
     >>> b
@@ -265,7 +268,7 @@ different systems.
 >>> # FK5 epoch=J2000, equinox=J2000 to Galactic coordinates epoch=J2000
 >>> ra2000 = tpm.HMS(hh=12,mm=22,ss=54.899).to_degrees()
 >>> de2000 = tpm.DMS(dd=15,mm=49,ss=20.57).to_degrees()
->>> l,b = convert.convert(ra2000, de2000, s1=tpm.TPM_S06, s2=tpm.TPM_S04)[0]
+>>> l,b = convert.convert(ra2000, de2000, s1=tpm.TPM_S06, s2=tpm.TPM_S04)
 >>> l,b
     (-88.863860438221522, 76.898868975136054)
 >>> l+360.0,b
@@ -274,19 +277,19 @@ different systems.
 >>> # FK4 epoch=B1950, equinox=B1950 to Galactic coordinates epoch=B1950
 >>> ra1950 = tpm.HMS(hh=12,mm=20,ss=22.94).to_degrees()
 >>> de1950 = tpm.DMS(dd=16, mm=5, ss=58.2).to_degrees()
->>> l,b = convert.convert(ra1950, de1950, s1=tpm.TPM_S05, s2=tpm.TPM_S04)[0]
+>>> l,b = convert.convert(ra1950, de1950, s1=tpm.TPM_S05, s2=tpm.TPM_S04)
 >>> l+360.0,b
     (271.13611058008075, 76.898921112825732)
 
 >>> # FK4 epoch=B1950 equinox=B1950 to FK5 epoch=J2000, equinox=J2000
 >>> ra,de = convert.convert(ra1950, de1950, s1=tpm.TPM_S05,
-   ....: s2=tpm.TPM_S06, epoch=tpm.B1950, equinox=tpm.B1950)[0]
+   ....: s2=tpm.TPM_S06, epoch=tpm.B1950, equinox=tpm.B1950)
 >>> print tpm.HMS(d=ra+360.0), tpm.DMS(dd=de)
  12H 22M 54.895S +15D 49' 20.528"
 
 >>> # FK5 epoch=J2000, equinox=J2000 to FK4 epoch=B1950, equinox=B1950
 >>> ra,de = convert.convert(ra2000, de2000, s1=tpm.TPM_S06, 
-   ....: s2=tpm.TPM_S05, epoch=tpm.J2000, equinox=tpm.J2000)[0]
+   ....: s2=tpm.TPM_S05, epoch=tpm.J2000, equinox=tpm.J2000)
 >>> print tpm.HMS(d=ra+360.0), tpm.DMS(dd=de)
  12H 20M 22.935S +16D 05' 58.024"
 

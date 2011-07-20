@@ -20,9 +20,26 @@ ext_modules = [Extension("pytpm.tpm", srcfiles,
 ext_modules.append(
     Extension("pytpm.convert", ["src/convert.c"]))
 
+# Frpm pyephem/setup.py.
+def read(*filenames):
+    return open(os.path.join(os.path.dirname(__file__), *filenames)).read()
+
 setup(
-    name = "pytpm",
+    name = "PyTPM",
     version = "0.6dev",
+    description = \
+        "Python interface to Telescope Pointing Machine C library.",
+    long_description = read("README.txt"),
+    license = 'BSD',
+    author = "Prasanth Nair",
+    author_email = "prasanthhn@gmail.com",
+    url = 'https://github.com/phn/pytpm',
+    classifiers = [
+        'Development Status :: 1 - Planning',
+        'Intended Audience :: Science/Research',
+        'License :: OSI Approved :: BSD License',
+        'Topic :: Scientific/Engineering :: Astronomy',        
+        ],
     packages = ['pytpm','pytpm.tests'],
     test_suite = "pytpm.tests",
     ext_modules = ext_modules)

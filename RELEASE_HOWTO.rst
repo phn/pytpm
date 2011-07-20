@@ -8,4 +8,5 @@
 4. Upload sdist to github.
 5. Upload ??? to pypi.
 6. Update documentation at github ghpages.
+7. Upload documents to pypi.
 

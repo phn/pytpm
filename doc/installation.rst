@@ -50,11 +50,21 @@ instructions `here
 
 If you don't have Distribute_, then install it by following the
 instructions 
-`here <http://pypi.python.org/pypi/distribute#distribute-setup-py>`_.
+`here
+<http://pypi.python.org/pypi/distribute#distribute-setup-py>`_. Then do
+one of the following:
 
-1. Download the distribution by clicking the **Download** button in the
-   Github repository page. Then run `python setup.py install`. Use the
-   `prefix` or `user` arguments to change the install location.
 
-2. Install pip and then run `pip install pytpm`.
+#. Install pip/easy_install and then run `pip install pytpm` or
+   `easy_install pytpm`.
+
+or 
+
+#. Download the distribution by clicking the *Download* button in the
+   `Github repository page <https://github.com/phn/pytpm>`_ or from the
+   `pypi page <http://pypi.python.org/pypi/PyTPM>`_. Then run `python
+   setup.py install`. Use the `--prefix <dest>` or `--user` arguments
+   to change the install location.
+
+
 
