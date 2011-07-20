@@ -290,7 +290,7 @@ cpdef convertv6(v6=None, double utc=-999, double delta_at=-999,
     try:
         len(v6)
     except TypeError:
-        # Not a list. Assume that this is a single number.
+        # Not a list. Assume that this is a single vector.
         v6 = (v6,)
     for j,v in enumerate(v6):
         if type(v) != type(tpm.V6C()):
@@ -359,12 +359,12 @@ cpdef precess(alpha=-999, delta=-999, start=-999, end=-999,
     Notes
     -----
     This function can be used to precess equatorial (ra,dec)
-    corodinates using a particular model of precession. The input
+    coordinates using a particular model of precession. The input
     coordinates can be in the FK5 or FK4 systems. In the FK5 system
     there is only one precession model, which is selected using ``pflag
     == tpm.PRECESS_FK5``. The FK4 system has several models, and can be
     selected by setting appropriate constants as the value of
-    ``pflag``:
+    `pflag`:
 
       PRECESS_ANDOYER, PRECESS_NEWCOMB, PRECESS_KINOSHITA,
       PRECESS_LIESKE
@@ -406,4 +406,68 @@ cpdef precess(alpha=-999, delta=-999, start=-999, end=-999,
     alpha_out = [tpm.r2d(i) for i in alpha_out]
     delta_out = [tpm.r2d(i) for i in delta_out]
 
-    return alpha_out, delta_out
+    if len(alpha) == 1:
+        return alpha_out[0], delta_out[0]
+    else:
+        return alpha_out, delta_out
+
+cpdef precessv6(v6=None, start=-999, end=-999, pflag=tpm.PRECESS_FK5):
+    """Precess a list of V6C vectors.
+
+    Parameters
+    ----------
+    v6 : tpm.V6C or list of tpm.V6C 
+        V6C vector to be precessed.
+    start : float
+        Starting time for precession, as a Julian date.
+    end : float
+        End time for precession, as a Julian date.
+    pflag : int
+        The precession model to use.
+
+    Returns
+    -------
+    v6 : tpm.V6C or list of tpm.V6C objects.
+        Precessed V6C vector.
+
+    Notes
+    -----
+    This function can be used to precess equatorial in a V6C vector
+    using a particular model of precession. The input coordinates can
+    be in the FK5 or FK4 systems. In the FK5 system there is only one
+    precession model, which is selected using ``pflag ==
+    tpm.PRECESS_FK5``. The FK4 system has several models, and can be
+    selected by setting appropriate constants as the value of `pflag`::
+
+      PRECESS_ANDOYER, PRECESS_NEWCOMB, PRECESS_KINOSHITA,
+      PRECESS_LIESKE
+
+    See the tpm manual for definitions of these constants.
+    
+    """
+    cdef int i
+    if not v6:
+        raise TypeError("precessv6 needs V6C object.")
+
+    try:
+        len(v6)
+    except TypeError:
+        # Not a list. Assume that this is a single vector.
+        v6 = (v6,)
+
+    for j,v in enumerate(v6):
+        if type(v) != type(tpm.V6C()):
+            if j == 0:
+                raise TypeError("v6 must be an object of type tpm.V6C.")
+            else:
+                raise TypeError(
+                    "v6[{0}] must be an object of type tpm.V6C.".format(j))
+    
+    v6_out = []
+    for j in v6:
+        v6_out.append(tpm.precess(start, end, j, pflag))
+
+    if len(v6) == 1:
+        return v6_out[0]
+    else:
+        return v6_out

@@ -276,4 +276,53 @@ class TestConvertv6(unittest.TestCase):
             self.assertAlmostEqual(d['rv'], x[5], 2)
             
         f.close()
+
+class TestCPrecessV6(unittest.TestCase):
+    """Test convert.precessv6."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.r, v62.r, 1)
+        self.assertAlmostEqual(v61.alpha, v62.alpha, 5)
+        self.assertAlmostEqual(v61.delta, v62.delta, 5)
+        self.assertAlmostEqual(v61.rdot, v62.rdot, 5)
+        self.assertAlmostEqual(v61.alphadot, v62.alphadot, 5)
+        self.assertAlmostEqual(v61.deltadot, v62.deltadot, 5)
+
+    def testPrecessV6(self):
+        """convert.precessv6 => precess V6 in inertial frame."""
+        v6 = tpm.V6S(r=1e9, alpha=tpm.d2r(34.1592),
+                     delta=tpm.d2r(12.9638), rdot=-0.123,
+                     alphadot=0.382, deltadot=1.0)
+
+        v6 = v6.s2c()
+        v6 = [v6, v6]
+        v6 = convert.precessv6(v6, tpm.J2000, tpm.J1984, tpm.PRECESS_FK5)
         
+        for v in v6:
+            v = v.c2s()
+            self.verify(v,tpm.V6S(r=1e9, alpha=0.5924126644,
+                               delta=0.2249726697,rdot=-0.1229999560,
+                               alphadot=0.3809705204,
+                               deltadot=1.0003321415))
+
+class TestCPrecess(unittest.TestCase):
+    """Test convert.precess."""
+    def verify(self, v61, v62):
+        self.assertAlmostEqual(v61.r, v62.r, 1)
+        self.assertAlmostEqual(v61.alpha, v62.alpha, 5)
+        self.assertAlmostEqual(v61.delta, v62.delta, 5)
+        self.assertAlmostEqual(v61.rdot, v62.rdot, 5)
+        self.assertAlmostEqual(v61.alphadot, v62.alphadot, 5)
+        self.assertAlmostEqual(v61.deltadot, v62.deltadot, 5)
+
+    def testPrecess(self):
+        """convert.precess => precess in inertial frame."""
+        alpha = [34.1592]*2
+        delta = [12.9638]*2
+        
+        a,d = convert.precess(alpha, delta, tpm.J2000,
+                              tpm.J1984, tpm.PRECESS_FK5)
+
+        for i,j in zip(a,d):
+            self.assertAlmostEqual(tpm.d2r(i),0.5924126644,5)
+            self.assertAlmostEqual(tpm.d2r(j),0.2249726697,5)
+            
