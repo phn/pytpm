@@ -71,8 +71,8 @@ The following code takes the FK5 equinox and epoch J2000.0 coordinates
 of M100 through all coordinate systems defined in TPM. C code using the
 TPM library and Python code, for the equivalent conversion, using the
 PyTPM library are both show. The code is also available in
-``examples/conversion_example.c`` and
-``examples/conversion_example.py``, respectively.
+:download:`examples/conversion_example.c` and
+:download:`examples/conversion_example.py`, respectively.
 
 C code
 ======

@@ -27,23 +27,20 @@ Python interface to the TPM C library
 .. _Distribute: http://packages.python.org/distribute/
 .. _IERS: http://www.iers.org/
 
-PyTPM is a Python interface to the `Telescope Pointing Machine`_ (TPM)
-library, generated using Cython_.  TPM is a C library written by `Jeff
-Percival`_, for performing coordinate conversions between several
-astronomical coordinate systems. It was designed with the aim of
-incorporating it into telescope control systems and hence the name. It
-is used by the `KPNO WIYN observatory`_ and the WHAM_ project for
-calculating directions to astronomical objects.
+PyTPM is a Python interface to the TPM library, generated using
+Cython_.  TPM, `Telescope Pointing Machine`_ , is a C library written
+by `Jeff Percival`_, for performing coordinate conversions between
+several astronomical coordinate systems. It was designed with the aim
+of incorporating it into telescope control systems and hence the
+name. It is used by the `KPNO WIYN observatory`_ and the WHAM_ project
+for calculating directions to astronomical objects. The TPM C source
+code used here was copied from the astrolib_ project, and addititonal C
+source files were provided by Jeff Percival.
 
-In addition to interfaces to many of the functions, macros, constants
-and structures defined in TPM, this module also provides a convenience
-function,
-:func:`pytpm.convert.convert`. This function can be used for the most
-common type of coordinate conversion, i.e., converting two angles
-between different standard systems. Functions and data structures
-provided in the library can be used when more involved conversions are
-needed, for example conversions involving different equinoxes and
-epochs.
+In addition to most of the functions, macros, constants and structures
+defined in TPM, this module also provides a few convenience function in
+the module ``pytpm.convert``. The functions in this module provides a
+simple interface to performing coordinate conversions.
 
 Proper usage of PyTPM, and TPM, requires familiarity with concepts in
 astrometry. Before any non-trivial use of this module please read
@@ -73,18 +70,18 @@ Contents
 Important notes
 ===============
 
-As of now there is a ~0.2 arc-seconds difference in declination for FK5
-J2000 to FK4 B1950 conversion, between the value given by PyTPM and
-that given by Vizier/Simbad. This is most likely due to difference in
-the model used for the FK5-FK4 conversion.
+#. As of now there is a ~0.2 arc-seconds difference in declination for FK5
+   J2000 to FK4 B1950 conversion, between the value given by PyTPM and
+   that given by Vizier/Simbad. This is most likely due to difference
+   in the model used for the FK5-FK4 conversion.
 
-The file :file:`src/tpm/delta_AT.c` must be updated when Delta-AT is
-changed by the IERS_, and PyTPM Cython code must re-compiled. See
-:ref:`delta_at_info`, for ways to get updated values for this 
-quantity.
+#. The file :file:`src/tpm/delta_AT.c` must be updated when Delta-AT is
+   changed by the IERS_, and PyTPM Cython code must re-compiled. See
+   :ref:`delta_at_info`, for ways to get updated values for this 
+   quantity.
 
-TPM uses built-in ephemerides for the Earth and Sun, and a built-in
-model for calculating dynamic and rotational time.
+#. TPM uses built-in ephemerides for the Earth and Sun, and a built-in
+   model for calculating dynamic and rotational time.
 
 Credits and license
 ===================

@@ -180,6 +180,20 @@ Functions related to astrometry
 .. autofunction:: zetadot(start, end, pflag)
 .. autofunction:: nutations(tdt)
 
+Functions for creating matrices
+===============================
+
+.. autofunction:: m3rx
+.. autofunction:: m3rxdot 
+.. autofunction:: m3ry 
+.. autofunction:: m3rydot 
+.. autofunction:: m3rz 
+.. autofunction:: m3rzdot 
+.. autofunction:: m6qx
+.. autofunction:: m6qy 
+.. autofunction:: m6qz 
+
+
 Constants
 =========
 

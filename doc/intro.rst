@@ -37,8 +37,8 @@ Convert astronomical coordinates between different systems
 
 PyTPM can be used to convert *positions and velocities* in a given
 astronomical coordinate system into another. Examples of doing this are
-in the ``examples`` folder of the source code. You should read the TPM
-manual before attempting to use these advanced features.
+in the ``examples`` folder. You should read the TPM manual before
+attempting to use these advanced features.
 
 For the most common coordinate conversion, i.e., converting two angles
 in one system into those in another system, a convenience function is
