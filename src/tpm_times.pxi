@@ -53,8 +53,13 @@ cdef class DMS(object):
 
     Attributes
     ----------
-    dd, mm, ss: float
-        Degrees, arc-minutes and arc-seconds of the angle.
+    dd : float
+        Hours part of the angle.
+    mm : float
+        Minutes part of the angle.
+    ss : float
+        Seconds part of the angle.
+        
 
     """
     valid_keys = ('r', 'h', 'dd', 'mm', 'ss')
@@ -257,8 +262,12 @@ cdef class HMS(object):
 
     Attributes
     ----------
-    hh, mm, ss: float
-        hours, minutes and seconds of the angle.
+    hh : float
+        Hours part of the angle.
+    mm : float
+        Minutes part of the angle.
+    ss : float
+        Seconds part of the angle.
 
     """
     valid_keys = ('r', 'dd', 'hh', 'mm', 'ss')

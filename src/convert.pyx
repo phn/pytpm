@@ -61,7 +61,16 @@ def convert(alpha=-999, delta=-999, double utc=-999, double delta_at=-999,
             double xpole=0.0, double ypole=0.0,
             double T=273.15, double P=1013.25, double H=0.0,
             double wavelength=0.550):
-    """Utility function for performing coordinate conversions.
+    """
+    convert(alpha=-999, delta=-999,
+            utc=-999, delta_at=-999, delta_ut=-999,
+            s1=tpm.TPM_S06, s2=tpm.TARGET_OBS_AZEL,
+            epoch=tpm.J2000, equinox=tpm.J2000,
+            lon=-111.598333, lat=31.956389, alt=2093.093,
+            xpole=0.0, ypole=0.0,
+            T=273.15, P=1013.25, H=0.0, wavelength=0.550)
+            
+    Utility function for performing coordinate conversions.
 
     Parameters
     ----------
@@ -211,7 +220,16 @@ cpdef convertv6(v6=None, double utc=-999, double delta_at=-999,
             double xpole=0.0, double ypole=0.0,
             double T=273.15, double P=1013.25, double H=0.0,
             double wavelength=0.550):
-    """Utility function for performing coordinate conversions.
+    """
+    convert(v6=None,
+            utc=-999, delta_at=-999, delta_ut=-999,
+            s1=tpm.TPM_S06, s2=tpm.TARGET_OBS_AZEL,
+            epoch=tpm.J2000, equinox=tpm.J2000,
+            lon=-111.598333, lat=31.956389, alt=2093.093,
+            xpole=0.0, ypole=0.0,
+            T=273.15, P=1013.25, H=0.0, wavelength=0.550)
+
+    Utility function for performing coordinate conversions.
 
     Parameters
     ----------
@@ -261,17 +279,9 @@ cpdef convertv6(v6=None, double utc=-999, double delta_at=-999,
     objects. The independent parameters will be the same for all of the
     V6C object and the dependent parameters will be calculated only
     once.
+
+    See docstring of `convert.convert` for full documentation.
     
-    The default location is KPNO and the values are taken from the TPM
-    C code.
-
-    If `utc` is not provided then it is set to J2000.0 AND BOTH
-    `delta_at` and `delta_ut` ARE SET TO THEIR VALUES AT
-    J2000.0. That is, if `utc` is not given then the specified values
-    for these two are ignored. If `utc` is given but `delta_at`
-    and/or `delta_ut` is not given, then the missing value is set to
-    that at the given `utc`.
-
     """
     cdef int i
     if not v6:

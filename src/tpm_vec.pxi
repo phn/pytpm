@@ -222,8 +222,13 @@ cdef class V3SP(V3):
     r
     alpha
     delta
-    nalpha : alpha normalized to [0, 2π).
-    ndelta : delta normalized to [-π/2, π/2].
+
+    Notes
+    -----
+    The following attributes are also present:
+    
+    nalpha : `alpha` normalized to [0, 2π).
+    ndelta : `delta` normalized to [-π/2, π/2].
     
     """
     # The following are read only.
@@ -703,11 +708,16 @@ cdef class V6S(V6):
     r
     alpha
     delta
-    nalpha : alpha normalized to [0, 2π).
-    ndelta : delta normalized to [-π/2, π/2].
     rdot
     alphadot
     deltadot
+
+    Notes
+    -----
+    The following attributes are also present:
+    
+    nalpha : `alpha` normalized to [0, 2π).
+    ndelta : `delta` normalized to [-π/2, π/2].
     
     """
     # The following is read only.
