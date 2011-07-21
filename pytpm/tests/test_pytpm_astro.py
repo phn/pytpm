@@ -77,7 +77,7 @@ class TestTPMData(unittest.TestCase, CheckTSTATE):
             )
         self.checkm3(tstate.nm, t_m3)
  
-        self.checkm3(tstate.pm['PP'], dict(
+        self.checkm3(tstate.pm.pp, dict(
                 XX=9.999999999998971e-01, XXp=12,
                 XY=-4.161124735358035e-07, XYp=12,
                 XZ=-1.808195760693911e-07, XZp=12,
@@ -89,7 +89,7 @@ class TestTPMData(unittest.TestCase, CheckTSTATE):
                 ZZ=9.999999999999837e-01, ZZp=12
                 ))
 
-        self.checkm3(tstate.pm['VV'],dict(
+        self.checkm3(tstate.pm.vv,dict(
                 XX=9.999999999998971e-01, XXp=12,
                 XY=-4.161124735358035e-07, XYp=12,
                 XZ=-1.808195760693911e-07, XZp=12,
@@ -105,8 +105,8 @@ class TestTPMData(unittest.TestCase, CheckTSTATE):
         t_m3['XX'] = 0.0
         t_m3['YY'] = 0.0
         t_m3['ZZ'] = 0.0
-        self.checkm3(tstate.pm['PV'], t_m3)
-        self.checkm3(tstate.pm['VP'], t_m3)  
+        self.checkm3(tstate.pm.pv, t_m3)
+        self.checkm3(tstate.pm.vp, t_m3)  
 
         self.checkv6(tstate.eb, dict(
                 x=-1.959527204776065e-01, xp=12,
@@ -186,7 +186,8 @@ class TestTimeFunctions(unittest.TestCase):
         dtt = [42.184, 42.184, 64.184, 54.184, 66.184]
         for i,j in zip(self.utc, dtt):
             self.assertAlmostEqual(tpm.delta_TT(i), j, 12)
-        
+
+            
 class TestPVECClass(unittest.TestCase):
     """Test facilities of the PVEC class: array of V6 vectors."""
     def checkpvec(self, pvec, i, t):
@@ -340,18 +341,18 @@ class TestCatV6(unittest.TestCase):
         # Barnard's star from Hipparcos catalog. 
         # ICRS Epoch J1991.25
         import math
-        ra = tpm.d2r(269.45402305)
-        de = tpm.d2r(4.66828815)
+        alpha = tpm.d2r(269.45402305)
+        delta = tpm.d2r(4.66828815)
         px = 549.01 / 1000.0 # To Arc seconds
         rv = 0.0
         # pmra * cos(de) into pmra
-        pmra = (-797.84 / 1000.0 ) / math.cos(de) 
-        pmra *= 100.0 # To Arcseconds per century.
-        pmde = (10326.93 / 1000.0) 
-        pmde *= 100.0 # To Arcseconds per century.
+        pma = (-797.84 / 1000.0 ) / math.cos(delta) 
+        pma *= 100.0 # To Arcseconds per century.
+        pmd = (10326.93 / 1000.0) 
+        pmd *= 100.0 # To Arcseconds per century.
         C = tpm.CJ
 
-        v6 = tpm.cat2v6(ra, de, pmra, pmde, px, rv, C)
+        v6 = tpm.cat2v6(alpha, delta, pma, pmd, px, rv, C)
 
         self.assertAlmostEqual(v6.x, -3568.1807935995)
         self.assertAlmostEqual(v6.y, -374439.8219691383)
@@ -366,28 +367,29 @@ class TestCatV6(unittest.TestCase):
         # Barnard's star from Hipparcos catalog. 
         # ICRS Epoch J1991.25
         import math
-        ra = tpm.d2r(269.45402305)
-        de = tpm.d2r(4.66828815)
+        alpha = tpm.d2r(269.45402305)
+        delta = tpm.d2r(4.66828815)
         px = 549.01 / 1000.0 # To Arc seconds
         rv = 0.0
         # pmra * cos(de) into pmra
-        pmra = (-797.84 / 1000.0 ) / math.cos(de) 
-        pmra *= 100.0 # To Arcseconds per century.
-        pmde = (10326.93 / 1000.0) 
-        pmde *= 100.0 # To Arcseconds per century.
+        pma = (-797.84 / 1000.0 ) / math.cos(delta) 
+        pma *= 100.0 # To Arcseconds per century.
+        pmd = (10326.93 / 1000.0) 
+        pmd *= 100.0 # To Arcseconds per century.
         C = tpm.CJ
 
-        v6 = tpm.cat2v6(ra, de, pmra, pmde, px, rv, C)
+        v6 = tpm.cat2v6(alpha, delta, pma, pmd, px, rv, C)
         
         p = tpm.v62cat(v6, C)
 
-        self.assertAlmostEqual(tpm.r2r(p['ra']), ra)
-        self.assertAlmostEqual(p['de'], de)
-        self.assertAlmostEqual(p['pmra'], pmra)
-        self.assertAlmostEqual(p['pmde'], pmde)
+        self.assertAlmostEqual(tpm.r2r(p['alpha']), alpha)
+        self.assertAlmostEqual(p['delta'], delta)
+        self.assertAlmostEqual(p['pma'], pma)
+        self.assertAlmostEqual(p['pmd'], pmd)
         self.assertAlmostEqual(p['px'], px)
         self.assertAlmostEqual(p['rv'], rv)
 
+        
 class TestProperMotion(unittest.TestCase):
     """Test function proper_motion."""
     def testpm(self):

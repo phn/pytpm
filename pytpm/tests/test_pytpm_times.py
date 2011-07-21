@@ -202,7 +202,6 @@ class TestDMSStructure(unittest.TestCase):
         t = dict(dd=-2.0, mm=-0.0, ss=-0.3)
         verify(t, t['dd']+(t['mm']/60.0)+(t['ss']/3600.0))
 
-
     def testToHours(self):
         """DMS.to_hours() => angle in DMS into hours."""
         def verify(t, t_norm):
@@ -242,6 +241,7 @@ class TestDMSStructure(unittest.TestCase):
         t = dict(r=1.0)
         verify(t, t['r'])
 
+
 class TestHMSStructure(unittest.TestCase):
     """Test if the methods in the HMS class work."""
     def testCreate(self):
@@ -274,7 +274,7 @@ class TestHMSStructure(unittest.TestCase):
         verify(t, t_norm)
 
         # See if initializing with degrees work.
-        t = dict(d=12.5)
+        t = dict(dd=12.5)
         t_norm = dict(hh=12.5*(12/180.0), mm=0.0, ss=0.0)
         verify(t, t_norm)
         
@@ -436,8 +436,8 @@ class TestHMSStructure(unittest.TestCase):
 
         # Verify that initializing with degrees and then converting
         # back gives the same answer.
-        t = dict(d=12.5)
-        verify(t, t['d'])
+        t = dict(dd=12.5)
+        verify(t, t['dd'])
         
     def testToRadians(self):
         """HMS.to_radians() => HMS into radians."""
@@ -459,6 +459,7 @@ class TestHMSStructure(unittest.TestCase):
         t = dict(r=1.0)
         verify(t, t['r'])
         
+
 class TestYMDStructure(unittest.TestCase):
     def testCreate(self):
         """YMD() => create YMD object."""
@@ -774,6 +775,7 @@ class TestYMDStructure(unittest.TestCase):
         self.assertAlmostEqual(tpm.YMD(j=2433282.42345900).to_j(),
                                2433282.42345900)
         
+
 class TestJDStructure(unittest.TestCase):
     def testCreate(self):
         """JD() => create a JD object."""
@@ -1003,6 +1005,7 @@ class TestJDStructure(unittest.TestCase):
         t = dict(year=2000.004098360656)
         verify(t, t['year'])
 
+
 class TestScalarValueConversions(unittest.TestCase):
     """Test conversions between scalar values."""
     def testD2D(self):
@@ -1134,6 +1137,7 @@ class TestScalarValueConversions(unittest.TestCase):
         self.assertAlmostEqual(tpm.as2r(180.0*3600), math.pi)
         self.assertAlmostEqual(tpm.as2r(-180.0*3600), -math.pi)
 
+
 class TestFormattedStringFunction(unittest.TestCase):
     """Test all functions that return formatted string."""
     def testFmtAlpha(self):
@@ -1208,6 +1212,7 @@ class TestYearJulianDateConversion(unittest.TestCase):
         """tpm.jd2jyear() => convert Julian date into Julian year."""
         self.assertAlmostEqual(tpm.jd2jyear(tpm.J2000), 2000.0)
 
+
 class CurrentTime(unittest.TestCase):
     """Test the jd_now and utc_now functions."""
     def testUTCNow(self):
@@ -1237,6 +1242,7 @@ class CurrentTime(unittest.TestCase):
         self.assertAlmostEqual(ymd.hh, d.hour)
         self.assertAlmostEqual(ymd.mm, d.minute)
         self.assertAlmostEqual(ymd.ss, d.second, 1)
+
 
 class CalendarCalculations(unittest.TestCase):
     """Test calendar calculation functions."""

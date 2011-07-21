@@ -3,7 +3,6 @@
 import unittest
 from pytpm import tpm
 
-
 class TestV3Structure(unittest.TestCase):
     """Test the V3 wrapper for _tpm_vec.V3"""
     def testCreate(self):
@@ -14,6 +13,7 @@ class TestV3Structure(unittest.TestCase):
         # Must raise Attribute error if any property is accessed
         self.assertRaises(AttributeError, lambda v: v.x, v3)
         self.assertRaises(AttributeError, lambda v: v.getX(), v3)
+
         
 class TestV3CP(unittest.TestCase):
     """Test the V3CP class."""
@@ -36,8 +36,7 @@ class TestV3CP(unittest.TestCase):
             x.vtype = tpm.VEL            
         self.assertRaises(AttributeError, f1, v3cp)
         self.assertRaises(AttributeError, f2, v3cp)
-        
-        
+                
     def testSetGetInitValues(self):
         """V3CP(**vals) => set V3CP fields at init."""
         t = dict(x=-12.34, y=21345.0, z=-0.00001)
@@ -241,8 +240,7 @@ class TestV3SP(unittest.TestCase):
             x.vtype = tpm.VEL            
         self.assertRaises(AttributeError, f1, v3sp)
         self.assertRaises(AttributeError, f2, v3sp)
-        
-        
+               
     def testSetGetInitValues(self):
         """V3SP(**vals) => set fields at init."""
         t = dict(r=2.0, alpha=-0.12, delta=2*3.14)
@@ -251,7 +249,6 @@ class TestV3SP(unittest.TestCase):
         self.assertAlmostEqual(v3sp.alpha, t['alpha'])
         self.assertAlmostEqual(v3sp.delta, t['delta'])
 
-        
     def testV3S2C(self):
         """V3SP.s2c() => convert V3CP into a V3CP object."""
         import math

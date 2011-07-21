@@ -51,7 +51,7 @@ ext_modules = [Extension("pytpm.tpm", srcfiles,
                          libraries = libraries)]
 ext_modules.append(
         Extension("pytpm.convert", ["src/convert.pyx"],
-                  depends=["src/pytpm.pyx"]))
+                  depends=["src/tpm.pyx"]))
 
 # Package structure is
 # pytpm/__init__.py
@@ -61,8 +61,8 @@ ext_modules.append(
 # pytpm/doc/
 # and so on.
 setup(
-    name = "pytpm",
-    version = "0.5",
+    name = "PyTPM",
+    version = "0.6",
     cmdclass = {'build_ext': build_ext},
     packages = ['pytpm','pytpm.tests'],
     test_suite = "pytpm.tests",
