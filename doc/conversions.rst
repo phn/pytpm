@@ -2,30 +2,31 @@
  Coordinate conversions using TPM and PyTPM
 ============================================
 
-Please read the TPM manual to learn more about TPM. Here I will only
-give a overview of the way TPM performs coordinate conversions.
+Please read the :ref:`TPM manual <tpm_manual>`) to learn more about
+TPM. Here I will only give a overview of the way TPM performs
+coordinate conversions.
 
 .. contents::
 
 In TPM all the information needed to perform coordinate transformations
-are stored in a ``TPM_TSTATE`` structure. This **state data structure**
-stores time information, observers location and other data. Not all
+are stored in a ``TPM_TSTATE`` structure. This *state data structure*
+stores time information, observer's location and other data. Not all
 data stored in this data structure are needed for all conversions.
 
-Each coordinate system defined in TPM is called a **state**. There are 21
+Each coordinate system defined in TPM is called a *state*. There are 21
 different states in TPM, each identified by an integer from 1 to 21.
 
 The actual coordinates used are stored as vectors with 6 components (a
-6-vector or a **state vector**): three position and three velocity
+6-vector or a *state vector*): three position and three velocity
 components. Internally, all vectors are in Cartesian coordinates. But
 for input and output spherical vectors are also used.
 
 The set of steps needed to perform a particular conversion are stored
-in a **look up table**. Each rows of this table stands for a starting
+in a *look up table*. Each rows of this table stands for a starting
 state and a column stands for a final start. Each cell in the table
-holds two pieces of information. First, the **next step** that must be
+holds two pieces of information. First, the *next step* that must be
 performed to get from the starting state indicated by the row to that
-indicated by the column. Second the **resulting state** after this step
+indicated by the column. Second the *resulting state* after this step
 is performed. If the resulting state matches the final state then we
 are done. Otherwise, the resulting state will become the new starting
 state. We can then look up the cell in the row for this new state and
@@ -61,13 +62,13 @@ at the appropriate position in a array of 6-vectors. Then call the
 completion extract the 6-vector for the output coordinates from the
 appropriate position in the array of 6-vectors.
 
-Also, the result from each intermediate step indicated by the look up
-table is also stored in appropriate locations in the array of
+In addition, the result from each intermediate step indicated by the
+look up table is stored in appropriate locations in the array of
 6-vectors.
 
 All these steps can be performed in PyTPM.
 
-The following code takes the FK5 equinox and epoch J2000.0 coordinates
+The following code takes the FK5 J2000.0 equinox and epoch coordinates
 of M100 through all coordinate systems defined in TPM. C code using the
 TPM library and Python code, for the equivalent conversion, using the
 PyTPM library are both show. The code is also available in
@@ -183,7 +184,7 @@ PyTPM code
                      de1_d)
 
       
-We create a state structure, **tstate**, and initialize it by calling
+We create a state structure, *tstate*, and initialize it by calling
 ``tpm_data()`` with ``TPM_INIT``. Then we assign values to independent
 parameters of the state data structure. We then calculate all dependent
 state properties by calling ``tpm_data()`` and passing ``TPM_ALL``. We
@@ -220,7 +221,5 @@ The result from running the above code is given below::
  06-20 Topo. obs. HA/Dec  22H 52M 36.636S +15D 49' 38.307" 343.1527  15.8273
  06-21 Topo. obs. WHAM    22H 52M 56.457S -14D 49' 46.993" 343.2352 345.1703
 
-
-For more details on TPM library see the TPM manual.
 
 ..  LocalWords:  PyTPM TPM LocalWords

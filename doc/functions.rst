@@ -22,6 +22,13 @@ Main TPM functions
 .. autofunction:: proper_motion(v6, end, start)
 .. autofunction:: tpm(pvec, s1, s2, ep, eq, tstate)
 
+Functions in the convert module
+-------------------------------
+
+.. autofunction:: pytpm.convert.convert
+.. autofunction:: pytpm.convert.convertv6
+.. autofunction:: pytpm.convert.precess 
+.. autofunction:: pytpm.convert.precessv6
 
 Date and time calculations and conversions
 ------------------------------------------

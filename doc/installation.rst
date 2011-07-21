@@ -1,6 +1,6 @@
-===============================
- Installation and source files
-===============================
+==============
+ Installation
+==============
 
 .. _Telescope Pointing Machine: http://www.sal.wisc.edu/~jwp/astro/tpm/tpm.html
 .. _Jeff Percival: http://www.sal.wisc.edu/~jwp/
@@ -29,8 +29,8 @@ Requirements
 + The Distribute_ package.
 + Cython_, only if the Cython output needs to be regenerated.
 
-This library was tested using Python 2.6, gcc 4.4 and Cython 0.14 on
-Ubuntu 10.10 and Ubuntu 11.04.
+This library was tested using Python 2.6 and 2.7, with gcc 4.4 and
+Cython 0.14, on Ubuntu 10.10 and Ubuntu 11.04.
 
 Installation
 ============
@@ -43,28 +43,27 @@ Installation
     :ref:`delta_at_info`, for ways to get updated values for this 
     quantity.
 
-
-If you don't have Distribute_, then install it by following the
-instructions `here
-<http://pypi.python.org/pypi/distribute#distribute-setup-py>`_.
-
 If you don't have Distribute_, then install it by following the
 instructions 
-`here
+`at this url
 <http://pypi.python.org/pypi/distribute#distribute-setup-py>`_. Then do
 one of the following:
 
-
-#. Install pip/easy_install and then run `pip install pytpm` or
++ Install pip/easy_install and then run `pip install pytpm` or
    `easy_install pytpm`.
 
 or 
 
-#. Download the distribution by clicking the *Download* button in the
-   `Github repository page <https://github.com/phn/pytpm>`_ or from the
-   `pypi page <http://pypi.python.org/pypi/PyTPM>`_. Then run `python
-   setup.py install`. Use the `--prefix <dest>` or `--user` arguments
-   to change the install location.
++ Download the distribution by clicking the *Download* button in the
+  `Github repository page <https://github.com/phn/pytpm>`_ or from the
+  `pypi page <http://pypi.python.org/pypi/PyTPM>`_. Then run `python
+  setup.py install`. Use the `--prefix <dest>` or `--user` arguments
+  to change the install location.
 
+
+Exploring the Cython code
+=========================
+
+See the file :file:`devel-notes.rst` in the source code repository.
 
 

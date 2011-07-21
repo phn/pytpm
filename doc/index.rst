@@ -27,20 +27,23 @@ Python interface to the TPM C library
 .. _Distribute: http://packages.python.org/distribute/
 .. _IERS: http://www.iers.org/
 
-PyTPM is a Python interface to the TPM library, generated using
-Cython_.  TPM, `Telescope Pointing Machine`_ , is a C library written
-by `Jeff Percival`_, for performing coordinate conversions between
-several astronomical coordinate systems. It was designed with the aim
-of incorporating it into telescope control systems and hence the
-name. It is used by the `KPNO WIYN observatory`_ and the WHAM_ project
-for calculating directions to astronomical objects. The TPM C source
-code used here was copied from the astrolib_ project, and addititonal C
-source files were provided by Jeff Percival.
+PyTPM is a Python interface to the `Telescope Pointing Machine`_ (TPM)
+C library, generated using Cython_.  TPM is a C library written by
+`Jeff Percival`_, for performing coordinate conversions between several
+astronomical coordinate systems. It was designed with the aim of
+incorporating it into telescope control systems. It is used by the
+`KPNO WIYN observatory`_ and the WHAM_ project for calculating
+directions to astronomical objects. 
+
+The TPM C source code used here was copied from the astrolib_ project,
+and additional C source files were provided by Jeff Percival.
 
 In addition to most of the functions, macros, constants and structures
 defined in TPM, this module also provides a few convenience function in
 the module ``pytpm.convert``. The functions in this module provides a
-simple interface to performing coordinate conversions.
+simple interface for performing coordinate conversions.
+
+.. _tpm_manual:
 
 Proper usage of PyTPM, and TPM, requires familiarity with concepts in
 astrometry. Before any non-trivial use of this module please read
@@ -70,10 +73,10 @@ Contents
 Important notes
 ===============
 
-#. As of now there is a ~0.2 arc-seconds difference in declination for FK5
-   J2000 to FK4 B1950 conversion, between the value given by PyTPM and
-   that given by Vizier/Simbad. This is most likely due to difference
-   in the model used for the FK5-FK4 conversion.
+#. As of now there is a ~0.2 arc-seconds difference between the
+   declination given by PyTPM and that given by Vizier/Simbad, for the
+   FK5 J2000 to FK4 B1950 conversion, . This is most likely due to
+   difference in the model used for the FK5-FK4 conversion.
 
 #. The file :file:`src/tpm/delta_AT.c` must be updated when Delta-AT is
    changed by the IERS_, and PyTPM Cython code must re-compiled. See
@@ -93,7 +96,7 @@ see :file:`LICENSE.txt`. The version used here was obtained from the
 coords_ package (version 0.36) of the astrolib_ library. Some C source
 files, missing from the above source, were provided by Jeff Percival.
 
-Send an email to user *prasanthhn*, at the *gmail.com* domain, for
+Send email to user *prasanthhn*, at the *gmail.com* domain, for
 reporting errors, comments, suggestions etc., for the PyTPM library.
 
 __ `Telescope Pointing machine`_
