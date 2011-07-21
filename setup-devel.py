@@ -61,7 +61,7 @@ ext_modules.append(
 # pytpm/doc/
 # and so on.
 setup(
-    name = "pytpm",
+    name = "PyTPM",
     version = "0.6dev",
     cmdclass = {'build_ext': build_ext},
     packages = ['pytpm','pytpm.tests'],
