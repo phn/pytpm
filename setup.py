@@ -35,7 +35,7 @@ setup(
     author_email = "prasanthhn@gmail.com",
     url = 'https://github.com/phn/pytpm',
     classifiers = [
-        'Development Status :: 1 - Planning',
+        'Development Status :: 6 - Mature',
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: BSD License',
         'Topic :: Scientific/Engineering :: Astronomy',        
