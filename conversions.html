@@ -7,13 +7,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Coordinate conversions using TPM and PyTPM &mdash; PyTPM v0.5 documentation</title>
+    <title>Coordinate conversions using TPM and PyTPM &mdash; PyTPM v0.6 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.5',
+        VERSION:     '0.6',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="PyTPM v0.5 documentation" href="index.html" />
+    <link rel="top" title="PyTPM v0.6 documentation" href="index.html" />
     <link rel="next" title="Data Structures" href="data_structures.html" />
     <link rel="prev" title="Introduction to PyTPM" href="intro.html" /> 
   </head>
@@ -39,7 +39,7 @@
         <li class="right" >
           <a href="intro.html" title="Introduction to PyTPM"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">PyTPM v0.5 documentation</a> &raquo;</li> 
+        <li><a href="index.html">PyTPM v0.6 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -50,8 +50,9 @@
             
   <div class="section" id="coordinate-conversions-using-tpm-and-pytpm">
 <h1><a class="toc-backref" href="#id1">Coordinate conversions using TPM and PyTPM</a><a class="headerlink" href="#coordinate-conversions-using-tpm-and-pytpm" title="Permalink to this headline">¶</a></h1>
-<p>Please read the TPM manual to learn more about TPM. Here I will only
-give a overview of the way TPM performs coordinate conversions.</p>
+<p>Please read the <a class="reference internal" href="index.html#tpm-manual"><em>TPM manual</em></a>) to learn more about
+TPM. Here I will only give a overview of the way TPM performs
+coordinate conversions.</p>
 <div class="contents topic" id="contents">
 <p class="topic-title first">Contents</p>
 <ul class="simple">
@@ -63,21 +64,21 @@ give a overview of the way TPM performs coordinate conversions.</p>
 </ul>
 </div>
 <p>In TPM all the information needed to perform coordinate transformations
-are stored in a <tt class="docutils literal"><span class="pre">TPM_TSTATE</span></tt> structure. This <strong>state data structure</strong>
-stores time information, observers location and other data. Not all
+are stored in a <tt class="docutils literal"><span class="pre">TPM_TSTATE</span></tt> structure. This <em>state data structure</em>
+stores time information, observer&#8217;s location and other data. Not all
 data stored in this data structure are needed for all conversions.</p>
-<p>Each coordinate system defined in TPM is called a <strong>state</strong>. There are 21
+<p>Each coordinate system defined in TPM is called a <em>state</em>. There are 21
 different states in TPM, each identified by an integer from 1 to 21.</p>
 <p>The actual coordinates used are stored as vectors with 6 components (a
-6-vector or a <strong>state vector</strong>): three position and three velocity
+6-vector or a <em>state vector</em>): three position and three velocity
 components. Internally, all vectors are in Cartesian coordinates. But
 for input and output spherical vectors are also used.</p>
 <p>The set of steps needed to perform a particular conversion are stored
-in a <strong>look up table</strong>. Each rows of this table stands for a starting
+in a <em>look up table</em>. Each rows of this table stands for a starting
 state and a column stands for a final start. Each cell in the table
-holds two pieces of information. First, the <strong>next step</strong> that must be
+holds two pieces of information. First, the <em>next step</em> that must be
 performed to get from the starting state indicated by the row to that
-indicated by the column. Second the <strong>resulting state</strong> after this step
+indicated by the column. Second the <em>resulting state</em> after this step
 is performed. If the resulting state matches the final state then we
 are done. Otherwise, the resulting state will become the new starting
 state. We can then look up the cell in the row for this new state and
@@ -108,16 +109,16 @@ at the appropriate position in a array of 6-vectors. Then call the
 <tt class="docutils literal"><span class="pre">tpm</span></tt> function with the required information. After successful
 completion extract the 6-vector for the output coordinates from the
 appropriate position in the array of 6-vectors.</p>
-<p>Also, the result from each intermediate step indicated by the look up
-table is also stored in appropriate locations in the array of
+<p>In addition, the result from each intermediate step indicated by the
+look up table is stored in appropriate locations in the array of
 6-vectors.</p>
 <p>All these steps can be performed in PyTPM.</p>
-<p>The following code takes the FK5 equinox and epoch J2000.0 coordinates
+<p>The following code takes the FK5 J2000.0 equinox and epoch coordinates
 of M100 through all coordinate systems defined in TPM. C code using the
 TPM library and Python code, for the equivalent conversion, using the
 PyTPM library are both show. The code is also available in
-<tt class="docutils literal"><span class="pre">examples/conversion_example.c</span></tt> and
-<tt class="docutils literal"><span class="pre">examples/conversion_example.py</span></tt>, respectively.</p>
+<a class="reference download internal" href="_downloads/conversion_example1.c"><tt class="xref download docutils literal"><span class="pre">examples/conversion_example.c</span></tt></a> and
+<a class="reference download internal" href="_downloads/conversion_example1.py"><tt class="xref download docutils literal"><span class="pre">examples/conversion_example.py</span></tt></a>, respectively.</p>
 <div class="section" id="c-code">
 <h2><a class="toc-backref" href="#id2">C code</a><a class="headerlink" href="#c-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-c"><div class="highlight"><pre><span class="cp">#include &quot;tpm/astro.h&quot;</span>
@@ -220,7 +221,7 @@ PyTPM library are both show. The code is also available in
                    <span class="n">de1_d</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>We create a state structure, <strong>tstate</strong>, and initialize it by calling
+<p>We create a state structure, <em>tstate</em>, and initialize it by calling
 <tt class="docutils literal"><span class="pre">tpm_data()</span></tt> with <tt class="docutils literal"><span class="pre">TPM_INIT</span></tt>. Then we assign values to independent
 parameters of the state data structure. We then calculate all dependent
 state properties by calling <tt class="docutils literal"><span class="pre">tpm_data()</span></tt> and passing <tt class="docutils literal"><span class="pre">TPM_ALL</span></tt>. We
@@ -254,7 +255,6 @@ starting and ending state numbers. Finally we retrieve the appropriate
 06-20 Topo. obs. HA/Dec  22H 52M 36.636S +15D 49' 38.307" 343.1527  15.8273
 06-21 Topo. obs. WHAM    22H 52M 56.457S -14D 49' 46.993" 343.2352 345.1703</pre>
 </div>
-<p>For more details on TPM library see the TPM manual.</p>
 </div>
 </div>
 
@@ -313,7 +313,7 @@ starting and ending state numbers. Finally we retrieve the appropriate
         <li class="right" >
           <a href="intro.html" title="Introduction to PyTPM"
              >previous</a> |</li>
-        <li><a href="index.html">PyTPM v0.5 documentation</a> &raquo;</li> 
+        <li><a href="index.html">PyTPM v0.6 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

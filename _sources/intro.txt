@@ -5,12 +5,6 @@
 .. _KPNO: http://www.noao.edu/kpno
 
 
-PyTPM provides facilities for converting astronomical coordinates
-between different coordinate systems. In addition it provides several
-utility functions related to date and time, calendars, string
-formatting and so on. In this document we will discuss some of the top
-level functionality provided by PyTPM.
-
 For a detailed list of functions and constants defined in PyTPM see the
 section on :doc:`functions`. For detailed information on the data
 structures defined in PyTPM, see the section
@@ -23,9 +17,8 @@ advanced facilities of PyTPM.
 .. contents::
 
 Facilities in TPM that are wrapped by PyTPM are provided in the
-sub-module ``pytpm.tpm``. The ``pytpm.convert`` module contains the
-function ``convert()``, that is a convenience function for performing
-the most common type of coordinate conversion.
+sub-module ``pytpm.tpm``. The ``pytpm.convert`` module contains a few
+convenience functions for performing coordinate conversions.
 
 .. code-block:: python
 
@@ -37,35 +30,30 @@ Convert astronomical coordinates between different systems
 
 PyTPM can be used to convert *positions and velocities* in a given
 astronomical coordinate system into another. Examples of doing this are
-in the ``examples`` folder of the source code. You should read the TPM
-manual before attempting to use these advanced features.
+in the :download:`examples/conversion_example.py` and the equivalent C
+code is in :download:`examples/conversion_example.c`. These examples
+illustrate the usage of the full TPM system. Also see 
+:doc:`conversions`.
 
-For the most common coordinate conversion, i.e., converting two angles
-in one system into those in another system, a convenience function is
-provided with PyTPM: ``pytpm.convert.convert()``.  
+The convenience function ``convert.convertv6()`` can be used for cases
+where we want to convert both positions and proper motions from one
+coordinate system to another. This system accepts ``tpm.V6C``
+vectors. See the docstring of this function for more information.
 
-The signature of this function is
+.. autofunction:: pytpm.convert.convertv6
+    :noindex:
 
-.. code-block:: python
-
-     convert(ra, de,
-            int s1=tpm.TPM_S06, int s2=tpm.TARGET_OBS_AZEL,
-            double epoch=tpm.J2000, double equinox=tpm.J2000,
-            double utc=tpm.J2000,
-            double delta_at=tpm.delta_AT(tpm.J2000),
-            double delta_ut=tpm.delta_UT(tpm.J2000),
-            double lon=-111.598333,
-            double lat=31.956389,
-            double alt=2093.093,
-            double xpole=0.0, double ypole=0.0,
-            double T=273.15, double P=1013.25, double H=0.0,
-            double wavelength=0.550)
+For the most common coordinate conversion, i.., converting two angles
+in one system into those in another system, assuming zero proper
+motion, a the function ``convert.convert()`` can be used.
 
 .. autofunction:: pytpm.convert.convert 
+    :noindex:
 
-The arguments to this function are given in the table below; all
-arguments, except for the input angles, have defaults. Also note that
-not all values are needed for many types of coordinate conversions.
+The arguments to both the above function are given in the table below;
+all arguments, except for the input angles, have defaults. Also note
+that not all values are needed for many types of coordinate
+conversions.
 
 +------------+----------------------------------------------------+
 | Parameter  | Description                                        |
@@ -245,119 +233,5 @@ different systems.
    ....:  epoch=tpm.J2000, equinox=tpm.J2000)
  >>> print tpm.HMS(d=ra), tpm.DMS(dd=de)
  12H 20M 22.935S +16D 05' 58.024"
-
-
-Utility functions
-=================
-
-The following sections list a few examples of using the several utility
-functions that come with PyTPM. These are simple interfaces to the
-functions in TPM.
-
-For a detailed list of functions defined in PyTPM see the section
-on :doc:`functions`. 
-  
-Get the current *UTC* time as a *Julian date*
----------------------------------------------
-
-.. code-block:: python
-
-    >>> j = tpm.utc_now()
-    >>> print j
-    2455675.76791
-    >>> js = tpm.fmt_j(j)
-    >>> print js
-     2455675  18H 25M 47.000S
-
-The function ``tpm.utc_now()`` returns the current *UTC* time as a
-*Julian day* number; accurate only to a second. The function
-``tpm.fmt_j()`` returns a string representation of a *Julian
-date*. Note that representing UTC as a Julian date leads to ambiguities
-during leap seconds; UTC is not a contiguous time system.
-
-Convert *Gregorian calendar* date into a *Julian date*
-------------------------------------------------------
-
-.. code-block:: python
-
-    >>> j = tpm.gcal2j(2000,1,1)
-    >>> print tpm.fmt_j(j)
-     2451545  00H 00M 00.000S
-
-Function ``tpm.gcal2j()`` converts a *Gregorian calendar* date, given
-as ``YYYY``, ``MM``, ``DD``, into the corresponding *Julian date* for
-midday, i.e., 12H 00M 00S, of that date. In short, it returns the
-Julian day number for the Gregorian calendar date.
-
-Convert a *Julian date* into a date in the *Gregorian calendar*
----------------------------------------------------------------
-
-.. code-block:: python
-
-    >>> j = tpm.gcal2j(2000,1,1)
-    >>> d = tpm.j2gcal(j)
-    >>> type(d)
-        <type 'dict'>
-    >>> len(d)
-        3
-    >>> print d
-    {'y': 2000, 'dd': 1, 'm': 1}
-    >>> print "{y}/{m}/{dd}".format(**d)
-    2000/1/1
-
-The function ``tpm.j2gcal()``, returns the date in the *Gregorian
-calendar*, on which, the time corresponding to the given *Julian date*
-occurs. The date is returned as a Python dictionary with the key 'y'
-for year, 'm' for the month and 'dd' for the day.
-
-Convert decimal degrees into *DMS* string
------------------------------------------
-
-.. code-block:: python
-
-    >>> d = 12.3456
-    >>> dms = tpm.DMS(dd=d)
-    >>> print dms
-    +12D 20' 44.159"
-    >>> type(dms)
-        <type 'pytpm.tpm.DMS'>
-    >>> dms.dd, dms.mm, dms.ss
-        (12.345599999999999, 0.0, 0.0)
-    >>> dms.normalize()
-    >>> dms.dd, dms.mm, dms.ss
-        (12.0, 20.0, 44.159999999997268)
-    >>> dms = tpm.DMS(dd=1.2345, mm=-12.34, ss=0.123)
-    >>> print dms
-    +01D 01' 43.922"
-    >>> dms.dd, dms.mm, dms.ss
-        (1.2344999999999999, -12.34, 0.123)
-    >>> dms.normalize()
-    >>> dms.dd, dms.mm, dms.ss
-        (1.0, 1.0, 43.922999999999362)
-    >>> import math
-    >>> dms = tpm.DMS(r=math.pi)
-    >>> print dms
-    +180D 00' 00.000"
-    >>> dms.dd, dms.mm, dms.ss
-        (180.0, 0.0, 0.0)
-    >>> dms = tpm.DMS(h=24.0)
-    >>> dms.dd, dms.mm, dms.ss
-        (360.0, 0.0, 0.0)
-    >>> dms = tpm.DMS(h=12.5)
-    >>> print dms
-    +187D 30' 00.000"
-    >>> dms.dd, dms.mm, dms.ss
-        (187.5, 0.0, 0.0)
-
-Angle in degrees, arc-minutes and arc-seconds can be represented using
-the ``tpm.DMS`` class. The angle can be constructed in several ways.
-Passing the keywords ``dd``, ``mm``, ``ss`` for degrees, arc-minutes
-and arc-seconds respectively, will create a angle with the indicated
-value. Passing the keyword ``r`` for angle in radians, will crate a
-``DMS`` object with angle converted into degrees. Passing the keyword
-``h`` for hours will convert the angle in hours into degrees. The
-``normalize()`` method, will normalize the acr-minutes and arc-seconds
-of the angle into the proper range.
-
 
 ..  LocalWords:  PyTPM pytpm TPM
