@@ -41,5 +41,11 @@ setup(
         'Topic :: Scientific/Engineering :: Astronomy',        
         ],
     packages = ['pytpm','pytpm.tests'],
-    test_suite = "pytpm.tests",
+    test_suite = "pytpm.tests.suite",
+    use_2to3 = True,
+    include_package_data = True,
+    package_data = {'pytpm.tests': ['pytpm/tests/data/*.txt',
+                                    'pytpm/tests/c_tests/*.txt',
+                                     ],
+                    'pytpm': ['LICENSE.txt', 'README.txt']},
     ext_modules = ext_modules)

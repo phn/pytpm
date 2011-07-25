@@ -111,12 +111,9 @@ cdef class DMS(object):
         return repr(d)
     
     def __str__(self):
-        return self.__unicode__().encode("utf-8")
-    
-    def __unicode__(self):
         cdef tpm_times.DMS dms
-        return unicode(tpm_times.fmt_dms(self._dms))
-
+        return tpm_times.fmt_dms(self._dms).decode("utf-8")
+        
     def __add__(self, other):
         # Cython does not have __radd__ and the first parameter may not
         # be this object
@@ -319,14 +316,10 @@ cdef class HMS(object):
         return repr(d)
     
     def __str__(self):
-        return self.__unicode__().encode("utf-8")
-    
-    def __unicode__(self):
         cdef tpm_times.HMS hms
         hms = tpm_times.hms2hms(self._hms)
-        s = tpm_times.fmt_hms(hms)
-        return unicode(s)
-
+        return tpm_times.fmt_hms(hms).decode("utf-8")
+    
     def __add__(self, other):
         # Cython does not have __rdd__ and the first parameter may not
         # be this object
@@ -578,14 +571,10 @@ cdef class YMD(object):
         return repr(ymd)
 
     def __str__(self):
-        return self.__unicode__().encode("utf-8")
-
-    def __unicode__(self):
         cdef tpm_times.YMD ymd
         ymd = tpm_times.ymd2ymd(self._ymd)
-        s = tpm_times.fmt_ymd(ymd)
-        return unicode(s)
-
+        return tpm_times.fmt_ymd(ymd).decode("utf-8")
+    
     def __sub__(self, other):
         # Cython does not have __rdd__ and the first parameter may not
         # be this object
@@ -683,7 +672,7 @@ cdef class YMD(object):
         'Sat Jan  1 12:00:00.000 2000'
 
         """
-        return tpm_times.fmt_ymd_raw(self._ymd)
+        return tpm_times.fmt_ymd_raw(self._ymd).decode("utf-8")
 
     def doy(self):
         """Day of the year corresponding to the date-time.
@@ -823,14 +812,10 @@ cdef class JD(object):
         return repr(d)
 
     def __str__(self):
-        return self.__unicode__().encode("utf-8")
-
-    def __unicode__(self):
         cdef tpm_times.JD jd
         jd = tpm_times.jd2jd(self._jd)
-        s = tpm_times.fmt_jd(jd)
-        return unicode(s)
-
+        return tpm_times.fmt_jd(jd).decode("utf-8")
+    
     def __add__(self, other):
         # Cython does not have __rdd__ and the first parameter may not
         # be this object
@@ -1284,7 +1269,7 @@ def y2doy(int y):
     """
     return tpm_times.y2doy(y)
 
-cpdef char *fmt_alpha(double alpha):
+def fmt_alpha(alpha):
     """Normalize and format angle in radians into a str: ' ##H ##M ##.###S'.
 
     Parameters
@@ -1325,9 +1310,9 @@ cpdef char *fmt_alpha(double alpha):
     ' 23H 00M 00.000S'
     
     """
-    return tpm_times.fmt_alpha(alpha)
+    return tpm_times.fmt_alpha(alpha).decode("utf-8")
 
-cpdef char* fmt_delta(double delta):
+def fmt_delta(delta):
     """Normalize and format angle in radians into a str: ±###D ##' ##.###".
 
     Parameters
@@ -1363,9 +1348,9 @@ cpdef char* fmt_delta(double delta):
     >>> tpm.fmt_delta(-tpm.M_PI)
     '+00D 00\' 00.000"'
     """
-    return tpm_times.fmt_delta(delta)
+    return tpm_times.fmt_delta(delta).decode("utf-8")
 
-cpdef char *fmt_d(double d):
+def fmt_d(d):
     """Format angle in degrees into a string: ±###D ##' ##.###".
 
     Parameters
@@ -1402,9 +1387,9 @@ cpdef char *fmt_d(double d):
     '+720D 00\' 00.000"'
     
     """
-    return tpm_times.fmt_d(d)
+    return tpm_times.fmt_d(d).decode("utf-8")
     
-cpdef char *fmt_h(double h):
+def fmt_h(h):
     """Format hours into a string: ±##H ##M ##.###S".
 
     Parameters
@@ -1435,9 +1420,9 @@ cpdef char *fmt_h(double h):
     '-133H 27M 21.599S'
     
     """
-    return tpm_times.fmt_h(h)
+    return tpm_times.fmt_h(h).decode("utf-8")
 
-cpdef char *fmt_j(double j):
+def fmt_j(j):
     """Format Julian date into a string.
 
     Parameters
@@ -1470,9 +1455,9 @@ cpdef char *fmt_j(double j):
     ' 2451544  07H 11M 59.999S'
     
     """
-    return tpm_times.fmt_j(j)
+    return tpm_times.fmt_j(j).decode("utf-8")
 
-cpdef char* fmt_r(double r):
+def fmt_r(r):
     """Format radians into a string with angle expressed as degrees.
 
     Parameters
@@ -1506,9 +1491,9 @@ cpdef char* fmt_r(double r):
     '+540D 00\' 00.000"'
     
     """
-    return tpm_times.fmt_r(r)
+    return tpm_times.fmt_r(r).decode("utf-8")
 
-cpdef char* fmt_y(double y):
+def fmt_y(y):
     """Format years, including fractional part, into a string.
 
     Parameters
@@ -1537,7 +1522,7 @@ cpdef char* fmt_y(double y):
     'Thu Feb  1 00:00:00.000 2001'
     
     """
-    return tpm_times.fmt_y(y)
+    return tpm_times.fmt_y(y).decode("utf-8")
 
 def d2d(d):
     """Normalize angle in degrees into (-360, 360).

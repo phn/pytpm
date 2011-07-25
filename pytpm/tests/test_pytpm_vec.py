@@ -204,7 +204,7 @@ class TestV3CP(unittest.TestCase):
         verify(t1, t2, res)
 
     def testStrUnicode(self):
-        """V3CP.__unicode__ and __str__ => string representation."""
+        """V3CP. __str__ => string representation."""
         def verify(t, t_norm, f):
             v3cp = tpm.V3CP(**t)
             s = f(v3cp)
@@ -214,11 +214,6 @@ class TestV3CP(unittest.TestCase):
         t_norm = " 1.124000000000000e+02  2.234000000000000e+03  3.220000000000000e+02"
         verify(t, t_norm, str)
 
-        t = dict(x=112.4, y=2234.0, z=322.0)
-        t_norm = " 1.124000000000000e+02  2.234000000000000e+03  3.220000000000000e+02"
-        verify(t, t_norm, unicode)
-
-        
 class TestV3SP(unittest.TestCase):
     """Test the V3CP class."""
     def testCreate(self):
@@ -446,7 +441,7 @@ class TestV3SP(unittest.TestCase):
         verify(t, t_norm)
 
     def testStrUnicode(self):
-        """V3SP.__unicode__, __str__ => string representation of V3SP."""
+        """V3SP.__str__ => string representation of V3SP."""
         def verify(t, t_norm, f):
             v3sp = tpm.V3SP(**t)
             s = f(v3sp)
@@ -456,11 +451,6 @@ class TestV3SP(unittest.TestCase):
         t_norm = " 1.000000000000000e+00  2.000000000000000e+00  3.000000000000000e+00"
         verify(t, t_norm, str)
 
-        t = dict(r=1.0, alpha=2.0, delta=3.0)
-        t_norm = " 1.000000000000000e+00  2.000000000000000e+00  3.000000000000000e+00"
-        verify(t, t_norm, unicode)
-
-        
 class TestV6C(unittest.TestCase):
     """Test V6 cartesian vector."""
     def testCreate(self):

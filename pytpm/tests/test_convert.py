@@ -41,7 +41,7 @@ class TestConvertV6(unittest.TestCase):
                               "hipicrsep1991_fk4B1950ep1950.txt"),"r")
 
         v6_l = []
-        for i in xrange(len(ra)):
+        for i in range(len(ra)):
             v6 = tpm.cat2v6(ra[i], dec[i], pmra[i], pmdec[i], px[i], 0.0,
                             tpm.CJ)
             v6_l.append(v6)
@@ -90,7 +90,7 @@ class TestConvertV6(unittest.TestCase):
         f = open(os.path.join(c_tests_dir,
                               "hipicrsep1991_fk4B1950ep1950.txt"),"r")
 
-        for i in xrange(len(ra)):
+        for i in range(len(ra)):
             v6 = tpm.cat2v6(ra[i], dec[i], pmra[i], pmdec[i], px[i], 0.0,
                             tpm.CJ)
 

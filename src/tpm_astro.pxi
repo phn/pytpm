@@ -217,7 +217,7 @@ def tpm_state(s):
     'Topo. obs. Az/El'
     
     """
-    return tpm_astro.tpm_state(s)
+    return tpm_astro.tpm_state(s).decode("utf-8")
 
 def delta_AT(utc):
     """Return Delta AT = TAI - UTC for the given UTC.

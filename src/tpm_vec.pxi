@@ -197,12 +197,8 @@ cdef class V3CP(V3):
     
     def __str__(self):
         """Return string representation of V3CP."""
-        return self.__unicode__().encode("utf-8")
-
-    def __unicode__(self):
-        """Return unicode representation of V3CP."""
-        s = tpm_vec.v3fmt(self.getV3())
-        return unicode(s)
+        s = tpm_vec.v3fmt(self.getV3()).decode("utf-8")
+        return s
 
     
 cdef class V3SP(V3):
@@ -363,13 +359,8 @@ cdef class V3SP(V3):
         return v3sp
     
     def __str__(self):
-        """Return string representation of V3SP"""
-        return self.__unicode__().encode("utf-8")
-
-    def __unicode__(self):
-        """Return unicode representation of V3SP"""
-        s = tpm_vec.v3fmt(self.getV3())
-        return unicode(s)
+        s = tpm_vec.v3fmt(self.getV3()).decode("utf-8")
+        return s
 
 
 cdef class V6(object):
@@ -938,10 +929,7 @@ cdef class M3(object):
         self._m3 = m3
 
     def __str__(self):
-        return self.__unicode__().encode("utf-8")
-    
-    def __unicode__(self):
-        return unicode(tpm_vec.m3fmt(self._m3))
+        return tpm_vec.m3fmt(self._m3).decode("utf-8")
 
     def __sub__(M3 self, M3 other):
         # Cython doesn't distinguish between sub and rsub. Hence type
@@ -1279,10 +1267,7 @@ cdef class M6(object):
         return m6
 
     def __str__(self):
-        return self.__unicode__().encode("utf-8")
-    
-    def __unicode__(self):
-        return unicode(tpm_vec.m6fmt(self._m6))
+        return tpm_vec.m6fmt(self._m6).decode("utf-8")
     
     def inv(self):
         """Inverse of M6 matrix.
