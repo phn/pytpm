@@ -9,7 +9,7 @@ hip_data = os.path.join(test_dir, "data/hip.txt")
 c_tests_dir = os.path.join(test_dir, "c_tests")
 hip_data_icrs = os.path.join(test_dir, "data/hip_icrs.txt")
 
-class TestConvertv6(unittest.TestCase):
+class TestConvertV6(unittest.TestCase):
     """ICRS 1991.25 (~J2000 1991.25) to other states."""
     def testConvertv6(self):
         """ConvertV6: J2000 (~ICRS) 1991.25 => FK4 B1950 ep 1950.0."""
@@ -157,3 +157,38 @@ class TestCPrecess(unittest.TestCase):
             self.assertAlmostEqual(tpm.d2r(i),0.5924126644,5)
             self.assertAlmostEqual(tpm.d2r(j),0.2249726697,5)
             
+
+class TestCProperMotion(unittest.TestCase):
+    """Test convert.proper_motion."""
+    def testProperMotion(self):
+        """Convert.proper_motion: multiple V6C values."""
+        ra = tpm.d2r(269.45402305)
+        de = tpm.d2r(4.66828815)
+        px = 549.01 / 1000.0 # To Arc seconds
+        rv = 0.0
+        # pmra * cos(de) into pmra
+        pmra = (-797.84 / 1000.0 ) / math.cos(de) 
+        pmra *= 100.0 # To Arcseconds per century.
+        pmde = (10326.93 / 1000.0) 
+        pmde *= 100.0 # To Arcseconds per century.
+        C = tpm.CJ
+
+        v6 = tpm.cat2v6(ra, de, pmra, pmde, px, rv, C)
+
+        v6_out = convert.proper_motion([v6, v6],
+                                       tpm.J2000, tpm.jyear2jd(1991.25))
+
+        for i in v6_out:
+            v6 = i.c2s()
+            hms = tpm.HMS(r=v6.alpha)
+            dms = tpm.DMS(r=v6.delta)
+            hms.normalize()
+            dms.normalize() 
+     
+            self.assertAlmostEqual(hms.hh, -7.0)
+            self.assertAlmostEqual(hms.mm, 57.0)
+            self.assertAlmostEqual(hms.ss, 48.4986, 3)
+            self.assertAlmostEqual(dms.dd, 4.0)
+            self.assertAlmostEqual(dms.mm, 41.0)
+            self.assertAlmostEqual(dms.ss, 36.1980, 3)
+                        

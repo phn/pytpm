@@ -846,7 +846,8 @@ def proper_motion(V6C v6, end, start):
         A V6C object containing positions and velocities.
     end : float
         Ending/final time in days (can be Julian date).
-    start : Starting/initial time in days (can be Julian date).
+    start : float
+        Starting/initial time in days (can be Julian date).
 
     Returns
     -------
@@ -864,6 +865,7 @@ def proper_motion(V6C v6, end, start):
     the time interval. Hence Julian dates can be used. The velocities
     in V6C are stored as AU/day and hence time interval must be in
     days.
+    
     """
     cdef tpm_astro.V6 _v6
     v61 = V6C()

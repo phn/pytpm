@@ -292,3 +292,67 @@ cpdef precessv6(v6=None, start=-999, end=-999, pflag=tpm.PRECESS_FK5):
         return v6_out[0]
     else:
         return v6_out
+
+def proper_motion(v6, end, start):
+    """Apply proper motion to tpm.V6C vectors.
+
+    Parameters
+    ----------
+    v6 : tpm.V6C or a list of tpm.V6C objects.
+        V6C object containing positions and velocities.
+    end : float
+        Ending/final time in days (can be Julian date).
+    start : float
+        Starting/initial time in days (can be Julian date).
+
+    Returns
+    -------
+    v : tpm.V6C or a list of tpm.V6C objects.
+        V6C object containing the coordinates obtained after applying
+        proper motion.
+
+    Notes
+    -----
+    Given starting time and end time, this function applies proper
+    motion to the coordinates in the given V6C object. A simple linear
+    multiplication of velocity with time is performed, followed by 
+    addition of this increment to the position coordinates.
+
+    The difference, ``end - start``, should be the number of days in
+    the time interval. Hence Julian dates can be used. The velocities
+    in V6C are stored as AU/day and hence time interval must be in
+    days.
+
+    This function calls tpm.proper_motion repeatedly to perform the
+    calculations. 
+    
+    """
+    cdef int i
+    if not v6:
+        raise TypeError("proper_motion needs V6C object.")
+    try:
+        len(v6)
+    except TypeError:
+        # Not a list. Assume that this is a single vector.
+        v6 = (v6,)
+
+    for j,v in enumerate(v6):
+        if type(v) != type(tpm.V6C()):
+            if j == 0:
+                raise TypeError("v6 must be an object of type tpm.V6C.")
+            else:
+                raise TypeError(
+                    "v6[{0}] must be an object of type tpm.V6C.".format(j))
+    
+    v6_out = []
+    for j in v6:
+        v6_out.append(tpm.proper_motion(j, end=end, start=start))
+
+    if len(v6) == 1:
+        return v6_out[0]
+    else:
+        return v6_out
+    
+
+
+
