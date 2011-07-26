@@ -7,6 +7,7 @@ import test_pytpm_times
 import test_pytpm_tpm
 import test_pytpm_utils
 import test_pytpm_vec
+import test_slalib
 
 t = unittest.TestLoader()
 
@@ -17,8 +18,9 @@ s4 = t.loadTestsFromModule(test_pytpm_times)
 s5 = t.loadTestsFromModule(test_pytpm_tpm)
 s6 = t.loadTestsFromModule(test_pytpm_utils)
 s7 = t.loadTestsFromModule(test_pytpm_vec)
+s8 = t.loadTestsFromModule(test_slalib)
 
-alltests = unittest.TestSuite([s1, s2, s3, s4, s5, s6, s7])
+alltests = unittest.TestSuite([s1, s2, s3, s4, s5, s6, s7, s8])
 
 def suite():
     return alltests
