@@ -1,5 +1,4 @@
-
--*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 # Test various interfaces defined in the pytpm_times.pxi file.
 import unittest
 from pytpm import tpm
