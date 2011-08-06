@@ -175,8 +175,8 @@ class TestSLALIBNDWFS(unittest.TestCase):
 
             ra_diff = abs(ra - s[0]) * 3600.0
             dec_diff = abs(dec - s[1]) * 3600.0
-            self.assertTrue(ra_diff <= 0.07 )
-            self.assertTrue(dec_diff <= 0.07)
+            self.assertTrue(ra_diff <= 0.001 )
+            self.assertTrue(dec_diff <= 0.001)
 
     def test_slalib_nwdfs_ecleq(self):
         """convertv6(x,s1=3,s=6) <=> SLALIB ecleq NDWFS"""
@@ -199,11 +199,11 @@ class TestSLALIBNDWFS(unittest.TestCase):
 
             ra_diff = abs(ra - s[0]) * 3600.0
             dec_diff = abs(dec - s[1]) * 3600.0
-            self.assertTrue(ra_diff <= 0.07 )
-            self.assertTrue(dec_diff <= 0.07)
+            self.assertTrue(ra_diff <= 0.001 )
+            self.assertTrue(dec_diff <= 0.001)
 
     def test_slalib_nwdfs_eqgal(self):
-        """convertv6(x,s1=6,s=4) <=> SLALIB eqgal NDWFS"""
+        """convertv6(x,s1=6,s=4) + PM <=> SLALIB eqgal NDWFS"""
         v6l = []
         for r, d in zip(self.ndwfs_tab['raj2'], self.ndwfs_tab['decj2']):
             v6 = tpm.V6S()
@@ -213,6 +213,9 @@ class TestSLALIBNDWFS(unittest.TestCase):
             v6l.append(v6.s2c())
 
         v6o = convert.convertv6(v6l, s1=6, s2=4)
+        # The galactic coordinates are at epoch J2000. But SLALIB
+        # results are for B1950. So apply proper motion here.
+        v6o = convert.proper_motion(v6o, tpm.B1950, tpm.J2000)
         cat = (tpm.v62cat(v, tpm.CJ) for v in v6o)
 
         tab = get_sla("slalib_ndwfs_eqgal.txt")
@@ -223,11 +226,11 @@ class TestSLALIBNDWFS(unittest.TestCase):
 
             ra_diff = abs(ra - s[0]) * 3600.0
             dec_diff = abs(dec - s[1]) * 3600.0
-            self.assertTrue(ra_diff <= 0.5 )
-            self.assertTrue(dec_diff <= 0.5 )
+            self.assertTrue(ra_diff <= 0.001 )
+            self.assertTrue(dec_diff <= 0.001 )
 
     def test_slalib_nwdfs_galeq(self):
-        """convertv6(x,s1=4,s=6) <=> SLALIB galeq NDWFS"""
+        """convertv6(x,s1=4,s=6) + PM <=> SLALIB galeq NDWFS"""
         v6l = []
         for r, d in zip(self.ndwfs_tab['glon'], self.ndwfs_tab['glat']):
             v6 = tpm.V6S()
@@ -236,7 +239,17 @@ class TestSLALIBNDWFS(unittest.TestCase):
             v6.delta = tpm.d2r(d)
             v6l.append(v6.s2c())
 
-        v6o = convert.convertv6(v6l, s1=4, s2=6)
+        # The epoch of galactic data is J2000. But in SLALIB
+        # the input is taken to be B1950.0. I can't apply proper_motion
+        # from J2000 to B1950 before input to SLALIB since, I don't
+        # have galactic velocities. In essence, the SLALIB input has a
+        # proper_motion for the period B1950 to J2000, which is also
+        # present in the output. By setting
+        # epoch=tpm.B1950 PyTPM will return FK5 values at eq. J2000
+        # but at epoch B1950, which should match the results from
+        # SLALIB. The velocities for this conversion show up during
+        # FK4-FK5 frame conversion.
+        v6o = convert.convertv6(v6l, s1=4, s2=6, epoch=tpm.B1950)
         cat = (tpm.v62cat(v, tpm.CJ) for v in v6o)
 
         tab = get_sla("slalib_ndwfs_galeq.txt")
@@ -247,8 +260,8 @@ class TestSLALIBNDWFS(unittest.TestCase):
 
             ra_diff = abs(ra - s[0]) * 3600.0
             dec_diff = abs(dec - s[1]) * 3600.0
-            self.assertTrue(ra_diff <= 0.5 )
-            self.assertTrue(dec_diff <= 0.5 )
+            self.assertTrue(ra_diff <= 0.001 )
+            self.assertTrue(dec_diff <= 0.001 )
 
 
 class TestSLALIBHIPFK54(unittest.TestCase):
@@ -260,7 +273,7 @@ class TestSLALIBHIPFK54(unittest.TestCase):
         self.hip_tab = get_hipdata()
 
     def test_slalib_hip_fk524(self):
-        """convertv6(x,s1=6,s2=5) + PM <=> SLALIB FK5-FK4 (fk524)"""
+        """convertv6(x,s1=6,s2=5) + PM <=> SLALIB FK5-FK4 (fk524) HIP"""
         v6l = []
         for r, d, pa, pd, px in zip(self.hip_tab['raj2'],
                                     self.hip_tab['decj2'],
@@ -303,3 +316,112 @@ class TestSLALIBHIPFK54(unittest.TestCase):
             self.assertTrue(pmd_diff <= 0.001)
             self.assertTrue(px_diff <= 9)
             self.assertTrue(rv_diff <= 0.04)
+
+    def test_slalib_hip_eqecl(self):
+        """convertv6(x,s1=6,s=3) <=> SLALIB eqecl HIP"""
+        v6l = []
+        for r, d in zip(self.hip_tab['raj2'], self.hip_tab['decj2']):
+            v6 = tpm.V6S()
+            v6.r = 1e9
+            v6.alpha = tpm.d2r(r)
+            v6.delta = tpm.d2r(d)
+            v6l.append(v6.s2c())
+
+        v6o = convert.convertv6(v6l, s1=6, s2=3)
+        cat = (tpm.v62cat(v, tpm.CJ) for v in v6o)
+
+        tab = get_sla("slalib_hip_eqecl.txt")
+
+        for v, s in zip(cat, tab):
+            ra = math.degrees(tpm.r2r(v['alpha']))
+            dec = math.degrees(v['delta'])
+
+            ra_diff = abs(ra - s[0]) * 3600.0
+            dec_diff = abs(dec - s[1]) * 3600.0
+            self.assertTrue(ra_diff <= 0.001 )
+            self.assertTrue(dec_diff <= 0.001)
+
+    def test_slalib_hip_ecleq(self):
+        """convertv6(x,s1=3,s=6) <=> SLALIB ecleq HIP"""
+        v6l = []
+        for r, d in zip(self.hip_tab['elon2'], self.hip_tab['elat2']):
+            v6 = tpm.V6S()
+            v6.r = 1e9
+            v6.alpha = tpm.d2r(r)
+            v6.delta = tpm.d2r(d)
+            v6l.append(v6.s2c())
+
+        v6o = convert.convertv6(v6l, s1=3, s2=6)
+        cat = (tpm.v62cat(v, tpm.CJ) for v in v6o)
+
+        tab = get_sla("slalib_hip_ecleq.txt")
+
+        for v, s in zip(cat, tab):
+            ra = math.degrees(tpm.r2r(v['alpha']))
+            dec = math.degrees(v['delta'])
+
+            ra_diff = abs(ra - s[0]) * 3600.0
+            dec_diff = abs(dec - s[1]) * 3600.0
+            self.assertTrue(ra_diff <= 0.001)
+            self.assertTrue(dec_diff <= 0.001)
+
+    def test_slalib_hip_eqgal(self):
+        """convertv6(x,s1=6,s=4) + PM <=> SLALIB eqgal HIP"""
+        v6l = []
+        for r, d in zip(self.hip_tab['raj2'], self.hip_tab['decj2']):
+            v6 = tpm.V6S()
+            v6.r = 1e9
+            v6.alpha = tpm.d2r(r)
+            v6.delta = tpm.d2r(d)
+            v6l.append(v6.s2c())
+
+        v6o = convert.convertv6(v6l, s1=6, s2=4)
+        # The galactic coordinates are at epoch J2000. But SLALIB
+        # results are for B1950. So apply proper motion here.
+        v6o = convert.proper_motion(v6o, tpm.B1950, tpm.J2000)
+        cat = (tpm.v62cat(v, tpm.CJ) for v in v6o)
+
+        tab = get_sla("slalib_hip_eqgal.txt")
+
+        for v, s in zip(cat, tab):
+            ra = math.degrees(tpm.r2r(v['alpha']))
+            dec = math.degrees(v['delta'])
+
+            ra_diff = abs(ra - s[0]) * 3600.0
+            dec_diff = abs(dec - s[1]) * 3600.0
+            self.assertTrue(ra_diff <= 0.001 )
+            self.assertTrue(dec_diff <= 0.001 )
+
+    def test_slalib_hip_galeq(self):
+        """convertv6(x,s1=4,s=6) + PM <=> SLALIB galeq HIP"""
+        v6l = []
+        for r, d in zip(self.hip_tab['glon'], self.hip_tab['glat']):
+            v6 = tpm.V6S()
+            v6.r = 1e9
+            v6.alpha = tpm.d2r(r)
+            v6.delta = tpm.d2r(d)
+            v6l.append(v6.s2c())
+
+        # The epoch of galactic data is J2000. But in SLALIB
+        # the input is taken to be B1950.0. I can't apply proper_motion
+        # from J2000 to B1950 before input to SLALIB since, I don't
+        # have galactic velocities. In essence, the SLALIB input has a
+        # proper_motion for the period B1950 to J2000, which is also
+        # present in the output. By setting
+        # epoch=tpm.B1950 PyTPM will return FK5 values at eq. J2000
+        # but at epoch B1950, which should match the results from
+        # SLALIB. The velocities for this conversion show up during
+        # FK4-FK5 frame conversion.
+        v6o = convert.convertv6(v6l, s1=4, s2=6, epoch=tpm.B1950)
+        cat = (tpm.v62cat(v, tpm.CJ) for v in v6o)
+
+        tab = get_sla("slalib_hip_galeq.txt")
+
+        for v, s in zip(cat, tab):
+            ra = math.degrees(tpm.r2r(v['alpha']))
+            dec = math.degrees(v['delta'])
+
+            ra_diff = abs(ra - s[0]) * 3600.0
+            dec_diff = abs(dec - s[1]) * 3600.0
+            self.assertTrue(ra_diff <= 0.001 )
+            self.assertTrue(dec_diff <= 0.001 )

@@ -21,7 +21,7 @@ from pytpm import tpm, convert
 
 
 def hipfk524():
-    """Print summary of FK5-FK4 comparison with SLALIB fk524."""
+    """Print summary of FK5-FK4 comparison with SLALIB fk524 (HIP)."""
     hip_tab = get_hipdata()
     sla_tab = get_sla("slalib_hip_fk524.txt")
 
@@ -80,3 +80,153 @@ def hipfk524():
          "milli-arcsec/trop. yr", "km/s"],
         x):
         print(fs.format(name, unit, s[1][0], s[1][1], s[2], s[3]))
+
+
+def hipeqecl():
+    """Print summary of EQ-ECL comparison with SLALIB eqecl (HIP)."""
+    hip_tab = get_hipdata()
+    sla_tab = get_sla("slalib_hip_eqecl.txt")
+
+    v6l = []
+    for r, d in zip(hip_tab['raj2'], hip_tab['decj2']):
+        v6 = tpm.V6S()
+        v6.r = 1e9
+        v6.alpha = tpm.d2r(r)
+        v6.delta = tpm.d2r(d)
+        v6l.append(v6.s2c())
+
+    v6o = convert.convertv6(v6l, s1=6, s2=3)
+    cat = (tpm.v62cat(v, tpm.CJ) for v in v6o)
+
+    l = len(v6o)
+
+    ra_diff = np.zeros((l,), np.float64)
+    dec_diff = ra_diff.copy()
+
+    for v, s, i in zip(cat, sla_tab, range(l)):
+        ra = math.degrees(tpm.r2r(v['alpha']))
+        dec = math.degrees(v['delta'])
+
+        ra_diff[i] = abs(ra - s[0]) * 3600.0
+        dec_diff[i] = abs(dec - s[1]) * 3600.0
+
+    fs = "{0} {1}\n" + \
+        "Min:  {2:.4f} Max: {3:.4f} \nMean: {4:.4f} Var: {5:.4f}\n"
+    x = stats.describe(ra_diff)
+    print(fs.format("ra_diff", "arcsec", x[1][0], x[1][1], x[2], x[3]))
+    x = stats.describe(dec_diff)
+    print(fs.format("dec_diff", "arcsec", x[1][0], x[1][1], x[2], x[3]))
+
+
+def hipecleq():
+    """Print summary of ECL-EQ comparison with SLALIB ecleq (HIP)."""
+    hip_tab = get_hipdata()
+    sla_tab = get_sla("slalib_hip_ecleq.txt")
+
+    v6l = []
+    for r, d in zip(hip_tab['elon2'], hip_tab['elat2']):
+        v6 = tpm.V6S()
+        v6.r = 1e9
+        v6.alpha = tpm.d2r(r)
+        v6.delta = tpm.d2r(d)
+        v6l.append(v6.s2c())
+
+    v6o = convert.convertv6(v6l, s1=3, s2=6)
+    cat = (tpm.v62cat(v, tpm.CJ) for v in v6o)
+
+    l = len(v6o)
+
+    ra_diff = np.zeros((l,), np.float64)
+    dec_diff = ra_diff.copy()
+
+    for v, s, i in zip(cat, sla_tab, range(l)):
+        ra = math.degrees(tpm.r2r(v['alpha']))
+        dec = math.degrees(v['delta'])
+
+        ra_diff[i] = abs(ra - s[0]) * 3600.0
+        dec_diff[i] = abs(dec - s[1]) * 3600.0
+
+    fs = "{0} {1}\n" + \
+        "Min:  {2:.4f} Max: {3:.4f} \nMean: {4:.4f} Var: {5:.4f}\n"
+    x = stats.describe(ra_diff)
+    print(fs.format("ra_diff", "arcsec", x[1][0], x[1][1], x[2], x[3]))
+    x = stats.describe(dec_diff)
+    print(fs.format("dec_diff", "arcsec", x[1][0], x[1][1], x[2], x[3]))
+
+
+def hipeqgal():
+    """Print summary of EQ-GAL comparison with SLALIB eqgal (HIP)."""
+    hip_tab = get_hipdata()
+    sla_tab = get_sla("slalib_hip_eqgal.txt")
+
+    v6l = []
+    for r, d in zip(hip_tab['raj2'], hip_tab['decj2']):
+        v6 = tpm.V6S()
+        v6.r = 1e9
+        v6.alpha = tpm.d2r(r)
+        v6.delta = tpm.d2r(d)
+        v6l.append(v6.s2c())
+
+    v6o = convert.convertv6(v6l, s1=6, s2=4)
+    # The galactic coordinates are at epoch J2000. But SLALIB
+    # results are for B1950. So apply proper motion here.
+    v6o = convert.proper_motion(v6o, tpm.B1950, tpm.J2000)
+    cat = (tpm.v62cat(v, tpm.CJ) for v in v6o)
+
+    l = len(v6o)
+
+    ra_diff = np.zeros((l,), np.float64)
+    dec_diff = ra_diff.copy()
+
+    for v, s, i in zip(cat, sla_tab, range(l)):
+        ra = math.degrees(tpm.r2r(v['alpha']))
+        dec = math.degrees(v['delta'])
+
+        ra_diff[i] = abs(ra - s[0]) * 3600.0
+        dec_diff[i] = abs(dec - s[1]) * 3600.0
+
+    fs = "{0} {1}\n" + \
+        "Min:  {2:.4f} Max: {3:.4f} \nMean: {4:.4f} Var: {5:.4f}\n"
+    x = stats.describe(ra_diff)
+    print(fs.format("ra_diff", "arcsec", x[1][0], x[1][1], x[2], x[3]))
+    x = stats.describe(dec_diff)
+    print(fs.format("dec_diff", "arcsec", x[1][0], x[1][1], x[2], x[3]))
+
+
+def hipgaleq():
+    """Print summary of GAL-EQ comparison with SLALIB galeq (HIP)."""
+    hip_tab = get_hipdata()
+    sla_tab = get_sla("slalib_hip_galeq.txt")
+
+    v6l = []
+    for r, d in zip(hip_tab['glon'], hip_tab['glat']):
+        v6 = tpm.V6S()
+        v6.r = 1e9
+        v6.alpha = tpm.d2r(r)
+        v6.delta = tpm.d2r(d)
+        v6l.append(v6.s2c())
+
+    # The actual epoch of galactic data is J2000. But in SLALIB
+    # the input is taken to be B1950.0. So use tpm.B1950 as epoch
+    # in the conversion.
+    v6o = convert.convertv6(v6l, s1=4, s2=6, epoch=tpm.B1950)
+    cat = (tpm.v62cat(v, tpm.CJ) for v in v6o)
+
+    l = len(v6o)
+
+    ra_diff = np.zeros((l,), np.float64)
+    dec_diff = ra_diff.copy()
+
+    for v, s, i in zip(cat, sla_tab, range(l)):
+        ra = math.degrees(tpm.r2r(v['alpha']))
+        dec = math.degrees(v['delta'])
+
+        ra_diff[i] = abs(ra - s[0]) * 3600.0
+        dec_diff[i] = abs(dec - s[1]) * 3600.0
+
+    fs = "{0} {1}\n" + \
+        "Min:  {2:.4f} Max: {3:.4f} \nMean: {4:.4f} Var: {5:.4f}\n"
+    x = stats.describe(ra_diff)
+    print(fs.format("ra_diff", "arcsec", x[1][0], x[1][1], x[2], x[3]))
+    x = stats.describe(dec_diff)
+    print(fs.format("dec_diff", "arcsec", x[1][0], x[1][1], x[2], x[3]))

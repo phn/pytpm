@@ -64,17 +64,17 @@ tab = get_ndwfs()
 # coordinates at J2000.0
 #raj2 = (math.radians(i) for i in tab['raj2'])
 #decj2 = (math.radians(i) for i in tab['decj2'])
-#
+# 
 #ecl_lon = []
 #ecl_lat = []
-#
+# 
 #for r, d in zip(raj2, decj2):
-#    x, y = slalib.sla_eqecl(r, d, 51545.0)
+#    x, y = slalib.sla_eqecl(r, d, 51544.5)
 #    ecl_lon.append(math.degrees(x))
 #    ecl_lat.append(math.degrees(y))
-#
+# 
 #with open("slalib_ndwfs_eqecl.txt", "w") as f:
-#    for i,j in zip(ecl_lon, ecl_lat):
+#    for i, j in zip(ecl_lon, ecl_lat):
 #        # The format is very generous. The data are never this
 #        # accurate. .9 => ~1e-5 arc-sec.
 #        s = "%14.9f %14.9f \n"
@@ -85,17 +85,17 @@ tab = get_ndwfs()
 # coordinates.
 #ecl_lon = (math.radians(i) for i in tab['elon2'])
 #ecl_lat = (math.radians(i) for i in tab['elat2'])
-#
+# 
 #raj2 = []
 #decj2 = []
-#
+# 
 #for r, d in zip(ecl_lon, ecl_lat):
-#    x, y = slalib.sla_ecleq(r, d, 51545.0)
+#    x, y = slalib.sla_ecleq(r, d, 51544.5)
 #    raj2.append(math.degrees(x))
 #    decj2.append(math.degrees(y))
-#
+# 
 #with open("slalib_ndwfs_ecleq.txt", "w") as f:
-#    for i,j in zip(raj2, decj2):
+#    for i, j in zip(raj2, decj2):
 #        # The format is very generous. The data are never this
 #        # accurate. .9 => ~1e-5 arc-sec.
 #        s = "%14.9f %14.9f \n"

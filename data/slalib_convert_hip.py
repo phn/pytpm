@@ -49,3 +49,89 @@ tab = get_hipdata()
 #        # degrees, miili-arc, milli-arcsec/trop. year, km/s.
 #        s = "%14.9f %14.9f %10.4f %10.4f %10.4f %6.4f\n"
 #        f.write(s % (r, d, px, pa, pd, rv))
+
+# sla_eqecl.
+# Convert J2000.0 FK5 equatorial coordinates to IAU 1980 ecliptic
+# coordinates at J2000.0
+#raj2 = (math.radians(i) for i in tab['raj2'])
+#decj2 = (math.radians(i) for i in tab['decj2'])
+# 
+#ecl_lon = []
+#ecl_lat = []
+# 
+#for r, d in zip(raj2, decj2):
+#    x, y = slalib.sla_eqecl(r, d, 51544.5)
+#    ecl_lon.append(math.degrees(x))
+#    ecl_lat.append(math.degrees(y))
+# 
+#with open("slalib_hip_eqecl.txt", "w") as f:
+#    f.write("# ECL_LON_J2000(deg) ECL_LAT_J2000(deg)\n")
+#    for i, j in zip(ecl_lon, ecl_lat):
+#        # The format is very generous. The data are never this
+#        # accurate. .9 => ~1e-5 arc-sec.
+#        s = "%14.9f %14.9f \n"
+#        f.write(s % (i, j))
+
+#sla_ecleq.
+#Convert IAU 1980 J2000 ecliptic coordinates to FK5 J2000 equatorial
+#coordinates.
+#ecl_lon = (math.radians(i) for i in tab['elon2'])
+#ecl_lat = (math.radians(i) for i in tab['elat2'])
+# 
+#raj2 = []
+#decj2 = []
+# 
+#for r, d in zip(ecl_lon, ecl_lat):
+#    x, y = slalib.sla_ecleq(r, d, 51544.5)
+#    raj2.append(math.degrees(x))
+#    decj2.append(math.degrees(y))
+# 
+#with open("slalib_hip_ecleq.txt", "w") as f:
+#    f.write("# RAJ2000(deg) DECJ2000(deg)\n")
+#    for i, j in zip(raj2, decj2):
+#        # The format is very generous. The data are never this
+#        # accurate. .9 => ~1e-5 arc-sec.
+#        s = "%14.9f %14.9f \n"
+#        f.write(s % (i, j))
+
+# sla_eqgal.
+# Convert FK5 J2000.0 equatorial coordinates to galactic.
+#raj2 = (math.radians(i) for i in tab['raj2'])
+#decj2 = (math.radians(i) for i in tab['decj2'])
+# 
+#gal_lon = []
+#gal_lat = []
+# 
+#for r, d in zip(raj2, decj2):
+#    x, y = slalib.sla_eqgal(r, d)
+#    gal_lon.append(math.degrees(x))
+#    gal_lat.append(math.degrees(y))
+# 
+#with open("slalib_hip_eqgal.txt", "w") as f:
+#    f.write("# GAL_LON(deg) GAL_LAT(deg)\n")
+#    for l, b in zip(gal_lon, gal_lat):
+#        # The format is very generous. The data are never this
+#        # accurate. .9 => ~1e-5 arc-sec.
+#        s = "%14.9f %14.9f \n"
+#        f.write(s % (l, b))
+
+#sla_galeq.
+# Convert galactic coordinates to FK5 J2000 coordinates.
+#gal_lon = (math.radians(i) for i in tab['glon'])
+#gal_lat = (math.radians(i) for i in tab['glat'])
+# 
+#raj2 = []
+#decj2 = []
+# 
+#for l, b in zip(gal_lon, gal_lat):
+#    x, y = slalib.sla_galeq(l, b)
+#    raj2.append(math.degrees(x))
+#    decj2.append(math.degrees(y))
+# 
+#with open("slalib_hip_galeq.txt", "w") as f:
+#    f.write("# RAJ2000(deg) DECJ2000(deg)\n")
+#    for r, d in zip(raj2, decj2):
+#        # The format is very generous. The data are never this
+#        # accurate. .9 => ~1e-5 arc-sec.
+#        s = "%14.9f %14.9f \n"
+#        f.write(s % (r, d))
