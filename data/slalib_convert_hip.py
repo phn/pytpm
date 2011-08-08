@@ -58,14 +58,14 @@ tab = get_hipdata()
 # using PyTPM and compare the PyTPM results with
 # slalib_hip_fk524_fk425.txt.
 #sla_tab = read_data.get_sla("slalib_hip_fk524.txt")
-# 
+#
 #rab = []
 #decb = []
 #pxb = []
 #pmab = []
 #pmdb = []
 #rvb = []
-# 
+#
 #for r, d, px, pa, pd, rv in sla_tab:
 #    rab.append(math.radians(r))
 #    decb.append(math.radians(d))
@@ -74,16 +74,16 @@ tab = get_hipdata()
 #    pmab.append(math.radians(pa / 1000.0 / 3600.0))
 #    pmdb.append(math.radians(pd / 1000.0 / 3600.0))
 #    rvb.append(rv)
-# 
+#
 #l = len(rab)
-# 
+#
 #raj = range(l)
 #decj = range(l)
 #pxj = range(l)
 #pmaj = range(l)
 #pmdj = range(l)
 #rvj = range(l)
-# 
+#
 #for i in range(l):
 #    r, d, pa, pd, px, rv = slalib.sla_fk425(rab[i], decb[i],
 #                                            pmab[i], pmdb[i],
@@ -94,7 +94,7 @@ tab = get_hipdata()
 #    pmdj[i] = math.degrees(pd) * 3600.0 * 1e3
 #    pxj[i] = px * 1e3
 #    rvj[i] = rv
-# 
+#
 #with open("slalib_hip_fk524_fk425.txt", "w") as f:
 #    f.write("# RAJ2000 DECJ2000 PX PMAJ2000 PMDJ2000 RV\n")
 #    f.write(
@@ -190,3 +190,34 @@ tab = get_hipdata()
 #        # accurate. .9 => ~1e-5 arc-sec.
 #        s = "%14.9f %14.9f \n"
 #        f.write(s % (r, d))
+
+# sla_map
+# Convert mean J2000 to apparent ra-dec at J2000.0
+raj = [math.radians(i) for i in tab['raj2']]
+decj = [math.radians(i) for i in tab["decj2"]]
+# Milli-arcsec/Jul. year *cos(dec) into rad/Jul year.
+pmaj = [math.radians(i / 1000.0 / math.cos(j) / 3600.0)
+        for i, j in zip(tab['pma'], decj)]
+pmdj = [math.radians(i / 1000.0 / 3600.0)
+        for i in tab['pmd']]
+pxj = [i / 1000.0 for i in tab['px']]  # milli-arcsec to arc-sec.
+rvj = list(0.0 for i in range(len(pxj)))
+
+ra = []
+dec = []
+
+utc = slalib.sla_caldj(2010, 1, 1)[0]
+tt = slalib.sla_dtt(utc) / 86400.0 + utc
+
+for r, d, px, pa, pd, rv in zip(raj, decj, pxj, pmaj, pmdj, rvj):
+    r1, d1 = slalib.sla_map(r, d, pa, pd, px, rv,
+                              2000.0, tt
+                              )
+    ra.append(math.degrees(r1))
+    dec.append(math.degrees(d1))
+
+with open("slalib_hip_map.txt", "w") as f:
+    f.write("# Apparent RA DEC for J2000.0 in degrees.\n")
+    for r, d in zip(ra, dec):
+        s = "%14.9f %14.9f\n"
+        f.write(s % (r, d))

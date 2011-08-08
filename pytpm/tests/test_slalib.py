@@ -467,3 +467,42 @@ class TestSLALIBHIPFK54(unittest.TestCase):
             dec_diff = abs(dec - s[1]) * 3600.0
             self.assertTrue(ra_diff <= 0.001 )
             self.assertTrue(dec_diff <= 0.001 )
+
+    def test_slalib_hip_fk52appradec(self):
+        tab = get_sla("slalib_hip_map.txt")
+
+        v6l = []
+        for r, d, pa, pd, px in zip(self.hip_tab['raj2'],
+                                    self.hip_tab['decj2'],
+                                    self.hip_tab['pma'],
+                                    self.hip_tab['pmd'],
+                                    self.hip_tab['px']):
+            r = tpm.d2r(r)
+            d = tpm.d2r(d)
+            # Milli-arcsec / Jul. yr to arcsec per Jul. century.
+            pma = pa / math.cos(d) / 1000.0 * 100.0
+            pmd = pd / 1000.0 * 100.0
+            px /= 1000.0  # mili-arcsec to arc-sec.
+            v6 = tpm.cat2v6(r, d, pma, pmd, px, 0.0, tpm.CJ)
+            v6l.append(v6)
+
+        utc = tpm.gcal2j(2010, 1, 1) - 0.5  # midnight
+        tt = tpm.utc2tdb(utc)
+
+        v6o = convert.proper_motion(v6l, tt, tpm.J2000)
+        v6o = convert.convertv6(v6o, s1=6, s2=11, epoch=tt,
+                                equinox=tpm.J2000,
+                                utc=utc, delta_at=tpm.delta_AT(utc))
+
+        cat = (tpm.v62cat(v, tpm.CJ) for v in v6o)
+
+        l = len(v6o)
+
+        for v, s, i in zip(cat, tab, range(l)):
+            ra = math.degrees(tpm.r2r(v['alpha']))
+            dec = math.degrees(v['delta'])
+
+            ra_diff = abs(ra - s[0]) * 3600.0
+            dec_diff = abs(dec - s[1]) * 3600.0
+            self.assertTrue(ra_diff <= 0.33)
+            self.assertTrue(dec_diff <= 0.03)
