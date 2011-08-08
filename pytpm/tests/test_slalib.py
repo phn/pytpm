@@ -317,6 +317,48 @@ class TestSLALIBHIPFK54(unittest.TestCase):
             self.assertTrue(px_diff <= 9)
             self.assertTrue(rv_diff <= 0.04)
 
+    def test_slalib_hip_fk425(self):
+        """convertv6(v6,s1=5,s2=6) + PM <=> SLALIB FK4-FK5 (fk425) HIP."""
+        sla_tabb = get_sla("slalib_hip_fk524.txt")
+        tab = get_sla("slalib_hip_fk524_fk425.txt")
+
+        v6l = []
+        for r, d, px, pa, pd, rv in sla_tabb:
+            r = tpm.d2r(r)
+            d = tpm.d2r(d)
+            # Milli-arcsec / Trop. yr to arcsec per Trop. century.
+            pma = pa / 1000.0 * 100.0
+            pmd = pd / 1000.0 * 100.0
+            px /= 1000.0  # mili-arcsec to arc-sec.
+            v6 = tpm.cat2v6(r, d, pma, pmd, px, rv, tpm.CB)
+            v6l.append(v6)
+
+        v6o = convert.convertv6(v6l, s1=5, s2=6, epoch=tpm.B1950)
+        v6o = convert.proper_motion(v6o, tpm.J2000, tpm.B1950)
+        cat = (tpm.v62cat(v, tpm.CJ) for v in v6o)
+
+        for v, s in zip(cat, tab):
+            ra = math.degrees(tpm.r2r(v['alpha']))
+            dec = math.degrees(v['delta'])
+            # arc-sec/cent. to milli-arcsec/Jul. year.
+            pma = v['pma'] * 1000.0 / 100.0
+            pmd = v['pmd'] * 1000.0 / 100.0
+            px = v['px'] * 1e3  # arc-sec to milli-arcsec
+
+            ra_diff = abs(ra - s[0]) * 3600.0
+            dec_diff = abs(dec - s[1]) * 3600.0
+            px_diff = abs(px - s[2])
+            pma_diff = abs(pma - s[3])
+            pmd_diff = abs(pmd - s[4])
+            rv_diff = abs(v['rv'] - s[5])
+
+            self.assertTrue(ra_diff <= 0.001)
+            self.assertTrue(dec_diff <= 0.001)
+            self.assertTrue(pma_diff <= 0.001)
+            self.assertTrue(pmd_diff <= 0.001)
+            self.assertTrue(px_diff <= 9)
+            self.assertTrue(rv_diff <= 0.04)
+
     def test_slalib_hip_eqecl(self):
         """convertv6(x,s1=6,s=3) <=> SLALIB eqecl HIP"""
         v6l = []
