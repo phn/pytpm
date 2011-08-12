@@ -13,7 +13,7 @@ import math
 from scipy import stats
 import numpy as np
 
-from read_data import get_hipdata, get_sla
+from read_data import get_hipdata, get_sla, cat2array
 
 # I want to run these without having to install PyTPM.
 sys.path.append("..")
@@ -26,51 +26,28 @@ def hipfk524():
     sla_tab = get_sla("slalib_hip_fk524.txt")
 
     v6l = []
-    for r, d, pa, pd, px in zip(hip_tab['raj2'],
-                                hip_tab['decj2'],
-                                hip_tab['pma'],
-                                hip_tab['pmd'],
-                                hip_tab['px']):
-        r = tpm.d2r(r)
-        d = tpm.d2r(d)
-        # Milli-arcsec / Jul. yr to arcsec per Jul. century.
-        pma = pa / math.cos(d) / 1000.0 * 100.0
-        pmd = pd / 1000.0 * 100.0
-        px /= 1000.0  # mili-arcsec to arc-sec.
-        v6 = tpm.cat2v6(r, d, pma, pmd, px, 0.0, tpm.CJ)
+    for i in hip_tab:
+        v6 = tpm.cat2v6(i['raj2'], i['decj2'], i['pma'], i['pmd'],
+                        i['px'], 0.0, tpm.CJ)
         v6l.append(v6)
 
-    v6o = convert.convertv6(v6l, s1=6, s2=5)
+    v6o = convert.convertv6(v6l, s1=6, s2=5, epoch=tpm.J2000)
     v6o = convert.proper_motion(v6o, tpm.B1950, tpm.J2000)
     cat = (tpm.v62cat(v, tpm.CB) for v in v6o)
+    d = cat2array(cat)
 
-    l = len(v6o)
-
-    ra_diff = np.zeros((l,), np.float64)
-    dec_diff = ra_diff.copy()
-    px_diff = ra_diff.copy()
-    pma_diff = ra_diff.copy()
-    pmd_diff = ra_diff.copy()
-    rv_diff = ra_diff.copy()
-
-    for v, s, i in zip(cat, sla_tab, range(l)):
-        ra = math.degrees(tpm.r2r(v['alpha']))
-        dec = math.degrees(v['delta'])
-        # arc-sec/cent. to milli-arcsec/trop. year.
-        pma = v['pma'] * 1000.0 / 100.0
-        pmd = v['pmd'] * 1000.0 / 100.0
-        px = v['px'] * 1e3  # arc-sec to milli-arcsec
-
-        ra_diff[i] = abs(ra - s[0]) * 3600.0
-        dec_diff[i] = abs(dec - s[1]) * 3600.0
-        px_diff[i] = abs(px - s[2])
-        pma_diff[i] = abs(pma - s[3])
-        pmd_diff[i] = abs(pmd - s[4])
-        rv_diff[i] = abs(v['rv'] - s[5])
+    ra_diff = np.degrees(d['alpha']) - np.array([j[0] for j in sla_tab])
+    ra_diff *= 3600.0
+    dec_diff = np.degrees(d['delta']) - np.array([i[1] for i in sla_tab])
+    dec_diff *= 3600.0
+    px_diff = d['px'] * 1000.0 - np.array([i[2] for i in sla_tab])
+    pma_diff = d['pma'] * 1000.0 / 100.0 - np.array([i[3] for i in sla_tab])
+    pmd_diff = d['pmd'] * 1000.0 / 100.0 - np.array([i[4] for i in sla_tab])
+    rv_diff = d['rv'] - np.array([i[5] for i in sla_tab])
 
     fs = "{0} {1}\n" + \
         "Min:  {2:.4f} Max: {3:.4f} \nMean: {4:.4f} Var: {5:.4f}\n"
-    x = [stats.describe(i) for i in
+    x = [stats.describe(np.abs(i)) for i in
          [ra_diff, dec_diff, px_diff, pma_diff, pmd_diff, rv_diff]]
     print("Comparison with SLALIB fk524 using HIPPARCOS data.")
     for name, unit, s in zip(
@@ -85,7 +62,7 @@ def hipfk524():
 def hipfk425():
     """Print summary of FK4-FK5 comparison with SLALIB fk425 (HIP).
 
-    The input FK4 data is the same generaated for the the FK5-FK4
+    The input FK4 data is the same generated for the the FK5-FK4
     conversion test. I read that data into slalib and perform the
     reverse conversion. The result is then compared with that from
     PyTPM.
@@ -134,9 +111,9 @@ def hipfk425():
 
     fs = "{0} {1}\n" + \
         "Min:  {2:.4f} Max: {3:.4f} \nMean: {4:.4f} Var: {5:.4f}\n"
-    x = [stats.describe(i) for i in
+    x = [stats.describe(np.abs(i)) for i in
          [ra_diff, dec_diff, px_diff, pma_diff, pmd_diff, rv_diff]]
-    print("Comparison with SLALIB fk524 using HIPPARCOS data.")
+    print("Comparison with SLALIB fk425 using HIPPARCOS data.")
     for name, unit, s in zip(
         ["ra_diff", "dec_diff", "px_diff", "pma_diff", "pmd_diff",
          "rv_diff"],
@@ -155,24 +132,19 @@ def hipeqecl():
     for r, d in zip(hip_tab['raj2'], hip_tab['decj2']):
         v6 = tpm.V6S()
         v6.r = 1e9
-        v6.alpha = tpm.d2r(r)
-        v6.delta = tpm.d2r(d)
+        v6.alpha = r
+        v6.delta = d
         v6l.append(v6.s2c())
 
     v6o = convert.convertv6(v6l, s1=6, s2=3)
     cat = (tpm.v62cat(v, tpm.CJ) for v in v6o)
 
-    l = len(v6o)
+    d = cat2array(cat)
 
-    ra_diff = np.zeros((l,), np.float64)
-    dec_diff = ra_diff.copy()
-
-    for v, s, i in zip(cat, sla_tab, range(l)):
-        ra = math.degrees(tpm.r2r(v['alpha']))
-        dec = math.degrees(v['delta'])
-
-        ra_diff[i] = abs(ra - s[0]) * 3600.0
-        dec_diff[i] = abs(dec - s[1]) * 3600.0
+    ra_diff = np.degrees(d['alpha']) - np.array([i[0] for i in sla_tab])
+    ra_diff = np.abs(ra_diff * 3600.0)
+    dec_diff = np.degrees(d['delta']) - np.array([i[1] for i in sla_tab])
+    dec_diff = np.abs(dec_diff * 3600.0)
 
     fs = "{0} {1}\n" + \
         "Min:  {2:.4f} Max: {3:.4f} \nMean: {4:.4f} Var: {5:.4f}\n"
@@ -191,24 +163,19 @@ def hipecleq():
     for r, d in zip(hip_tab['elon2'], hip_tab['elat2']):
         v6 = tpm.V6S()
         v6.r = 1e9
-        v6.alpha = tpm.d2r(r)
-        v6.delta = tpm.d2r(d)
+        v6.alpha = r
+        v6.delta = d
         v6l.append(v6.s2c())
 
     v6o = convert.convertv6(v6l, s1=3, s2=6)
     cat = (tpm.v62cat(v, tpm.CJ) for v in v6o)
 
-    l = len(v6o)
+    d = cat2array(cat)
 
-    ra_diff = np.zeros((l,), np.float64)
-    dec_diff = ra_diff.copy()
-
-    for v, s, i in zip(cat, sla_tab, range(l)):
-        ra = math.degrees(tpm.r2r(v['alpha']))
-        dec = math.degrees(v['delta'])
-
-        ra_diff[i] = abs(ra - s[0]) * 3600.0
-        dec_diff[i] = abs(dec - s[1]) * 3600.0
+    ra_diff = np.degrees(d['alpha']) - np.array([i[0] for i in sla_tab])
+    ra_diff = np.abs(ra_diff * 3600.0)
+    dec_diff = np.degrees(d['delta']) - np.array([i[1] for i in sla_tab])
+    dec_diff = np.abs(dec_diff * 3600.0)
 
     fs = "{0} {1}\n" + \
         "Min:  {2:.4f} Max: {3:.4f} \nMean: {4:.4f} Var: {5:.4f}\n"
@@ -227,8 +194,8 @@ def hipeqgal():
     for r, d in zip(hip_tab['raj2'], hip_tab['decj2']):
         v6 = tpm.V6S()
         v6.r = 1e9
-        v6.alpha = tpm.d2r(r)
-        v6.delta = tpm.d2r(d)
+        v6.alpha = r
+        v6.delta = d
         v6l.append(v6.s2c())
 
     v6o = convert.convertv6(v6l, s1=6, s2=4)
@@ -266,8 +233,8 @@ def hipgaleq():
     for r, d in zip(hip_tab['glon'], hip_tab['glat']):
         v6 = tpm.V6S()
         v6.r = 1e9
-        v6.alpha = tpm.d2r(r)
-        v6.delta = tpm.d2r(d)
+        v6.alpha = r
+        v6.delta = d
         v6l.append(v6.s2c())
 
     # The actual epoch of galactic data is J2000. But in SLALIB
@@ -307,8 +274,8 @@ def hipfk5appradec():
                                 hip_tab['pma'],
                                 hip_tab['pmd'],
                                 hip_tab['px']):
-        r = tpm.d2r(r)
-        d = tpm.d2r(d)
+        r = r
+        d = d
         # Milli-arcsec / Jul. yr to arcsec per Jul. century.
         pma = pa / math.cos(d) / 1000.0 * 100.0
         pmd = pd / 1000.0 * 100.0
@@ -320,9 +287,7 @@ def hipfk5appradec():
     tt = tpm.utc2tdb(utc)
 
     v6o = convert.proper_motion(v6l, tt, tpm.J2000)
-    v6o = convert.convertv6(v6o, s1=6, s2=11, epoch=tt,
-                            equinox=tpm.J2000,
-                            utc=utc, delta_at=tpm.delta_AT(utc))
+    v6o = convert.convertv6(v6o, s1=6, s2=11, utc=utc)
 
     cat = (tpm.v62cat(v, tpm.CJ) for v in v6o)
 
@@ -347,17 +312,17 @@ def hipfk5appradec():
 
 
 if __name__ == "__main__":
-    print("**** FK524   ****\n")
-    hipfk524()
-    print("**** FK425   ****\n")
-    hipfk425()
-    print("**** EQ-ECL  ****\n")
-    hipeqecl()
-    print("**** ECL-EQ  ****\n")
-    hipecleq()
-    print("**** EQ-GAL  ****\n")
-    hipeqgal()
-    print("**** GAL-EQ  ****\n")
-    hipgaleq()
+#    print("**** FK524   ****\n")
+#    hipfk524()
+#    print("**** FK425   ****\n")
+#    hipfk425()
+#    print("**** EQ-ECL  ****\n")
+#    hipeqecl()
+#    print("**** ECL-EQ  ****\n")
+#    hipecleq()
+#    print("**** EQ-GAL  ****\n")
+#    hipeqgal()
+#    print("**** GAL-EQ  ****\n")
+#    hipgaleq()
     print("**** FK5-Apparent ****\n")
     hipfk5appradec()

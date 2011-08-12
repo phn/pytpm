@@ -2,6 +2,12 @@
 #needed for performing tests.
 import os
 import csv
+import numpy as np
+import sys
+
+# I want to run these without having to install PyTPM.
+sys.path.append("..")
+from pytpm import tpm, convert
 
 y = os.path.dirname(__file__)
 y = os.path.join(y, "../pytpm/tests/data")
@@ -13,29 +19,45 @@ def get_hipdata():
 
     The data was created with hip_full.py file.
     """
-    f = open(os.path.join(testdatadir, "hip_full.txt"), "r")
-    s = csv.reader(f, quoting=csv.QUOTE_NONNUMERIC,
-                   delimiter=" ", skipinitialspace=True)
-    d = dict(ra_icrs=[], dec_icrs=[], px=[], pma=[], pmd=[],
-             raj2=[], decj2=[], rab1=[], decb1=[], glon=[],
-             glat=[], elon2=[], elat2=[])
+    f = os.path.join(testdatadir, "hip_full.txt")
+    dtype = [('ra_icrs', np.float64), ('dec_icrs', np.float64),
+             ('px', np.float64), ('pma', np.float64), ('pmd', np.float64),
+             ('raj2', np.float64), ('decj2', np.float64),
+             ('rab1', np.float64), ('decb1', np.float64),
+             ('glon', np.float64), ('glat', np.float64),
+             ('elon2', np.float64), ('elat2', np.float64)
+             ]
+    d = np.loadtxt(f, dtype=dtype)
 
-    for i in s:
-        d["ra_icrs"].append(i[0])
-        d["dec_icrs"].append(i[1])
-        d["px"].append(i[2])
-        d["pma"].append(i[3])
-        d["pmd"].append(i[4])
-        d["raj2"].append(i[5])
-        d["decj2"].append(i[6])
-        d["rab1"].append(i[7])
-        d["decb1"].append(i[8])
-        d["glon"].append(i[9])
-        d["glat"].append(i[10])
-        d["elon2"].append(i[11])
-        d["elat2"].append(i[12])
+    d['ra_icrs'] = np.radians(d['ra_icrs'])
+    d['dec_icrs'] = np.radians(d['dec_icrs'])
+    d['raj2'] = np.radians(d['raj2'])
+    d['decj2'] = np.radians(d['decj2'])
+    d['rab1'] = np.radians(d['rab1'])
+    d['decb1'] = np.radians(d['decb1'])
+    d['glon'] = np.radians(d['glon'])
+    d['glat'] = np.radians(d['glat'])
+    d['elon2'] = np.radians(d['elon2'])
+    d['elat2'] = np.radians(d['elat2'])
 
-    f.close()
+    # milli-arc-sec/jul yr to arc-sec per Jul. cent. And take out cos.
+    d['pma'] = d['pma'] / np.cos(d['decj2']) / 1000.0 * 100.0
+    d['pmd'] = d['pmd'] / 1000.0 * 100.0
+
+    # milli-arsec to arc-sec
+    d['px'] /= 1000.0
+
+    return d
+
+
+def cat2array(cat):
+    dtype = [('alpha', np.float64), ('delta', np.float64),
+             ('pma', np.float64), ('pmd', np.float64),
+             ('px', np.float64), ('rv', np.float64)]
+    d = np.array([(tpm.r2r(i['alpha']), i['delta'], i['pma'], i['pmd'],
+                   i['px'], i['rv']) for i in cat],
+                 dtype=dtype)
+
     return d
 
 
@@ -44,25 +66,26 @@ def get_ndwfs():
 
     The data file was created with ndwfs.py.
     """
-    f = open(os.path.join(testdatadir, "ndwfs.txt"), "r")
-    s = csv.reader(f, quoting=csv.QUOTE_NONNUMERIC,
-                   delimiter=" ", skipinitialspace=True)
-    d = dict(racj2=[], deccj2=[], raj2=[], decj2=[], rab1=[], decb1=[],
-             glon=[], glat=[], elon2=[], elat2=[])
+    f = os.path.join(testdatadir, "ndwfs.txt")
+    dtype = [('racj2', np.float64), ('deccj2', np.float64),
+             ('raj2', np.float64), ('decj2', np.float64),
+             ('rab1', np.float64), ('decb1', np.float64),
+             ('glon', np.float64), ('glat', np.float64),
+             ('elon2', np.float64), ('elat2', np.float64)
+             ]
+    d = np.loadtxt(f, dtype=dtype)
 
-    for i in s:
-        d["racj2"].append(i[0])
-        d["deccj2"].append(i[1])
-        d["raj2"].append(i[2])
-        d["decj2"].append(i[3])
-        d["rab1"].append(i[4])
-        d["decb1"].append(i[5])
-        d["glon"].append(i[6])
-        d["glat"].append(i[7])
-        d["elon2"].append(i[8])
-        d["elat2"].append(i[9])
+    d['racj2'] = np.radians(d['racj2'])
+    d['deccj2'] = np.radians(d['deccj2'])
+    d['raj2'] = np.radians(d['raj2'])
+    d['decj2'] = np.radians(d['decj2'])
+    d['rab1'] = np.radians(d['rab1'])
+    d['decb1'] = np.radians(d['decb1'])
+    d['glon'] = np.radians(d['glon'])
+    d['glat'] = np.radians(d['glat'])
+    d['elon2'] = np.radians(d['elon2'])
+    d['elat2'] = np.radians(d['elat2'])
 
-    f.close()
     return d
 
 
