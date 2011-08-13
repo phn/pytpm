@@ -417,3 +417,60 @@ def v62cat(v6=None, C=36525.0):
     else:
         return cat_out
 
+
+def cat2v6(alpha=0.0, delta=0.0, pma=0.0, pmd=0.0, px=0.0, rv=0.0,
+           C=36525.0):
+    """Convert catalog entires into V6C vectors.
+
+    Parameters
+    ----------
+    alpha : float
+        Longitudinal coordinate (e.g., RA) in radians.
+    delta : float
+        Latitudinal coordinate (e.g., Dec) in radians.
+    pma : float
+        Proper motion in `alpha` (not alpha*cos(delta) in "/century.
+    pmd : float
+        Proper motion in `delta` in "/century.
+    px : float
+        Parallax in arc-seconds.
+    rv : float
+        Radial velocity in km/s.
+    C : float
+        Number of days in a century, as used in `pma` and `pmd`.
+
+    Returns
+    -------
+    v : one or a list of V6C vectors
+        V6C vectors corresponding to the input catalog quantities.
+
+    See also
+    --------
+    tpm.cat2v6
+
+    """
+    try:
+        l = set([len(alpha), len(delta), len(pma), len(pmd), len(px),
+                len(rv)])
+    except TypeError:
+        # Not a list. Assume that this is a single vector.
+        alpha = (alpha, )
+        delta = (delta, )
+        pma = (pma, )
+        pmd = (pmd, )
+        px = (px, )
+        rv = (rv, )
+        l = set(1)
+    else:
+        if len(l) != 1:
+            raise ValueError("All coordinates must be of the same length.")
+
+    v6_out = []
+    for i in range(l.pop()):
+        v6_out.append(tpm.cat2v6(alpha[i], delta[i], pma[i], pmd[i],
+                                 px[i], rv[i], C))
+
+    if l == 1:
+        return v6_out[0]
+    else:
+        return v6_out
