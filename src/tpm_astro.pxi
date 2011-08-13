@@ -3,32 +3,32 @@
 # cimport tpm_astro
 
 IAU_K = tpm_astro.IAU_K
-IAU_DM = tpm_astro.IAU_DM 
-IAU_AU = tpm_astro.IAU_AU  
-IAU_C  = tpm_astro.IAU_C  
-IAU_RE = tpm_astro.IAU_RE  
-IAU_RM = tpm_astro.IAU_RM  
-IAU_F  = tpm_astro.IAU_F  
+IAU_DM = tpm_astro.IAU_DM
+IAU_AU = tpm_astro.IAU_AU
+IAU_C  = tpm_astro.IAU_C
+IAU_RE = tpm_astro.IAU_RE
+IAU_RM = tpm_astro.IAU_RM
+IAU_F  = tpm_astro.IAU_F
 IAU_KAPPA = tpm_astro.IAU_KAPPA
-IAU_W   = tpm_astro.IAU_W 
-GAL_RA  = tpm_astro.GAL_RA 
-GAL_DEC = tpm_astro.GAL_DEC 
-GAL_LON = tpm_astro.GAL_LON 
-PRECESS_NEWCOMB    = tpm_astro.PRECESS_NEWCOMB 
-PRECESS_ANDOYER    = tpm_astro.PRECESS_ANDOYER 
-PRECESS_KINOSHITA  = tpm_astro.PRECESS_KINOSHITA 
-PRECESS_LIESKE     = tpm_astro.PRECESS_LIESKE 
-PRECESS_FK4        = tpm_astro.PRECESS_FK4 
-PRECESS_FK5        = tpm_astro.PRECESS_FK5 
-PRECESS_INERTIAL   = tpm_astro.PRECESS_INERTIAL 
-PRECESS_ROTATING   = tpm_astro.PRECESS_ROTATING 
+IAU_W   = tpm_astro.IAU_W
+GAL_RA  = tpm_astro.GAL_RA
+GAL_DEC = tpm_astro.GAL_DEC
+GAL_LON = tpm_astro.GAL_LON
+PRECESS_NEWCOMB    = tpm_astro.PRECESS_NEWCOMB
+PRECESS_ANDOYER    = tpm_astro.PRECESS_ANDOYER
+PRECESS_KINOSHITA  = tpm_astro.PRECESS_KINOSHITA
+PRECESS_LIESKE     = tpm_astro.PRECESS_LIESKE
+PRECESS_FK4        = tpm_astro.PRECESS_FK4
+PRECESS_FK5        = tpm_astro.PRECESS_FK5
+PRECESS_INERTIAL   = tpm_astro.PRECESS_INERTIAL
+PRECESS_ROTATING   = tpm_astro.PRECESS_ROTATING
 
 def tpm_data(TSTATE tstate, int action):
     """Compute and set dependent TSTATE data.
 
     Given a TSTATE and an action, this function will perform the action
     and set the various dependent properties of the TSTATE object.
-    
+
     Parameters
     ----------
     tstate : tpm.TSTATE
@@ -54,7 +54,7 @@ def tpm_data(TSTATE tstate, int action):
         Perform all calculations except ``TPM_REFRACTION``.
 
     The TPM manual has more details on these quantities.
-    
+
     """
     tpm_astro.tpm_data(&tstate._tstate, action)
 
@@ -111,7 +111,7 @@ cdef class PVEC(object):
         """Set the underlying C array; only for use from Cython."""
         # No checks to see if all of the elements are Cartesian.
         self._pvec = spv
-        
+
     def __getitem__(self, int index):
         """Return V6 at given index; 0 <= index < N_TPM_STATES."""
         if type(index) != type(1):
@@ -133,7 +133,7 @@ cdef class PVEC(object):
         if type(v6c) != type(V6C()):
             raise TypeError, "Value must be a V6C object."
         self._pvec.pvec[index] = v6c.getV6()
-        
+
 
 def tpm(PVEC pvec, int s1, int s2, double ep, double eq, TSTATE tstate):
     """Apply transition between to states.
@@ -142,7 +142,7 @@ def tpm(PVEC pvec, int s1, int s2, double ep, double eq, TSTATE tstate):
     during all transitions needed for the `s1` to `s2`
     transition. Specifically, `pvec[s2]` will have the V6C vector
     corresponding to the target state `s2`.
-    
+
     Parameters
     ----------
     pvec : tpm.PVEC
@@ -150,7 +150,7 @@ def tpm(PVEC pvec, int s1, int s2, double ep, double eq, TSTATE tstate):
     s1 : int
         Starting state (0 <= s1 < N_TPM_STATES).
     s2 : int
-        End state (0 <= s2 < N_TPM_STATES).    
+        End state (0 <= s2 < N_TPM_STATES).
     ep : float
         Epoch of state vector corresponding to `s1`, as a Julian date.
     eq : float
@@ -173,7 +173,7 @@ def tpm(PVEC pvec, int s1, int s2, double ep, double eq, TSTATE tstate):
     stored in their respective positions in `pvec`.
 
     For more information see the TPM manual.
-    
+
     """
     if not 0 <= s1 < N_TPM_STATES:
         raise ValueError, "S1 must be in 0 <= S1 < N_TPM_STATES"
@@ -181,7 +181,7 @@ def tpm(PVEC pvec, int s1, int s2, double ep, double eq, TSTATE tstate):
         raise ValueError, "S2 must be in 0 <= S2 < N_TPM_STATES"
     cdef S_PVEC spvec
     cdef tpm_tpm.TPM_TSTATE ststate
-    
+
     spvec = pvec.__get_pvec()
     ststate = tstate.__get_tstate()
     t = tpm_astro.tpm(spvec.pvec, s1, s2, ep, eq, &ststate)
@@ -194,7 +194,7 @@ def tpm_state(s):
 
     Given an integer id for a state, this function returns a
     descriptive name for the state.
-    
+
     Parameters
     ----------
     s : int
@@ -215,15 +215,15 @@ def tpm_state(s):
     'Topo. obs. HA/Dec'
     >>> tpm.tpm_state(tpm.TPM_S19)
     'Topo. obs. Az/El'
-    
+
     """
     return tpm_astro.tpm_state(s).decode("utf-8")
 
 def delta_AT(utc):
     """Return Delta AT = TAI - UTC for the given UTC.
 
-    .. warning:: 
-    
+    .. warning::
+
         The file src/tpm/delta_AT.c must be updated when Delta AT is
         changed by the IERS, and PyTPM Cython code must re-compiled.
 
@@ -261,10 +261,10 @@ def delta_T(ut1):
     1984.0 and 2000.0.
 
     .. warning::
-    
+
         A simple linear interpolation is carried out over a list of
         historical values.
-        
+
     """
     return tpm_astro.delta_T(ut1)
 
@@ -287,7 +287,7 @@ def delta_UT(utc):
     of delta_ET and delta_T. The later is calculated using a built-in
     model. For the latter the input time argument must be UT1, but the
     error in using UTC should be small.
-    
+
     """
     return tpm_astro.delta_UT(utc)
 
@@ -344,7 +344,7 @@ def ut12gmst(ut1):
 
     Given a UT1 Julian date, this function returns the Greenwich Mean
     Sidereal Time as an angle in radians in the range (0, 2π).
-    
+
     Parameters
     ----------
     ut1 : float
@@ -354,10 +354,10 @@ def ut12gmst(ut1):
     -------
     gmst : float
         GMST as an angle in radians in the range 0-2π.
-    
+
     """
     return tpm_astro.ut12gmst(ut1)
-    
+
 def et2tdt(et):
     """Return TDT for the given ET.
 
@@ -370,7 +370,7 @@ def et2tdt(et):
     -------
     tdt : float
         TDT as a Julian date.
-        
+
     """
     return tpm_astro.et2tdt(et)
 
@@ -450,7 +450,7 @@ def utc2tdt(utc):
     -------
     tdt : float
         TDT as a Julian date.
-        
+
     """
     return tpm_astro.utc2tdt(utc)
 
@@ -469,7 +469,7 @@ def utc2ut1(utc):
 
     """
     return tpm_astro.utc2ut1(utc)
-    
+
 def et2ut1(et):
     """Return UT1 for the given ET.
 
@@ -604,7 +604,7 @@ def tai2et(tai):
     Parameters
     ----------
     tai : float
-        TAI as a Julian date.     
+        TAI as a Julian date.
 
     Returns
     -------
@@ -649,15 +649,15 @@ def tai2ut1(tai):
 #def tdb2et(tdb):
 #    """Return ET for the given TDB."""
 #    return tpm_astro.tdb2et(tdb)
-# 
+#
 #def tdb2tai(tdb):
 #    """Return TAI for the given TDB."""
 #    return tpm_astro.tdb2tai(tdb)
-# 
+#
 #def tdb2ut1(tdb):
 #    """Return UT1 for the given TDB."""
 #    return tpm_astro.tdb2ut1(tdb)
-# 
+#
 #def tdb2utc(tdb):
 #    """Return UTC for the given TDB."""
 #    return tpm_astro.tdb2utc(tdb)
@@ -790,12 +790,12 @@ def cat2v6(alpha, delta, pma, pmd, px, rv, C=36525.0):
     arc-seconds per Julian century or arc-seconds per tropical century.
     A Julian century has 36525 days (`tpm.CJ`) and a tropical century
     has 36524.21987817305 days (`tpm.CB`).
-    
+
     """
     v6 = V6C()
     v6.setV6(tpm_astro.cat2v6(alpha, delta, pma, pmd, px, rv, C))
     return v6
-    
+
 def v62cat(V6C v6, C=36525.0):
     """Return catalog quantites given a V6C vector.
 
@@ -829,14 +829,14 @@ def v62cat(V6C v6, C=36525.0):
                 Parallax in arc-seconds.
           + rv : float
                 Radial velocity in km/s.
-                  
+
     """
     cdef double alpha=0.0, delta=0.0, pma=0.0, pmd=0.0, px=0.0, rv=0.0
     tpm_astro.v62cat(&alpha, &delta, &pma, &pmd, &px, &rv,
                       v6.getV6(), C)
-    return dict(alpha=alpha, delta=delta, pma=pma, pmd=pmd, px=px,
-                rv=rv)
-    
+    return dict(alpha=tpm_times.r2r(alpha), delta=delta, pma=pma, pmd=pmd,
+                px=px, rv=rv)
+
 def proper_motion(V6C v6, end, start):
     """Apply proper motion to the given V6C vector.
 
@@ -858,14 +858,14 @@ def proper_motion(V6C v6, end, start):
     -----
     Given starting time and end time, this function applies proper
     motion to the coordinates in the given V6C object. A simple linear
-    multiplication of velocity with time is performed, followed by 
+    multiplication of velocity with time is performed, followed by
     addition of this increment to the position coordinates.
 
     The difference, ``end - start``, should be the number of days in
     the time interval. Hence Julian dates can be used. The velocities
     in V6C are stored as AU/day and hence time interval must be in
     days.
-    
+
     """
     cdef tpm_astro.V6 _v6
     v61 = V6C()
@@ -1021,7 +1021,7 @@ def ecl2equ(V6C v6, double obl):
     -----
     A simple rotation through `obl` is performed to convert Ecliptic
     coordinates into FK5 equatorial coordinates.
-    
+
     """
     v = V6C()
     v.setV6(tpm_astro.ecl2equ(v6.getV6(), obl))
@@ -1034,7 +1034,7 @@ def equ2ecl(V6C v6, double obl):
     ----------
     v6 : tpm.V6C
         A V6C vector with Cartesian coordinates in the FK5 equatorial
-        system. 
+        system.
     obl : float
          Obliquity at the time of interest.
 
@@ -1048,12 +1048,12 @@ def equ2ecl(V6C v6, double obl):
     A simple rotation is performed to convert the given state vector
     from FK5 Equatorial system into Ecliptic system, using the given
     obliquity.
-    
+
     """
     v = V6C()
     v.setV6(tpm_astro.equ2ecl(v6.getV6(), obl))
     return v
-    
+
 def ellab(double tdt, V6C star, int flag):
     """Add or remove elliptic aberration.
 
@@ -1071,13 +1071,13 @@ def ellab(double tdt, V6C star, int flag):
     v : tpm.V6C
         A V6C vector with elliptic aberration applied to the input.
 
-        
+
     Notes
     -----
     This function applies elliptic aberration to the the given state
     vector, and return the resulting state vector. If ``flag > 0``
     then the correction is added, otherwise it is subtracted.
-    
+
     """
     v = V6C()
     v.setV6(tpm_astro.ellab(tdt, star.getV6(), flag))
@@ -1102,12 +1102,12 @@ def equ2gal(V6C v6):
     aberration. Galactic pole is (192.25, 27.4) degrees and longitude
     of ascending node of the Galactic plane on the equator is 33
     degrees.
-    
+
     """
     v = V6C()
     v.setV6(tpm_astro.equ2gal(v6.getV6()))
     return v
-    
+
 def gal2equ(V6C v6):
     """Convert state vector from Galactic to FK4 Equatorial.
 
@@ -1120,7 +1120,7 @@ def gal2equ(V6C v6):
     -------
     v : tpm.V6C
         A V6C vector with Cartesian coordinates in the FK4 Equatorial
-        system. 
+        system.
 
     Notes
     -----
@@ -1128,12 +1128,12 @@ def gal2equ(V6C v6):
     aberration. Galactic pole is (192.25, 27.4) degrees and longitude
     of ascending node of the Galactic plane on the equator is 33
     degrees.
-    
+
     """
     v = V6C()
     v.setV6(tpm_astro.gal2equ(v6.getV6()))
     return v
-    
+
 def eterms(double ep):
     """Return a V6C vector containing the e-terms of aberration.
 
@@ -1151,7 +1151,7 @@ def eterms(double ep):
     -----
     The state vector returned can be used to add or subtract the
     e-terms with another state vector.
-    
+
     """
     v6 = V6C()
     v6.setV6(tpm_astro.eterms(ep))
@@ -1174,7 +1174,7 @@ def fk425(V6C v6):
     -----
     Perform FK4 to FK5 transformation of the given state vector. See
     TPM manual and src/tpm/fk425.c for more details.
-    
+
     """
     v = V6C()
     v.setV6(tpm_astro.fk425(v6.getV6()))
@@ -1194,10 +1194,10 @@ def fk524(V6C v6):
         FK4 V6C vector.
 
     Notes
-    -----    
+    -----
     Perform FK4 to FK5 transformation of the given state vector. See
     TPM manual and src/tpm/fk524.c for more details.
-    
+
     """
     v = V6C()
     v.setV6(tpm_astro.fk524(v6.getV6()))
@@ -1226,7 +1226,7 @@ def geod2geoc(lon, lat, alt):
     Converts the given geodetic position to a geocentric one and
     returns the results in a V6C state vector. The units are meters and
     meters/second.
-    
+
     """
     v6 = V6C()
     v6.setV6(tpm_astro.geod2geoc(lon, lat, alt))
@@ -1242,7 +1242,7 @@ def ldeflect(V6C star, V6C earth, int flag):
     earth : tpm.V6C
         V6C vector for Earth.
     flag : int
-        Correction is added is flag > 0 else subtracted. 
+        Correction is added is flag > 0 else subtracted.
 
     Returns
     -------
@@ -1253,7 +1253,7 @@ def ldeflect(V6C star, V6C earth, int flag):
     -----
     Applies the relativisty light deflection due to the Sun, to the
     state vector in `star`.
-    
+
     """
     v6 = V6C()
     v6.setV6(tpm_astro.ldeflect(star.getV6(), earth.getV6(), flag))
@@ -1286,12 +1286,12 @@ def precess(double start, double end, V6C v6, int pflag):
     frame. So this cannot do FK4 to FK5, for example.
 
     The values for `pflag` can be::
-    
+
       PRECESS_NEWCOMB, PRECESS_ANDOYER, PRECESS_KINOSHITA,
       PRECESS_LIESKE and PRECESS_FK5.
 
     See TPM manual for definition of these constants.
-    
+
     """
     v = V6C()
     v.setV6(tpm_astro.precess(start, end, v6.getV6(), pflag))
@@ -1317,17 +1317,17 @@ def precess_m(start, end, pflag, sflag):
     `end` time. The model used for cacluating precession angles is
     specified using the `pflag` parameter. The possible values are::
 
-      PRECESS_NEWCOMB	
-      PRECESS_ANDOYER	
-      PRECESS_KINOSHITA	
-      PRECESS_LIESKE	
-      PRECESS_FK4	
-      PRECESS_FK5	
+      PRECESS_NEWCOMB
+      PRECESS_ANDOYER
+      PRECESS_KINOSHITA
+      PRECESS_LIESKE
+      PRECESS_FK4
+      PRECESS_FK5
 
     If `sflag != PRECESS_ROTATING`, then the "P-dot" term in the
     precession matrix is set to null. The other possibility is
     `PRECESS_INERTIAL`, when the "P-dot" term is not set to null.
-    
+
     """
     m6 = M6()
     m6.setM6(tpm_astro.precess_m(start, end, pflag, sflag))
@@ -1350,7 +1350,7 @@ def eccentricity(tdt):
     -----
     Returns the eccentricity of Earth's orbit at the given time. Time
     is a TDT (same as TT) as a Julian date.
-    
+
     """
     return tpm_astro.eccentricity(tdt)
 
@@ -1372,7 +1372,7 @@ def eccentricity_dot(tdt):
     Returns the rate of change (per Julian century) in the eccentricity
     of Earth's orbit at the given time. Time is TDT (same as TT) as a
     Julian date.
-    
+
     """
     return tpm_astro.eccentricity_dot(tdt)
 
@@ -1393,7 +1393,7 @@ def obliquity(tdt):
     -----
     The obliquity of the mean Ecliptic of J2000, at the given TDT (same
     as TT) is returned. The returned value is in radians.
-    
+
     """
     return tpm_astro.obliquity(tdt)
 
@@ -1415,7 +1415,7 @@ def obliquity_dot(tdt):
     Returns the rate of change (radians per Julian century) in the
     obliquity of Ecliptic at the given time. Time is a TDT (same as TT)
     as a Julian date.
-    
+
     """
     return tpm_astro.obliquity_dot(tdt)
 
@@ -1453,7 +1453,7 @@ def refco(lat=0.557744205098, alt=2093.093,
     The default location is KPNO.
 
     See src/tpm/refco.c for more details.
-    
+
     """
     cdef double refa
     cdef double refb
@@ -1487,10 +1487,10 @@ def refract(zx, refa, refb, flag):
     Given a zenith distance ``zx``, this function returns the amount of
     change in this quantity due to refraction. This correction must be
     added to ``zx`` to find the resultant zenith distance.
-    
+
     """
     return tpm_astro.refract(zx, refa, refb, flag)
-    
+
 def solar_perigee(tdt):
     """Mean longitude of the perigee of solar orbit.
 
@@ -1546,12 +1546,12 @@ def theta(start, end, pflag):
     for the time `end`, starting from the time `start`.
 
     The values for `pflag` can be::
-    
+
       PRECESS_NEWCOMB, PRECESS_ANDOYER, PRECESS_KINOSHITA,
       PRECESS_LIESKE and PRECESS_FK5.
 
     See TPM manual for definition of these constants.
-    
+
     """
     return tpm_astro.theta(start, end, pflag)
 
@@ -1579,12 +1579,12 @@ def thetadot(start, end, pflag):
     `start`.
 
     The values for `pflag` can be::
-    
+
       PRECESS_NEWCOMB, PRECESS_ANDOYER, PRECESS_KINOSHITA,
       PRECESS_LIESKE and PRECESS_FK5.
 
     See TPM manual for definition of these constants.
-    
+
     """
     return tpm_astro.thetadot(start, end, pflag)
 
@@ -1611,12 +1611,12 @@ def zee(start, end, pflag):
     for the time `end`, starting from the time `start`.
 
     The values for `pflag` can be::
-    
+
       PRECESS_NEWCOMB, PRECESS_ANDOYER, PRECESS_KINOSHITA,
       PRECESS_LIESKE and PRECESS_FK5.
 
     See TPM manual for definition of these constants.
-    
+
     """
     return tpm_astro.zee(start, end, pflag)
 
@@ -1644,7 +1644,7 @@ def zeedot(start, end, pflag):
     `start`.
 
     The values for `pflag` can be::
-    
+
       PRECESS_NEWCOMB, PRECESS_ANDOYER, PRECESS_KINOSHITA,
       PRECESS_LIESKE and PRECESS_FK5.
 
@@ -1675,12 +1675,12 @@ def zeta(start, end, pflag):
     for the time `end`, starting from the time `start`.
 
     The values for `pflag` can be::
-    
+
       PRECESS_NEWCOMB, PRECESS_ANDOYER, PRECESS_KINOSHITA,
       PRECESS_LIESKE and PRECESS_FK5.
 
     See TPM manual for definition of these constants.
-    
+
     """
     return tpm_astro.zeta(start, end, pflag)
 
@@ -1708,12 +1708,12 @@ def zetadot(start, end, pflag):
     ``start``.
 
     The values for ``pflag`` can be::
-    
+
       PRECESS_NEWCOMB, PRECESS_ANDOYER, PRECESS_KINOSHITA,
       PRECESS_LIESKE and PRECESS_FK5.
 
     See TPM manual for definition of these constants.
-    
+
     """
     return tpm_astro.zetadot(start, end, pflag)
 

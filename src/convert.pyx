@@ -88,11 +88,11 @@ cpdef convertv6(v6=None, double utc=-999, double delta_at=-999,
 
     The value returned is either a single V6C object or a list of V6C
     objects, depending on the input.
-    
+
     For details on the parameters see the PyTPM reference documentation
     and the TPM manual. The latter gives an example for the usage of
     this function.
-    
+
     """
     cdef int i
     if not v6:
@@ -124,13 +124,13 @@ cpdef convertv6(v6=None, double utc=-999, double delta_at=-999,
     tstate = tpm.TSTATE()
     # Initialize TPM state.
     tpm.tpm_data(tstate, tpm.TPM_INIT)
-    
+
     # Set independent quantities.
     tstate.utc = utc
     tstate.delta_ut = delta_ut
     tstate.delta_at = delta_at
-    tstate.lon = tpm.d2r(lon) 
-    tstate.lat = tpm.d2r(lat) 
+    tstate.lon = tpm.d2r(lon)
+    tstate.lat = tpm.d2r(lat)
     tstate.alt = alt
     tstate.xpole = xpole
     tstate.ypole = ypole
@@ -141,7 +141,7 @@ cpdef convertv6(v6=None, double utc=-999, double delta_at=-999,
 
     # Calculate all dependent parameters.
     tpm.tpm_data(tstate, tpm.TPM_ALL)
-            
+
     pvec = tpm.PVEC()
     v6_out = []
     for v in v6:
@@ -154,7 +154,7 @@ cpdef convertv6(v6=None, double utc=-999, double delta_at=-999,
     if len(v6) == 1:
         return v6_out[0]
     return v6_out
-    
+
 cpdef precess(alpha=-999, delta=-999, start=-999, end=-999,
               pflag=tpm.PRECESS_FK5):
     """Precess list of alpha and delta values.
@@ -201,7 +201,7 @@ cpdef precess(alpha=-999, delta=-999, start=-999, end=-999,
         # Not a list. Assume that this is a single number.
         alpha = [tpm.d2r(alpha)]
     else:
-        alpha = [tpm.d2r(i) for i in alpha]        
+        alpha = [tpm.d2r(i) for i in alpha]
     try:
         len(delta)
     except TypeError:
@@ -209,7 +209,7 @@ cpdef precess(alpha=-999, delta=-999, start=-999, end=-999,
         delta = [tpm.d2r(delta)]
     else:
         delta = [tpm.d2r(i) for i in delta]
-        
+
     if len(alpha) != len(delta):
             raise ValueError(
                     "Both alpha and delta must be of equal length.")
@@ -237,7 +237,7 @@ cpdef precessv6(v6=None, start=-999, end=-999, pflag=tpm.PRECESS_FK5):
 
     Parameters
     ----------
-    v6 : tpm.V6C or list of tpm.V6C 
+    v6 : tpm.V6C or list of tpm.V6C
         V6C vector to be precessed.
     start : float
         Starting time for precession, as a Julian date.
@@ -264,7 +264,7 @@ cpdef precessv6(v6=None, start=-999, end=-999, pflag=tpm.PRECESS_FK5):
       PRECESS_LIESKE
 
     See the tpm manual for definitions of these constants.
-    
+
     """
     cdef int i
     if not v6:
@@ -283,7 +283,7 @@ cpdef precessv6(v6=None, start=-999, end=-999, pflag=tpm.PRECESS_FK5):
             else:
                 raise TypeError(
                     "v6[{0}] must be an object of type tpm.V6C.".format(j))
-    
+
     v6_out = []
     for j in v6:
         v6_out.append(tpm.precess(start, end, j, pflag))
@@ -315,7 +315,7 @@ def proper_motion(v6, end, start):
     -----
     Given starting time and end time, this function applies proper
     motion to the coordinates in the given V6C object. A simple linear
-    multiplication of velocity with time is performed, followed by 
+    multiplication of velocity with time is performed, followed by
     addition of this increment to the position coordinates.
 
     The difference, ``end - start``, should be the number of days in
@@ -324,8 +324,8 @@ def proper_motion(v6, end, start):
     days.
 
     This function calls tpm.proper_motion repeatedly to perform the
-    calculations. 
-    
+    calculations.
+
     """
     cdef int i
     if not v6:
@@ -343,7 +343,7 @@ def proper_motion(v6, end, start):
             else:
                 raise TypeError(
                     "v6[{0}] must be an object of type tpm.V6C.".format(j))
-    
+
     v6_out = []
     for j in v6:
         v6_out.append(tpm.proper_motion(j, end=end, start=start))
@@ -352,7 +352,68 @@ def proper_motion(v6, end, start):
         return v6_out[0]
     else:
         return v6_out
-    
 
 
+def v62cat(v6=None, C=36525.0):
+    """Convert V6C vectors into catalog entries.
+
+    Parameters
+    ----------
+    v6 : tpm.V6C or a list of tpm.V6C objects.
+        V6C object containing positions and velocities.
+    C : float
+        Number of days in a century, as used in proper motions in the
+        given V6C vectors.
+
+    Returns
+    -------
+    cat : dict or list of dictionaries.
+        Each distionary contains the catalog quantites for the
+        corresponding V6C vector.
+
+        The keys are:
+          + alpha : float
+                Longitudinal coordinate (e.g., RA) in radians.
+          + delta : float
+                Latitudinal coordinate (e.g., Dec) in radians.
+          + pma : float
+                Proper motion in `alpha` (not alpha*cos(delta) in
+                "/century
+          + pmd : float
+                Proper motion in `delta` in "/century.
+          + px : float
+                Parallax in arc-seconds.
+          + rv : float
+                Radial velocity in km/s.
+
+    See also
+    --------
+    tpm.v62cat
+
+    """
+    cdef int i
+    if not v6:
+        raise TypeError("v62cat needs V6C objects.")
+    try:
+        len(v6)
+    except TypeError:
+        # Not a list. Assume that this is a single vector.
+        v6 = (v6,)
+
+    for j,v in enumerate(v6):
+        if type(v) != type(tpm.V6C()):
+            if j == 0:
+                raise TypeError("v6 must be an object of type tpm.V6C.")
+            else:
+                raise TypeError(
+                    "v6[{0}] must be an object of type tpm.V6C.".format(j))
+
+    cat_out = []
+    for j in v6:
+        cat_out.append(tpm.v62cat(j, C))
+
+    if len(v6) == 1:
+        return cat_out[0]
+    else:
+        return cat_out
 
