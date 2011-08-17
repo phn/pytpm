@@ -4,6 +4,7 @@ import math
 from pyslalib import slalib
 import read_data
 from read_data import get_hipdata
+import numpy as np
 
 tab = get_hipdata()
 
@@ -193,31 +194,63 @@ tab = get_hipdata()
 
 # sla_map
 # Convert mean J2000 to apparent ra-dec at J2000.0
-raj = [math.radians(i) for i in tab['raj2']]
-decj = [math.radians(i) for i in tab["decj2"]]
-# Milli-arcsec/Jul. year *cos(dec) into rad/Jul year.
-pmaj = [math.radians(i / 1000.0 / math.cos(j) / 3600.0)
-        for i, j in zip(tab['pma'], decj)]
-pmdj = [math.radians(i / 1000.0 / 3600.0)
-        for i in tab['pmd']]
-pxj = [i / 1000.0 for i in tab['px']]  # milli-arcsec to arc-sec.
-rvj = list(0.0 for i in range(len(pxj)))
+#tab['pma'] = np.radians(tab['pma'] / 3600.0) / 100.0
+#tab['pmd'] = np.radians(tab['pmd'] / 3600.0) / 100.0
+#
+#ra = []
+#dec = []
+#utc = slalib.sla_caldj(2010, 1, 1)[0]
+#tt = slalib.sla_dtt(utc) / 86400.0 + utc
+#
+#for i in tab:
+#    r1, d1 = slalib.sla_map(i['raj2'], i['decj2'], i['pma'], i['pmd'],
+#                            i['px'], 0.0,
+#                            2000.0, tt
+#                              )
+#    ra.append(math.degrees(r1))
+#    dec.append(math.degrees(d1))
+#
+#with open("slalib_hip_map.txt", "w") as f:
+#    f.write("# Apparent RA DEC for J2000.0 in degrees.\n")
+#    for r, d in zip(ra, dec):
+#        s =  "%14.9f %14.9f\n"
+#        f.write(s % (r, d))
 
-ra = []
-dec = []
+# sla_aop
+# Convert apparent to observed place.
+tab['pma'] = np.radians(tab['pma'] / 3600.0) / 100.0
+tab['pmd'] = np.radians(tab['pmd'] / 3600.0) / 100.0
+
 
 utc = slalib.sla_caldj(2010, 1, 1)[0]
 tt = slalib.sla_dtt(utc) / 86400.0 + utc
+dut = 1.4823561643834426  # from TPM.
 
-for r, d, px, pa, pd, rv in zip(raj, decj, pxj, pmaj, pmdj, rvj):
-    r1, d1 = slalib.sla_map(r, d, pa, pd, px, rv,
-                              2000.0, tt
+aob = np.zeros((len(tab['raj2']), ), dtype=np.float64)
+zob = aob.copy()
+hob = aob.copy()
+dob = aob.copy()
+rob = aob.copy()
+lon = np.radians(-111.598333)
+lat = np.radians(31.956389)
+
+for j, i in enumerate(tab):
+    r1, d1 = slalib.sla_map(i['raj2'], i['decj2'], i['pma'], i['pmd'],
+                            i['px'], 0.0,
+                            2000.0, tt
                               )
-    ra.append(math.degrees(r1))
-    dec.append(math.degrees(d1))
+    aob[j], zob[j], hob[j], dob[j], rob[j] = \
+        slalib.sla_aop(r1, d1, utc, dut, lon, lat, 2093.093, 0.0, 0.0,
+                       273.15, 1013.25, 0.0, 0.550, 0.0065)
 
-with open("slalib_hip_map.txt", "w") as f:
-    f.write("# Apparent RA DEC for J2000.0 in degrees.\n")
-    for r, d in zip(ra, dec):
-        s = "%14.9f %14.9f\n"
-        f.write(s % (r, d))
+aob = np.degrees(aob)
+zob = np.degrees(zob)
+hob = np.degrees(hob)
+dob = np.degrees(dob)
+rob = np.degrees(rob)
+
+with open("slalib_hip_aop.txt", "w") as f:
+    f.write("# Az, Zd, HA, Dec, RA in degrees.\n")
+    s = "%14.9f %14.9f %14.9f %14.9f %14.9f\n"
+    for i in range(len(aob)):
+        f.write(s % (aob[i], zob[i], hob[i], dob[i], rob[i]))

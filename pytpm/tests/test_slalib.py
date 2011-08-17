@@ -469,6 +469,7 @@ class TestSLALIBHIPFK54(unittest.TestCase):
             self.assertTrue(dec_diff <= 0.001 )
 
     def test_slalib_hip_fk52appradec(self):
+        """convert(x, s1=6, s2=11) + PM => SLALIB sla_map HIP."""
         tab = get_sla("slalib_hip_map.txt")
 
         v6l = []
@@ -506,3 +507,84 @@ class TestSLALIBHIPFK54(unittest.TestCase):
             dec_diff = abs(dec - s[1]) * 3600.0
             self.assertTrue(ra_diff <= 0.33)
             self.assertTrue(dec_diff <= 0.03)
+
+    def test_slalib_hip_fk52obs(self):
+        """convert(x, s1=6, s2=19) (+ s2=20) + PM => SLALIB sla_aop HIP."""
+        tab = get_sla("slalib_hip_aop.txt")
+        az_sla = []
+        zd_sla = []
+        ha_sla = []
+        dec_sla = []
+        ra_sla = []
+        for i in tab:
+            # Convert longitude values to 0 - 360
+            az_sla.append(i[0] if i[0] >= 0 else i[0] + 360.0)
+            zd_sla.append(i[1])
+            ha_sla.append(i[2] if i[2] >= 0 else i[2] + 360.0)
+            dec_sla.append(i[3])
+            ra_sla.append(i[4] if i[4] >= 0 else i[4] + 360.0)
+
+        v6l = []
+        for r, d, pa, pd, px in zip(self.hip_tab['raj2'],
+                                    self.hip_tab['decj2'],
+                                    self.hip_tab['pma'],
+                                    self.hip_tab['pmd'],
+                                    self.hip_tab['px']):
+            r = tpm.d2r(r)
+            d = tpm.d2r(d)
+            # Milli-arcsec / Jul. yr to arcsec per Jul. century.
+            pma = pa / math.cos(d) / 1000.0 * 100.0
+            pmd = pd / 1000.0 * 100.0
+            px /= 1000.0  # mili-arcsec to arc-sec.
+            v6 = tpm.cat2v6(r, d, pma, pmd, px, 0.0, tpm.CJ)
+            v6l.append(v6)
+
+        utc = tpm.gcal2j(2010, 1, 1) - 0.5  # midnight
+        tt = tpm.utc2tdb(utc)
+
+        # Convert to Az-EL.
+        v6o = convert.proper_motion(v6l, tt, tpm.J2000)
+        v6o = convert.convertv6(v6o, s1=6, s2=19, utc=utc)
+
+        cat = (tpm.v62cat(v, tpm.CJ) for v in v6o)
+
+        az = []
+        zd = []
+        for i in cat:
+            az.append(tpm.r2d(i['alpha']))
+            zd.append(90.0 - tpm.r2d(i['delta']))
+
+        # Convert Az-El to HA-Dec.
+        v6o = convert.convertv6(v6o, s1=19, s2=20, utc=utc)
+
+        cat = (tpm.v62cat(v, tpm.CJ) for v in v6o)
+
+        # Find LAST.
+        tstate = tpm.TSTATE()
+        tpm.tpm_data(tstate, tpm.TPM_INIT)
+        tstate.utc = utc
+        tstate.delta_ut = tpm.delta_UT(utc)
+        tstate.delta_at = tpm.delta_AT(utc)
+        tstate.lon = tpm.d2r(-111.598333)
+        tstate.lat = tpm.d2r(31.956389)
+        tpm.tpm_data(tstate, tpm.TPM_ALL)
+        last = tpm.r2d(tstate.last)
+
+        ha = []
+        dec = []
+        ra = []
+        for i in cat:
+            ha.append(tpm.r2d(i['alpha']))
+            dec.append(tpm.r2d(i['delta']))
+            # RA = LAST - HA and convert to 0 - 360.
+            x = last - tpm.r2d(i['alpha'])
+            ra.append(x if x >= 0  else x + 360.0)
+
+        for i in range(len(az)):
+            # Test only the coordinates with ZD < 75.0.
+            if zd[i] < 75.0:
+                self.assertTrue(abs(az[i] - az_sla[i]) * 3600.0 <= 0.25)
+                self.assertTrue(abs(zd[i] - zd_sla[i]) * 3600.0 <= 0.04)
+                self.assertTrue(abs(ha[i] - ha_sla[i]) * 3600.0 <= 0.28)
+                self.assertTrue(abs(dec[i] - dec_sla[i]) * 3600.0 <= 0.04)
+                self.assertTrue(abs(ra[i] - ra_sla[i]) * 3600.0 <= 0.33)
