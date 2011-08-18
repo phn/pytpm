@@ -1,6 +1,7 @@
 import tpm
 
-cpdef convertv6(v6=None, double utc=-999, double delta_at=-999,
+
+def convertv6(v6=None, double utc=-999, double delta_at=-999,
             double delta_ut=-999,
             int s1=tpm.TPM_S06, int s2=tpm.TARGET_OBS_AZEL,
             double epoch=tpm.J2000, double equinox=tpm.J2000,
@@ -155,7 +156,8 @@ cpdef convertv6(v6=None, double utc=-999, double delta_at=-999,
         return v6_out[0]
     return v6_out
 
-cpdef precess(alpha=-999, delta=-999, start=-999, end=-999,
+
+def precess(alpha=-999, delta=-999, start=-999, end=-999,
               pflag=tpm.PRECESS_FK5):
     """Precess list of alpha and delta values.
 
@@ -232,7 +234,8 @@ cpdef precess(alpha=-999, delta=-999, start=-999, end=-999,
     else:
         return alpha_out, delta_out
 
-cpdef precessv6(v6=None, start=-999, end=-999, pflag=tpm.PRECESS_FK5):
+
+def precessv6(v6=None, start=-999, end=-999, pflag=tpm.PRECESS_FK5):
     """Precess a list of V6C vectors.
 
     Parameters
@@ -292,6 +295,7 @@ cpdef precessv6(v6=None, start=-999, end=-999, pflag=tpm.PRECESS_FK5):
         return v6_out[0]
     else:
         return v6_out
+
 
 def proper_motion(v6, end, start):
     """Apply proper motion to tpm.V6C vectors.
