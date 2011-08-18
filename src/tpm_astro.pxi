@@ -23,6 +23,7 @@ PRECESS_FK5        = tpm_astro.PRECESS_FK5
 PRECESS_INERTIAL   = tpm_astro.PRECESS_INERTIAL
 PRECESS_ROTATING   = tpm_astro.PRECESS_ROTATING
 
+
 def tpm_data(TSTATE tstate, int action):
     """Compute and set dependent TSTATE data.
 
@@ -57,6 +58,7 @@ def tpm_data(TSTATE tstate, int action):
 
     """
     tpm_astro.tpm_data(&tstate._tstate, action)
+
 
 # If I use tpm_tpm.N_TPM_STATES or N_TPM_STATES inplace of 22 then
 # Cython gives the following error: Not allowed in a constant
@@ -189,6 +191,7 @@ def tpm(PVEC pvec, int s1, int s2, double ep, double eq, TSTATE tstate):
     tstate.__set_tstate(ststate)
     return t
 
+
 def tpm_state(s):
     """Return state name given state id.
 
@@ -219,6 +222,7 @@ def tpm_state(s):
     """
     return tpm_astro.tpm_state(s).decode("utf-8")
 
+
 def delta_AT(utc):
     """Return Delta AT = TAI - UTC for the given UTC.
 
@@ -239,6 +243,7 @@ def delta_AT(utc):
 
     """
     return tpm_astro.delta_AT(utc)
+
 
 def delta_T(ut1):
     """Return Delta T = TT - UT1 for the given UT1.
@@ -268,6 +273,7 @@ def delta_T(ut1):
     """
     return tpm_astro.delta_T(ut1)
 
+
 def delta_UT(utc):
     """Return Delta UT = UT1 - UTC for the given UTC.
 
@@ -291,6 +297,7 @@ def delta_UT(utc):
     """
     return tpm_astro.delta_UT(utc)
 
+
 def delta_ET(utc):
     """Return Delta ET = ET - UTC for the given UTC.
 
@@ -306,6 +313,7 @@ def delta_ET(utc):
 
     """
     return tpm_astro.delta_ET(utc)
+
 
 def delta_TT(utc):
     """Return Delta TT = TDT - UTC for the given UTC.
@@ -323,6 +331,7 @@ def delta_TT(utc):
     """
     return tpm_astro.delta_TT(utc)
 
+
 def tdt2tdb(tdt):
     """Return TDB for the given TDT.
 
@@ -338,6 +347,7 @@ def tdt2tdb(tdt):
 
     """
     return tpm_astro.tdt2tdb(tdt)
+
 
 def ut12gmst(ut1):
     """Return GMST for the given UT1.
@@ -358,6 +368,7 @@ def ut12gmst(ut1):
     """
     return tpm_astro.ut12gmst(ut1)
 
+
 def et2tdt(et):
     """Return TDT for the given ET.
 
@@ -373,6 +384,7 @@ def et2tdt(et):
 
     """
     return tpm_astro.et2tdt(et)
+
 
 def tai2tdt(tai):
     """Return TDT for the given TAI.
@@ -390,6 +402,7 @@ def tai2tdt(tai):
     """
     return tpm_astro.tai2tdt(tai)
 
+
 def tdt2et(tdt):
     """Return ET for the given TDT.
 
@@ -405,6 +418,7 @@ def tdt2et(tdt):
 
     """
     return tpm_astro.tdt2et(tdt)
+
 
 def ut12et(ut1):
     """Return ET for the given UT1.
@@ -422,6 +436,7 @@ def ut12et(ut1):
     """
     return tpm_astro.ut12et(ut1)
 
+
 def utc2et(utc):
     """Return ET for the given UTC.
 
@@ -437,6 +452,7 @@ def utc2et(utc):
 
     """
     return tpm_astro.utc2et(utc)
+
 
 def utc2tdt(utc):
     """Return TDT for the given UTC.
@@ -454,6 +470,7 @@ def utc2tdt(utc):
     """
     return tpm_astro.utc2tdt(utc)
 
+
 def utc2ut1(utc):
     """Return UT1 for the given UTC.
 
@@ -469,6 +486,7 @@ def utc2ut1(utc):
 
     """
     return tpm_astro.utc2ut1(utc)
+
 
 def et2ut1(et):
     """Return UT1 for the given ET.
@@ -486,6 +504,7 @@ def et2ut1(et):
     """
     return tpm_astro.et2ut1(et)
 
+
 def et2utc(et):
     """Return UTC for the given ET.
 
@@ -501,6 +520,7 @@ def et2utc(et):
 
     """
     return tpm_astro.et2utc(et)
+
 
 def tai2utc(tai):
     """Return UTC for the given TAI.
@@ -518,6 +538,7 @@ def tai2utc(tai):
     """
     return tpm_astro.tai2utc(tai)
 
+
 def tdt2tai(tdt):
     """Return TAI for the given TDT.
 
@@ -533,6 +554,7 @@ def tdt2tai(tdt):
 
     """
     return tpm_astro.tdt2tai(tdt)
+
 
 def tdt2utc(tdt):
     """Return UTC for the given TDT.
@@ -550,6 +572,7 @@ def tdt2utc(tdt):
     """
     return tpm_astro.tdt2utc(tdt)
 
+
 def ut12utc(ut1):
     """Return UTC for the given UT1.
 
@@ -565,6 +588,7 @@ def ut12utc(ut1):
 
     """
     return tpm_astro.ut12utc(ut1)
+
 
 def et2tai(et):
     """Return TAI for the given ET.
@@ -582,6 +606,7 @@ def et2tai(et):
     """
     return tpm_astro.et2tai(et)
 
+
 def et2tdb(et):
     """Return TDB for the given ET.
 
@@ -597,6 +622,7 @@ def et2tdb(et):
 
     """
     return tpm_astro.et2tdb(et)
+
 
 def tai2et(tai):
     """Return ET for the given TAI.
@@ -614,6 +640,7 @@ def tai2et(tai):
     """
     return tpm_astro.tai2et(tai)
 
+
 def tai2tdb(tai):
     """Return TDB for the given TAI.
 
@@ -630,6 +657,7 @@ def tai2tdb(tai):
     """
     return tpm_astro.tai2tdb(tai)
 
+
 def tai2ut1(tai):
     """Return UT1 for the given TAI.
 
@@ -645,6 +673,7 @@ def tai2ut1(tai):
 
     """
     return tpm_astro.tai2ut1(tai)
+
 
 #def tdb2et(tdb):
 #    """Return ET for the given TDB."""
@@ -678,6 +707,7 @@ def tdt2ut1(tdt):
     """
     return tpm_astro.tdt2ut1(tdt)
 
+
 def ut12tai(ut1):
     """Return TAI for the given UT1.
 
@@ -693,6 +723,7 @@ def ut12tai(ut1):
 
     """
     return tpm_astro.ut12tai(ut1)
+
 
 def ut12tdb(ut1):
     """Return TDB for the given UT1.
@@ -710,6 +741,7 @@ def ut12tdb(ut1):
     """
     return tpm_astro.ut12tdb(ut1)
 
+
 def ut12tdt(ut1):
     """Return TDT for the given UT1.
 
@@ -725,6 +757,7 @@ def ut12tdt(ut1):
 
     """
     return tpm_astro.ut12tdt(ut1)
+
 
 def utc2tdb(utc):
     """Return TDB for the given UTC.
@@ -742,17 +775,21 @@ def utc2tdb(utc):
     """
     return tpm_astro.utc2tdb(utc)
 
+
 def et2ut(et):
     """Return UT for the given ET; same as et2ut1(et)."""
     return tpm_astro.et2ut(et)
+
 
 def ut2et(ut):
     """Return ET for the given UT; same as ut12et(ut)."""
     return tpm_astro.ut2et(ut)
 
+
 def ut2gmst(ut):
     """Return GMST for the given UT; same as ut12gmst(ut)"""
     return tpm_astro.ut2gmst(ut)
+
 
 def cat2v6(alpha, delta, pma, pmd, px, rv, C=36525.0):
     """Create a V6C vector from a catalog entry.
@@ -796,6 +833,7 @@ def cat2v6(alpha, delta, pma, pmd, px, rv, C=36525.0):
     v6.setV6(tpm_astro.cat2v6(alpha, delta, pma, pmd, px, rv, C))
     return v6
 
+
 def v62cat(V6C v6, C=36525.0):
     """Return catalog quantites given a V6C vector.
 
@@ -837,6 +875,7 @@ def v62cat(V6C v6, C=36525.0):
     return dict(alpha=tpm_times.r2r(alpha), delta=delta, pma=pma, pmd=pmd,
                 px=px, rv=rv)
 
+
 def proper_motion(V6C v6, end, start):
     """Apply proper motion to the given V6C vector.
 
@@ -872,6 +911,7 @@ def proper_motion(V6C v6, end, start):
     _v6 = tpm_astro.proper_motion(v6.getV6(), end, start)
     v61.setV6(_v6)
     return v61
+
 
 def aberrate(V6C p, V6C e, int flag):
     """Apply aberration of light to a state vector.
@@ -912,6 +952,7 @@ def aberrate(V6C p, V6C e, int flag):
     v6.setV6(_v6)
     return v6
 
+
 def azel2hadec(V6C v6, double latitude):
     """Convert V6C from (AZ, EL) to (HA, DEC).
 
@@ -942,6 +983,7 @@ def azel2hadec(V6C v6, double latitude):
     v.setV6(tpm_astro.azel2hadec(v6.getV6(), latitude))
     return v
 
+
 def hadec2azel(V6C v6, double latitude):
     """Convert V6C from (HA, DEC) to (AZ, EL).
 
@@ -970,6 +1012,7 @@ def hadec2azel(V6C v6, double latitude):
     v = V6C()
     v.setV6(tpm_astro.hadec2azel(v6.getV6(), latitude))
     return v
+
 
 def evp(double tdb):
     """J2000 Barycentric and Heliocentric state vectors for Earth.
@@ -1001,6 +1044,7 @@ def evp(double tdb):
     v6h.setV6(_vh)
     return v6b, v6h
 
+
 def ecl2equ(V6C v6, double obl):
     """Convert Ecliptic to FK5 Equatorial coordinates.
 
@@ -1026,6 +1070,7 @@ def ecl2equ(V6C v6, double obl):
     v = V6C()
     v.setV6(tpm_astro.ecl2equ(v6.getV6(), obl))
     return v
+
 
 def equ2ecl(V6C v6, double obl):
     """Convert FK5 equatorial coordinates to Ecliptic coordinates.
@@ -1053,6 +1098,7 @@ def equ2ecl(V6C v6, double obl):
     v = V6C()
     v.setV6(tpm_astro.equ2ecl(v6.getV6(), obl))
     return v
+
 
 def ellab(double tdt, V6C star, int flag):
     """Add or remove elliptic aberration.
@@ -1083,6 +1129,7 @@ def ellab(double tdt, V6C star, int flag):
     v.setV6(tpm_astro.ellab(tdt, star.getV6(), flag))
     return v
 
+
 def equ2gal(V6C v6):
     """Convert FK4 Equatorial to Galactic.
 
@@ -1107,6 +1154,7 @@ def equ2gal(V6C v6):
     v = V6C()
     v.setV6(tpm_astro.equ2gal(v6.getV6()))
     return v
+
 
 def gal2equ(V6C v6):
     """Convert state vector from Galactic to FK4 Equatorial.
@@ -1134,6 +1182,7 @@ def gal2equ(V6C v6):
     v.setV6(tpm_astro.gal2equ(v6.getV6()))
     return v
 
+
 def eterms(double ep):
     """Return a V6C vector containing the e-terms of aberration.
 
@@ -1156,6 +1205,7 @@ def eterms(double ep):
     v6 = V6C()
     v6.setV6(tpm_astro.eterms(ep))
     return v6
+
 
 def fk425(V6C v6):
     """Precess a V6C vector from FK4 system to FK5 system.
@@ -1180,6 +1230,7 @@ def fk425(V6C v6):
     v.setV6(tpm_astro.fk425(v6.getV6()))
     return v
 
+
 def fk524(V6C v6):
     """Precess state vector from FK5 to FK4.
 
@@ -1202,6 +1253,7 @@ def fk524(V6C v6):
     v = V6C()
     v.setV6(tpm_astro.fk524(v6.getV6()))
     return v
+
 
 def geod2geoc(lon, lat, alt):
     """Convert geodetic position to geocentric position.
@@ -1232,6 +1284,7 @@ def geod2geoc(lon, lat, alt):
     v6.setV6(tpm_astro.geod2geoc(lon, lat, alt))
     return v6
 
+
 def ldeflect(V6C star, V6C earth, int flag):
     """Apply General Relativity deflection of light.
 
@@ -1258,6 +1311,7 @@ def ldeflect(V6C star, V6C earth, int flag):
     v6 = V6C()
     v6.setV6(tpm_astro.ldeflect(star.getV6(), earth.getV6(), flag))
     return v6
+
 
 def precess(double start, double end, V6C v6, int pflag):
     """Precess a state vector within an inertial frame.
@@ -1297,6 +1351,7 @@ def precess(double start, double end, V6C v6, int pflag):
     v.setV6(tpm_astro.precess(start, end, v6.getV6(), pflag))
     return v
 
+
 def precess_m(start, end, pflag, sflag):
     """Precession matrix for time between end and start.
 
@@ -1333,6 +1388,7 @@ def precess_m(start, end, pflag, sflag):
     m6.setM6(tpm_astro.precess_m(start, end, pflag, sflag))
     return m6
 
+
 def eccentricity(tdt):
     """Eccentricity of Earth's orbit.
 
@@ -1353,6 +1409,7 @@ def eccentricity(tdt):
 
     """
     return tpm_astro.eccentricity(tdt)
+
 
 def eccentricity_dot(tdt):
     """Rate of change in the eccentricity of Earth's orbit.
@@ -1376,6 +1433,7 @@ def eccentricity_dot(tdt):
     """
     return tpm_astro.eccentricity_dot(tdt)
 
+
 def obliquity(tdt):
     """Mean obliquity of Ecliptic(epoch J2000).
 
@@ -1396,6 +1454,7 @@ def obliquity(tdt):
 
     """
     return tpm_astro.obliquity(tdt)
+
 
 def obliquity_dot(tdt):
     """Rate of change of mean obliquity of Ecliptic(epoch J2000).
@@ -1418,6 +1477,7 @@ def obliquity_dot(tdt):
 
     """
     return tpm_astro.obliquity_dot(tdt)
+
 
 def refco(lat=0.557744205098, alt=2093.093,
           T=273.15, P=1013.25, rh=0.0,
@@ -1463,6 +1523,7 @@ def refco(lat=0.557744205098, alt=2093.093,
                       &refa,  &refb)
     return (refa, refb)
 
+
 def refract(zx, refa, refb, flag):
     """Returns change in zenith distance due to refraction.
 
@@ -1491,6 +1552,7 @@ def refract(zx, refa, refb, flag):
     """
     return tpm_astro.refract(zx, refa, refb, flag)
 
+
 def solar_perigee(tdt):
     """Mean longitude of the perigee of solar orbit.
 
@@ -1507,6 +1569,7 @@ def solar_perigee(tdt):
     """
     return tpm_astro.solar_perigee(tdt)
 
+
 def solar_perigee_dot(tdt):
     """Rate of change of solar perigee.
 
@@ -1522,6 +1585,7 @@ def solar_perigee_dot(tdt):
 
     """
     return tpm_astro.solar_perigee_dot(tdt)
+
 
 def theta(start, end, pflag):
     """FK4 and FK5 precession angles.
@@ -1554,6 +1618,7 @@ def theta(start, end, pflag):
 
     """
     return tpm_astro.theta(start, end, pflag)
+
 
 def thetadot(start, end, pflag):
     """Rate of change of FK4 and FK5 precession angles.
@@ -1588,6 +1653,7 @@ def thetadot(start, end, pflag):
     """
     return tpm_astro.thetadot(start, end, pflag)
 
+
 def zee(start, end, pflag):
     """FK4 and FK5 precession angles.
 
@@ -1619,6 +1685,7 @@ def zee(start, end, pflag):
 
     """
     return tpm_astro.zee(start, end, pflag)
+
 
 def zeedot(start, end, pflag):
     """Rate of change of FK4 and FK5 precession angles.
@@ -1652,6 +1719,7 @@ def zeedot(start, end, pflag):
     """
     return tpm_astro.zeedot(start, end, pflag)
 
+
 def zeta(start, end, pflag):
     """FK4 and FK5 precession angles.
 
@@ -1683,6 +1751,7 @@ def zeta(start, end, pflag):
 
     """
     return tpm_astro.zeta(start, end, pflag)
+
 
 def zetadot(start, end, pflag):
     """Rate of change of FK4 and FK5 precession angles.
@@ -1717,6 +1786,7 @@ def zetadot(start, end, pflag):
     """
     return tpm_astro.zetadot(start, end, pflag)
 
+
 def nutations(tdt):
     """Nutations in longitude and obliquity.
 
@@ -1737,3 +1807,4 @@ def nutations(tdt):
     delta_eps = 0.0
     tpm_astro.nutations(tdt, &delta_phi, &delta_eps)
     return (delta_phi, delta_eps)
+
