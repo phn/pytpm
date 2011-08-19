@@ -464,7 +464,7 @@ def cat2v6(alpha=0.0, delta=0.0, pma=0.0, pmd=0.0, px=0.0, rv=0.0,
         pmd = (pmd, )
         px = (px, )
         rv = (rv, )
-        l = set(1)
+        l = set([1])
     else:
         if len(l) != 1:
             raise ValueError("All coordinates must be of the same length.")
