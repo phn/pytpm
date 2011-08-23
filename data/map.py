@@ -4,7 +4,8 @@ import sys
 import math
 from scipy import stats
 import numpy as np
-
+import os
+from read_data import testdatadir
 from read_data import get_hipdata, get_sla
 
 # I want to run these without having to install PyTPM.
@@ -13,7 +14,7 @@ from pytpm import tpm, convert
 
 
 #tab = get_sla("slalib_hip_map.txt")
-tab = np.loadtxt("slalib_hip_map.txt")
+tab = np.loadtxt(os.path.join(testdatadir, "slalib_hip_map.txt"))
 hip_tab = get_hipdata()
 
 rv = np.zeros_like(hip_tab['px'])

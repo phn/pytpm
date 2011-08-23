@@ -4,19 +4,19 @@ import sys
 import math
 from scipy import stats
 import numpy as np
-
+import os
+from read_data import testdatadir
 from read_data import get_hipdata, get_sla
 
 # I want to run these without having to install PyTPM.
 sys.path.append("..")
 from pytpm import tpm, convert
 
-
 # Hipparcos data
 hip_tab = get_hipdata()
 
 # Result from running SLALIB MAP + AOP functions.
-tab = np.loadtxt("slalib_hip_aop.txt")
+tab = np.loadtxt(os.path.join(testdatadir, "slalib_hip_aop.txt"))
 
 # Normalize "alpha" angles to 0 - 360.0
 az_sla = np.array([i if i >= 0 else i + 360.0 for i in tab[:, 0]])
