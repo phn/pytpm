@@ -6,5 +6,7 @@ recursive-exclude doc/_build *
 recursive-include pytpm/tests/data *
 recursive-include pytpm/tests/c_tests *
 recursive-exclude pytpm/tests/c_tests *exe
+recursive-include data *
+recursive-exclude data *vot *pyc
 exclude setup-devel.py
 recursive-exclude src *pxd *pxi *pyx
