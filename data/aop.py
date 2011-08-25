@@ -1,21 +1,22 @@
 from __future__ import print_function
 from __future__ import absolute_import
 import sys
-import math
 from scipy import stats
 import numpy as np
 import os
 from read_data import testdatadir
-from read_data import get_hipdata, get_sla
+from read_data import get_hipdata
+from read_data import cat2array
 
 # I want to run these without having to install PyTPM.
-sys.path.append("..")
-from pytpm import tpm, convert
+try:
+    from pytpm import tpm, convert
+except ImportError:
+    sys.path.append("..")
+    from pytpm import tpm, convert
 
-# Hipparcos data
+# Load HIPPARCOS data and output form running SLALIB aop.
 hip_tab = get_hipdata()
-
-# Result from running SLALIB MAP + AOP functions.
 tab = np.loadtxt(os.path.join(testdatadir, "slalib_hip_aop.txt"))
 
 # Normalize "alpha" angles to 0 - 360.0
@@ -36,16 +37,15 @@ v6l = convert.cat2v6(hip_tab['raj2'], hip_tab['decj2'], hip_tab['pma'],
 utc = tpm.gcal2j(2010, 1, 1) - 0.5  # midnight
 tt = tpm.utc2tdb(utc)
 
-# Convert J2000 RA, DEC to Az, EL and ZD at UTC.
+# Convert J2000 RA, DEC to Az, EL and ZD at given UTC.
 v6o = convert.proper_motion(v6l, tt, tpm.J2000)
 v619 = convert.convertv6(v6o, s1=6, s2=19, utc=utc)
 cat19 = convert.v62cat(v619, tpm.CJ)
+cat19 = cat2array(cat19)
 
-az = [math.degrees(j['alpha']) for j in cat19]
-el = [math.degrees(j['delta']) for j in cat19]
-az = np.array(az)
-zd = 90 - np.array(el)
-
+az = np.degrees(cat19['alpha'])
+el = np.degrees(cat19['delta'])
+zd = 90.0 - el
 # Keep only those objects with ZD < 75.0 degrees.
 indx = np.where(zd < 75.0)
 
@@ -56,9 +56,10 @@ zd_diff = np.abs(zd[indx] - zd_sla[indx]) * 3600.0
 # Az, El to HA and Dec.
 v620 = convert.convertv6(v619, s1=19, s2=20, utc=utc)
 cat20 = convert.v62cat(v620, tpm.CJ)
+cat20 = cat2array(cat20)
 
-ha = np.array([math.degrees(j['alpha']) for j in cat20])
-dec = np.array([math.degrees(j['delta']) for j in cat20])
+ha = np.degrees(cat20['alpha'])
+dec = np.degrees(cat20['delta'])
 
 # Difference in HA and Dec, using TPM and SLALIB.
 ha_diff = np.abs(ha[indx] - ha_sla[indx]) * 3600.0
@@ -75,10 +76,11 @@ tstate.lat = tpm.d2r(31.956389)
 tpm.tpm_data(tstate, tpm.TPM_ALL)
 last = tpm.r2d(tstate.last)
 ra = last - ha
-# Have to normalize to 0 - 360.0
+# Have to normalize to 0 - 360.0.
 ra = np.array([i if i > 0 else i + 360.0 for i in ra])
 ra_diff = np.abs(ra[indx] - ra_sla[indx]) * 3600.0
 
+print("Comparison with SLALIB aop using HIPPARCOS data.")
 fs = "{0} {1}\n" + \
     "Min:  {2:.4f} Max: {3:.4f} \nMean: {4:.4f} Std: {5:.4f}\n"
 x = stats.describe(az_diff)

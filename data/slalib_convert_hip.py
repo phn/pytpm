@@ -125,7 +125,7 @@ tab = get_hipdata()
 #    for i, j in zip(ecl_lon, ecl_lat):
 #        # The format is very generous. The data are never this
 #        # accurate. .9 => ~1e-5 arc-sec.
-#        s = "%14.9f %14.9f \n"
+#        s = "%14.9f %14.9f\n"
 #        f.write(s % (i, j))
 
 #sla_ecleq.
@@ -147,7 +147,7 @@ tab = get_hipdata()
 #    for i, j in zip(raj2, decj2):
 #        # The format is very generous. The data are never this
 #        # accurate. .9 => ~1e-5 arc-sec.
-#        s = "%14.9f %14.9f \n"
+#        s = "%14.9f %14.9f\n"
 #        f.write(s % (i, j))
 
 # sla_eqgal.
@@ -168,7 +168,7 @@ tab = get_hipdata()
 #    for l, b in zip(gal_lon, gal_lat):
 #        # The format is very generous. The data are never this
 #        # accurate. .9 => ~1e-5 arc-sec.
-#        s = "%14.9f %14.9f \n"
+#        s = "%14.9f %14.9f\n"
 #        f.write(s % (l, b))
 
 #sla_galeq.
@@ -189,7 +189,7 @@ tab = get_hipdata()
 #    for r, d in zip(raj2, decj2):
 #        # The format is very generous. The data are never this
 #        # accurate. .9 => ~1e-5 arc-sec.
-#        s = "%14.9f %14.9f \n"
+#        s = "%14.9f %14.9f\n"
 #        f.write(s % (r, d))
 
 # sla_map

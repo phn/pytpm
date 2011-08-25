@@ -105,10 +105,11 @@ class CommentedFile(object):
 
 
 def get_sla(filename):
-        f = open(os.path.join(testdatadir, filename), "r")
-        tab = csv.reader(CommentedFile(f), quoting=csv.QUOTE_NONNUMERIC,
-                         delimiter=" ", skipinitialspace=True)
+    """SLALIB ouput can have different columns."""
+    f = open(os.path.join(testdatadir, filename), "r")
+    tab = csv.reader(CommentedFile(f), quoting=csv.QUOTE_NONNUMERIC,
+                     delimiter=" ", skipinitialspace=True)
 
-        l = list(tab)
-        f.close()
-        return l
+    l = np.array(list(tab), dtype=np.float64)
+    f.close()
+    return l
