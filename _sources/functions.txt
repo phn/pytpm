@@ -25,10 +25,12 @@ Main TPM functions
 Functions in the convert module
 -------------------------------
 
-.. autofunction:: pytpm.convert.convert
 .. autofunction:: pytpm.convert.convertv6
 .. autofunction:: pytpm.convert.precess 
 .. autofunction:: pytpm.convert.precessv6
+.. autofunction:: pytpm.convert.cat2v6
+.. autofunction:: pytpm.convert.v62cat
+.. autofunction:: pytpm.convert.proper_motion
 
 Date and time calculations and conversions
 ------------------------------------------
@@ -200,6 +202,8 @@ Functions for creating matrices
 .. autofunction:: m6qy 
 .. autofunction:: m6qz 
 
+
+.. _tpm_constants:
 
 Constants
 =========

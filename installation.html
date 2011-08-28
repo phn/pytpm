@@ -7,13 +7,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Installation &mdash; PyTPM v0.6 documentation</title>
+    <title>Installation &mdash; PyTPM v0.7 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.6',
+        VERSION:     '0.7',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,8 +22,8 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="PyTPM v0.6 documentation" href="index.html" />
-    <link rel="next" title="Introduction to PyTPM" href="intro.html" />
+    <link rel="top" title="PyTPM v0.7 documentation" href="index.html" />
+    <link rel="next" title="Coordinate conversions using TPM and PyTPM" href="conversions.html" />
     <link rel="prev" title="Python interface to the TPM C library" href="index.html" /> 
   </head>
   <body>
@@ -34,12 +34,12 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="intro.html" title="Introduction to PyTPM"
+          <a href="conversions.html" title="Coordinate conversions using TPM and PyTPM"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Python interface to the TPM C library"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">PyTPM v0.6 documentation</a> &raquo;</li> 
+        <li><a href="index.html">PyTPM v0.7 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -49,61 +49,71 @@
           <div class="body">
             
   <div class="section" id="installation">
-<h1><a class="toc-backref" href="#id2">Installation</a><a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id3">Installation</a><a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title first">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#installation" id="id2">Installation</a><ul>
-<li><a class="reference internal" href="#requirements" id="id3">Requirements</a></li>
-<li><a class="reference internal" href="#id1" id="id4">Installation</a></li>
-<li><a class="reference internal" href="#exploring-the-cython-code" id="id5">Exploring the Cython code</a></li>
+<li><a class="reference internal" href="#installation" id="id3">Installation</a><ul>
+<li><a class="reference internal" href="#requirements" id="id4">Requirements</a></li>
+<li><a class="reference internal" href="#id2" id="id5">Installation</a></li>
+<li><a class="reference internal" href="#exploring-the-cython-code" id="id6">Exploring the Cython code</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="section" id="requirements">
-<h2><a class="toc-backref" href="#id3">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id4">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>PyTPM requires the following:</p>
 <ul class="simple">
-<li>A recent version of Python and gcc.</li>
+<li>Python 2.6, 2.7 or 3.2.</li>
+<li>GCC.</li>
 <li>The <a class="reference external" href="http://packages.python.org/distribute/">Distribute</a> package.</li>
+<li><a class="reference external" href="http://pypi.python.org/pypi/nose">Nose</a> for running tests.</li>
 <li><a class="reference external" href="http://www.cython.org/">Cython</a>, only if the Cython output needs to be regenerated.</li>
 </ul>
-<p>This library was tested using Python 2.6 and 2.7, with gcc 4.4 and
-Cython 0.14, on Ubuntu 10.10 and Ubuntu 11.04.</p>
+<p>To build the documentation <a class="reference external" href="http://sphinx.pocoo.org/">Sphinx</a> and the <a class="reference external" href="http://pypi.python.org/pypi/numpydoc">numpydoc</a> Sphinx extension
+is required.</p>
+<p>PyTPM was tested on Ubuntu 10.10 and 11.04.</p>
 </div>
-<div class="section" id="id1">
-<h2><a class="toc-backref" href="#id4">Installation</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id2">
+<h2><a class="toc-backref" href="#id5">Installation</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
-<p class="last">The file <tt class="file docutils literal"><span class="pre">src/tpm/delta_AT.c</span></tt> must be updated when Delta-AT
-is changed by the <a class="reference external" href="http://www.iers.org/">IERS</a>, and PyTPM Cython code must
-re-compiled. Update the file and just run setup.py again. See
+<p class="last">The file <tt class="file docutils literal"><span class="pre">src/tpm/delta_AT.c</span></tt> must be updated when Delta AT
+(<tt class="docutils literal"><span class="pre">DAT</span> <span class="pre">=</span> <span class="pre">TAI</span> <span class="pre">-</span> <span class="pre">UTC</span></tt>) is changed by the <a class="reference external" href="http://www.iers.org/">IERS</a>, and PyTPM Cython code
+must re-compiled. See
 <a class="reference internal" href="astrometry.html#delta-at-info"><em>Time scales and calendars</em></a>, for ways to get updated values for this
-quantity.</p>
+quantity. A new version of PyTPM will be released when this change
+occurs.</p>
 </div>
-<p>If you don&#8217;t have <a class="reference external" href="http://packages.python.org/distribute/">Distribute</a>, then install it by following the
-instructions
-<a class="reference external" href="http://pypi.python.org/pypi/distribute#distribute-setup-py">at this url</a>. Then do
-one of the following:</p>
+<p>If you don&#8217;t have <a class="reference external" href="http://packages.python.org/distribute/">Distribute</a>, then install it. Then do one of the
+following:</p>
 <ul>
-<li><dl class="first docutils">
-<dt>Install pip/easy_install and then run <cite>pip install pytpm</cite> or</dt>
-<dd><p class="first last"><cite>easy_install pytpm</cite>.</p>
-</dd>
-</dl>
+<li><p class="first"><a class="reference external" href="http://pypi.python.org/pypi/pip">pip</a> or <cite>easy_install</cite></p>
+<p>Install <a class="reference external" href="http://pypi.python.org/pypi/pip">pip</a> and then run <cite>pip install pytpm</cite>.</p>
+<p>If <cite>easy_install</cite> is available then <cite>easy_install pytpm</cite> will also
+work. <a class="reference external" href="http://packages.python.org/distribute/">Distribute</a> comes with easy_install. <a class="reference external" href="http://pypi.python.org/pypi/pip">pip</a> itself can be
+installed using the command <cite>easy_install pip</cite>.</p>
 </li>
 </ul>
 <p>or</p>
-<ul class="simple">
-<li>Download the distribution by clicking the <em>Download</em> button in the
-<a class="reference external" href="https://github.com/phn/pytpm">Github repository page</a> or from the
-<a class="reference external" href="http://pypi.python.org/pypi/PyTPM">pypi page</a>. Then run <cite>python
-setup.py install</cite>. Use the <cite>&#8211;prefix &lt;dest&gt;</cite> or <cite>&#8211;user</cite> arguments
-to change the install location.</li>
+<ul>
+<li><p class="first">Manual installation.</p>
+<p>Download the distribution from the <a class="reference external" href="http://pypi.python.org/pypi/PyTPM">pypi page for the project</a>. Then
+run <cite>python setup.py install</cite>. Use the <cite>&#8211;prefix &lt;dest&gt;</cite> or <cite>&#8211;user</cite>
+arguments to change the installation location.</p>
+</li>
 </ul>
+<p>With both these methods, <a class="reference external" href="http://pypi.python.org/pypi/virtualenv">virtualenv</a> and <a class="reference external" href="http://www.doughellmann.com/projects/virtualenvwrapper/">virtualenvwrapper</a> can be
+used. These tools enable easy installation and maintenance of Python
+packages.</p>
+<p>To run tests and to build documentation, the manual installation method
+has to be followed. Run <cite>python setup.py test</cite> and then run <cite>python
+setup.py install</cite>. To build documentation, run <cite>make html</cite> in the <cite>doc</cite>
+directory.</p>
 </div>
 <div class="section" id="exploring-the-cython-code">
-<h2><a class="toc-backref" href="#id5">Exploring the Cython code</a><a class="headerlink" href="#exploring-the-cython-code" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id6">Exploring the Cython code</a><a class="headerlink" href="#exploring-the-cython-code" title="Permalink to this headline">¶</a></h2>
 <p>See the file <tt class="file docutils literal"><span class="pre">devel-notes.rst</span></tt> in the source code repository.</p>
 </div>
 </div>
@@ -118,7 +128,7 @@ to change the install location.</li>
   <ul>
 <li><a class="reference internal" href="#">Installation</a><ul>
 <li><a class="reference internal" href="#requirements">Requirements</a></li>
-<li><a class="reference internal" href="#id1">Installation</a></li>
+<li><a class="reference internal" href="#id2">Installation</a></li>
 <li><a class="reference internal" href="#exploring-the-cython-code">Exploring the Cython code</a></li>
 </ul>
 </li>
@@ -128,8 +138,8 @@ to change the install location.</li>
   <p class="topless"><a href="index.html"
                         title="previous chapter">Python interface to the TPM C library</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="intro.html"
-                        title="next chapter">Introduction to PyTPM</a></p>
+  <p class="topless"><a href="conversions.html"
+                        title="next chapter">Coordinate conversions using TPM and PyTPM</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/installation.txt"
@@ -159,12 +169,12 @@ to change the install location.</li>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="intro.html" title="Introduction to PyTPM"
+          <a href="conversions.html" title="Coordinate conversions using TPM and PyTPM"
              >next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Python interface to the TPM C library"
              >previous</a> |</li>
-        <li><a href="index.html">PyTPM v0.6 documentation</a> &raquo;</li> 
+        <li><a href="index.html">PyTPM v0.7 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

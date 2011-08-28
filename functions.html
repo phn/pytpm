@@ -7,13 +7,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Functions and constants in PyTPM &mdash; PyTPM v0.6 documentation</title>
+    <title>Functions and constants in PyTPM &mdash; PyTPM v0.7 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.6',
+        VERSION:     '0.7',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,8 +22,9 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="PyTPM v0.6 documentation" href="index.html" />
-    <link rel="next" title="Astrometry Resources" href="astrometry.html" /> 
+    <link rel="top" title="PyTPM v0.7 documentation" href="index.html" />
+    <link rel="next" title="Data Structures" href="data_structures.html" />
+    <link rel="prev" title="Comparison of PyTPM with SLALIB" href="comparisons.html" /> 
   </head>
   <body>
     <div class="related">
@@ -33,9 +34,12 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="astrometry.html" title="Astrometry Resources"
+          <a href="data_structures.html" title="Data Structures"
              accesskey="N">next</a> |</li>
-        <li><a href="index.html">PyTPM v0.6 documentation</a> &raquo;</li> 
+        <li class="right" >
+          <a href="comparisons.html" title="Comparison of PyTPM with SLALIB"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PyTPM v0.7 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -192,7 +196,10 @@ and set the various dependent properties of the TSTATE object.</p>
 <blockquote>
 <div><p>Ending/final time in days (can be Julian date).</p>
 </div></blockquote>
-<p><strong>start</strong> : Starting/initial time in days (can be Julian date).</p>
+<p><strong>start</strong> : float</p>
+<blockquote>
+<div><p>Starting/initial time in days (can be Julian date).</p>
+</div></blockquote>
 </td>
 </tr>
 <tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v</strong> : tpm.V6C</p>
@@ -206,7 +213,7 @@ and set the various dependent properties of the TSTATE object.</p>
 <p class="rubric">Notes</p>
 <p>Given starting time and end time, this function applies proper
 motion to the coordinates in the given V6C object. A simple linear
-multiplication of velocity with time is performed, followed by 
+multiplication of velocity with time is performed, followed by
 addition of this increment to the position coordinates.</p>
 <p>The difference, <tt class="docutils literal"><span class="pre">end</span> <span class="pre">-</span> <span class="pre">start</span></tt>, should be the number of days in
 the time interval. Hence Julian dates can be used. The velocities
@@ -273,128 +280,6 @@ stored in their respective positions in <cite>pvec</cite>.</p>
 </div>
 <div class="section" id="functions-in-the-convert-module">
 <h3><a class="toc-backref" href="#id4">Functions in the convert module</a><a class="headerlink" href="#functions-in-the-convert-module" title="Permalink to this headline">¶</a></h3>
-<dl class="function">
-<dt id="pytpm.convert.convert">
-<tt class="descclassname">pytpm.convert.</tt><tt class="descname">convert</tt><big>(</big><em>alpha=-999</em>, <em>delta=-999</em>, <em>utc=-999</em>, <em>delta_at=-999</em>, <em>delta_ut=-999</em>, <em>s1=tpm.TPM_S06</em>, <em>s2=tpm.TARGET_OBS_AZEL</em>, <em>epoch=tpm.J2000</em>, <em>equinox=tpm.J2000</em>, <em>lon=-111.598333</em>, <em>lat=31.956389</em>, <em>alt=2093.093</em>, <em>xpole=0.0</em>, <em>ypole=0.0</em>, <em>T=273.15</em>, <em>P=1013.25</em>, <em>H=0.0</em>, <em>wavelength=0.550</em><big>)</big><a class="headerlink" href="#pytpm.convert.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Utility function for performing coordinate conversions.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>alpha</strong> : float or a list of floats or 1D Numpy array.</p>
-<blockquote>
-<div><p>Input longitudinal angle or angles, like ra, in degrees.</p>
-</div></blockquote>
-<p><strong>delta</strong> : float or a list of floats or 1D Numpy array.</p>
-<blockquote>
-<div><p>Input latitudinal angle or angles, like dec, in degrees.</p>
-</div></blockquote>
-<p><strong>utc</strong> : float</p>
-<blockquote>
-<div><p>&#8220;Current&#8221; UTC time as a Julian date.</p>
-</div></blockquote>
-<p><strong>delta_at</strong> : float</p>
-<blockquote>
-<div><p>TAI - UTC in seconds.</p>
-</div></blockquote>
-<p><strong>delta_ut</strong> : float</p>
-<blockquote>
-<div><p>UT1 - UTC in seconds.</p>
-</div></blockquote>
-<p><strong>s1</strong> : int</p>
-<blockquote>
-<div><p>Initial state.</p>
-</div></blockquote>
-<p><strong>s2</strong> : int</p>
-<blockquote>
-<div><p>Final state.</p>
-</div></blockquote>
-<p><strong>epoch</strong> : float</p>
-<blockquote>
-<div><p>Epoch of input coordinates as a Julian date.</p>
-</div></blockquote>
-<p><strong>equniox</strong> : float</p>
-<blockquote>
-<div><p>Equinox of input or output coordinates.</p>
-</div></blockquote>
-<p><strong>lon</strong> : float</p>
-<blockquote>
-<div><p>Geodetic longitude in degeres.</p>
-</div></blockquote>
-<p><strong>lat</strong> : float</p>
-<blockquote>
-<div><p>Geodetic latitude in degrees.</p>
-</div></blockquote>
-<p><strong>alt</strong> : float</p>
-<blockquote>
-<div><p>Altitude in meters.</p>
-</div></blockquote>
-<p><strong>xpole</strong> : float</p>
-<blockquote>
-<div><p>Polar motion in radians.</p>
-</div></blockquote>
-<p><strong>ypole</strong> : float</p>
-<blockquote>
-<div><p>Ploar motion in radians.</p>
-</div></blockquote>
-<p><strong>T</strong> : float</p>
-<blockquote>
-<div><p>Ambient temperature in Kelvin.</p>
-</div></blockquote>
-<p><strong>P</strong> : float</p>
-<blockquote>
-<div><p>Ambient pressure in millibars.</p>
-</div></blockquote>
-<p><strong>H</strong> : float</p>
-<blockquote>
-<div><p>Ambient humidity in the range 0-1.</p>
-</div></blockquote>
-<p><strong>wavelength</strong> : float</p>
-<blockquote>
-<div><p>Wavelength of observation in microns.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>(alpha, delta)</strong> : 2-element tuple, or a list of 2-element tuples</p>
-<blockquote class="last">
-<div><p>Output angles, (ra_like, dec_like), in degrees</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Notes</p>
-<p>Most often we just want to convert two angles from one coordinate
-system into another. We do not worry about proper motions and all
-conversions happen at the same &#8220;current time&#8221;. This simplies the
-procedure a lot. Given a list of coordinates, most of the
-calculations need to be performed only once.</p>
-<p>This function performs such as coordinate conversion. It takes a
-list of ra like longitudinal angles in degrees, a list of dec like
-latitudinal angles and all parameters needed for performing a
-particular transformation. All of these parameters have defualts.</p>
-<p>The default location is KPNO and the values are taken from the TPM
-C code.</p>
-<p>If <cite>utc</cite> is not provided then it is set to J2000.0 AND BOTH
-<cite>delta_at</cite> and <cite>delta_ut</cite> ARE SET TO THEIR VALUES AT
-J2000.0. That is, if <cite>utc</cite> is not given then the specified values
-for these two are ignored. If <cite>utc</cite> is given but <cite>delta_at</cite>
-and/or <cite>delta_ut</cite> is not given, then the missing value is set to
-that at the given <cite>utc</cite>.</p>
-<p>The TPM state data structure is initialized, the independent
-parameters are set, and all the dependent parameters are calculated
-using <cite>tpm_data(tstate, TPM_INIT)</cite>. This calculation is done only
-once. Then each of the coordinates are converted, by creating a
-<cite>V6</cite> vector and calling <cite>tpm()</cite>.</p>
-<p>The returned result is a list of tuples, where each tuple has the
-final ra like angle as the first element, and the final de like
-angle as the second element. If the input coordinates are single
-values and not lists, then the output is a single 2-element tuple.</p>
-<p>For details on the parameters see the PyTPM reference documentation
-and the TPM manual. The latter gives an example for the usage of
-this function.</p>
-</dd></dl>
-
 <dl class="function">
 <dt id="pytpm.convert.convertv6">
 <tt class="descclassname">pytpm.convert.</tt><tt class="descname">convertv6</tt><big>(</big><em>v6=None</em>, <em>utc=-999</em>, <em>delta_at=-999</em>, <em>delta_ut=-999</em>, <em>s1=tpm.TPM_S06</em>, <em>s2=tpm.TARGET_OBS_AZEL</em>, <em>epoch=tpm.J2000</em>, <em>equinox=tpm.J2000</em>, <em>lon=-111.598333</em>, <em>lat=31.956389</em>, <em>alt=2093.093</em>, <em>xpole=0.0</em>, <em>ypole=0.0</em>, <em>T=273.15</em>, <em>P=1013.25</em>, <em>H=0.0</em>, <em>wavelength=0.550</em><big>)</big><a class="headerlink" href="#pytpm.convert.convertv6" title="Permalink to this definition">¶</a></dt>
@@ -486,7 +371,24 @@ this function.</p>
 objects. The independent parameters will be the same for all of the
 V6C object and the dependent parameters will be calculated only
 once.</p>
-<p>See docstring of <cite>convert.convert</cite> for full documentation.</p>
+<p>The default location is KPNO and the values are taken from the TPM
+C code.</p>
+<p>If <cite>utc</cite> is not provided then it is set to J2000.0 AND BOTH
+<cite>delta_at</cite> and <cite>delta_ut</cite> ARE SET TO THEIR VALUES AT
+J2000.0. That is, if <cite>utc</cite> is not given then the specified values
+for these two are ignored. If <cite>utc</cite> is given but <cite>delta_at</cite>
+and/or <cite>delta_ut</cite> is not given, then the missing value is set to
+that at the given <cite>utc</cite>.</p>
+<p>The TPM state data structure is initialized, the independent
+parameters are set, and all the dependent parameters are calculated
+using <cite>tpm_data(tstate, TPM_INIT)</cite>. This calculation is done only
+once. Then each of the coordinates are converted, by creating a
+<cite>V6</cite> vector and calling <cite>tpm()</cite>.</p>
+<p>The value returned is either a single V6C object or a list of V6C
+objects, depending on the input.</p>
+<p>For details on the parameters see the PyTPM reference documentation
+and the TPM manual. The latter gives an example for the usage of
+this function.</p>
 </dd></dl>
 
 <dl class="function">
@@ -587,6 +489,179 @@ selected by setting appropriate constants as the value of <cite>pflag</cite>:</p
 </pre></div>
 </div>
 <p>See the tpm manual for definitions of these constants.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytpm.convert.cat2v6">
+<tt class="descclassname">pytpm.convert.</tt><tt class="descname">cat2v6</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.convert.cat2v6" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert catalog entires into V6C vectors.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>alpha</strong> : float</p>
+<blockquote>
+<div><p>Longitudinal coordinate (e.g., RA) in radians.</p>
+</div></blockquote>
+<p><strong>delta</strong> : float</p>
+<blockquote>
+<div><p>Latitudinal coordinate (e.g., Dec) in radians.</p>
+</div></blockquote>
+<p><strong>pma</strong> : float</p>
+<blockquote>
+<div><p>Proper motion in <cite>alpha</cite> (not alpha*cos(delta) in &#8220;/century.</p>
+</div></blockquote>
+<p><strong>pmd</strong> : float</p>
+<blockquote>
+<div><p>Proper motion in <cite>delta</cite> in &#8220;/century.</p>
+</div></blockquote>
+<p><strong>px</strong> : float</p>
+<blockquote>
+<div><p>Parallax in arc-seconds.</p>
+</div></blockquote>
+<p><strong>rv</strong> : float</p>
+<blockquote>
+<div><p>Radial velocity in km/s.</p>
+</div></blockquote>
+<p><strong>C</strong> : float</p>
+<blockquote>
+<div><p>Number of days in a century, as used in <cite>pma</cite> and <cite>pmd</cite>.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v</strong> : one or a list of V6C vectors</p>
+<blockquote class="last">
+<div><p>V6C vectors corresponding to the input catalog quantities.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><tt class="xref py py-obj docutils literal"><span class="pre">tpm.cat2v6</span></tt></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytpm.convert.v62cat">
+<tt class="descclassname">pytpm.convert.</tt><tt class="descname">v62cat</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.convert.v62cat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert V6C vectors into catalog entries.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>v6</strong> : tpm.V6C or a list of tpm.V6C objects.</p>
+<blockquote>
+<div><p>V6C object containing positions and velocities.</p>
+</div></blockquote>
+<p><strong>C</strong> : float</p>
+<blockquote>
+<div><p>Number of days in a century, as used in proper motions in the
+given V6C vectors.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>cat</strong> : dict or list of dictionaries.</p>
+<blockquote class="last">
+<div><p>Each distionary contains the catalog quantites for the
+corresponding V6C vector.</p>
+<dl class="docutils">
+<dt>The keys are:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>alpha <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Longitudinal coordinate (e.g., RA) in radians.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>delta <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Latitudinal coordinate (e.g., Dec) in radians.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>pma <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Proper motion in <cite>alpha</cite> (not alpha*cos(delta) in
+&#8220;/century</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>pmd <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Proper motion in <cite>delta</cite> in &#8220;/century.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>px <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Parallax in arc-seconds.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>rv <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Radial velocity in km/s.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><tt class="xref py py-obj docutils literal"><span class="pre">tpm.v62cat</span></tt></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytpm.convert.proper_motion">
+<tt class="descclassname">pytpm.convert.</tt><tt class="descname">proper_motion</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.convert.proper_motion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply proper motion to tpm.V6C vectors.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>v6</strong> : tpm.V6C or a list of tpm.V6C objects.</p>
+<blockquote>
+<div><p>V6C object containing positions and velocities.</p>
+</div></blockquote>
+<p><strong>end</strong> : float</p>
+<blockquote>
+<div><p>Ending/final time in days (can be Julian date).</p>
+</div></blockquote>
+<p><strong>start</strong> : float</p>
+<blockquote>
+<div><p>Starting/initial time in days (can be Julian date).</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v</strong> : tpm.V6C or a list of tpm.V6C objects.</p>
+<blockquote class="last">
+<div><p>V6C object containing the coordinates obtained after applying
+proper motion.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Given starting time and end time, this function applies proper
+motion to the coordinates in the given V6C object. A simple linear
+multiplication of velocity with time is performed, followed by
+addition of this increment to the position coordinates.</p>
+<p>The difference, <tt class="docutils literal"><span class="pre">end</span> <span class="pre">-</span> <span class="pre">start</span></tt>, should be the number of days in
+the time interval. Hence Julian dates can be used. The velocities
+in V6C are stored as AU/day and hence time interval must be in
+days.</p>
+<p>This function calls tpm.proper_motion repeatedly to perform the
+calculations.</p>
 </dd></dl>
 
 </div>
@@ -2790,7 +2865,10 @@ days in a century. For Julian centuries this is 36525 days
 <blockquote>
 <div><p>Ending/final time in days (can be Julian date).</p>
 </div></blockquote>
-<p><strong>start</strong> : Starting/initial time in days (can be Julian date).</p>
+<p><strong>start</strong> : float</p>
+<blockquote>
+<div><p>Starting/initial time in days (can be Julian date).</p>
+</div></blockquote>
 </td>
 </tr>
 <tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v</strong> : tpm.V6C</p>
@@ -2804,7 +2882,7 @@ days in a century. For Julian centuries this is 36525 days
 <p class="rubric">Notes</p>
 <p>Given starting time and end time, this function applies proper
 motion to the coordinates in the given V6C object. A simple linear
-multiplication of velocity with time is performed, followed by 
+multiplication of velocity with time is performed, followed by
 addition of this increment to the position coordinates.</p>
 <p>The difference, <tt class="docutils literal"><span class="pre">end</span> <span class="pre">-</span> <span class="pre">start</span></tt>, should be the number of days in
 the time interval. Hence Julian dates can be used. The velocities
@@ -3846,7 +3924,7 @@ element is the nutation in obliquity. Both are in radians.</p>
 </table>
 <p class="rubric">Notes</p>
 <p>The rotation matrix:</p>
-<div class="highlight-python"><pre>1      0          0 
+<div class="highlight-python"><pre>1      0          0
 0 cos(theta)  sin(theta)
 0 -sin(theta) cos(theta)</pre>
 </div>
@@ -3880,9 +3958,9 @@ element is the nutation in obliquity. Both are in radians.</p>
 </table>
 <p class="rubric">Notes</p>
 <p>The rotation matrix:</p>
-<div class="highlight-python"><pre>              0        0          0       
-thetadot *    0  -sin(theta) cos(theta)   
-              0  -cos(theta) -sin(theta)  </pre>
+<div class="highlight-python"><pre>              0        0          0
+thetadot *    0  -sin(theta) cos(theta)
+              0  -cos(theta) -sin(theta)</pre>
 </div>
 </dd></dl>
 
@@ -3945,7 +4023,7 @@ sin(theta)  0   cos(theta)</pre>
 <p class="rubric">Notes</p>
 <p>The rotation matrix:</p>
 <div class="highlight-python"><pre>              -sin(theta) 0  -cos(theta)
-thetadot *         0      0       0  
+thetadot *         0      0       0
               cos(theta)  0  -sin(theta)</pre>
 </div>
 </dd></dl>
@@ -4100,7 +4178,7 @@ thetadot *    -cos(theta) -sin(theta)  0
 
 </div>
 <div class="section" id="constants">
-<h2><a class="toc-backref" href="#id11">Constants</a><a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h2>
+<span id="tpm-constants"></span><h2><a class="toc-backref" href="#id11">Constants</a><a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h2>
 <p>Some frequently used constants. There are several more constants
 available, but they are mostly for internal use. See TPM headers and
 manual for more information on these.</p>
@@ -4161,9 +4239,12 @@ manual for more information on these.</p>
 </li>
 </ul>
 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="comparisons.html"
+                        title="previous chapter">Comparison of PyTPM with SLALIB</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="astrometry.html"
-                        title="next chapter">Astrometry Resources</a></p>
+  <p class="topless"><a href="data_structures.html"
+                        title="next chapter">Data Structures</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/functions.txt"
@@ -4193,9 +4274,12 @@ manual for more information on these.</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="astrometry.html" title="Astrometry Resources"
+          <a href="data_structures.html" title="Data Structures"
              >next</a> |</li>
-        <li><a href="index.html">PyTPM v0.6 documentation</a> &raquo;</li> 
+        <li class="right" >
+          <a href="comparisons.html" title="Comparison of PyTPM with SLALIB"
+             >previous</a> |</li>
+        <li><a href="index.html">PyTPM v0.7 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

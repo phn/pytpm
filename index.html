@@ -7,13 +7,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Python interface to the TPM C library &mdash; PyTPM v0.6 documentation</title>
+    <title>Python interface to the TPM C library &mdash; PyTPM v0.7 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.6',
+        VERSION:     '0.7',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="PyTPM v0.6 documentation" href="#" />
+    <link rel="top" title="PyTPM v0.7 documentation" href="#" />
     <link rel="next" title="Installation" href="installation.html" /> 
   </head>
   <body>
@@ -35,7 +35,7 @@
         <li class="right" >
           <a href="installation.html" title="Installation"
              accesskey="N">next</a> |</li>
-        <li><a href="#">PyTPM v0.6 documentation</a> &raquo;</li> 
+        <li><a href="#">PyTPM v0.7 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -47,52 +47,103 @@
   <div class="section" id="python-interface-to-the-tpm-c-library">
 <h1>Python interface to the TPM C library<a class="headerlink" href="#python-interface-to-the-tpm-c-library" title="Permalink to this headline">¶</a></h1>
 <p>PyTPM is a Python interface to the <a class="reference external" href="http://www.sal.wisc.edu/~jwp/astro/tpm/tpm.html">Telescope Pointing Machine</a> (TPM)
-C library, generated using <a class="reference external" href="http://www.cython.org/">Cython</a>.  TPM is a C library written by
-<a class="reference external" href="http://www.sal.wisc.edu/~jwp/">Jeff Percival</a>, for performing coordinate conversions between several
-astronomical coordinate systems. It was designed with the aim of
-incorporating it into telescope control systems. It is used by the
-<a class="reference external" href="http://www.noao.edu/wiyn/wiyn.html">KPNO WIYN observatory</a> and the <a class="reference external" href="http://www.astro.wisc.edu/wham/">WHAM</a> project for calculating
-directions to astronomical objects.</p>
-<p>The TPM C source code used here was copied from the <a class="reference external" href="https://trac6.assembla.com/astrolib">astrolib</a> project,
-and additional C source files were provided by Jeff Percival.</p>
-<p>In addition to most of the functions, macros, constants and structures
-defined in TPM, this module also provides a few convenience function in
-the module <tt class="docutils literal"><span class="pre">pytpm.convert</span></tt>. The functions in this module provides a
-simple interface for performing coordinate conversions.</p>
-<p id="tpm-manual">Proper usage of PyTPM, and TPM, requires familiarity with concepts in
-astrometry. Before any non-trivial use of this module please read
-the <a class="reference download internal" href="_downloads/tpm.pdf"><tt class="xref download docutils literal"><span class="pre">TPM</span> <span class="pre">manual</span></tt></a>. A trivial use case would be
-converting <em>FK5 epoch and equinox J2000</em> coordinates to <em>FK4 epoch and
-equinox B1950</em> coordinates, <em>Galactic</em> coordinates or <em>Ecliptic epoch
-and equinox J2000</em> coordinates. The <a class="reference internal" href="functions.html#pytpm.convert.convert" title="pytpm.convert.convert"><tt class="xref py py-func docutils literal"><span class="pre">pytpm.convert.convert()</span></tt></a>
-function can be used for this. A non trivial use case would be
-converting <em>Hipparcos ICRS epoch 1991.25</em> coordinates of an object
-<em>with proper motion</em>, into <em>FK5 epoch and equinox J2000</em> coordinates;
-as provided by the Vizier catalog service, for example.</p>
+library. TPM is a C library written by <a class="reference external" href="http://www.sal.wisc.edu/~jwp/">Jeffrey W. Percival</a>, for
+performing coordinate conversions between several astronomical
+coordinate systems.</p>
+<p>Python interface to TPM C code is written using <a class="reference external" href="http://www.cython.org/">Cython</a>.</p>
+<p>TPM was designed with the aim of incorporating it into telescope
+control systems. To meet this design goal, TPM offers control over
+calculations carried out during coordinate conversions. Some of these
+calculations must be performed frequently, for example time related
+calculations. Others need to be performed only once per night, for
+example nutation and precession matrices. In general, the former class
+of quantities are easier to calculate than the latter. TPM allows the
+user to select the exact calculations to be performed, for a given
+coordinate conversion. This enables the user to control the
+computational load, which is important in telescope control
+systems. TPM C library is used by the <a class="reference external" href="http://www.noao.edu/wiyn/wiyn.html">KPNO WIYN observatory</a> and the
+<a class="reference external" href="http://www.astro.wisc.edu/wham/">WHAM</a> projects.</p>
+<p>TPM is also useful outside telescope control system. It can be very
+useful for converting a large catalog of coordinates. In such cases,
+the &#8220;star independent&#8221; quantities, which tend to be computational
+expensive to calculate, can be calculated just once for the entire
+catalog. This will make coordinate conversions faster.</p>
+<p>PyTPM is not a complete astrometry package. The aim is to provide
+access to the TPM C code from Python. TPM machinery can be directly
+accessed using the <cite>pytpm.tpm</cite> sub-module. The sub-module
+<cite>pytpm.convert</cite> has several convenience functions that can be used for
+performing coordinate conversions. The latter is sufficient for most,
+but not all, calculations.</p>
+<p>Users must read the <a class="reference download internal" href="_downloads/tpm.pdf"><tt class="xref download docutils literal"><span class="pre">TPM</span> <span class="pre">manual</span></tt></a> before
+attempting to use the <cite>pytpm.tpm</cite> module.</p>
+<p id="tpm-manual">PyTPM has been tested on Python versions 2.6, 2.7 and 3.2. <a class="reference external" href="http://packages.python.org/distribute/">Distribute</a>
+is required for installing PyTPM. Cython is not required, unless the
+Cython code is modified and needs to be re-compiled. <a class="reference external" href="http://pypi.python.org/pypi/nose">Nose</a> is required
+for running tests. <a class="reference external" href="http://sphinx.pocoo.org/">Sphinx</a> and the <a class="reference external" href="http://pypi.python.org/pypi/numpydoc">numpydoc</a> Sphinx extension are
+required for building documentation from ReST source.</p>
+<p>PyTPM can be downloaded from the <a class="reference external" href="http://pypi.python.org/pypi/PyTPM">pypi page for the
+project</a>. Documentation in HTML format can also be downloaded from the
+above page. HTML documentation can be viewed at
+<a class="reference external" href="http://phn.github.com/pytpm/">http://phn.github.com/pytpm/</a>.</p>
+<p>PyTPM can also be installed using <a class="reference external" href="http://pypi.python.org/pypi/pip">pip</a> or <cite>easy_install</cite>. Use</p>
+<div class="highlight-sh"><div class="highlight"><pre><span class="nv">$ </span>pip install pytpm
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="installation.html"><em>Installation</em></a> for detailed instructions on installing PyTPM.</p>
+<p>The source code repository for PyTPM is at
+<a class="reference external" href="https://github.com/phn/pytpm">https://github.com/phn/pytpm</a>. The repository can be cloned using git,
+or a copy can be downloaded using the <em>Download</em> button on the above
+website.</p>
+</div>
+<div class="section" id="important-notes">
+<h1>Important notes<a class="headerlink" href="#important-notes" title="Permalink to this headline">¶</a></h1>
+<ol class="arabic simple">
+<li>The file <tt class="file docutils literal"><span class="pre">src/tpm/delta_AT.c</span></tt> must be updated when
+Delta AT (<tt class="docutils literal"><span class="pre">DAT</span> <span class="pre">=</span> <span class="pre">TAI</span> <span class="pre">-</span> <span class="pre">UTC</span></tt>) is changed by the <a class="reference external" href="http://www.iers.org/">IERS</a>, and PyTPM
+Cython code must re-compiled. See
+<a class="reference internal" href="astrometry.html#delta-at-info"><em>Time scales and calendars</em></a>, for ways to get updated values for this
+quantity. A new version of PyTPM will be released when this change
+occurs.</li>
+<li>TPM uses built-in ephemerides for the Earth and Sun, and a built-in
+model for calculating dynamic and rotational time.</li>
+</ol>
 </div>
 <div class="section" id="contents">
 <h1>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h1>
+<p>Information on installing PyTPM can be found in <a class="reference internal" href="installation.html"><em>Installation</em></a>.</p>
+<p>For examples of converting positions and velocities
+see <a class="reference internal" href="conversions.html"><em>Coordinate conversions using TPM and PyTPM</em></a>. Please read the <a class="reference download internal" href="_downloads/tpm.pdf"><tt class="xref download docutils literal"><span class="pre">TPM</span> <span class="pre">manual</span></tt></a> before using the advanced facilities of PyTPM.</p>
+<p>For a detailed list of functions and constants defined in PyTPM, see
+the section on <a class="reference internal" href="functions.html"><em>Functions and constants in PyTPM</em></a>. For detailed information on the data
+structures defined in PyTPM, see the section on <a class="reference internal" href="data_structures.html"><em>Data Structures</em></a>.</p>
+<p>See <a class="reference internal" href="comparisons.html"><em>Comparison of PyTPM with SLALIB</em></a> for a comparison of results obtained using
+PyTPM, with that obtained using SLALIB (<a class="reference external" href="https://github.com/scottransom/pyslalib">pyslalib</a>).</p>
+<p>The document <a class="reference internal" href="astrometry.html"><em>Astrometry Resources</em></a> presents links to astrometry resources.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#id1">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#id2">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#exploring-the-cython-code">Exploring the Cython code</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction to PyTPM</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="intro.html#convert-astronomical-coordinates-between-different-systems">Convert astronomical coordinates between different systems</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="conversions.html">Coordinate conversions using TPM and PyTPM</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="conversions.html#c-code">C code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="conversions.html#pytpm-code">PyTPM code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conversions.html#function-convert-convertv6">Function <cite>convert.convertv6</cite></a></li>
+<li class="toctree-l2"><a class="reference internal" href="conversions.html#fk5-equinox-and-epoch-j2000-0-to-fk4-equinox-and-epoch-b1950-0">FK5 equinox and epoch J2000.0, to FK4 equinox and epoch B1950.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conversions.html#fk5-equinox-and-epoch-j2000-0-to-iau-1958-galactic-system">FK5 equinox and epoch J2000.0, to IAU 1958 Galactic System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conversions.html#iau-1958-galactic-to-fk5-equinox-and-epoch-j2000-0">IAU 1958 Galactic, to FK5 equinox and epoch J2000.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conversions.html#fk5-equinox-and-epoch-j2000-0-to-iau-1980-ecliptic-system">FK5 equinox and epoch J2000.0, to IAU 1980 Ecliptic system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conversions.html#iau-1980-ecliptic-system-to-fk5-equinox-and-epoch-j2000-0">IAU 1980 Ecliptic system, to FK5 equinox and epoch J2000.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conversions.html#fk5-equinox-and-epoch-j2000-0-to-geocentric-apparent">FK5 equinox and epoch J2000.0, to Geocentric apparent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conversions.html#fk5-equinox-and-epoch-j2000-0-to-topocentric-observed">FK5 equinox and epoch J2000.0, to topocentric observed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conversions.html#converting-positions-and-velocities">Converting positions and velocities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conversions.html#pytpm-and-tpm">PyTPM and TPM</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="data_structures.html">Data Structures</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="data_structures.html#classes-for-representing-angles">Classes for representing angles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data_structures.html#classes-for-storing-time-and-date-time">Classes for storing time and date-time</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data_structures.html#classes-for-representing-vectors">Classes for representing vectors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="comparisons.html">Comparison of PyTPM with SLALIB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="comparisons.html#data">Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comparisons.html#scripts">Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comparisons.html#comparisons">Comparisons</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="functions.html">Functions and constants in PyTPM</a><ul>
@@ -100,6 +151,12 @@ as provided by the Vizier catalog service, for example.</p>
 <li class="toctree-l2"><a class="reference internal" href="functions.html#functions-related-to-astrometry">Functions related to astrometry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="functions.html#functions-for-creating-matrices">Functions for creating matrices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="functions.html#constants">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="data_structures.html">Data Structures</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data_structures.html#classes-for-representing-angles">Classes for representing angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_structures.html#classes-for-storing-time-and-date-time">Classes for storing time and date-time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_structures.html#classes-for-representing-vectors">Classes for representing vectors</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="astrometry.html">Astrometry Resources</a><ul>
@@ -117,31 +174,17 @@ as provided by the Vizier catalog service, for example.</p>
 </ul>
 </div>
 </div>
-<div class="section" id="important-notes">
-<h1>Important notes<a class="headerlink" href="#important-notes" title="Permalink to this headline">¶</a></h1>
-<ol class="arabic simple">
-<li>As of now there is a ~0.2 arc-seconds difference between the
-declination given by PyTPM and that given by Vizier/Simbad, for the
-FK5 J2000 to FK4 B1950 conversion, . This is most likely due to
-difference in the model used for the FK5-FK4 conversion.</li>
-<li>The file <tt class="file docutils literal"><span class="pre">src/tpm/delta_AT.c</span></tt> must be updated when Delta-AT is
-changed by the <a class="reference external" href="http://www.iers.org/">IERS</a>, and PyTPM Cython code must re-compiled. See
-<a class="reference internal" href="astrometry.html#delta-at-info"><em>Time scales and calendars</em></a>, for ways to get updated values for this
-quantity.</li>
-<li>TPM uses built-in ephemerides for the Earth and Sun, and a built-in
-model for calculating dynamic and rotational time.</li>
-</ol>
-</div>
 <div class="section" id="credits-and-license">
 <h1>Credits and license<a class="headerlink" href="#credits-and-license" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference external" href="http://www.sal.wisc.edu/~jwp/">Jeff Percival</a> wrote the <a class="reference external" href="http://www.sal.wisc.edu/~jwp/astro/tpm/tpm.html">TPM</a> C library. See
-<tt class="file docutils literal"><span class="pre">src/tpm/TPM_LICENSE.txt</span></tt> for TPM license.  Code for the
-Python binding itself is released under the BSD license;
-see <tt class="file docutils literal"><span class="pre">LICENSE.txt</span></tt>. The version used here was obtained from the
-<a class="reference external" href="https://trac6.assembla.com/astrolib">coords</a> package (version 0.36) of the <a class="reference external" href="https://trac6.assembla.com/astrolib">astrolib</a> library. Some C source
-files, missing from the above source, were provided by Jeff Percival.</p>
-<p>Send email to user <em>prasanthhn</em>, at the <em>gmail.com</em> domain, for
-reporting errors, comments, suggestions etc., for the PyTPM library.</p>
+<p><a class="reference external" href="http://www.sal.wisc.edu/~jwp/">Jeffrey W. Percival</a> wrote the <a class="reference external" href="http://www.sal.wisc.edu/~jwp/astro/tpm/tpm.html">TPM</a> C library. See
+<cite>src/tpm/TPM_LICENSE.txt</cite> for TPM license.</p>
+<p>The version used here was obtained from the <a class="reference external" href="https://trac6.assembla.com/astrolib">coords</a> package (version
+0.36) of the <a class="reference external" href="https://trac6.assembla.com/astrolib">astrolib</a> library. Some C source files missing from the
+above source were provided by Jeff Percival.</p>
+<p>Python and Cython code for PyTPM is released under the BSD license; see
+<cite>LICENSE.txt</cite>.</p>
+<p>Please send email to <em>prasanthhn</em>, at the <em>gmail.com</em> domain, for
+reporting errors, and for comments and suggestions.</p>
 </div>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
@@ -161,10 +204,10 @@ reporting errors, comments, suggestions etc., for the PyTPM library.</p>
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Python interface to the TPM C library</a></li>
+<li><a class="reference internal" href="#important-notes">Important notes</a></li>
 <li><a class="reference internal" href="#contents">Contents</a><ul>
 </ul>
 </li>
-<li><a class="reference internal" href="#important-notes">Important notes</a></li>
 <li><a class="reference internal" href="#credits-and-license">Credits and license</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
@@ -203,7 +246,7 @@ reporting errors, comments, suggestions etc., for the PyTPM library.</p>
         <li class="right" >
           <a href="installation.html" title="Installation"
              >next</a> |</li>
-        <li><a href="#">PyTPM v0.6 documentation</a> &raquo;</li> 
+        <li><a href="#">PyTPM v0.7 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

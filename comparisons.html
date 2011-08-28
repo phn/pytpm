@@ -1,0 +1,354 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Comparison of PyTPM with SLALIB &mdash; PyTPM v0.7 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyTPM v0.7 documentation" href="index.html" />
+    <link rel="next" title="Functions and constants in PyTPM" href="functions.html" />
+    <link rel="prev" title="Coordinate conversions using TPM and PyTPM" href="conversions.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="functions.html" title="Functions and constants in PyTPM"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="conversions.html" title="Coordinate conversions using TPM and PyTPM"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PyTPM v0.7 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="comparison-of-pytpm-with-slalib">
+<h1>Comparison of PyTPM with SLALIB<a class="headerlink" href="#comparison-of-pytpm-with-slalib" title="Permalink to this headline">¶</a></h1>
+<p>Automated tests that compare output from TPM C code and Python code are
+present in <tt class="file docutils literal"><span class="pre">pytpm/tests</span></tt>. Most of these simply test if the output
+from Python code matches that from the C code.  Automated tests that
+compare PyTPM and SLALIB are present in the file
+<tt class="file docutils literal"><span class="pre">pytpm/tests/test_slalib.py</span></tt>.</p>
+<p>All these tests are run when the <cite>python setup.py test</cite> command is
+used.</p>
+<p>These tests do not use Numpy, as PyTPM itself doesn&#8217;t use Numpy. Most
+of the work done in these tests involves reading in data and then
+converting it into appropriate units. The actual conversion process
+itself is very simple.</p>
+<p>In the automated tests, I only test if the difference between SLALIB
+and PyTPM is within some limit. But that can be contaminated by a few
+bad data points. In order to check the distribution in difference
+between PyTPM and SLALIB, I use several scripts that are present in the
+folder <tt class="file docutils literal"><span class="pre">data/</span></tt> of the source code repository. These scripts are
+also present in the <tt class="file docutils literal"><span class="pre">data/</span></tt> directory of source code distribution
+available on the <a class="reference external" href="http://pypi.python.org/pypi/PyTPM">pypi page for the project</a>.  These scripts use Numpy
+and Scipy.</p>
+<div class="section" id="data">
+<h2>Data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h2>
+<p>Both the automated tests and the scripts use the same data, present
+in <tt class="file docutils literal"><span class="pre">pytpm/tests/data</span></tt>. The input data is from the HIPPARCOS
+catalog and the NDWFS catalog.</p>
+<p>The <tt class="file docutils literal"><span class="pre">hip_full.txt</span></tt> was created using
+the <tt class="file docutils literal"><span class="pre">data/hip_full.py</span></tt>. This file contains data from the
+HIPPARCOS catalog downloaded from Vizier.  Note that <strong>TPM does not
+handle the HIPPARCOS coordinate frame</strong>; data in other coordinate
+systems are used.</p>
+<p>The file <tt class="file docutils literal"><span class="pre">ndwfs.txt</span></tt> was created
+using <tt class="file docutils literal"><span class="pre">data/ndwfs.py</span></tt>. This catalog was used as a data set that
+doesn&#8217;t have proper motions.</p>
+<p>All text files that start with <cite>slalib_</cite> contain results obtained by
+running appropriate functions in SLALIB, on the data in one of the
+above two data files.</p>
+<p>The files starting with <cite>slalib_ndwfs_</cite> were created using the
+script <tt class="file docutils literal"><span class="pre">data/slalib_convert_ndwfs.py</span></tt>. These contain results from
+SLALIB, using data in <tt class="file docutils literal"><span class="pre">pytpm/tests/data/ndwfs.txt</span></tt> as input.</p>
+<p>The files starting with <cite>slalib_hip_</cite> were created using the
+script <tt class="file docutils literal"><span class="pre">data/slalib_convert_hip.py</span></tt>. These contain results from
+SLALIB, using data in <tt class="file docutils literal"><span class="pre">pytpm/tests/data/hip_full.txt</span></tt> as input.</p>
+<p>Within automated tests and test scripts, the data
+in <tt class="file docutils literal"><span class="pre">hip_full.txt</span></tt> or <tt class="file docutils literal"><span class="pre">ndwfs.txt</span></tt> are read and a conversion
+is performed using PyTPM. This result is compared with the data in one
+of the <cite>slalib_</cite> files, which contain results from SLALIB.</p>
+</div>
+<div class="section" id="scripts">
+<h2>Scripts<a class="headerlink" href="#scripts" title="Permalink to this headline">¶</a></h2>
+<p>The script <tt class="file docutils literal"><span class="pre">data/summary_test_slalib.py</span></tt>, has several functions
+that print summary of the difference between PyTPM and SLALIB, for
+different types of coordinate conversions.</p>
+<p>The script <tt class="file docutils literal"><span class="pre">data/map.py</span></tt> compares the results for FK5 to
+geocentric apparent conversion. The SLALIB function used is <cite>sla_map</cite>.</p>
+<p>The script <tt class="file docutils literal"><span class="pre">data/aop.py</span></tt> compares the results for FK5 to
+topocentric apparent. The SLALIB function used is <cite>sla_aop</cite>.</p>
+</div>
+<div class="section" id="comparisons">
+<h2>Comparisons<a class="headerlink" href="#comparisons" title="Permalink to this headline">¶</a></h2>
+<p>Comparison of PyTPM and SLALIB for various coordinate transformations
+are given below. For many conversions, SLALIB does not return
+velocities, and hence the comparison of velocity output from PyTPM could
+not be tested.</p>
+<p>For each comparison the minimum, maximum, mean and variance or
+std. deviation of the absolute difference between PyTPM and SLALIB
+results are included. The units are arc-secs for positions and
+milli-arcsec / year for proper motions.</p>
+<div class="section" id="fk5-to-fk4">
+<h3>FK5 to FK4<a class="headerlink" href="#fk5-to-fk4" title="Permalink to this headline">¶</a></h3>
+<p>Using function <cite>hipfk524</cite> in <cite>summary_test_slalib.py</cite>.</p>
+<div class="highlight-python"><pre>**** FK524   ****
+
+Comparison with SLALIB fk524 using HIPPARCOS data.
+ra_diff arsec
+Min:  0.0000 Max: 0.0002
+Mean: 0.0000 Var: 0.0000
+
+dec_diff arcsec
+Min:  0.0000 Max: 0.0000
+Mean: 0.0000 Var: 0.0000
+
+px_diff milliarcsec
+Min:  0.0000 Max: 8.3406
+Mean: 0.0767 Var: 0.1608
+
+pma_diff milli-arsec/trop. yr
+Min:  0.0000 Max: 0.0001
+Mean: 0.0000 Var: 0.0000
+
+pmd_diff milli-arcsec/trop. yr
+Min:  0.0000 Max: 0.0001
+Mean: 0.0000 Var: 0.0000
+
+rv_diff km/s
+Min:  0.0000 Max: 0.0397
+Mean: 0.0001 Var: 0.0000</pre>
+</div>
+</div>
+<div class="section" id="fk4-to-fk5">
+<h3>FK4 to FK5<a class="headerlink" href="#fk4-to-fk5" title="Permalink to this headline">¶</a></h3>
+<p>Using function <cite>hipfk425</cite> in <cite>summary_test_slalib.py</cite>.</p>
+<div class="highlight-python"><pre>**** FK425   ****
+
+Comparison with SLALIB fk425 using HIPPARCOS data.
+ra_diff arsec
+Min:  0.0000 Max: 0.0001
+Mean: 0.0000 Var: 0.0000
+
+dec_diff arcsec
+Min:  0.0000 Max: 0.0000
+Mean: 0.0000 Var: 0.0000
+
+px_diff milliarcsec
+Min:  0.0000 Max: 8.3406
+Mean: 0.0767 Var: 0.1608
+
+pma_diff milli-arsec/trop. yr
+Min:  0.0000 Max: 0.0001
+Mean: 0.0000 Var: 0.0000
+
+pmd_diff milli-arcsec/trop. yr
+Min:  0.0000 Max: 0.0001
+Mean: 0.0000 Var: 0.0000
+
+rv_diff km/s
+Min:  0.0000 Max: 0.0008
+Mean: 0.0000 Var: 0.0000</pre>
+</div>
+</div>
+<div class="section" id="fk5-to-ecliptic">
+<h3>FK5 to Ecliptic<a class="headerlink" href="#fk5-to-ecliptic" title="Permalink to this headline">¶</a></h3>
+<p>Using function <cite>hipeqecl</cite> in <cite>summary_test_slalib.py</cite>.</p>
+<div class="highlight-python"><pre>**** EQ-ECL  ****
+
+ra_diff arcsec
+Min:  0.0000 Max: 0.0000
+Mean: 0.0000 Var: 0.0000
+
+dec_diff arcsec
+Min:  0.0000 Max: 0.0000
+Mean: 0.0000 Var: 0.0000</pre>
+</div>
+</div>
+<div class="section" id="ecliptic-to-fk5">
+<h3>Ecliptic to FK5<a class="headerlink" href="#ecliptic-to-fk5" title="Permalink to this headline">¶</a></h3>
+<p>Using function <cite>hipecleq</cite> in <cite>summary_test_slalib.py</cite>.</p>
+<div class="highlight-python"><pre>**** ECL-EQ  ****
+
+ra_diff arcsec
+Min:  0.0000 Max: 0.0000
+Mean: 0.0000 Var: 0.0000
+
+dec_diff arcsec
+Min:  0.0000 Max: 0.0000
+Mean: 0.0000 Var: 0.0000</pre>
+</div>
+</div>
+<div class="section" id="fk5-to-galactic">
+<h3>FK5 to Galactic<a class="headerlink" href="#fk5-to-galactic" title="Permalink to this headline">¶</a></h3>
+<p>Using function <cite>hipeqgal</cite> in <cite>summary_test_slalib.py</cite>.</p>
+<div class="highlight-python"><pre>**** EQ-GAL  ****
+
+ra_diff arcsec
+Min:  0.0000 Max: 0.0001
+Mean: 0.0000 Var: 0.0000
+
+dec_diff arcsec
+Min:  0.0000 Max: 0.0000
+Mean: 0.0000 Var: 0.0000</pre>
+</div>
+</div>
+<div class="section" id="galactic-to-fk5">
+<h3>Galactic to FK5<a class="headerlink" href="#galactic-to-fk5" title="Permalink to this headline">¶</a></h3>
+<p>Using function <cite>hipgaleq</cite> in <cite>summary_test_slalib.py</cite>.</p>
+<div class="highlight-python"><pre>**** GAL-EQ  ****
+
+ra_diff arcsec
+Min:  0.0000 Max: 0.0001
+Mean: 0.0000 Var: 0.0000
+
+dec_diff arcsec
+Min:  0.0000 Max: 0.0000
+Mean: 0.0000 Var: 0.0000</pre>
+</div>
+</div>
+<div class="section" id="fk5-to-geocentric-apparent">
+<h3>Fk5 to geocentric apparent<a class="headerlink" href="#fk5-to-geocentric-apparent" title="Permalink to this headline">¶</a></h3>
+<p>Using the script <cite>map.py</cite>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">run</span> <span class="nb">map</span><span class="o">.</span><span class="n">py</span>
+<span class="go">ra_diff arcsec</span>
+<span class="go">Min:  0.0004 Max: 0.3282</span>
+<span class="go">Mean: 0.0602 Std: 0.0281</span>
+
+<span class="go">dec_diff arcsec</span>
+<span class="go">Min:  0.0000 Max: 0.0268</span>
+<span class="go">Mean: 0.0163 Std: 0.0081</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="fk5-to-topocentric-observed">
+<h3>FK5 to topocentric observed<a class="headerlink" href="#fk5-to-topocentric-observed" title="Permalink to this headline">¶</a></h3>
+<p>Using the script <cite>aop.py</cite>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">run</span> <span class="n">aop</span><span class="o">.</span><span class="n">py</span>
+<span class="go">az_diff arcsec</span>
+<span class="go">Min:  0.0001 Max: 0.2410</span>
+<span class="go">Mean: 0.0211 Std: 0.0245</span>
+
+<span class="go">zd_diff arcsec</span>
+<span class="go">Min:  0.0001 Max: 0.0356</span>
+<span class="go">Mean: 0.0189 Std: 0.0091</span>
+
+<span class="go">ha_diff arcsec</span>
+<span class="go">Min:  0.0002 Max: 0.2783</span>
+<span class="go">Mean: 0.0263 Std: 0.0327</span>
+
+<span class="go">dec_diff arcsec</span>
+<span class="go">Min:  0.0000 Max: 0.0316</span>
+<span class="go">Mean: 0.0166 Std: 0.0077</span>
+
+<span class="go">ra_diff arcsec</span>
+<span class="go">Min:  0.0018 Max: 0.3285</span>
+<span class="go">Mean: 0.0586 Std: 0.0341</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Comparison of PyTPM with SLALIB</a><ul>
+<li><a class="reference internal" href="#data">Data</a></li>
+<li><a class="reference internal" href="#scripts">Scripts</a></li>
+<li><a class="reference internal" href="#comparisons">Comparisons</a><ul>
+<li><a class="reference internal" href="#fk5-to-fk4">FK5 to FK4</a></li>
+<li><a class="reference internal" href="#fk4-to-fk5">FK4 to FK5</a></li>
+<li><a class="reference internal" href="#fk5-to-ecliptic">FK5 to Ecliptic</a></li>
+<li><a class="reference internal" href="#ecliptic-to-fk5">Ecliptic to FK5</a></li>
+<li><a class="reference internal" href="#fk5-to-galactic">FK5 to Galactic</a></li>
+<li><a class="reference internal" href="#galactic-to-fk5">Galactic to FK5</a></li>
+<li><a class="reference internal" href="#fk5-to-geocentric-apparent">Fk5 to geocentric apparent</a></li>
+<li><a class="reference internal" href="#fk5-to-topocentric-observed">FK5 to topocentric observed</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="conversions.html"
+                        title="previous chapter">Coordinate conversions using TPM and PyTPM</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="functions.html"
+                        title="next chapter">Functions and constants in PyTPM</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/comparisons.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="functions.html" title="Functions and constants in PyTPM"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="conversions.html" title="Coordinate conversions using TPM and PyTPM"
+             >previous</a> |</li>
+        <li><a href="index.html">PyTPM v0.7 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Prasanth Nair.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>
