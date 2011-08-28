@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 # Test various interfaces defined in the pytpm_times.pxi file.
 import unittest
 from pytpm import tpm
@@ -111,13 +111,12 @@ class TestDMSStructure(unittest.TestCase):
         self.assertAlmostEqual(d['ss'], dms.ss) 
         
     def testUnicodeAndStr(self):
-        """DMS.__unciode__, __str__ => string representation."""
+        """DMS.__str__ => string representation."""
         dms = tpm.DMS()
         dms.dd = 1.0
         dms.mm = 2.0
         dms.ss = 3.0
         self.assertEqual(str(dms), "+01D 02' 03.000\"")
-        self.assertEqual(dms.__unicode__(), u"+01D 02' 03.000\"")
 
     def testToHMS(self):
         """DMS.to_hms => DMS to HMS object."""
@@ -349,13 +348,12 @@ class TestHMSStructure(unittest.TestCase):
         self.assertAlmostEqual(h['ss'], hms.ss) 
         
     def testUnicodeAndStr(self):
-        """HMS.__unicode__, __str__ => string representation."""
+        """HMS.__str__ => string representation."""
         hms = tpm.HMS()
         hms.hh = 1.0
         hms.mm = 2.0
         hms.ss = 3.0
         self.assertEqual(str(hms)," 01H 02M 03.000S")
-        self.assertEqual(hms.__unicode__(),u" 01H 02M 03.000S")
 
     def testToDMS(self):
         """HMS.to_dms() => HMS to DMS."""
@@ -587,7 +585,7 @@ class TestYMDStructure(unittest.TestCase):
         self.assertRaises(TypeError,sub_ymd, ymd, 1)
         
     def testUnicodeAndStr(self):
-        """YMD.__unicode__, __str__ => string representations."""
+        """YMD.__str__ => string representations."""
         # The ouput strings were obtained from
         # pytpm/tests/c_tests/fmt_ymd_test.c
         t = dict(y=2010, m=10, dd=16.789, hh=15.654, mm=1.345, ss=9.45)
@@ -601,8 +599,6 @@ class TestYMDStructure(unittest.TestCase):
         ymd.ss = t['ss']
         s = str(ymd)
         self.assertEqual(s, "Sun Oct 17 10:36:54.149 2010")
-        s = unicode(ymd)
-        self.assertEqual(s, u"Sun Oct 17 10:36:54.149 2010")
         ymd = tpm.YMD()
         ymd.y = t1['y']
         ymd.m = t1['m']
@@ -612,8 +608,6 @@ class TestYMDStructure(unittest.TestCase):
         ymd.ss = t1['ss']
         s = str(ymd)
         self.assertEqual(s, "Sat Oct  2 00:54:09.090    2 BC")
-        s = unicode(ymd)
-        self.assertEqual(s, u"Sat Oct  2 00:54:09.090    2 BC")
 
     def testNormalize(self):
         """YMD.normalize() => normalize a YMD value."""
@@ -895,7 +889,7 @@ class TestJDStructure(unittest.TestCase):
         self.assertEqual(j, eval(repr(jd)))
 
     def testUnicodeAndStr(self):
-        """JD.__unciode__, __str__ => string representations."""
+        """JD.__str__ => string representations."""
         # Output strings used as checks are from the file pytpm/tests
         # /c_tests/fmt_jd_test.c.
         s1 = " 2451545  12H 00M 00.000S"
@@ -914,9 +908,7 @@ class TestJDStructure(unittest.TestCase):
         jd2.ss = j2['ss']
 
         self.assertEqual(str(jd1), s1)
-        self.assertEqual(unicode(jd1), unicode(s1))
         self.assertEqual(str(jd2), s2)
-        self.assertEqual(unicode(jd2), unicode(s2))
 
     def testNormalize(self):
         """JD.normalize() => normalize JD value."""

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # The following line must be present in the tpm.pyx file.
-# cimport tpm_times 
+# cimport tpm_times
 
 M_PI = tpm_times.M_PI
 MJD_0 = tpm_times.MJD_0
@@ -9,13 +9,13 @@ J2000 = tpm_times.J2000
 J1984 = tpm_times.J1984
 CB = tpm_times.CB
 CJ = tpm_times.CJ
-SUNDAY  = tpm_times.SUNDAY 
+SUNDAY  = tpm_times.SUNDAY
 MONDAY  = tpm_times.MONDAY
 TUESDAY = tpm_times.TUESDAY
 WEDNESDAY = tpm_times.WEDNESDAY
 THURSDAY =  tpm_times.THURSDAY
 FRIDAY  =   tpm_times.FRIDAY
-SATURDAY =  tpm_times.SATURDAY 
+SATURDAY =  tpm_times.SATURDAY
 
 cdef class DMS(object):
     """Angle in degrees, arc-minutes and arc-seconds.
@@ -37,7 +37,7 @@ cdef class DMS(object):
                  normalize method the sign gets assigned to the degrees
                  part. Hence this class is not recommended for use
                  outside PyTPM.
-    
+
     Parameters
     ----------
     r : float, optional
@@ -59,7 +59,7 @@ cdef class DMS(object):
         Minutes part of the angle.
     ss : float
         Seconds part of the angle.
-        
+
 
     """
     valid_keys = ('r', 'h', 'dd', 'mm', 'ss')
@@ -79,43 +79,40 @@ cdef class DMS(object):
             self._dms = tpm_times.h2dms(kwargs['h'])
         else:
             self._dms.dd = kwargs.get('dd',0.0)
-            self._dms.mm = kwargs.get('mm',0.0) 
-            self._dms.ss = kwargs.get('ss',0.0) 
-        
+            self._dms.mm = kwargs.get('mm',0.0)
+            self._dms.ss = kwargs.get('ss',0.0)
+
     def __getdd(self):
         return self._dms.dd
-    
+
     def __setdd(self,value):
         self._dms.dd = value
-        
+
     dd = property(__getdd, __setdd,doc="Degrees.")
 
     def __getmm(self):
         return self._dms.mm
-    
+
     def __setmm(self,value):
         self._dms.mm = value
-        
+
     mm = property(__getmm, __setmm,doc="Minutes of arc.")
 
     def __getss(self):
         return self._dms.ss
-    
+
     def __setss(self,value):
         self._dms.ss = value
-        
+
     ss = property(__getss, __setss,doc="Seconds of arc.")
 
     def __repr__(self):
         d = {'dd':  self.dd, 'mm': self.mm, 'ss': self.ss}
         return repr(d)
-    
+
     def __str__(self):
-        return self.__unicode__().encode("utf-8")
-    
-    def __unicode__(self):
         cdef tpm_times.DMS dms
-        return unicode(tpm_times.fmt_dms(self._dms))
+        return tpm_times.fmt_dms(self._dms).decode("utf-8")
 
     def __add__(self, other):
         # Cython does not have __radd__ and the first parameter may not
@@ -153,7 +150,7 @@ cdef class DMS(object):
         -------
         hms : tpm.HMS
             A tpm.HMS object.
-            
+
         """
         cdef tpm_times.HMS _hms
         _hms = tpm_times.dms2hms(self._dms)
@@ -191,7 +188,7 @@ cdef class DMS(object):
         >>> dms.ss = 12.0
         >>> print dms
         --> print(dms)
-        -00D 13' 48.000"        
+        -00D 13' 48.000"
         """
         self._dms = tpm_times.dms2dms(self._dms)
 
@@ -219,7 +216,7 @@ cdef class DMS(object):
         -------
         hh : float
             Angle in hours.
-        
+
         """
         return tpm_times.dms2h(self._dms)
 
@@ -233,11 +230,11 @@ cdef class DMS(object):
         -------
         r : float
             Angle in radians.
-        
+
         """
         return tpm_times.dms2r(self._dms)
 
-    
+
 cdef class HMS(object):
     """Angle (or time) in hours, minutes and seconds.
 
@@ -287,45 +284,41 @@ cdef class HMS(object):
             self._hms = tpm_times.d2hms(kwargs['dd'])
         else:
             self._hms.hh = kwargs.get('hh',0.0)
-            self._hms.mm = kwargs.get('mm',0.0) 
-            self._hms.ss = kwargs.get('ss',0.0) 
-        
+            self._hms.mm = kwargs.get('mm',0.0)
+            self._hms.ss = kwargs.get('ss',0.0)
+
     def __gethh(self):
         return self._hms.hh
-    
+
     def __sethh(self,value):
         self._hms.hh = value
-        
+
     hh = property(__gethh, __sethh,doc="Hours.")
 
     def __getmm(self):
         return self._hms.mm
-    
+
     def __setmm(self,value):
         self._hms.mm = value
-        
+
     mm = property(__getmm, __setmm,doc="Minutes.")
 
     def __getss(self):
         return self._hms.ss
-    
+
     def __setss(self,value):
         self._hms.ss = value
-        
+
     ss = property(__getss, __setss,doc="Seconds.")
 
     def __repr__(self):
         d = {'hh':  self.hh, 'mm': self.mm, 'ss': self.ss}
         return repr(d)
-    
+
     def __str__(self):
-        return self.__unicode__().encode("utf-8")
-    
-    def __unicode__(self):
         cdef tpm_times.HMS hms
         hms = tpm_times.hms2hms(self._hms)
-        s = tpm_times.fmt_hms(hms)
-        return unicode(s)
+        return tpm_times.fmt_hms(hms).decode("utf-8")
 
     def __add__(self, other):
         # Cython does not have __rdd__ and the first parameter may not
@@ -363,7 +356,7 @@ cdef class HMS(object):
         -------
         dms : tpm.DMS
             A tpm.DMS object.
-            
+
         """
         cdef tpm_times.DMS _dms
         _dms = tpm_times.hms2dms(self._hms)
@@ -397,7 +390,7 @@ cdef class HMS(object):
         >>> h.normalize()
         >>> h
         {'mm': 2.0, 'ss': 19.400000000001967, 'hh': -12.0}
-        
+
         """
         self._hms = tpm_times.hms2hms(self._hms)
 
@@ -410,7 +403,7 @@ cdef class HMS(object):
         -------
         h : float
             Angle in hours.
-        
+
         """
         return tpm_times.hms2h(self._hms)
 
@@ -423,7 +416,7 @@ cdef class HMS(object):
         -------
         d : float
             Angle in degrees.
-            
+
         """
         return tpm_times.hms2d(self._hms)
 
@@ -438,8 +431,8 @@ cdef class HMS(object):
             Angle in radians.
         """
         return tpm_times.hms2r(self._hms)
-    
-    
+
+
 cdef class YMD(object):
     """Class for representing data-time.
 
@@ -497,7 +490,7 @@ cdef class YMD(object):
         self._ymd.hms.hh = 0.0
         self._ymd.hms.mm = 0.0
         self._ymd.hms.ss = 0.0
-        
+
     def __init__(self,**kwarg):
         for key in kwarg:
             if key not in self.valid_keys:
@@ -518,58 +511,58 @@ cdef class YMD(object):
             assert type(m) == type(1), "Month must be an integer."
             self._ymd.m = m
             self._ymd.dd = kwarg.get('dd',0)
-            self._ymd.hms.hh = kwarg.get('hh',0.0) 
-            self._ymd.hms.mm = kwarg.get('mm',0.0) 
+            self._ymd.hms.hh = kwarg.get('hh',0.0)
+            self._ymd.hms.mm = kwarg.get('mm',0.0)
             self._ymd.hms.ss = kwarg.get('ss',0.0)
-        
+
     def __gety(self):
         return self._ymd.y
-    
+
     def __sety(self,value):
         assert type(value) == type(1), "Year must be an integer."
         self._ymd.y = value
-        
+
     y = property(__gety, __sety,doc="Year as an integer.")
 
     def __getm(self):
         return self._ymd.m
-    
+
     def __setm(self,value):
         assert type(value) == type(1), "Month must be an integer."
         self._ymd.m = value
-        
+
     m = property(__getm, __setm,doc="Month as an integer.")
 
     def __getdd(self):
         return self._ymd.dd
-    
+
     def __setdd(self,value):
         self._ymd.dd = value
-        
+
     dd = property(__getdd, __setdd,doc="Day as a float.")
 
     def __gethh(self):
         return self._ymd.hms.hh
-    
+
     def __sethh(self,value):
         self._ymd.hms.hh = value
-        
+
     hh = property(__gethh, __sethh,doc="Hours as a float.")
 
     def __getmm(self):
         return self._ymd.hms.mm
-    
+
     def __setmm(self,value):
         self._ymd.hms.mm = value
-        
+
     mm = property(__getmm, __setmm,doc="Minutes as a float.")
 
     def __getss(self):
         return self._ymd.hms.ss
-    
+
     def __setss(self,value):
         self._ymd.hms.ss = value
-        
+
     ss = property(__getss, __setss,doc="Seconds as a float.")
 
     def __repr__(self):
@@ -578,13 +571,9 @@ cdef class YMD(object):
         return repr(ymd)
 
     def __str__(self):
-        return self.__unicode__().encode("utf-8")
-
-    def __unicode__(self):
         cdef tpm_times.YMD ymd
         ymd = tpm_times.ymd2ymd(self._ymd)
-        s = tpm_times.fmt_ymd(ymd)
-        return unicode(s)
+        return tpm_times.fmt_ymd(ymd).decode("utf-8")
 
     def __sub__(self, other):
         # Cython does not have __rdd__ and the first parameter may not
@@ -616,7 +605,7 @@ cdef class YMD(object):
         >>> ymd.normalize()
         >>> ymd
         {'mm': 14.0, 'dd': 13.0, 'm': 3, 'ss': 59.999986588954926, 'hh': 0.0, 'y': 2010}
-                
+
         """
         self._ymd = tpm_times.ymd2ymd(self._ymd)
 
@@ -653,10 +642,10 @@ cdef class YMD(object):
         --------
         >>> tpm.YMD(y=2000,m=1,dd=1,hh=12.0).to_j()
         2451545.0
-        
+
         """
         return tpm_times.ymd2j(self._ymd)
-        
+
     def raw_str(self):
         """A string representation in the 'raw' format.
 
@@ -674,7 +663,7 @@ cdef class YMD(object):
 
         Printing or converting to str gives a nicely formatted string
         representation.
-        
+
         >>> ymd = tpm.YMD(y=2000,m=1,dd=1,hh=12.0)
         >>> print ymd
         --> print(ymd)
@@ -683,7 +672,7 @@ cdef class YMD(object):
         'Sat Jan  1 12:00:00.000 2000'
 
         """
-        return tpm_times.fmt_ymd_raw(self._ymd)
+        return tpm_times.fmt_ymd_raw(self._ymd).decode("utf-8")
 
     def doy(self):
         """Day of the year corresponding to the date-time.
@@ -699,7 +688,7 @@ cdef class YMD(object):
         1.5
         >>> tpm.YMD(y=2000,m=1,dd=1,hh=12.5).doy()
         1.5208333334885538
-        
+
         """
         return tpm_times.ymd2dd(self._ymd)
 
@@ -721,11 +710,11 @@ cdef class YMD(object):
         2000.0040983606557
         >>> 2000+(1/366.0+12/(24.0*366.0))
         2000.0040983606557
-        
+
         """
         return tpm_times.ymd2y(self._ymd)
 
-    
+
 cdef class JD(object):
     """Class for Julian dates, with hours, minutes and seconds.
 
@@ -762,7 +751,7 @@ cdef class JD(object):
         Minutes.
     ss : float
         Seconds.
-    
+
     """
     valid_keys = ('j', 'year', 'dd', 'hh', 'mm', 'ss')
     cdef tpm_times.JD _jd
@@ -788,34 +777,34 @@ cdef class JD(object):
 
     def __getdd(self):
         return self._jd.dd
-    
+
     def __setdd(self,value):
         self._jd.dd = value
-        
+
     dd = property(__getdd, __setdd,doc="Day as a float.")
 
     def __gethh(self):
         return self._jd.hms.hh
-    
+
     def __sethh(self,value):
         self._jd.hms.hh = value
-        
+
     hh = property(__gethh, __sethh,doc="Hours.")
 
     def __getmm(self):
         return self._jd.hms.mm
-    
+
     def __setmm(self,value):
         self._jd.hms.mm = value
-        
+
     mm = property(__getmm, __setmm,doc="Minutes.")
 
     def __getss(self):
         return self._jd.hms.ss
-    
+
     def __setss(self,value):
         self._jd.hms.ss = value
-        
+
     ss = property(__getss, __setss,doc="Seconds.")
 
     def __repr__(self):
@@ -823,13 +812,9 @@ cdef class JD(object):
         return repr(d)
 
     def __str__(self):
-        return self.__unicode__().encode("utf-8")
-
-    def __unicode__(self):
         cdef tpm_times.JD jd
         jd = tpm_times.jd2jd(self._jd)
-        s = tpm_times.fmt_jd(jd)
-        return unicode(s)
+        return tpm_times.fmt_jd(jd).decode("utf-8")
 
     def __add__(self, other):
         # Cython does not have __rdd__ and the first parameter may not
@@ -873,7 +858,7 @@ cdef class JD(object):
         >>> j.normalize()
         >>> j
         {'mm': 57.0, 'ss': 45.794894099235535, 'dd': 2451545.0, 'hh': 2.0}
-        
+
         """
         self._jd = tpm_times.jd2jd(self._jd)
 
@@ -913,7 +898,7 @@ cdef class JD(object):
         >>> jd = tpm.JD(dd=2451545.0, hh=12.0)
         >>> jd.to_j()
         2451545.5
-        
+
         """
         return tpm_times.jd2j(self._jd)
 
@@ -933,11 +918,12 @@ cdef class JD(object):
         2000.0054644808743
         >>> 2000+(2/366.0)
         2000.0054644808743
-            
+
         """
         return tpm_times.jd2y(self._jd)
 
-    
+
+
 def byear2jd(byear):
     """Convert Besselian year into a Julian date.
 
@@ -957,10 +943,11 @@ def byear2jd(byear):
     2433282.4234590498
     >>> tpm.byear2jd(2000.0)
     2451544.5333981365
-    
+
     """
     return tpm_times.BYEAR2JD(byear)
- 
+
+
 def jd2byear(jd):
     """Convert Julian date into a Besselian year.
 
@@ -980,10 +967,11 @@ def jd2byear(jd):
     1950.0
     >>> tpm.jd2byear(tpm.J2000)
     2000.0012775135656
-    
+
     """
     return tpm_times.JD2BYEAR(jd)
- 
+
+
 def jyear2jd(jyear):
     """Convert Julian year into a Julian date.
 
@@ -1003,9 +991,10 @@ def jyear2jd(jyear):
     2451545.0
     >>> tpm.jyear2jd(1950.0)
     2433282.5
-    
+
     """
     return tpm_times.JYEAR2JD(jyear)
+
 
 def jd2jyear(jd):
     """Convert Julian date into Julian year.
@@ -1026,9 +1015,10 @@ def jd2jyear(jd):
     2000.0
     >>> tpm.jd2jyear(tpm.B1950)
     1949.9997904422992
-    
+
     """
     return tpm_times.JD2JYEAR(jd)
+
 
 def jd_now():
     """Return current Julian date as a JD object.
@@ -1045,11 +1035,12 @@ def jd_now():
     jd._jd = tpm_times.jd_now()
     return jd
 
+
 def utc_now():
     """Current UTC as a Julian date.
 
     This function is only accurate to the nearest second.
-    
+
     Returns
     -------
     jd : float
@@ -1058,11 +1049,12 @@ def utc_now():
     """
     return tpm_times.utc_now()
 
+
 def gcal2j(int y, int m, int dd):
     """Return Julian day number for the Gregorian calendar date.
 
     Returns the Julian date for mid-night of the given date.
-    
+
     Parameters
     ----------
     y : int
@@ -1085,15 +1077,16 @@ def gcal2j(int y, int m, int dd):
     2455198.0
     >>> tpm.gcal2j(1950,1,1)
     2433283.0
-    
+
     """
     return tpm_times.gcal2j(y, m, dd)
+
 
 def jcal2j(int y, int m, int dd):
     """Return Julian day number for the Julian calendar date.
 
     Returns the Julian date for mid-night of the given date.
-    
+
     Parameters
     ----------
     y : int
@@ -1118,11 +1111,12 @@ def jcal2j(int y, int m, int dd):
     2455211.0
     >>> tpm.jcal2j(1950,1,1)
     2433296.0
-    
+
     """
     return tpm_times.jcal2j(y, m, dd)
 
-cpdef j2gcal(double j):
+
+def j2gcal(double j):
     """Convert Julian date into Gregorian calendar date.
 
     Returns the year, month and day.
@@ -1144,14 +1138,15 @@ cpdef j2gcal(double j):
     {'dd': 1, 'm': 1, 'y': 2000}
     >>> tpm.j2gcal(tpm.B1950)
     {'dd': 31, 'm': 12, 'y': 1949}
-    
+
     """
     cdef int y, m, d
     y = m = d = 0;
     tpm_times.j2gcal(&y, &m, &d, j)
     return dict(y=y, m=m, dd=d)
 
-cpdef j2jcal(double j):
+
+def j2jcal(double j):
     """Convert Julian date into Julian calendar date.
 
     Returns the year, month and day.
@@ -1180,6 +1175,7 @@ cpdef j2jcal(double j):
     tpm_times.j2jcal(&y, &m, &d, j)
     return dict(y=y, m=m, dd=d)
 
+
 def j2y(j):
     """Convert Julian date into Gregorian calendar year with fractional part.
 
@@ -1202,9 +1198,10 @@ def j2y(j):
     2000.0040983606557
     >>> tpm.j2y(tpm.J2000+366)
     2001.004109589041
-    
+
     """
     return tpm_times.j2y(j)
+
 
 def y2j(y):
     """Convert Gregorian calendar year with fractional part into Julian date.
@@ -1227,9 +1224,10 @@ def y2j(y):
     2451911.0
     >>> tpm.j2gcal(tpm.y2j(2001.004109589041))
     {'dd': 1, 'm': 1, 'y': 2001}
-    
+
     """
     return tpm_times.y2j(y)
+
 
 def j2dow(j):
     """Return day of week for the given Julian date.
@@ -1251,9 +1249,10 @@ def j2dow(j):
     'Fri Jan  1 12:00:00.000 2010'
     >>> tpm.j2dow(j)
     5
-    
+
     """
     return tpm_times.j2dow(j)
+
 
 def y2doy(int y):
     """Return number of days in the given Gregorian calendar year.
@@ -1280,11 +1279,12 @@ def y2doy(int y):
     365
     >>> tpm.y2doy(2004)
     366
-    
+
     """
     return tpm_times.y2doy(y)
 
-cpdef char *fmt_alpha(double alpha):
+
+def fmt_alpha(alpha):
     """Normalize and format angle in radians into a str: ' ##H ##M ##.###S'.
 
     Parameters
@@ -1323,11 +1323,12 @@ cpdef char *fmt_alpha(double alpha):
     ' 00H 59M 59.999S'
     >>> tpm.fmt_alpha(-(2*tpm.M_PI+(tpm.M_PI/12.0)))
     ' 23H 00M 00.000S'
-    
-    """
-    return tpm_times.fmt_alpha(alpha)
 
-cpdef char* fmt_delta(double delta):
+    """
+    return tpm_times.fmt_alpha(alpha).decode("utf-8")
+
+
+def fmt_delta(delta):
     """Normalize and format angle in radians into a str: ±###D ##' ##.###".
 
     Parameters
@@ -1363,9 +1364,10 @@ cpdef char* fmt_delta(double delta):
     >>> tpm.fmt_delta(-tpm.M_PI)
     '+00D 00\' 00.000"'
     """
-    return tpm_times.fmt_delta(delta)
+    return tpm_times.fmt_delta(delta).decode("utf-8")
 
-cpdef char *fmt_d(double d):
+
+def fmt_d(d):
     """Format angle in degrees into a string: ±###D ##' ##.###".
 
     Parameters
@@ -1400,11 +1402,12 @@ cpdef char *fmt_d(double d):
     '-361D 00\' 00.000"'
     >>> tpm.fmt_d(720)
     '+720D 00\' 00.000"'
-    
+
     """
-    return tpm_times.fmt_d(d)
-    
-cpdef char *fmt_h(double h):
+    return tpm_times.fmt_d(d).decode("utf-8")
+
+
+def fmt_h(h):
     """Format hours into a string: ±##H ##M ##.###S".
 
     Parameters
@@ -1433,11 +1436,12 @@ cpdef char *fmt_h(double h):
     '-13H 27M 21.599S'
     >>> tpm.fmt_h(-133.456)
     '-133H 27M 21.599S'
-    
-    """
-    return tpm_times.fmt_h(h)
 
-cpdef char *fmt_j(double j):
+    """
+    return tpm_times.fmt_h(h).decode("utf-8")
+
+
+def fmt_j(j):
     """Format Julian date into a string.
 
     Parameters
@@ -1468,11 +1472,12 @@ cpdef char *fmt_j(double j):
     ' 2451545  16H 48M 00.000S'
     >>> tpm.fmt_j(tpm.J2000-0.7)
     ' 2451544  07H 11M 59.999S'
-    
-    """
-    return tpm_times.fmt_j(j)
 
-cpdef char* fmt_r(double r):
+    """
+    return tpm_times.fmt_j(j).decode("utf-8")
+
+
+def fmt_r(r):
     """Format radians into a string with angle expressed as degrees.
 
     Parameters
@@ -1504,11 +1509,12 @@ cpdef char* fmt_r(double r):
     '-540D 00\' 00.000"'
     >>> tpm.fmt_r(3*tpm.M_PI)
     '+540D 00\' 00.000"'
-    
-    """
-    return tpm_times.fmt_r(r)
 
-cpdef char* fmt_y(double y):
+    """
+    return tpm_times.fmt_r(r).decode("utf-8")
+
+
+def fmt_y(y):
     """Format years, including fractional part, into a string.
 
     Parameters
@@ -1535,9 +1541,10 @@ cpdef char* fmt_y(double y):
     'Sat Jan  1 16:48:00.000 2000'
     >>> tpm.fmt_y(2001.0+32/365.0)
     'Thu Feb  1 00:00:00.000 2001'
-    
+
     """
-    return tpm_times.fmt_y(y)
+    return tpm_times.fmt_y(y).decode("utf-8")
+
 
 def d2d(d):
     """Normalize angle in degrees into (-360, 360).
@@ -1564,9 +1571,10 @@ def d2d(d):
     1.0
     >>> tpm.d2d(-361.0)
     359.0
-    
+
     """
     return tpm_times.d2d(d)
+
 
 def h2h(h):
     """Normalize angle in hours into [0, 24).
@@ -1595,9 +1603,10 @@ def h2h(h):
     23.0
     >>> tpm.h2h(1)
     1.0
-    
+
     """
     return tpm_times.h2h(h)
+
 
 def r2r(r):
     """Normalize angle in radians into [0, 2π).
@@ -1626,9 +1635,10 @@ def r2r(r):
     0.0
     >>> tpm.r2r(-tpm.M_PI/2.0)
     4.7123889803846897
-    
+
     """
     return tpm_times.r2r(r)
+
 
 # In TPM the following are in vec.h and then redefined in
 # times.h. I am including all of these in tpm_times for
@@ -1654,9 +1664,10 @@ def d2h(d):
     -12.0
     >>> tpm.d2h(12.3456)
     0.82303999999999999
-    
+
     """
     return tpm_times.d2h(d)
+
 
 def h2d(h):
     """Convert angle in hours into degrees.
@@ -1679,9 +1690,10 @@ def h2d(h):
     -180.0
     >>> tpm.h2d(-25)
     -375.0
-    
+
     """
     return tpm_times.h2d(h)
+
 
 def d2r(d):
     """Convert angle in degrees into degrees.
@@ -1704,9 +1716,10 @@ def d2r(d):
     -3.1415926535897931
     >>> tpm.d2r(361.0)
     6.3006385996995293
-    
+
     """
     return tpm_times.d2r(d)
+
 
 def r2d(r):
     """Convert angle in radians into degrees.
@@ -1731,9 +1744,10 @@ def r2d(r):
     -45.0
     >>> tpm.r2d(-2*tpm.M_PI)
     -360.0
-    
+
     """
     return tpm_times.r2d(r)
+
 
 def h2r(h):
     """Convert angle in hours into radians.
@@ -1754,9 +1768,10 @@ def h2r(h):
     3.1415926535897931
     >>> tpm.h2r(-12.0)
     -3.1415926535897931
-    
+
     """
     return tpm_times.h2r(h)
+
 
 def r2h(r):
     """Convert angle in radians into hours.
@@ -1777,9 +1792,10 @@ def r2h(r):
     12.0
     >>> tpm.r2h(-tpm.M_PI)
     -12.0
-    
+
     """
     return tpm_times.r2h(r)
+
 
 def d2as(d):
     """Convert angle in degrees into arc-seconds.
@@ -1800,9 +1816,10 @@ def d2as(d):
     3600.0
     >>> tpm.d2as(-1.0)
     -3600.0
-    
+
     """
     return tpm_times.d2as(d)
+
 
 def as2d(arcs):
     """Convert angle in arc-seconds into degrees.
@@ -1823,9 +1840,10 @@ def as2d(arcs):
     1.0
     >>> tpm.as2d(-3600.0)
     -1.0
-    
+
     """
     return tpm_times.as2d(arcs)
+
 
 def as2h(arcs):
     """Convert angle in arc-seconds into hours.
@@ -1846,9 +1864,10 @@ def as2h(arcs):
     12.0
     >>> tpm.as2h(-3600.0*180.0)
     -12.0
-    
+
     """
     return tpm_times.as2h(arcs)
+
 
 def h2as(h):
     """Convert angle in hours into arc-seconds.
@@ -1869,9 +1888,10 @@ def h2as(h):
     648000.0
     >>> tpm.h2as(-12.0)
     -648000.0
-    
+
     """
     return tpm_times.h2as(h)
+
 
 def r2as(r):
     """Convert angle in radians into arc-seconds.
@@ -1895,6 +1915,7 @@ def r2as(r):
     """
     return tpm_times.r2as(r)
 
+
 def as2r(arcs):
     """Convert angle in arc-seconds into radians.
 
@@ -1914,6 +1935,6 @@ def as2r(arcs):
     3.1415926535897931
     >>> tpm.as2r(-3600.0*180.0)
     -3.1415926535897931
-    
+
     """
     return tpm_times.as2r(arcs)

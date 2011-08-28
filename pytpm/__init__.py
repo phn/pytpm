@@ -8,8 +8,8 @@ telescope.
 
 """
 
-__version__ = "0.6"
+__version__ = "0.7"
 __docformat__ = "restructuredtext en"
 
-import tpm
-import convert
+from . import tpm
+from . import convert

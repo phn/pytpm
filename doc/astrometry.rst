@@ -2,7 +2,6 @@
  Astrometry Resources
 ======================
 
-
 .. _geo names search facility: http://geonames.nga.mil/ggmagaz/
 .. _JPL ephemerides: http://ssd.jpl.nasa.gov/?ephemerides
 .. _HORIZONS online ephemerides generator: http://ssd.jpl.nasa.gov/?horizons
@@ -25,8 +24,8 @@
 .. currentmodule:: pytpm
 
 This section will given some pointers to resources for obtaining data
-related to astrometry and, links to some documents that describe
-concepts used in astrometry calculations.
+related to astrometry. Links to some documents that describe concepts
+used in astrometry calculations are also present.
 
 While working with data from the sources mentioned below, it is
 helpful, even critical, to subscribe to mailing lists and newsletters,
@@ -48,7 +47,7 @@ information are available from the International Earth Rotation and
 Reference Systems Service (IERS). See the section on :ref:`iers_sec`
 below.
 
-Information on ``delta_AT`` is also maintained in the file
+Information on ``delta_AT`` also maintained in the file
 ftp://maia.usno.navy.mil/ser7/tai-utc.dat, which lists ``delta_AT``
 values beginning from 1961 Jan. 1.
 
@@ -197,7 +196,7 @@ Sky visualization and exploration
 + http://www.sky-map.org/
 + http://skymaps.com/
 + http://www.google.com/sky
-+ http://www.worldwidetelescope.org (Web based but only Win and Mac)
++ http://www.worldwidetelescope.org (Web based but only for Win and Mac)
 + http://skyview.gsfc.nasa.gov/
 + `Stellarium with VirGO <http://archive.eso.org/cms/tools-documentation/visual-archive-browser>`_
 + `ALADIN <http://aladin.u-strasbg.fr/aladin.gml>`_
@@ -258,7 +257,6 @@ astrometry related concepts.
   + SOFA Tools for Earth Attitude.
   + SOFA Time Scales and Calendar Tools.
   
-
 + `Astronomy on the Personal Computer`_
 
   This books is essentially a reference manual for the C++ software
