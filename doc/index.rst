@@ -139,7 +139,7 @@ The document :doc:`astrometry` presents links to astrometry resources.
 Credits and license
 ===================
 
-`Jeffrey W Percival`_ wrote the TPM__ C library. See
+`Jeffrey W. Percival`_ wrote the TPM__ C library. See
 `src/tpm/TPM_LICENSE.txt` for TPM license.
 
 The version used here was obtained from the coords_ package (version
