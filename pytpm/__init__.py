@@ -8,7 +8,7 @@ telescope.
 
 """
 
-__version__ = "0.7dev"
+__version__ = "0.7"
 __docformat__ = "restructuredtext en"
 
 from . import tpm

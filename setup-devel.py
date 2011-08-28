@@ -45,7 +45,7 @@ library_dirs = [os.path.abspath("src/tpm")]
 libraries = ['tpm']
 
 ext_modules = [Extension("pytpm.tpm", srcfiles,
-                         depends = depends,                         
+                         depends = depends,
                          include_dirs = include_dirs,
                          library_dirs = library_dirs,
                          libraries = libraries)]
@@ -62,7 +62,7 @@ ext_modules.append(
 # and so on.
 setup(
     name = "PyTPM",
-    version = "0.7dev",
+    version = "0.7",
     cmdclass = {'build_ext': build_ext},
     packages = ['pytpm','pytpm.tests'],
     test_suite = "pytpm.tests.suite",
