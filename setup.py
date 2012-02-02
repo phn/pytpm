@@ -27,7 +27,7 @@ def read(*filenames):
 
 setup(
     name="PyTPM",
-    version="0.7",
+    version="0.7.1",
     description="Python interface to Telescope Pointing Machine C library.",
     long_description=read("README.rst"),
     license='BSD',
