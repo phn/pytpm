@@ -3,17 +3,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Data Structures &mdash; PyTPM v0.7 documentation</title>
+    <title>Data Structures &mdash; PyTPM 0.7.1 documentation</title>
+    
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.7',
+        VERSION:     '0.7.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="PyTPM v0.7 documentation" href="index.html" />
+    <link rel="top" title="PyTPM 0.7.1 documentation" href="index.html" />
     <link rel="prev" title="Functions and constants in PyTPM" href="functions.html" /> 
   </head>
   <body>
@@ -35,7 +38,7 @@
         <li class="right" >
           <a href="functions.html" title="Functions and constants in PyTPM"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">PyTPM v0.7 documentation</a> &raquo;</li> 
+        <li><a href="index.html">PyTPM 0.7.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -104,7 +107,7 @@ outside PyTPM.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>r</strong> : float, optional</p>
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>r</strong> : float, optional</p>
 <blockquote>
 <div><p>Angle in radians</p>
 </div></blockquote>
@@ -129,20 +132,20 @@ outside PyTPM.</p>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table border="1" class="docutils">
+<table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr><td><a class="reference internal" href="#pytpm.tpm.DMS.dd" title="pytpm.tpm.DMS.dd"><tt class="xref py py-obj docutils literal"><span class="pre">dd</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.DMS.dd" title="pytpm.tpm.DMS.dd"><tt class="xref py py-obj docutils literal"><span class="pre">dd</span></tt></a></td>
+<td>Degrees.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.DMS.mm" title="pytpm.tpm.DMS.mm"><tt class="xref py py-obj docutils literal"><span class="pre">mm</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.DMS.mm" title="pytpm.tpm.DMS.mm"><tt class="xref py py-obj docutils literal"><span class="pre">mm</span></tt></a></td>
+<td>Minutes of arc.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.DMS.ss" title="pytpm.tpm.DMS.ss"><tt class="xref py py-obj docutils literal"><span class="pre">ss</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.DMS.ss" title="pytpm.tpm.DMS.ss"><tt class="xref py py-obj docutils literal"><span class="pre">ss</span></tt></a></td>
+<td>Seconds of arc.</td>
 </tr>
 </tbody>
 </table>
@@ -158,9 +161,9 @@ outside PyTPM.</p>
 <dd><p>Minutes of arc.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.DMS.normalize">
-<tt class="descname">normalize</tt><a class="headerlink" href="#pytpm.tpm.DMS.normalize" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">normalize</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.DMS.normalize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Normalize components.</p>
 <p>Normalizes the arc-minutes and arc-seconds of the angle into
 the proper range. Note that after normalize the sign of the
@@ -197,9 +200,9 @@ dms.mm=13 and dms.ss=48, we would get different results.</p>
 <dd><p>Seconds of arc.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.DMS.to_degrees">
-<tt class="descname">to_degrees</tt><a class="headerlink" href="#pytpm.tpm.DMS.to_degrees" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">to_degrees</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.DMS.to_degrees" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return angle in decimal degrees.</p>
 <p>Angle in degrees, arc-minutes and arc-seconds is converted into
 decimal degrees.</p>
@@ -207,7 +210,7 @@ decimal degrees.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>dd</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>dd</strong> : float</p>
 <blockquote class="last">
 <div><p>Angle in degrees.</p>
 </div></blockquote>
@@ -217,9 +220,9 @@ decimal degrees.</p>
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.DMS.to_hms">
-<tt class="descname">to_hms</tt><a class="headerlink" href="#pytpm.tpm.DMS.to_hms" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">to_hms</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.DMS.to_hms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert to an HMS object.</p>
 <p>Returns a tpm.HMS class containing the angle in this instance
 converted into hours, minutes and seconds.</p>
@@ -227,7 +230,7 @@ converted into hours, minutes and seconds.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>hms</strong> : tpm.HMS</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>hms</strong> : tpm.HMS</p>
 <blockquote class="last">
 <div><p>A tpm.HMS object.</p>
 </div></blockquote>
@@ -237,9 +240,9 @@ converted into hours, minutes and seconds.</p>
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.DMS.to_hours">
-<tt class="descname">to_hours</tt><a class="headerlink" href="#pytpm.tpm.DMS.to_hours" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">to_hours</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.DMS.to_hours" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return angle in decimal hours.</p>
 <p>Angle in degrees, arc-minutes and arc-seconds is converted into
 hours.</p>
@@ -247,7 +250,7 @@ hours.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>hh</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>hh</strong> : float</p>
 <blockquote class="last">
 <div><p>Angle in hours.</p>
 </div></blockquote>
@@ -257,9 +260,9 @@ hours.</p>
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.DMS.to_radians">
-<tt class="descname">to_radians</tt><a class="headerlink" href="#pytpm.tpm.DMS.to_radians" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">to_radians</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.DMS.to_radians" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return angle in radians.</p>
 <p>Angle in degrees, arc-minutes and arc-seconds is converted into
 radians.</p>
@@ -267,7 +270,7 @@ radians.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>r</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>r</strong> : float</p>
 <blockquote class="last">
 <div><p>Angle in radians.</p>
 </div></blockquote>
@@ -292,7 +295,7 @@ of <cite>hh</cite>, <cite>mm</cite> and <cite>ss</cite>.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>r</strong> : float, optional</p>
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>r</strong> : float, optional</p>
 <blockquote>
 <div><p>Angle in radians</p>
 </div></blockquote>
@@ -317,20 +320,20 @@ of <cite>hh</cite>, <cite>mm</cite> and <cite>ss</cite>.</p>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table border="1" class="docutils">
+<table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr><td><a class="reference internal" href="#pytpm.tpm.HMS.hh" title="pytpm.tpm.HMS.hh"><tt class="xref py py-obj docutils literal"><span class="pre">hh</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.HMS.hh" title="pytpm.tpm.HMS.hh"><tt class="xref py py-obj docutils literal"><span class="pre">hh</span></tt></a></td>
+<td>Hours.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.HMS.mm" title="pytpm.tpm.HMS.mm"><tt class="xref py py-obj docutils literal"><span class="pre">mm</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.HMS.mm" title="pytpm.tpm.HMS.mm"><tt class="xref py py-obj docutils literal"><span class="pre">mm</span></tt></a></td>
+<td>Minutes.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.HMS.ss" title="pytpm.tpm.HMS.ss"><tt class="xref py py-obj docutils literal"><span class="pre">ss</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.HMS.ss" title="pytpm.tpm.HMS.ss"><tt class="xref py py-obj docutils literal"><span class="pre">ss</span></tt></a></td>
+<td>Seconds.</td>
 </tr>
 </tbody>
 </table>
@@ -346,9 +349,9 @@ of <cite>hh</cite>, <cite>mm</cite> and <cite>ss</cite>.</p>
 <dd><p>Minutes.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.HMS.normalize">
-<tt class="descname">normalize</tt><a class="headerlink" href="#pytpm.tpm.HMS.normalize" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">normalize</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.HMS.normalize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Normalize components.</p>
 <p>Normalizes the angle so that hours and minutes part are integer
 valued and the fractional part gets assigned to
@@ -381,16 +384,16 @@ assigned to the hours part.</p>
 <dd><p>Seconds.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.HMS.to_degrees">
-<tt class="descname">to_degrees</tt><a class="headerlink" href="#pytpm.tpm.HMS.to_degrees" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">to_degrees</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.HMS.to_degrees" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert HMS into decimal degrees.</p>
 <p>Angle in hours, minutes and seconds is converted into degrees.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>d</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>d</strong> : float</p>
 <blockquote class="last">
 <div><p>Angle in degrees.</p>
 </div></blockquote>
@@ -400,9 +403,9 @@ assigned to the hours part.</p>
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.HMS.to_dms">
-<tt class="descname">to_dms</tt><a class="headerlink" href="#pytpm.tpm.HMS.to_dms" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">to_dms</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.HMS.to_dms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert to a DMS object.</p>
 <p>Returns a tpm.DMS class containing the angle/time in this
 instance converted into degrees, arc-minutes, and arc-seconds.</p>
@@ -410,7 +413,7 @@ instance converted into degrees, arc-minutes, and arc-seconds.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>dms</strong> : tpm.DMS</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>dms</strong> : tpm.DMS</p>
 <blockquote class="last">
 <div><p>A tpm.DMS object.</p>
 </div></blockquote>
@@ -420,16 +423,16 @@ instance converted into degrees, arc-minutes, and arc-seconds.</p>
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.HMS.to_hours">
-<tt class="descname">to_hours</tt><a class="headerlink" href="#pytpm.tpm.HMS.to_hours" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">to_hours</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.HMS.to_hours" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert time into hours.</p>
 <p>Angle in hours, minutes and seconds is converted into hours.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>h</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>h</strong> : float</p>
 <blockquote class="last">
 <div><p>Angle in hours.</p>
 </div></blockquote>
@@ -439,16 +442,16 @@ instance converted into degrees, arc-minutes, and arc-seconds.</p>
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.HMS.to_radians">
-<tt class="descname">to_radians</tt><a class="headerlink" href="#pytpm.tpm.HMS.to_radians" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">to_radians</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.HMS.to_radians" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert HMS into radians.</p>
 <p>Angle in hours, minutes and seconds is converted into radians.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>r</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>r</strong> : float</p>
 <blockquote class="last">
 <div><p>Angle in radians.</p>
 </div></blockquote>
@@ -481,7 +484,7 @@ more of the remaining arguments are used.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>j</strong> : float, optional</p>
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>j</strong> : float, optional</p>
 <blockquote>
 <div><p>Julian date. The calendar date-time will be calculated from
 this.</p>
@@ -523,29 +526,29 @@ this.</p>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table border="1" class="docutils">
+<table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr><td><a class="reference internal" href="#pytpm.tpm.YMD.y" title="pytpm.tpm.YMD.y"><tt class="xref py py-obj docutils literal"><span class="pre">y</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.YMD.y" title="pytpm.tpm.YMD.y"><tt class="xref py py-obj docutils literal"><span class="pre">y</span></tt></a></td>
+<td>Year as an integer.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.YMD.m" title="pytpm.tpm.YMD.m"><tt class="xref py py-obj docutils literal"><span class="pre">m</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.YMD.m" title="pytpm.tpm.YMD.m"><tt class="xref py py-obj docutils literal"><span class="pre">m</span></tt></a></td>
+<td>Month as an integer.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.YMD.dd" title="pytpm.tpm.YMD.dd"><tt class="xref py py-obj docutils literal"><span class="pre">dd</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.YMD.dd" title="pytpm.tpm.YMD.dd"><tt class="xref py py-obj docutils literal"><span class="pre">dd</span></tt></a></td>
+<td>Day as a float.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.YMD.hh" title="pytpm.tpm.YMD.hh"><tt class="xref py py-obj docutils literal"><span class="pre">hh</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.YMD.hh" title="pytpm.tpm.YMD.hh"><tt class="xref py py-obj docutils literal"><span class="pre">hh</span></tt></a></td>
+<td>Hours as a float.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.YMD.mm" title="pytpm.tpm.YMD.mm"><tt class="xref py py-obj docutils literal"><span class="pre">mm</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.YMD.mm" title="pytpm.tpm.YMD.mm"><tt class="xref py py-obj docutils literal"><span class="pre">mm</span></tt></a></td>
+<td>Minutes as a float.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.YMD.ss" title="pytpm.tpm.YMD.ss"><tt class="xref py py-obj docutils literal"><span class="pre">ss</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.YMD.ss" title="pytpm.tpm.YMD.ss"><tt class="xref py py-obj docutils literal"><span class="pre">ss</span></tt></a></td>
+<td>Seconds as a float.</td>
 </tr>
 </tbody>
 </table>
@@ -555,15 +558,15 @@ this.</p>
 <dd><p>Day as a float.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.YMD.doy">
-<tt class="descname">doy</tt><a class="headerlink" href="#pytpm.tpm.YMD.doy" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">doy</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.YMD.doy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Day of the year corresponding to the date-time.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>doy</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>doy</strong> : float</p>
 <blockquote class="last">
 <div><p>Day of the year.</p>
 </div></blockquote>
@@ -598,9 +601,9 @@ this.</p>
 <dd><p>Minutes as a float.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.YMD.normalize">
-<tt class="descname">normalize</tt><a class="headerlink" href="#pytpm.tpm.YMD.normalize" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">normalize</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.YMD.normalize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Normalize YMD.</p>
 <p>The components <cite>y</cite>, <cite>m</cite>, <cite>dd</cite>, <cite>hh</cite>, <cite>mm</cite> and <cite>ss</cite> are
 normalized into their proper ranges.</p>
@@ -615,15 +618,15 @@ normalized into their proper ranges.</p>
 </div>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.YMD.raw_str">
-<tt class="descname">raw_str</tt><a class="headerlink" href="#pytpm.tpm.YMD.raw_str" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">raw_str</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.YMD.raw_str" title="Permalink to this definition">¶</a></dt>
 <dd><p>A string representation in the &#8216;raw&#8217; format.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
 <blockquote class="last">
 <div><p>A &#8220;raw&#8221; representation of the Calendar date-time.</p>
 </div></blockquote>
@@ -656,15 +659,15 @@ representation.</p>
 <dd><p>Seconds as a float.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.YMD.to_j">
-<tt class="descname">to_j</tt><a class="headerlink" href="#pytpm.tpm.YMD.to_j" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">to_j</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.YMD.to_j" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert YMD into scalar Julian date.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>jd</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>jd</strong> : float</p>
 <blockquote class="last">
 <div><p>The Julian date corresponding to the Calendar date-time.</p>
 </div></blockquote>
@@ -679,15 +682,15 @@ representation.</p>
 </div>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.YMD.to_jd">
-<tt class="descname">to_jd</tt><a class="headerlink" href="#pytpm.tpm.YMD.to_jd" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">to_jd</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.YMD.to_jd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert into a tpm.JD object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>jd</strong> : tpm.JD</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>jd</strong> : tpm.JD</p>
 <blockquote class="last">
 <div><p>Contains Julian date corresponding to the Calendar date.</p>
 </div></blockquote>
@@ -703,15 +706,15 @@ representation.</p>
 </div>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.YMD.to_year">
-<tt class="descname">to_year</tt><a class="headerlink" href="#pytpm.tpm.YMD.to_year" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">to_year</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.YMD.to_year" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert date-time into a year number.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>year</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>year</strong> : float</p>
 <blockquote class="last">
 <div><p>Year number, i.e., year + (day / num. days).</p>
 </div></blockquote>
@@ -753,7 +756,7 @@ of <cite>dd</cite>, <cite>hh</cite>, <cite>mm</cite> and <cite>ss</cite>.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>j</strong> : float, optional</p>
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>j</strong> : float, optional</p>
 <blockquote>
 <div><p>Scalar Julian date.</p>
 </div></blockquote>
@@ -783,23 +786,23 @@ of <cite>dd</cite>, <cite>hh</cite>, <cite>mm</cite> and <cite>ss</cite>.</p>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table border="1" class="docutils">
+<table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr><td><a class="reference internal" href="#pytpm.tpm.JD.dd" title="pytpm.tpm.JD.dd"><tt class="xref py py-obj docutils literal"><span class="pre">dd</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.JD.dd" title="pytpm.tpm.JD.dd"><tt class="xref py py-obj docutils literal"><span class="pre">dd</span></tt></a></td>
+<td>Day as a float.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.JD.hh" title="pytpm.tpm.JD.hh"><tt class="xref py py-obj docutils literal"><span class="pre">hh</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.JD.hh" title="pytpm.tpm.JD.hh"><tt class="xref py py-obj docutils literal"><span class="pre">hh</span></tt></a></td>
+<td>Hours.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.JD.mm" title="pytpm.tpm.JD.mm"><tt class="xref py py-obj docutils literal"><span class="pre">mm</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.JD.mm" title="pytpm.tpm.JD.mm"><tt class="xref py py-obj docutils literal"><span class="pre">mm</span></tt></a></td>
+<td>Minutes.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.JD.ss" title="pytpm.tpm.JD.ss"><tt class="xref py py-obj docutils literal"><span class="pre">ss</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.JD.ss" title="pytpm.tpm.JD.ss"><tt class="xref py py-obj docutils literal"><span class="pre">ss</span></tt></a></td>
+<td>Seconds.</td>
 </tr>
 </tbody>
 </table>
@@ -821,9 +824,9 @@ of <cite>dd</cite>, <cite>hh</cite>, <cite>mm</cite> and <cite>ss</cite>.</p>
 <dd><p>Minutes.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.JD.normalize">
-<tt class="descname">normalize</tt><a class="headerlink" href="#pytpm.tpm.JD.normalize" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">normalize</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.JD.normalize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Normalize the JD structure.</p>
 <p>Normalize the components into their proper ranges and carry the
 fractional part of the date into seconds.</p>
@@ -844,15 +847,15 @@ fractional part of the date into seconds.</p>
 <dd><p>Seconds.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.JD.to_j">
-<tt class="descname">to_j</tt><a class="headerlink" href="#pytpm.tpm.JD.to_j" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">to_j</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.JD.to_j" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert JD to a scalar Julian date.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>j</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>j</strong> : float</p>
 <blockquote class="last">
 <div><p>The scalar Julian date.</p>
 </div></blockquote>
@@ -868,15 +871,15 @@ fractional part of the date into seconds.</p>
 </div>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.JD.to_year">
-<tt class="descname">to_year</tt><a class="headerlink" href="#pytpm.tpm.JD.to_year" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">to_year</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.JD.to_year" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert JD into year (Gregorian calendar).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>y</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>y</strong> : float</p>
 <blockquote class="last">
 <div><p>Year with fractional part. This is just
 (integer_year + day/num_of_days).</p>
@@ -895,15 +898,15 @@ fractional part of the date into seconds.</p>
 </div>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.JD.to_ymd">
-<tt class="descname">to_ymd</tt><a class="headerlink" href="#pytpm.tpm.JD.to_ymd" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">to_ymd</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.JD.to_ymd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert to YMD (Gregorian calendar).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>ymd</strong> : tpm.YMD</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>ymd</strong> : tpm.YMD</p>
 <blockquote class="last">
 <div><p>The Julian date is converted into Gregorian calendar date
 and returned as a tpm.YMD object.</p>
@@ -963,7 +966,7 @@ also not needed, but I have them implemented anyway.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>x</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>x</strong> : float</p>
 <blockquote>
 <div><p>X coordinate.</p>
 </div></blockquote>
@@ -980,32 +983,32 @@ also not needed, but I have them implemented anyway.</p>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table border="1" class="docutils">
+<table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr><td><a class="reference internal" href="#pytpm.tpm.V3CP.x" title="pytpm.tpm.V3CP.x"><tt class="xref py py-obj docutils literal"><span class="pre">x</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.V3CP.x" title="pytpm.tpm.V3CP.x"><tt class="xref py py-obj docutils literal"><span class="pre">x</span></tt></a></td>
+<td>X coordinate.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.V3CP.y" title="pytpm.tpm.V3CP.y"><tt class="xref py py-obj docutils literal"><span class="pre">y</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.V3CP.y" title="pytpm.tpm.V3CP.y"><tt class="xref py py-obj docutils literal"><span class="pre">y</span></tt></a></td>
+<td>Y coordinate.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.V3CP.z" title="pytpm.tpm.V3CP.z"><tt class="xref py py-obj docutils literal"><span class="pre">z</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.V3CP.z" title="pytpm.tpm.V3CP.z"><tt class="xref py py-obj docutils literal"><span class="pre">z</span></tt></a></td>
+<td>Z coordinate.</td>
 </tr>
 </tbody>
 </table>
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.V3CP.c2s">
-<tt class="descname">c2s</tt><a class="headerlink" href="#pytpm.tpm.V3CP.c2s" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">c2s</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.V3CP.c2s" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert Cartesian position vector into spherical vector.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v3</strong> : tpm.V3SP</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v3</strong> : tpm.V3SP</p>
 <blockquote class="last">
 <div><p>The position in spherical coordinates.</p>
 </div></blockquote>
@@ -1015,15 +1018,15 @@ also not needed, but I have them implemented anyway.</p>
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.V3CP.cross">
-<tt class="descname">cross</tt><a class="headerlink" href="#pytpm.tpm.V3CP.cross" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">cross</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.V3CP.cross" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the cross product of two V3CP vectors.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>x</strong> : tpm.V3CP</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>x</strong> : tpm.V3CP</p>
 <blockquote class="last">
 <div><p>Cross product of this vector with the given vector.</p>
 </div></blockquote>
@@ -1033,15 +1036,15 @@ also not needed, but I have them implemented anyway.</p>
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.V3CP.dot">
-<tt class="descname">dot</tt><a class="headerlink" href="#pytpm.tpm.V3CP.dot" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">dot</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.V3CP.dot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the dot product of two V3CP vectors.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>d</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>d</strong> : float</p>
 <blockquote class="last">
 <div><p>Dot product of the given vector with this vector.</p>
 </div></blockquote>
@@ -1051,15 +1054,15 @@ also not needed, but I have them implemented anyway.</p>
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.V3CP.mod">
-<tt class="descname">mod</tt><a class="headerlink" href="#pytpm.tpm.V3CP.mod" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">mod</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.V3CP.mod" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return modulus (length) of the V3CP vector.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>x</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>x</strong> : float</p>
 <blockquote class="last">
 <div><p>Length of the vector.</p>
 </div></blockquote>
@@ -1069,15 +1072,15 @@ also not needed, but I have them implemented anyway.</p>
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.V3CP.unit">
-<tt class="descname">unit</tt><a class="headerlink" href="#pytpm.tpm.V3CP.unit" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">unit</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.V3CP.unit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return unit V3CP vector.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>x</strong> : tpm.V3CP</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>x</strong> : tpm.V3CP</p>
 <blockquote class="last">
 <div><p>Unit vector in the direction of this vector.</p>
 </div></blockquote>
@@ -1115,7 +1118,7 @@ also not needed, but I have them implemented anyway.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>r</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>r</strong> : float</p>
 <blockquote>
 <div><p>Radial coordinate.</p>
 </div></blockquote>
@@ -1136,20 +1139,20 @@ also not needed, but I have them implemented anyway.</p>
 <p>nalpha : <cite>alpha</cite> normalized to [0, 2π).
 ndelta : <cite>delta</cite> normalized to [-π/2, π/2].</p>
 <p class="rubric">Attributes</p>
-<table border="1" class="docutils">
+<table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr><td><a class="reference internal" href="#pytpm.tpm.V3SP.r" title="pytpm.tpm.V3SP.r"><tt class="xref py py-obj docutils literal"><span class="pre">r</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.V3SP.r" title="pytpm.tpm.V3SP.r"><tt class="xref py py-obj docutils literal"><span class="pre">r</span></tt></a></td>
+<td>Radial coordinate.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.V3SP.alpha" title="pytpm.tpm.V3SP.alpha"><tt class="xref py py-obj docutils literal"><span class="pre">alpha</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.V3SP.alpha" title="pytpm.tpm.V3SP.alpha"><tt class="xref py py-obj docutils literal"><span class="pre">alpha</span></tt></a></td>
+<td>Longitudinal coordinate.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.V3SP.delta" title="pytpm.tpm.V3SP.delta"><tt class="xref py py-obj docutils literal"><span class="pre">delta</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.V3SP.delta" title="pytpm.tpm.V3SP.delta"><tt class="xref py py-obj docutils literal"><span class="pre">delta</span></tt></a></td>
+<td>Latitudinal coordinate.</td>
 </tr>
 </tbody>
 </table>
@@ -1159,9 +1162,9 @@ ndelta : <cite>delta</cite> normalized to [-π/2, π/2].</p>
 <dd><p>Longitudinal coordinate.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.V3SP.cross">
-<tt class="descname">cross</tt><a class="headerlink" href="#pytpm.tpm.V3SP.cross" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">cross</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.V3SP.cross" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the cross product of two V3SP vectors.</p>
 <p>Cross product is calculated after converting to Cartesian
 coordinates.</p>
@@ -1169,7 +1172,7 @@ coordinates.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v</strong> : tpm.V3SP</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v</strong> : tpm.V3SP</p>
 <blockquote class="last">
 <div><p>Spherical vector.</p>
 </div></blockquote>
@@ -1185,9 +1188,9 @@ coordinates.</p>
 <dd><p>Latitudinal coordinate.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.V3SP.dot">
-<tt class="descname">dot</tt><a class="headerlink" href="#pytpm.tpm.V3SP.dot" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">dot</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.V3SP.dot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the dot product of two V3SP vectors.</p>
 <p>Dot product is calculated after converting to Cartesian
 coordinates.</p>
@@ -1195,7 +1198,7 @@ coordinates.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>d</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>d</strong> : float</p>
 <blockquote class="last">
 <div><p>Dot product.</p>
 </div></blockquote>
@@ -1205,15 +1208,15 @@ coordinates.</p>
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.V3SP.mod">
-<tt class="descname">mod</tt><a class="headerlink" href="#pytpm.tpm.V3SP.mod" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">mod</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.V3SP.mod" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return magnitude of radial component R.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>m</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>m</strong> : float</p>
 <blockquote class="last">
 <div><p>Length of the radial component.</p>
 </div></blockquote>
@@ -1241,15 +1244,15 @@ coordinates.</p>
 <dd><p>Radial coordinate.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.V3SP.s2c">
-<tt class="descname">s2c</tt><a class="headerlink" href="#pytpm.tpm.V3SP.s2c" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">s2c</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.V3SP.s2c" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert spherical position vector into Cartesian vector.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v</strong> : tpm.V3CP</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v</strong> : tpm.V3CP</p>
 <blockquote class="last">
 <div><p>Spherical vector converted into Cartesian.</p>
 </div></blockquote>
@@ -1354,7 +1357,7 @@ results as a <tt class="docutils literal"><span class="pre">V3CP</span></tt> obj
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>x</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>x</strong> : float</p>
 <blockquote>
 <div><p>X coordinate.</p>
 </div></blockquote>
@@ -1383,41 +1386,41 @@ results as a <tt class="docutils literal"><span class="pre">V3CP</span></tt> obj
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table border="1" class="docutils">
+<table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr><td><a class="reference internal" href="#pytpm.tpm.V6C.x" title="pytpm.tpm.V6C.x"><tt class="xref py py-obj docutils literal"><span class="pre">x</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.V6C.x" title="pytpm.tpm.V6C.x"><tt class="xref py py-obj docutils literal"><span class="pre">x</span></tt></a></td>
+<td>X coordinate.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.V6C.y" title="pytpm.tpm.V6C.y"><tt class="xref py py-obj docutils literal"><span class="pre">y</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.V6C.y" title="pytpm.tpm.V6C.y"><tt class="xref py py-obj docutils literal"><span class="pre">y</span></tt></a></td>
+<td>Y coordinate.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.V6C.z" title="pytpm.tpm.V6C.z"><tt class="xref py py-obj docutils literal"><span class="pre">z</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.V6C.z" title="pytpm.tpm.V6C.z"><tt class="xref py py-obj docutils literal"><span class="pre">z</span></tt></a></td>
+<td>Z coordinate.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.V6C.xdot" title="pytpm.tpm.V6C.xdot"><tt class="xref py py-obj docutils literal"><span class="pre">xdot</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.V6C.xdot" title="pytpm.tpm.V6C.xdot"><tt class="xref py py-obj docutils literal"><span class="pre">xdot</span></tt></a></td>
+<td>Rate of change of X coordinate.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.V6C.ydot" title="pytpm.tpm.V6C.ydot"><tt class="xref py py-obj docutils literal"><span class="pre">ydot</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.V6C.ydot" title="pytpm.tpm.V6C.ydot"><tt class="xref py py-obj docutils literal"><span class="pre">ydot</span></tt></a></td>
+<td>Rate of change of Y coordinate.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.V6C.zdot" title="pytpm.tpm.V6C.zdot"><tt class="xref py py-obj docutils literal"><span class="pre">zdot</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.V6C.zdot" title="pytpm.tpm.V6C.zdot"><tt class="xref py py-obj docutils literal"><span class="pre">zdot</span></tt></a></td>
+<td>Rate of change of Z coordinate.</td>
 </tr>
 </tbody>
 </table>
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.V6C.c2s">
-<tt class="descname">c2s</tt><a class="headerlink" href="#pytpm.tpm.V6C.c2s" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">c2s</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.V6C.c2s" title="Permalink to this definition">¶</a></dt>
 <dd><p>Cartesian to spherical conversion.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v</strong> : tpm.V6S</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v</strong> : tpm.V6S</p>
 <blockquote class="last">
 <div><p>The spherical equivalent of this vector.</p>
 </div></blockquote>
@@ -1427,16 +1430,16 @@ results as a <tt class="docutils literal"><span class="pre">V3CP</span></tt> obj
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.V6C.cross">
-<tt class="descname">cross</tt><a class="headerlink" href="#pytpm.tpm.V6C.cross" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">cross</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.V6C.cross" title="Permalink to this definition">¶</a></dt>
 <dd><p>Cross product of the position components.</p>
 <p>The velocity component of the resulting V6 vector is set to 0.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v</strong> : tpm.V6C</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v</strong> : tpm.V6C</p>
 <blockquote class="last">
 <div><p>A V6C vector with position component set to the cross
 product of the position component of this vector and the given
@@ -1448,15 +1451,15 @@ vector. The velocity component is set ot 0.</p>
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.V6C.dot">
-<tt class="descname">dot</tt><a class="headerlink" href="#pytpm.tpm.V6C.dot" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">dot</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.V6C.dot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dot product of the position components.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>x</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>x</strong> : float</p>
 <blockquote class="last">
 <div><p>The dot product of the position component of this vector
 with that of the given vector.</p>
@@ -1467,15 +1470,15 @@ with that of the given vector.</p>
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.V6C.mod">
-<tt class="descname">mod</tt><a class="headerlink" href="#pytpm.tpm.V6C.mod" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">mod</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.V6C.mod" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return modulus of position component of V6C vector.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>x</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>x</strong> : float</p>
 <blockquote class="last">
 <div><p>The length of the position component.</p>
 </div></blockquote>
@@ -1491,15 +1494,15 @@ with that of the given vector.</p>
 <dd><p>The position component.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.V6C.scale">
-<tt class="descname">scale</tt><a class="headerlink" href="#pytpm.tpm.V6C.scale" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">scale</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.V6C.scale" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return V6C with components scaled by the given factor.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v</strong> : tpm.V6C</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v</strong> : tpm.V6C</p>
 <blockquote class="last">
 <div><p>A vector with components set to those in this vector
 multiplied by the given <cite>x</cite>.</p>
@@ -1510,9 +1513,9 @@ multiplied by the given <cite>x</cite>.</p>
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.V6C.unit">
-<tt class="descname">unit</tt><a class="headerlink" href="#pytpm.tpm.V6C.unit" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">unit</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.V6C.unit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return V6C with unit position and scaled velocity components.</p>
 <p>The velocity component is scaled by inverse of length of the
 position component.</p>
@@ -1520,7 +1523,7 @@ position component.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v</strong> : tpm.V6C</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v</strong> : tpm.V6C</p>
 <blockquote class="last">
 <div><p>A V6C vector.</p>
 </div></blockquote>
@@ -1530,9 +1533,9 @@ position component.</p>
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.V6C.v62v3">
-<tt class="descname">v62v3</tt><a class="headerlink" href="#pytpm.tpm.V6C.v62v3" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">v62v3</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.V6C.v62v3" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert V6C into V3CP by addding space motion.</p>
 <p>The positon component is increment by the product of space motion
 and given number of days, dt.</p>
@@ -1540,7 +1543,7 @@ and given number of days, dt.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v</strong> : tpm.V6CP</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v</strong> : tpm.V6CP</p>
 <blockquote class="last">
 <div><p>The position vector at the end of time <cite>dt</cite>.</p>
 </div></blockquote>
@@ -1700,7 +1703,7 @@ often needed in spherical coordinates, for example RA and DE.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>r</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>r</strong> : float</p>
 <blockquote>
 <div><p>Radial coordinate.</p>
 </div></blockquote>
@@ -1733,29 +1736,29 @@ often needed in spherical coordinates, for example RA and DE.</p>
 <p>nalpha : <cite>alpha</cite> normalized to [0, 2π).
 ndelta : <cite>delta</cite> normalized to [-π/2, π/2].</p>
 <p class="rubric">Attributes</p>
-<table border="1" class="docutils">
+<table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr><td><a class="reference internal" href="#pytpm.tpm.V6S.r" title="pytpm.tpm.V6S.r"><tt class="xref py py-obj docutils literal"><span class="pre">r</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.V6S.r" title="pytpm.tpm.V6S.r"><tt class="xref py py-obj docutils literal"><span class="pre">r</span></tt></a></td>
+<td>R coordinate.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.V6S.alpha" title="pytpm.tpm.V6S.alpha"><tt class="xref py py-obj docutils literal"><span class="pre">alpha</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.V6S.alpha" title="pytpm.tpm.V6S.alpha"><tt class="xref py py-obj docutils literal"><span class="pre">alpha</span></tt></a></td>
+<td>ALPHA coordinate.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.V6S.delta" title="pytpm.tpm.V6S.delta"><tt class="xref py py-obj docutils literal"><span class="pre">delta</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.V6S.delta" title="pytpm.tpm.V6S.delta"><tt class="xref py py-obj docutils literal"><span class="pre">delta</span></tt></a></td>
+<td>DELTA coordinate.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.V6S.rdot" title="pytpm.tpm.V6S.rdot"><tt class="xref py py-obj docutils literal"><span class="pre">rdot</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.V6S.rdot" title="pytpm.tpm.V6S.rdot"><tt class="xref py py-obj docutils literal"><span class="pre">rdot</span></tt></a></td>
+<td>Rate of change of R coordinate.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.V6S.alphadot" title="pytpm.tpm.V6S.alphadot"><tt class="xref py py-obj docutils literal"><span class="pre">alphadot</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.V6S.alphadot" title="pytpm.tpm.V6S.alphadot"><tt class="xref py py-obj docutils literal"><span class="pre">alphadot</span></tt></a></td>
+<td>Rate of change of ALPHA coordinate.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.V6S.deltadot" title="pytpm.tpm.V6S.deltadot"><tt class="xref py py-obj docutils literal"><span class="pre">deltadot</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.V6S.deltadot" title="pytpm.tpm.V6S.deltadot"><tt class="xref py py-obj docutils literal"><span class="pre">deltadot</span></tt></a></td>
+<td>Rate of change of DELTA coordinate.</td>
 </tr>
 </tbody>
 </table>
@@ -1807,15 +1810,15 @@ ndelta : <cite>delta</cite> normalized to [-π/2, π/2].</p>
 <dd><p>Rate of change of R coordinate.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="pytpm.tpm.V6S.s2c">
-<tt class="descname">s2c</tt><a class="headerlink" href="#pytpm.tpm.V6S.s2c" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">s2c</tt><big>(</big><big>)</big><a class="headerlink" href="#pytpm.tpm.V6S.s2c" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spherical to Cartesian.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v</strong> : tpm.V6C</p>
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v</strong> : tpm.V6C</p>
 <blockquote class="last">
 <div><p>The Cartesian equivalent of this vector.</p>
 </div></blockquote>
@@ -1883,7 +1886,7 @@ dependent attributes are read-only.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>utc</strong> : float</p>
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>utc</strong> : float</p>
 <blockquote>
 <div><p>The &#8220;current time&#8221; as a Julian date (UTC).</p>
 </div></blockquote>
@@ -1938,104 +1941,104 @@ positive.</p>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table border="1" class="docutils">
+<table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.utc" title="pytpm.tpm.TSTATE.utc"><tt class="xref py py-obj docutils literal"><span class="pre">utc</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.utc" title="pytpm.tpm.TSTATE.utc"><tt class="xref py py-obj docutils literal"><span class="pre">utc</span></tt></a></td>
+<td>UTC as JD. Defines NOW, i.e., current time.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.delta_at" title="pytpm.tpm.TSTATE.delta_at"><tt class="xref py py-obj docutils literal"><span class="pre">delta_at</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.delta_at" title="pytpm.tpm.TSTATE.delta_at"><tt class="xref py py-obj docutils literal"><span class="pre">delta_at</span></tt></a></td>
+<td>DELTA_AT = TAI - UTC (s)</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.delta_ut" title="pytpm.tpm.TSTATE.delta_ut"><tt class="xref py py-obj docutils literal"><span class="pre">delta_ut</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.delta_ut" title="pytpm.tpm.TSTATE.delta_ut"><tt class="xref py py-obj docutils literal"><span class="pre">delta_ut</span></tt></a></td>
+<td>DELTA_UT = UT1 - UTC (s)</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.lon" title="pytpm.tpm.TSTATE.lon"><tt class="xref py py-obj docutils literal"><span class="pre">lon</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.lon" title="pytpm.tpm.TSTATE.lon"><tt class="xref py py-obj docutils literal"><span class="pre">lon</span></tt></a></td>
+<td>East longitude in radians.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.lat" title="pytpm.tpm.TSTATE.lat"><tt class="xref py py-obj docutils literal"><span class="pre">lat</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.lat" title="pytpm.tpm.TSTATE.lat"><tt class="xref py py-obj docutils literal"><span class="pre">lat</span></tt></a></td>
+<td>Latitude in radians.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.alt" title="pytpm.tpm.TSTATE.alt"><tt class="xref py py-obj docutils literal"><span class="pre">alt</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.alt" title="pytpm.tpm.TSTATE.alt"><tt class="xref py py-obj docutils literal"><span class="pre">alt</span></tt></a></td>
+<td>Altitude above geoid in meters.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.xpole" title="pytpm.tpm.TSTATE.xpole"><tt class="xref py py-obj docutils literal"><span class="pre">xpole</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.xpole" title="pytpm.tpm.TSTATE.xpole"><tt class="xref py py-obj docutils literal"><span class="pre">xpole</span></tt></a></td>
+<td>Polar motion in radians.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.ypole" title="pytpm.tpm.TSTATE.ypole"><tt class="xref py py-obj docutils literal"><span class="pre">ypole</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.ypole" title="pytpm.tpm.TSTATE.ypole"><tt class="xref py py-obj docutils literal"><span class="pre">ypole</span></tt></a></td>
+<td>Polar motion in radians.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.T" title="pytpm.tpm.TSTATE.T"><tt class="xref py py-obj docutils literal"><span class="pre">T</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.T" title="pytpm.tpm.TSTATE.T"><tt class="xref py py-obj docutils literal"><span class="pre">T</span></tt></a></td>
+<td>Ambient temperature in Kelvins.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.P" title="pytpm.tpm.TSTATE.P"><tt class="xref py py-obj docutils literal"><span class="pre">P</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.P" title="pytpm.tpm.TSTATE.P"><tt class="xref py py-obj docutils literal"><span class="pre">P</span></tt></a></td>
+<td>Ambient pressure in millibars.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.H" title="pytpm.tpm.TSTATE.H"><tt class="xref py py-obj docutils literal"><span class="pre">H</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.H" title="pytpm.tpm.TSTATE.H"><tt class="xref py py-obj docutils literal"><span class="pre">H</span></tt></a></td>
+<td>Ambient humidity (0-1).</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.wavelength" title="pytpm.tpm.TSTATE.wavelength"><tt class="xref py py-obj docutils literal"><span class="pre">wavelength</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.wavelength" title="pytpm.tpm.TSTATE.wavelength"><tt class="xref py py-obj docutils literal"><span class="pre">wavelength</span></tt></a></td>
+<td>Observing wavelength in microns.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.tai" title="pytpm.tpm.TSTATE.tai"><tt class="xref py py-obj docutils literal"><span class="pre">tai</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.tai" title="pytpm.tpm.TSTATE.tai"><tt class="xref py py-obj docutils literal"><span class="pre">tai</span></tt></a></td>
+<td>International Atomic Time.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.tdt" title="pytpm.tpm.TSTATE.tdt"><tt class="xref py py-obj docutils literal"><span class="pre">tdt</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.tdt" title="pytpm.tpm.TSTATE.tdt"><tt class="xref py py-obj docutils literal"><span class="pre">tdt</span></tt></a></td>
+<td>Terrestrial Dynamic Time (Terrestrial Time).</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.tdb" title="pytpm.tpm.TSTATE.tdb"><tt class="xref py py-obj docutils literal"><span class="pre">tdb</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.tdb" title="pytpm.tpm.TSTATE.tdb"><tt class="xref py py-obj docutils literal"><span class="pre">tdb</span></tt></a></td>
+<td>Barycentric Dynamic Time.</td>
 </tr>
-<tr><td><a class="reference internal" href="functions.html#pytpm.tpm.obliquity" title="pytpm.tpm.obliquity"><tt class="xref py py-obj docutils literal"><span class="pre">obliquity</span></tt></a></td>
-<td>Mean obliquity of Ecliptic(epoch J2000).</td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.obliquity" title="pytpm.tpm.TSTATE.obliquity"><tt class="xref py py-obj docutils literal"><span class="pre">obliquity</span></tt></a></td>
+<td>Obliquity of the Ecliptic.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.nut_lon" title="pytpm.tpm.TSTATE.nut_lon"><tt class="xref py py-obj docutils literal"><span class="pre">nut_lon</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.nut_lon" title="pytpm.tpm.TSTATE.nut_lon"><tt class="xref py py-obj docutils literal"><span class="pre">nut_lon</span></tt></a></td>
+<td>Nutation in longitude.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.nut_obl" title="pytpm.tpm.TSTATE.nut_obl"><tt class="xref py py-obj docutils literal"><span class="pre">nut_obl</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.nut_obl" title="pytpm.tpm.TSTATE.nut_obl"><tt class="xref py py-obj docutils literal"><span class="pre">nut_obl</span></tt></a></td>
+<td>Nutation in obliquity.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.nm" title="pytpm.tpm.TSTATE.nm"><tt class="xref py py-obj docutils literal"><span class="pre">nm</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.nm" title="pytpm.tpm.TSTATE.nm"><tt class="xref py py-obj docutils literal"><span class="pre">nm</span></tt></a></td>
+<td>Nutation matrix for NOW.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.pm" title="pytpm.tpm.TSTATE.pm"><tt class="xref py py-obj docutils literal"><span class="pre">pm</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.pm" title="pytpm.tpm.TSTATE.pm"><tt class="xref py py-obj docutils literal"><span class="pre">pm</span></tt></a></td>
+<td>Precession matrix from J2000 to NOW.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.ut1" title="pytpm.tpm.TSTATE.ut1"><tt class="xref py py-obj docutils literal"><span class="pre">ut1</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.ut1" title="pytpm.tpm.TSTATE.ut1"><tt class="xref py py-obj docutils literal"><span class="pre">ut1</span></tt></a></td>
+<td>Universal time.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.gmst" title="pytpm.tpm.TSTATE.gmst"><tt class="xref py py-obj docutils literal"><span class="pre">gmst</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.gmst" title="pytpm.tpm.TSTATE.gmst"><tt class="xref py py-obj docutils literal"><span class="pre">gmst</span></tt></a></td>
+<td>Greewich Mean Sidereal Time.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.gast" title="pytpm.tpm.TSTATE.gast"><tt class="xref py py-obj docutils literal"><span class="pre">gast</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.gast" title="pytpm.tpm.TSTATE.gast"><tt class="xref py py-obj docutils literal"><span class="pre">gast</span></tt></a></td>
+<td>Greewich Apparent Sidereal Time.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.last" title="pytpm.tpm.TSTATE.last"><tt class="xref py py-obj docutils literal"><span class="pre">last</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.last" title="pytpm.tpm.TSTATE.last"><tt class="xref py py-obj docutils literal"><span class="pre">last</span></tt></a></td>
+<td>Local Apparent Sidereal Time.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.eb" title="pytpm.tpm.TSTATE.eb"><tt class="xref py py-obj docutils literal"><span class="pre">eb</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.eb" title="pytpm.tpm.TSTATE.eb"><tt class="xref py py-obj docutils literal"><span class="pre">eb</span></tt></a></td>
+<td>Barycentric Earth state vector.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.eh" title="pytpm.tpm.TSTATE.eh"><tt class="xref py py-obj docutils literal"><span class="pre">eh</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.eh" title="pytpm.tpm.TSTATE.eh"><tt class="xref py py-obj docutils literal"><span class="pre">eh</span></tt></a></td>
+<td>Heliocentric Earth state vector.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.obs_m" title="pytpm.tpm.TSTATE.obs_m"><tt class="xref py py-obj docutils literal"><span class="pre">obs_m</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.obs_m" title="pytpm.tpm.TSTATE.obs_m"><tt class="xref py py-obj docutils literal"><span class="pre">obs_m</span></tt></a></td>
+<td>Geocentric Earth-fixed mean state vector.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.obs_t" title="pytpm.tpm.TSTATE.obs_t"><tt class="xref py py-obj docutils literal"><span class="pre">obs_t</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.obs_t" title="pytpm.tpm.TSTATE.obs_t"><tt class="xref py py-obj docutils literal"><span class="pre">obs_t</span></tt></a></td>
+<td>Geocentric Earth-fixed true state vector.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.obs_s" title="pytpm.tpm.TSTATE.obs_s"><tt class="xref py py-obj docutils literal"><span class="pre">obs_s</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.obs_s" title="pytpm.tpm.TSTATE.obs_s"><tt class="xref py py-obj docutils literal"><span class="pre">obs_s</span></tt></a></td>
+<td>Geocentric space-fixed true state vector.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.refa" title="pytpm.tpm.TSTATE.refa"><tt class="xref py py-obj docutils literal"><span class="pre">refa</span></tt></a></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.refa" title="pytpm.tpm.TSTATE.refa"><tt class="xref py py-obj docutils literal"><span class="pre">refa</span></tt></a></td>
+<td>Refraction coefficient.</td>
 </tr>
-<tr><td><a class="reference internal" href="#pytpm.tpm.TSTATE.refb" title="pytpm.tpm.TSTATE.refb"><tt class="xref py py-obj docutils literal"><span class="pre">refb</span></tt></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pytpm.tpm.TSTATE.refb" title="pytpm.tpm.TSTATE.refb"><tt class="xref py py-obj docutils literal"><span class="pre">refb</span></tt></a></td>
+<td>Refraction coefficient.</td>
 </tr>
 </tbody>
 </table>
@@ -2312,7 +2315,7 @@ retrieve the result from index location 4.</p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" size="18" />
+      <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
@@ -2335,12 +2338,12 @@ retrieve the result from index location 4.</p>
         <li class="right" >
           <a href="functions.html" title="Functions and constants in PyTPM"
              >previous</a> |</li>
-        <li><a href="index.html">PyTPM v0.7 documentation</a> &raquo;</li> 
+        <li><a href="index.html">PyTPM 0.7.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2011, Prasanth Nair.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
     </div>
   </body>
 </html>

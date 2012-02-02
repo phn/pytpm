@@ -3,17 +3,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Coordinate conversions using TPM and PyTPM &mdash; PyTPM v0.7 documentation</title>
+    <title>Coordinate conversions using TPM and PyTPM &mdash; PyTPM 0.7.1 documentation</title>
+    
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.7',
+        VERSION:     '0.7.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="PyTPM v0.7 documentation" href="index.html" />
+    <link rel="top" title="PyTPM 0.7.1 documentation" href="index.html" />
     <link rel="next" title="Comparison of PyTPM with SLALIB" href="comparisons.html" />
     <link rel="prev" title="Installation" href="installation.html" /> 
   </head>
@@ -39,7 +42,7 @@
         <li class="right" >
           <a href="installation.html" title="Installation"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">PyTPM v0.7 documentation</a> &raquo;</li> 
+        <li><a href="index.html">PyTPM 0.7.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -111,62 +114,62 @@ be specified for a given conversion.</p>
 <col width="81%" />
 </colgroup>
 <thead valign="bottom">
-<tr><th class="head">Parameter</th>
+<tr class="row-odd"><th class="head">Parameter</th>
 <th class="head">Description</th>
 </tr>
 </thead>
 <tbody valign="top">
-<tr><td>v6</td>
+<tr class="row-even"><td>v6</td>
 <td>one V6C vector or a list of V6C vectors.</td>
 </tr>
-<tr><td>s1</td>
+<tr class="row-odd"><td>s1</td>
 <td>start state</td>
 </tr>
-<tr><td>s2</td>
+<tr class="row-even"><td>s2</td>
 <td>end state</td>
 </tr>
-<tr><td>epoch</td>
+<tr class="row-odd"><td>epoch</td>
 <td>epoch of the coordinates as a Julian date</td>
 </tr>
-<tr><td>equinox</td>
+<tr class="row-even"><td>equinox</td>
 <td>equinox of the coordinates as Julian date</td>
 </tr>
-<tr><td>utc</td>
+<tr class="row-odd"><td>utc</td>
 <td>time of &#8220;observation&#8221; as a Julian date;
 exact meaning depends on the type of conversion;
 defaults to the epoch J2000.0</td>
 </tr>
-<tr><td>delta_ut</td>
+<tr class="row-even"><td>delta_ut</td>
 <td>UT1 - UTC in seconds.</td>
 </tr>
-<tr><td>delta_at</td>
+<tr class="row-odd"><td>delta_at</td>
 <td>TAI - UTC in seconds.</td>
 </tr>
-<tr><td>lon</td>
+<tr class="row-even"><td>lon</td>
 <td>geodetic longitude in degrees</td>
 </tr>
-<tr><td>lat</td>
+<tr class="row-odd"><td>lat</td>
 <td>geodetic latitude in degrees</td>
 </tr>
-<tr><td>alt</td>
+<tr class="row-even"><td>alt</td>
 <td>altitude in meters</td>
 </tr>
-<tr><td>xpole</td>
+<tr class="row-odd"><td>xpole</td>
 <td>ploar motion in radians</td>
 </tr>
-<tr><td>ypole</td>
+<tr class="row-even"><td>ypole</td>
 <td>ploar motion in radians</td>
 </tr>
-<tr><td>T</td>
+<tr class="row-odd"><td>T</td>
 <td>temperature in kelvin</td>
 </tr>
-<tr><td>P</td>
+<tr class="row-even"><td>P</td>
 <td>pressure in milli-bars</td>
 </tr>
-<tr><td>H</td>
+<tr class="row-odd"><td>H</td>
 <td>relative humidity (0-1)</td>
 </tr>
-<tr><td>wavelength</td>
+<tr class="row-even"><td>wavelength</td>
 <td>wavelength of observation in microns</td>
 </tr>
 </tbody>
@@ -190,75 +193,75 @@ integers: <tt class="docutils literal"><span class="pre">TPM_S02</span> <span cl
 <col width="84%" />
 </colgroup>
 <thead valign="bottom">
-<tr><th class="head">State</th>
+<tr class="row-odd"><th class="head">State</th>
 <th class="head">Description</th>
 </tr>
 </thead>
 <tbody valign="top">
-<tr><td>TPM_S00</td>
+<tr class="row-even"><td>TPM_S00</td>
 <td>Null</td>
 </tr>
-<tr><td>TPM_S01</td>
+<tr class="row-odd"><td>TPM_S01</td>
 <td>Heliocentric mean FK4 system, any equinox</td>
 </tr>
-<tr><td>TPM_S02</td>
+<tr class="row-even"><td>TPM_S02</td>
 <td>Heliocentric mean FK5 system, any equinox</td>
 </tr>
-<tr><td>TPM_S03</td>
+<tr class="row-odd"><td>TPM_S03</td>
 <td>IAU 1980 Ecliptic system</td>
 </tr>
-<tr><td>TPM_S04</td>
+<tr class="row-even"><td>TPM_S04</td>
 <td>IAU 1958 Galactic system</td>
 </tr>
-<tr><td>TPM_S05</td>
+<tr class="row-odd"><td>TPM_S05</td>
 <td>Heliocentric mean FK4 system, B1950 equinox</td>
 </tr>
-<tr><td>TPM_S06</td>
+<tr class="row-even"><td>TPM_S06</td>
 <td>Heliocentric mean FK5 system, J2000 equinox</td>
 </tr>
-<tr><td>TPM_S07</td>
+<tr class="row-odd"><td>TPM_S07</td>
 <td>Geocentric mean FK5 system, J2000 equinox</td>
 </tr>
-<tr><td>TPM_S08</td>
+<tr class="row-even"><td>TPM_S08</td>
 <td>TPM_S07 + light deflection</td>
 </tr>
-<tr><td>TPM_S09</td>
+<tr class="row-odd"><td>TPM_S09</td>
 <td>TPM_S08 + Aberration</td>
 </tr>
-<tr><td>TPM_S10</td>
+<tr class="row-even"><td>TPM_S10</td>
 <td>TPM_S09 + precession</td>
 </tr>
-<tr><td>TPM_S11</td>
+<tr class="row-odd"><td>TPM_S11</td>
 <td>Geocentric apparent FK5, current equinox</td>
 </tr>
-<tr><td>TPM_S12</td>
+<tr class="row-even"><td>TPM_S12</td>
 <td>Topocentric mean FK5, J2000 equinox</td>
 </tr>
-<tr><td>TPM_S13</td>
+<tr class="row-odd"><td>TPM_S13</td>
 <td>TPM_S12 + light definition</td>
 </tr>
-<tr><td>TPM_S14</td>
+<tr class="row-even"><td>TPM_S14</td>
 <td>TPM_S13 + aberration</td>
 </tr>
-<tr><td>TPM_S15</td>
+<tr class="row-odd"><td>TPM_S15</td>
 <td>TPM_S14 + precession</td>
 </tr>
-<tr><td>TPM_S16</td>
+<tr class="row-even"><td>TPM_S16</td>
 <td>Topocentric apparent FK5, current equinox</td>
 </tr>
-<tr><td>TPM_S17</td>
+<tr class="row-odd"><td>TPM_S17</td>
 <td>Topocentric apparent FK5, current equnix</td>
 </tr>
-<tr><td>TPM_S18</td>
+<tr class="row-even"><td>TPM_S18</td>
 <td>Topocentric apparent (Hour Angle, Declination)</td>
 </tr>
-<tr><td>TPM_S19</td>
+<tr class="row-odd"><td>TPM_S19</td>
 <td>Topocentric observed (Azimuth, Elevation)</td>
 </tr>
-<tr><td>TPM_S20</td>
+<tr class="row-even"><td>TPM_S20</td>
 <td>Topocentric observed (Hour Angle, Declination)</td>
 </tr>
-<tr><td>TPM_S21</td>
+<tr class="row-odd"><td>TPM_S21</td>
 <td>Topocentric observed WHAM (longitude, latitude)</td>
 </tr>
 </tbody>
@@ -270,36 +273,36 @@ integers: <tt class="docutils literal"><span class="pre">TPM_S02</span> <span cl
 <col width="50%" />
 </colgroup>
 <thead valign="bottom">
-<tr><th class="head">Name</th>
+<tr class="row-odd"><th class="head">Name</th>
 <th class="head">State</th>
 </tr>
 </thead>
 <tbody valign="top">
-<tr><td>TARGET_FK4</td>
+<tr class="row-even"><td>TARGET_FK4</td>
 <td>TPM_S01</td>
 </tr>
-<tr><td>TARGET_FK5</td>
+<tr class="row-odd"><td>TARGET_FK5</td>
 <td>TPM_S02</td>
 </tr>
-<tr><td>TARGET_ECL</td>
+<tr class="row-even"><td>TARGET_ECL</td>
 <td>TPM_S03</td>
 </tr>
-<tr><td>TARGET_GAL</td>
+<tr class="row-odd"><td>TARGET_GAL</td>
 <td>TPM_S04</td>
 </tr>
-<tr><td>TARGET_APP_HADEC</td>
+<tr class="row-even"><td>TARGET_APP_HADEC</td>
 <td>TPM_S17</td>
 </tr>
-<tr><td>TARGET_OBS_HADEC</td>
+<tr class="row-odd"><td>TARGET_OBS_HADEC</td>
 <td>TPM_S20</td>
 </tr>
-<tr><td>TARGET_APP_AZEL</td>
+<tr class="row-even"><td>TARGET_APP_AZEL</td>
 <td>TPM_S18</td>
 </tr>
-<tr><td>TARGET_OBS_AZEL</td>
+<tr class="row-odd"><td>TARGET_OBS_AZEL</td>
 <td>TPM_S19</td>
 </tr>
-<tr><td>TARGET_OBS_WHAM</td>
+<tr class="row-even"><td>TARGET_OBS_WHAM</td>
 <td>TPM_S21</td>
 </tr>
 </tbody>
@@ -609,10 +612,10 @@ converted positions as well as the converted velocities.</p>
 directory of the documentation source code (<tt class="file docutils literal"><span class="pre">_downloads</span></tt> in the
 HTML distribution).</p>
 <p>The examples shown here are available in
-the <a class="reference download internal" href="_downloads/conversions1.py"><tt class="xref download docutils literal"><span class="pre">examples/conversions.py</span></tt></a> file.</p>
-<p>The file <a class="reference download internal" href="_downloads/hip_full1.txt"><tt class="xref download docutils literal"><span class="pre">examples/hip_full.txt</span></tt></a> contains data from the
+the <a class="reference download internal" href="_downloads/conversions.py"><tt class="xref download docutils literal"><span class="pre">examples/conversions.py</span></tt></a> file.</p>
+<p>The file <a class="reference download internal" href="_downloads/hip_full.txt"><tt class="xref download docutils literal"><span class="pre">examples/hip_full.txt</span></tt></a> contains data from the
 HIPPARCOS catalog. This file was generated using
-the <a class="reference download internal" href="_downloads/hip_full1.py"><tt class="xref download docutils literal"><span class="pre">examples/hip_full.py</span></tt></a> script. We will convert this data
+the <a class="reference download internal" href="_downloads/hip_full.py"><tt class="xref download docutils literal"><span class="pre">examples/hip_full.py</span></tt></a> script. We will convert this data
 between different coordinate systems.</p>
 <p>The <cite>get_hipdata</cite> function below is one way of reading in the data
 in <tt class="file docutils literal"><span class="pre">hip_full.txt</span></tt>. With table reading packages such as
@@ -754,8 +757,8 @@ TPM.</p>
 <p>These, and the source code for the <cite>convert</cite> module, should allow
 translation of TPM C code to PyTPM Python code.</p>
 <p>These code fragments can be found
-in <a class="reference download internal" href="_downloads/conversion_example1.c"><tt class="xref download docutils literal"><span class="pre">examples/conversion_example.c</span></tt></a>
-and <a class="reference download internal" href="_downloads/conversion_example1.py"><tt class="xref download docutils literal"><span class="pre">examples/conversion_example.py</span></tt></a>, respectively.</p>
+in <a class="reference download internal" href="_downloads/conversion_example.c"><tt class="xref download docutils literal"><span class="pre">examples/conversion_example.c</span></tt></a>
+and <a class="reference download internal" href="_downloads/conversion_example.py"><tt class="xref download docutils literal"><span class="pre">examples/conversion_example.py</span></tt></a>, respectively.</p>
 <p>Note that the conversions themselves are not accurate, since we do not
 apply any proper motions. They are meant to compare C and Python code.</p>
 <div class="section" id="c-code">
@@ -941,7 +944,7 @@ array, which will give us the final coordinates.</p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" size="18" />
+      <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
@@ -967,12 +970,12 @@ array, which will give us the final coordinates.</p>
         <li class="right" >
           <a href="installation.html" title="Installation"
              >previous</a> |</li>
-        <li><a href="index.html">PyTPM v0.7 documentation</a> &raquo;</li> 
+        <li><a href="index.html">PyTPM 0.7.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2011, Prasanth Nair.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
     </div>
   </body>
 </html>
