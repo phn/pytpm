@@ -25,6 +25,9 @@ Python interface to the TPM C library
 .. _pip: http://pypi.python.org/pypi/pip
 .. _pyslalib: https://github.com/scottransom/pyslalib
 
+
+** DEVELOPMENT CEASED **
+
 PyTPM is a Python interface to the `Telescope Pointing Machine`_ (TPM)
 library. TPM is a C library written by `Jeffrey W Percival`_, for performing
 coordinate conversions between several astronomical coordinate systems.
