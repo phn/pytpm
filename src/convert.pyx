@@ -1,4 +1,4 @@
-import tpm
+from . import tpm
 
 
 def convertv6(v6=None, double utc=-999, double delta_at=-999,
