@@ -13,3 +13,4 @@ setup.cfg
 *.egg-info
 .coverage
 *flymake*
+dist/
