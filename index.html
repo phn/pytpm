@@ -1,260 +1,348 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>PyTPM</title>
+<style type="text/css">
 
+/*
+:Author: David Goodger (goodger@python.org)
+:Id: $Id: html4css1.css 7614 2013-02-21 15:55:51Z milde $
+:Copyright: This stylesheet has been placed in the public domain.
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+Default cascading style sheet for the HTML output of Docutils.
 
+See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
+customize this style sheet.
+*/
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Python interface to the TPM C library &mdash; PyTPM 0.7.1 documentation</title>
-    
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
-        VERSION:     '0.7.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="PyTPM 0.7.1 documentation" href="#" />
-    <link rel="next" title="Installation" href="installation.html" /> 
-  </head>
-  <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="installation.html" title="Installation"
-             accesskey="N">next</a> |</li>
-        <li><a href="#">PyTPM 0.7.1 documentation</a> &raquo;</li> 
-      </ul>
-    </div>  
+/* used to remove borders from tables and images */
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
-            
-  <div class="section" id="python-interface-to-the-tpm-c-library">
-<h1>Python interface to the TPM C library<a class="headerlink" href="#python-interface-to-the-tpm-c-library" title="Permalink to this headline">¶</a></h1>
-<p>PyTPM is a Python interface to the <a class="reference external" href="http://www.sal.wisc.edu/~jwp/astro/tpm/tpm.html">Telescope Pointing Machine</a> (TPM)
-library. TPM is a C library written by <a class="reference external" href="http://www.sal.wisc.edu/~jwp/">Jeffrey W. Percival</a>, for
-performing coordinate conversions between several astronomical
-coordinate systems.</p>
-<p>Python interface to TPM C code is written using <a class="reference external" href="http://www.cython.org/">Cython</a>.</p>
-<p>TPM was designed with the aim of incorporating it into telescope
-control systems. To meet this design goal, TPM offers control over
-calculations carried out during coordinate conversions. Some of these
-calculations must be performed frequently, for example time related
-calculations. Others need to be performed only once per night, for
-example nutation and precession matrices. In general, the former class
-of quantities are easier to calculate than the latter. TPM allows the
-user to select the exact calculations to be performed, for a given
-coordinate conversion. This enables the user to control the
-computational load, which is important in telescope control
-systems. TPM C library is used by the <a class="reference external" href="http://www.noao.edu/wiyn/wiyn.html">KPNO WIYN observatory</a> and the
-<a class="reference external" href="http://www.astro.wisc.edu/wham/">WHAM</a> projects.</p>
-<p>TPM is also useful outside telescope control system. It can be very
-useful for converting a large catalog of coordinates. In such cases,
-the &#8220;star independent&#8221; quantities, which tend to be computational
-expensive to calculate, can be calculated just once for the entire
-catalog. This will make coordinate conversions faster.</p>
-<p>PyTPM is not a complete astrometry package. The aim is to provide
-access to the TPM C code from Python. TPM machinery can be directly
-accessed using the <cite>pytpm.tpm</cite> sub-module. The sub-module
-<cite>pytpm.convert</cite> has several convenience functions that can be used for
-performing coordinate conversions. The latter is sufficient for most,
-but not all, calculations.</p>
-<p>Users must read the <a class="reference download internal" href="_downloads/tpm.pdf"><tt class="xref download docutils literal"><span class="pre">TPM</span> <span class="pre">manual</span></tt></a> before
-attempting to use the <cite>pytpm.tpm</cite> module.</p>
-<p id="tpm-manual">PyTPM has been tested on Python versions 2.6, 2.7 and 3.2. <a class="reference external" href="http://packages.python.org/distribute/">Distribute</a>
-is required for installing PyTPM. Cython is not required, unless the
-Cython code is modified and needs to be re-compiled. <a class="reference external" href="http://pypi.python.org/pypi/nose">Nose</a> is required
-for running tests. <a class="reference external" href="http://sphinx.pocoo.org/">Sphinx</a> and the <a class="reference external" href="http://pypi.python.org/pypi/numpydoc">numpydoc</a> Sphinx extension are
-required for building documentation from ReST source.</p>
-<p>PyTPM can be downloaded from the <a class="reference external" href="http://pypi.python.org/pypi/PyTPM">pypi page for the
-project</a>. Documentation in HTML format can also be downloaded from the
-above page. HTML documentation can be viewed at
-<a class="reference external" href="http://phn.github.com/pytpm/">http://phn.github.com/pytpm/</a>.</p>
-<p>PyTPM can also be installed using <a class="reference external" href="http://pypi.python.org/pypi/pip">pip</a> or <cite>easy_install</cite>. Use</p>
-<div class="highlight-sh"><div class="highlight"><pre><span class="nv">$ </span>pip install pytpm
-</pre></div>
-</div>
-<p>See <a class="reference internal" href="installation.html"><em>Installation</em></a> for detailed instructions on installing PyTPM.</p>
-<p>The source code repository for PyTPM is at
-<a class="reference external" href="https://github.com/phn/pytpm">https://github.com/phn/pytpm</a>. The repository can be cloned using git,
-or a copy can be downloaded using the <em>Download</em> button on the above
-website.</p>
-</div>
-<div class="section" id="important-notes">
-<h1>Important notes<a class="headerlink" href="#important-notes" title="Permalink to this headline">¶</a></h1>
-<ol class="arabic simple">
-<li>The file <tt class="file docutils literal"><span class="pre">src/tpm/delta_AT.c</span></tt> must be updated when
-Delta AT (<tt class="docutils literal"><span class="pre">DAT</span> <span class="pre">=</span> <span class="pre">TAI</span> <span class="pre">-</span> <span class="pre">UTC</span></tt>) is changed by the <a class="reference external" href="http://www.iers.org/">IERS</a>, and PyTPM
-Cython code must re-compiled. See
-<a class="reference internal" href="astrometry.html#delta-at-info"><em>Time scales and calendars</em></a>, for ways to get updated values for this
-quantity. A new version of PyTPM will be released when this change
-occurs.</li>
-<li>TPM uses built-in ephemerides for the Earth and Sun, and a built-in
-model for calculating dynamic and rotational time.</li>
-</ol>
-</div>
-<div class="section" id="contents">
-<h1>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h1>
-<p>Information on installing PyTPM can be found in <a class="reference internal" href="installation.html"><em>Installation</em></a>.</p>
-<p>For examples of converting positions and velocities
-see <a class="reference internal" href="conversions.html"><em>Coordinate conversions using TPM and PyTPM</em></a>. Please read the <a class="reference download internal" href="_downloads/tpm.pdf"><tt class="xref download docutils literal"><span class="pre">TPM</span> <span class="pre">manual</span></tt></a> before using the advanced facilities of PyTPM.</p>
-<p>For a detailed list of functions and constants defined in PyTPM, see
-the section on <a class="reference internal" href="functions.html"><em>Functions and constants in PyTPM</em></a>. For detailed information on the data
-structures defined in PyTPM, see the section on <a class="reference internal" href="data_structures.html"><em>Data Structures</em></a>.</p>
-<p>See <a class="reference internal" href="comparisons.html"><em>Comparison of PyTPM with SLALIB</em></a> for a comparison of results obtained using
-PyTPM, with that obtained using SLALIB (<a class="reference external" href="https://github.com/scottransom/pyslalib">pyslalib</a>).</p>
-<p>The document <a class="reference internal" href="astrometry.html"><em>Astrometry Resources</em></a> presents links to astrometry resources.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#id2">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#exploring-the-cython-code">Exploring the Cython code</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="conversions.html">Coordinate conversions using TPM and PyTPM</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="conversions.html#function-convert-convertv6">Function <cite>convert.convertv6</cite></a></li>
-<li class="toctree-l2"><a class="reference internal" href="conversions.html#fk5-equinox-and-epoch-j2000-0-to-fk4-equinox-and-epoch-b1950-0">FK5 equinox and epoch J2000.0, to FK4 equinox and epoch B1950.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="conversions.html#fk5-equinox-and-epoch-j2000-0-to-iau-1958-galactic-system">FK5 equinox and epoch J2000.0, to IAU 1958 Galactic System</a></li>
-<li class="toctree-l2"><a class="reference internal" href="conversions.html#iau-1958-galactic-to-fk5-equinox-and-epoch-j2000-0">IAU 1958 Galactic, to FK5 equinox and epoch J2000.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="conversions.html#fk5-equinox-and-epoch-j2000-0-to-iau-1980-ecliptic-system">FK5 equinox and epoch J2000.0, to IAU 1980 Ecliptic system</a></li>
-<li class="toctree-l2"><a class="reference internal" href="conversions.html#iau-1980-ecliptic-system-to-fk5-equinox-and-epoch-j2000-0">IAU 1980 Ecliptic system, to FK5 equinox and epoch J2000.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="conversions.html#fk5-equinox-and-epoch-j2000-0-to-geocentric-apparent">FK5 equinox and epoch J2000.0, to Geocentric apparent</a></li>
-<li class="toctree-l2"><a class="reference internal" href="conversions.html#fk5-equinox-and-epoch-j2000-0-to-topocentric-observed">FK5 equinox and epoch J2000.0, to topocentric observed</a></li>
-<li class="toctree-l2"><a class="reference internal" href="conversions.html#converting-positions-and-velocities">Converting positions and velocities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="conversions.html#pytpm-and-tpm">PyTPM and TPM</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="comparisons.html">Comparison of PyTPM with SLALIB</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="comparisons.html#data">Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="comparisons.html#scripts">Scripts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="comparisons.html#comparisons">Comparisons</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="functions.html">Functions and constants in PyTPM</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="functions.html#functions">Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="functions.html#functions-related-to-astrometry">Functions related to astrometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="functions.html#functions-for-creating-matrices">Functions for creating matrices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="functions.html#constants">Constants</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="data_structures.html">Data Structures</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="data_structures.html#classes-for-representing-angles">Classes for representing angles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data_structures.html#classes-for-storing-time-and-date-time">Classes for storing time and date-time</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data_structures.html#classes-for-representing-vectors">Classes for representing vectors</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="astrometry.html">Astrometry Resources</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="astrometry.html#time-scales-and-calendars">Time scales and calendars</a></li>
-<li class="toctree-l2"><a class="reference internal" href="astrometry.html#geographical-and-earth-data">Geographical and Earth data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="astrometry.html#ephemerides">Ephemerides</a></li>
-<li class="toctree-l2"><a class="reference internal" href="astrometry.html#constants-and-fundamental-data">Constants and fundamental data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="astrometry.html#astrometry-libraries-and-applications">Astrometry libraries and applications</a></li>
-<li class="toctree-l2"><a class="reference internal" href="astrometry.html#sky-visualization-and-exploration">Sky visualization and exploration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="astrometry.html#catalogs">Catalogs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="astrometry.html#documents-and-papers">Documents and papers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="astrometry.html#organizations">Organizations</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-<div class="section" id="credits-and-license">
-<h1>Credits and license<a class="headerlink" href="#credits-and-license" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference external" href="http://www.sal.wisc.edu/~jwp/">Jeffrey W. Percival</a> wrote the <a class="reference external" href="http://www.sal.wisc.edu/~jwp/astro/tpm/tpm.html">TPM</a> C library. See
-<cite>src/tpm/TPM_LICENSE.txt</cite> for TPM license.</p>
-<p>The version used here was obtained from the <a class="reference external" href="https://trac6.assembla.com/astrolib">coords</a> package (version
-0.36) of the <a class="reference external" href="https://trac6.assembla.com/astrolib">astrolib</a> library. Some C source files missing from the
-above source were provided by Jeff Percival.</p>
-<p>Python and Cython code for PyTPM is released under the BSD license; see
-<cite>LICENSE.txt</cite>.</p>
-<p>Please send email to <em>prasanthhn</em>, at the <em>gmail.com</em> domain, for
-reporting errors, and for comments and suggestions.</p>
-</div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
-<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
-<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
-</ul>
-</div>
+table.borderless td, table.borderless th {
+  /* Override padding for "table.docutils td" with "! important".
+     The right padding separates the table cells. */
+  padding: 0 0.5em 0 0 ! important }
 
+.first {
+  /* Override more specific margin styles with "! important". */
+  margin-top: 0 ! important }
 
-          </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="#">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Python interface to the TPM C library</a></li>
-<li><a class="reference internal" href="#important-notes">Important notes</a></li>
-<li><a class="reference internal" href="#contents">Contents</a><ul>
-</ul>
-</li>
-<li><a class="reference internal" href="#credits-and-license">Credits and license</a></li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
-</ul>
+.last, .with-subtitle {
+  margin-bottom: 0 ! important }
 
-  <h4>Next topic</h4>
-  <p class="topless"><a href="installation.html"
-                        title="next chapter">Installation</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/index.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+.hidden {
+  display: none }
+
+a.toc-backref {
+  text-decoration: none ;
+  color: black }
+
+blockquote.epigraph {
+  margin: 2em 5em ; }
+
+dl.docutils dd {
+  margin-bottom: 0.5em }
+
+object[type="image/svg+xml"], object[type="application/x-shockwave-flash"] {
+  overflow: hidden;
+}
+
+/* Uncomment (and remove this text!) to get bold-faced definition list terms
+dl.docutils dt {
+  font-weight: bold }
+*/
+
+div.abstract {
+  margin: 2em 5em }
+
+div.abstract p.topic-title {
+  font-weight: bold ;
+  text-align: center }
+
+div.admonition, div.attention, div.caution, div.danger, div.error,
+div.hint, div.important, div.note, div.tip, div.warning {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em }
+
+div.admonition p.admonition-title, div.hint p.admonition-title,
+div.important p.admonition-title, div.note p.admonition-title,
+div.tip p.admonition-title {
+  font-weight: bold ;
+  font-family: sans-serif }
+
+div.attention p.admonition-title, div.caution p.admonition-title,
+div.danger p.admonition-title, div.error p.admonition-title,
+div.warning p.admonition-title, .code .error {
+  color: red ;
+  font-weight: bold ;
+  font-family: sans-serif }
+
+/* Uncomment (and remove this text!) to get reduced vertical space in
+   compound paragraphs.
+div.compound .compound-first, div.compound .compound-middle {
+  margin-bottom: 0.5em }
+
+div.compound .compound-last, div.compound .compound-middle {
+  margin-top: 0.5em }
+*/
+
+div.dedication {
+  margin: 2em 5em ;
+  text-align: center ;
+  font-style: italic }
+
+div.dedication p.topic-title {
+  font-weight: bold ;
+  font-style: normal }
+
+div.figure {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+div.footer, div.header {
+  clear: both;
+  font-size: smaller }
+
+div.line-block {
+  display: block ;
+  margin-top: 1em ;
+  margin-bottom: 1em }
+
+div.line-block div.line-block {
+  margin-top: 0 ;
+  margin-bottom: 0 ;
+  margin-left: 1.5em }
+
+div.sidebar {
+  margin: 0 0 0.5em 1em ;
+  border: medium outset ;
+  padding: 1em ;
+  background-color: #ffffee ;
+  width: 40% ;
+  float: right ;
+  clear: right }
+
+div.sidebar p.rubric {
+  font-family: sans-serif ;
+  font-size: medium }
+
+div.system-messages {
+  margin: 5em }
+
+div.system-messages h1 {
+  color: red }
+
+div.system-message {
+  border: medium outset ;
+  padding: 1em }
+
+div.system-message p.system-message-title {
+  color: red ;
+  font-weight: bold }
+
+div.topic {
+  margin: 2em }
+
+h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
+h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
+  margin-top: 0.4em }
+
+h1.title {
+  text-align: center }
+
+h2.subtitle {
+  text-align: center }
+
+hr.docutils {
+  width: 75% }
+
+img.align-left, .figure.align-left, object.align-left {
+  clear: left ;
+  float: left ;
+  margin-right: 1em }
+
+img.align-right, .figure.align-right, object.align-right {
+  clear: right ;
+  float: right ;
+  margin-left: 1em }
+
+img.align-center, .figure.align-center, object.align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.align-left {
+  text-align: left }
+
+.align-center {
+  clear: both ;
+  text-align: center }
+
+.align-right {
+  text-align: right }
+
+/* reset inner alignment in figures */
+div.align-right {
+  text-align: inherit }
+
+/* div.align-center * { */
+/*   text-align: left } */
+
+ol.simple, ul.simple {
+  margin-bottom: 1em }
+
+ol.arabic {
+  list-style: decimal }
+
+ol.loweralpha {
+  list-style: lower-alpha }
+
+ol.upperalpha {
+  list-style: upper-alpha }
+
+ol.lowerroman {
+  list-style: lower-roman }
+
+ol.upperroman {
+  list-style: upper-roman }
+
+p.attribution {
+  text-align: right ;
+  margin-left: 50% }
+
+p.caption {
+  font-style: italic }
+
+p.credits {
+  font-style: italic ;
+  font-size: smaller }
+
+p.label {
+  white-space: nowrap }
+
+p.rubric {
+  font-weight: bold ;
+  font-size: larger ;
+  color: maroon ;
+  text-align: center }
+
+p.sidebar-title {
+  font-family: sans-serif ;
+  font-weight: bold ;
+  font-size: larger }
+
+p.sidebar-subtitle {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+p.topic-title {
+  font-weight: bold }
+
+pre.address {
+  margin-bottom: 0 ;
+  margin-top: 0 ;
+  font: inherit }
+
+pre.literal-block, pre.doctest-block, pre.math, pre.code {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+pre.code .ln { color: grey; } /* line numbers */
+pre.code, code { background-color: #eeeeee }
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+span.classifier {
+  font-family: sans-serif ;
+  font-style: oblique }
+
+span.classifier-delimiter {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+span.interpreted {
+  font-family: sans-serif }
+
+span.option {
+  white-space: nowrap }
+
+span.pre {
+  white-space: pre }
+
+span.problematic {
+  color: red }
+
+span.section-subtitle {
+  /* font-size relative to parent (h1..h6 element) */
+  font-size: 80% }
+
+table.citation {
+  border-left: solid 1px gray;
+  margin-left: 1px }
+
+table.docinfo {
+  margin: 2em 4em }
+
+table.docutils {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
+
+table.footnote {
+  border-left: solid 1px black;
+  margin-left: 1px }
+
+table.docutils td, table.docutils th,
+table.docinfo td, table.docinfo th {
+  padding-left: 0.5em ;
+  padding-right: 0.5em ;
+  vertical-align: top }
+
+table.docutils th.field-name, table.docinfo th.docinfo-name {
+  font-weight: bold ;
+  text-align: left ;
+  white-space: nowrap ;
+  padding-left: 0 }
+
+/* "booktabs" style (no vertical lines) */
+table.docutils.booktabs {
+  border: 0px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.docutils.booktabs * {
+  border: 0px;
+}
+table.docutils.booktabs th {
+  border-bottom: thin solid;
+  text-align: left;
+}
+
+h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
+h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
+  font-size: 100% }
+
+ul.auto-toc {
+  list-style-type: none }
+
+</style>
+</head>
+<body>
+<div class="document" id="pytpm">
+<h1 class="title">PyTPM</h1>
+
+<p>A simple Python interface to TPM C library
+(<a class="reference external" href="http://www.sal.wisc.edu/~jwp/astro/tpm/tpm.html">http://www.sal.wisc.edu/~jwp/astro/tpm/tpm.html</a>).</p>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="installation.html" title="Installation"
-             >next</a> |</li>
-        <li><a href="#">PyTPM 0.7.1 documentation</a> &raquo;</li> 
-      </ul>
-    </div>
-    <div class="footer">
-        &copy; Copyright 2011, Prasanth Nair.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
-    </div>
-  </body>
+</body>
 </html>
