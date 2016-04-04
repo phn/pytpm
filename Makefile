@@ -7,7 +7,7 @@ inf:
 	python setup.py build_ext -i
 
 sdist:
-	pyton setup.py sdist
+	python setup.py sdist
 
 tpm:
 	gcc -fPIC -c src/tpm/*.c 
