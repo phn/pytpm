@@ -85,5 +85,7 @@ delta_AT(double utc)
 
     if (utc >= 56109.0) dt = 35.0;	/* 2012 July 1 */    
 
+    if (utc >= 57204.0) dt = 36.0;  /* 2015 July 1 */
+    
     return(dt);
 }
